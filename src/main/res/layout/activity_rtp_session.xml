@@ -92,6 +92,14 @@
                 android:textAppearance="@style/TextAppearance.Conversations.Title.Monospace"
                 tools:text="01:23" />
 
+            <eu.siacs.conversations.ui.widget.DialpadView
+                layout="@layout/dialpad"
+                android:id="@+id/dialpad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:visibility="gone" />
+
             <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/contact_photo"
                 android:layout_width="@dimen/publish_avatar_size"
@@ -178,7 +186,7 @@
                     app:elevation="4dp"
                     app:fabCustomSize="72dp"
                     app:maxImageSize="36dp"
-                    tools:visibility="visible" />
+                    tools:visibility="gone" />
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/accept_call"
@@ -193,7 +201,7 @@
                     app:elevation="4dp"
                     app:fabCustomSize="72dp"
                     app:maxImageSize="36dp"
-                    tools:visibility="visible" />
+                    tools:visibility="gone" />
 
             </RelativeLayout>
 
@@ -204,7 +212,7 @@
                 android:layout_centerVertical="true"
                 android:layout_margin="@dimen/in_call_fab_margin"
                 android:layout_toStartOf="@+id/end_call"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:backgroundTint="?color_background_primary"
                 app:elevation="4dp"
                 app:fabSize="mini"
@@ -230,7 +238,7 @@
                 android:layout_centerVertical="true"
                 android:layout_margin="@dimen/in_call_fab_margin"
                 android:layout_toEndOf="@+id/end_call"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:backgroundTint="?color_background_primary"
                 app:elevation="4dp"
                 app:fabSize="mini"
@@ -243,7 +251,7 @@
                 android:layout_centerVertical="true"
                 android:layout_margin="@dimen/in_call_fab_margin"
                 android:layout_toEndOf="@+id/in_call_action_right"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:backgroundTint="?color_background_primary"
                 app:elevation="4dp"
                 app:fabSize="mini"

@@ -148,7 +148,7 @@ class ToneManager {
         }
     }
 
-    private void startTone(final int toneType, final int durationMs) {
+    public void startTone(final int toneType, final int durationMs) {
         if (toneGenerator != null) {
             this.toneGenerator.startTone(toneType, durationMs);
         } else {

@@ -44,4 +44,11 @@
     <dimen name="local_video_preview_height">128dp</dimen>
     <dimen name="local_video_preview_width">96dp</dimen>
     <dimen name="rtp_session_duration_top_margin">24dp</dimen>
+
+    <dimen name="dialpad_text_size">30sp</dimen>
+    <dimen name="smaller_text_size">12sp</dimen>
+    <dimen name="medium_margin">8dp</dimen>
+    <dimen name="activity_margin">16dp</dimen>
+    <dimen name="small_margin">4dp</dimen>
+    <dimen name="actionbar_text_size">20sp</dimen>
 </resources>

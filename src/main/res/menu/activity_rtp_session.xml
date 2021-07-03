@@ -12,5 +12,11 @@
         android:id="@+id/action_goto_chat"
         android:icon="?attr/icon_goto_chat"
         android:title="@string/switch_to_conversation"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_dialpad"
+        android:icon="?attr/icon_new"
+        android:title="@string/action_dialpad"
         app:showAsAction="always" />
+
 </menu>
