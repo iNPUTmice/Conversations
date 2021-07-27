@@ -80,6 +80,7 @@ import eu.siacs.conversations.ui.util.PresenceSelector;
 import eu.siacs.conversations.ui.util.SoftKeyboardUtils;
 import eu.siacs.conversations.utils.AccountUtils;
 import eu.siacs.conversations.utils.ExceptionHelper;
+import eu.siacs.conversations.ui.util.SettingsUtils;
 import eu.siacs.conversations.utils.ThemeHelper;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
@@ -819,8 +820,9 @@ public abstract class XmppActivity extends ActionBarActivity {
     }
 
     @Override
-    public void onResume() {
+    protected void onResume(){
         super.onResume();
+        SettingsUtils.applyScreenshotPreventionSetting(this);
     }
 
     protected int findTheme() {

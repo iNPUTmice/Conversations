@@ -44,4 +44,5 @@
     <bool name="start_searching">false</bool>
     <string name="video_compression">360</string>
     <string name="default_channel_discovery">JABBER_NETWORK</string>
+    <bool name="prevent_screenshots">false</bool>
 </resources>

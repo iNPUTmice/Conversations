@@ -32,6 +32,13 @@
             android:key="last_activity"
             android:summary="@string/pref_broadcast_last_activity_summary"
             android:title="@string/pref_broadcast_last_activity" />
+
+        <CheckBoxPreference
+            android:defaultValue="@bool/prevent_screenshots"
+            android:key="prevent_screenshots"
+            android:summary="@string/pref_prevent_screenshots_summary"
+            android:title="@string/pref_prevent_screenshots" />
+
         <ListPreference
             android:defaultValue="@string/omemo_setting_default"
             android:entries="@array/omemo_setting_entries"

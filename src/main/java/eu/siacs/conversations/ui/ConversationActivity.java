@@ -2,9 +2,12 @@ package eu.siacs.conversations.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import eu.siacs.conversations.ui.util.SettingsUtils;
 
 public class ConversationActivity extends AppCompatActivity {
 
@@ -13,5 +16,11 @@ public class ConversationActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		startActivity(new Intent(this, ConversationsActivity.class));
 		finish();
+	}
+
+	@Override
+	protected void onResume(){
+		super.onResume();
+		SettingsUtils.applyScreenshotPreventionSetting(this);
 	}
 }

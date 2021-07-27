@@ -33,6 +33,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Process;
 import android.os.Vibrator;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Surface;
@@ -61,6 +62,7 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.ui.service.CameraManager;
 import eu.siacs.conversations.ui.widget.ScannerView;
+import eu.siacs.conversations.ui.util.SettingsUtils;
 
 /**
  * @author Andreas Schildbach
@@ -181,6 +183,7 @@ public final class ScanActivity extends Activity implements SurfaceTextureListen
 	@Override
 	protected void onResume() {
 		super.onResume();
+		SettingsUtils.applyScreenshotPreventionSetting(this);
 		maybeOpenCamera();
 	}
 

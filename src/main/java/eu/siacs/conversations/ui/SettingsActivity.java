@@ -40,6 +40,7 @@ import eu.siacs.conversations.services.MemorizingTrustManager;
 import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.ui.util.StyledAttributes;
 import eu.siacs.conversations.utils.GeoHelper;
+import eu.siacs.conversations.ui.util.SettingsUtils;
 import eu.siacs.conversations.utils.TimeFrameUtils;
 import eu.siacs.conversations.xmpp.Jid;
 
@@ -57,8 +58,10 @@ public class SettingsActivity extends XmppActivity implements
 	public static final String THEME = "theme";
 	public static final String SHOW_DYNAMIC_TAGS = "show_dynamic_tags";
 	public static final String OMEMO_SETTING = "omemo";
+	public static final String PREVENT_SCREENSHOTS = "prevent_screenshots";
 
 	public static final int REQUEST_CREATE_BACKUP = 0xbf8701;
+
 	private SettingsFragment mSettingsFragment;
 
 	@Override
@@ -393,8 +396,15 @@ public class SettingsActivity extends XmppActivity implements
 			if (this.mTheme != theme) {
 				recreate();
 			}
+		} else if(name.equals(PREVENT_SCREENSHOTS)){
+			SettingsUtils.applyScreenshotPreventionSetting(this);
 		}
+	}
 
+	@Override
+	public void onResume(){
+		super.onResume();
+		SettingsUtils.applyScreenshotPreventionSetting(this);
 	}
 
 	@Override

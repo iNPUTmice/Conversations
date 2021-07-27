@@ -130,6 +130,8 @@
     <string name="pref_never_send_crash_summary">By sending in stack traces you are helping the development</string>
     <string name="pref_confirm_messages">Confirm Messages</string>
     <string name="pref_confirm_messages_summary">Let your contacts know when you have received and read their messages</string>
+    <string name="pref_prevent_screenshots">Prevent Screenshots</string>
+    <string name="pref_prevent_screenshots_summary">Prevent taking screenshots of this app and hide its content in the app switcher</string>
     <string name="pref_ui_options">UI</string>
     <string name="openpgp_error">OpenKeychain produced an error.</string>
     <string name="bad_key_for_encryption">Bad key for encryption.</string>
@@ -966,4 +968,5 @@
     <string name="backup_started_message">The backup has been started. You’ll get a notification once it has been completed.</string>
     <string name="unable_to_enable_video">Unable to enable video.</string>
     <string name="plain_text_document">Plain text document</string>
+
 </resources>
