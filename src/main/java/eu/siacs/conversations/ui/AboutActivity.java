@@ -1,7 +1,6 @@
 package eu.siacs.conversations.ui;
 
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 

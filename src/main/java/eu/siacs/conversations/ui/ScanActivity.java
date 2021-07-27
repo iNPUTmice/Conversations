@@ -33,7 +33,6 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Process;
 import android.os.Vibrator;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Surface;
@@ -61,8 +60,8 @@ import java.util.Map;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.ui.service.CameraManager;
-import eu.siacs.conversations.ui.widget.ScannerView;
 import eu.siacs.conversations.ui.util.SettingsUtils;
+import eu.siacs.conversations.ui.widget.ScannerView;
 
 /**
  * @author Andreas Schildbach
