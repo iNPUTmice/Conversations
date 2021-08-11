@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -481,6 +482,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
             this.binding.mucSubject.setTextAppearance(this, subject.length() > (hasTitle ? 128 : 196) ? R.style.TextAppearance_Conversations_Body1_Linkified : R.style.TextAppearance_Conversations_Subhead);
             this.binding.mucSubject.setAutoLinkMask(0);
             this.binding.mucSubject.setVisibility(View.VISIBLE);
+            this.binding.mucSubject.setMovementMethod(LinkMovementMethod.getInstance());
         } else {
             this.binding.mucSubject.setVisibility(View.GONE);
         }
