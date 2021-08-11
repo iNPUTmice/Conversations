@@ -20,10 +20,6 @@
         android:id="@+id/copy_link"
         android:title="@string/copy_link"
         android:visible="false" />
-    <item
-        android:id="@+id/quote_message"
-        android:title="@string/quote"
-        android:visible="false" />
 
     <item
         android:id="@+id/retry_decryption"
@@ -32,6 +28,10 @@
     <item
         android:id="@+id/correct_message"
         android:title="@string/correct_message"
+        android:visible="false" />
+    <item
+        android:id="@+id/quote_message"
+        android:title="@string/quote"
         android:visible="false" />
     <item
         android:id="@+id/copy_url"
