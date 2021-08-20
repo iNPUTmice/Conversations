@@ -372,6 +372,34 @@ public class UIHelper {
         return input.length() > 256 ? StylingHelper.subSequence(input, 0, 256) : input;
     }
 
+    public static boolean isPositionFollowedByWhitespace(CharSequence body, int pos){
+        return Character.isWhitespace(body.charAt(pos + 1));
+    }
+
+    public static boolean isPositionPrecededByWhitespace(CharSequence body, int pos){
+        return Character.isWhitespace(body.charAt(pos -1 ));
+    }
+
+    public static boolean isPositionPrecededByBodyStart(CharSequence body, int pos){
+        // true if not a single linebreak before current position
+        for (int i = pos - 1; i >= 0; i--){
+            if (body.charAt(i) != ' '){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean isPositionPrecededByLineStart(CharSequence body, int pos){
+        if (isPositionPrecededByBodyStart(body, pos)){
+            return true;
+        }
+        if (body.charAt(pos - 1) == '\n'){
+            return true;
+        }
+        return false;
+    }
+
     public static boolean isPositionFollowedByQuoteableCharacter(CharSequence body, int pos) {
         return !isPositionFollowedByNumber(body, pos)
                 && !isPositionFollowedByEmoticon(body, pos)
