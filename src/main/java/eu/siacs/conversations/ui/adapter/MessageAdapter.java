@@ -59,6 +59,7 @@ import eu.siacs.conversations.ui.text.DividerSpan;
 import eu.siacs.conversations.ui.text.QuoteSpan;
 import eu.siacs.conversations.ui.util.AvatarWorkerTask;
 import eu.siacs.conversations.ui.util.MyLinkify;
+import eu.siacs.conversations.ui.util.QuoteHelper;
 import eu.siacs.conversations.ui.util.ViewUtil;
 import eu.siacs.conversations.ui.widget.ClickableMovementMethod;
 import eu.siacs.conversations.utils.CryptoHelper;
@@ -359,48 +360,55 @@ public class MessageAdapter extends ArrayAdapter<Message> {
      */
     private boolean handleTextQuotes(SpannableStringBuilder body, boolean darkBackground) {
         boolean startsWithQuote = false;
-        char previous = '\n';
-        int lineStart = -1;
-        int lineTextStart = -1;
-        int quoteStart = -1;
-        for (int i = 0; i <= body.length(); i++) {
-            char current = body.length() > i ? body.charAt(i) : '\n';
-            if (lineStart == -1) {
-                if (previous == '\n') {
-                    if ((current == '>' && UIHelper.isPositionFollowedByQuoteableCharacter(body, i))
-                            || current == '\u00bb' && !UIHelper.isPositionFollowedByQuote(body, i)) {
-                        // Line start with quote
-                        lineStart = i;
-                        if (quoteStart == -1) quoteStart = i;
-                        if (i == 0) startsWithQuote = true;
-                    } else if (quoteStart >= 0) {
-                        // Line start without quote, apply spans there
-                        applyQuoteSpan(body, quoteStart, i - 1, darkBackground);
-                        quoteStart = -1;
+        int quoteDepth = 1;
+        while (QuoteHelper.bodyContainsQuoteStart(body) && quoteDepth <= Config.QUOTE_MAX_DEPTH) {
+            char previous = '\n';
+            int lineStart = -1;
+            int lineTextStart = -1;
+            int quoteStart = -1;
+            for (int i = 0; i <= body.length(); i++) {
+                char current = body.length() > i ? body.charAt(i) : '\n';
+                if (lineStart == -1) {
+                    if (previous == '\n') {
+                        if (
+                                (QuoteHelper.isPositionQuoteStart(body, i)
+                                        || (current == '\u00bb' && !UIHelper.isPositionFollowedByQuote(body, i)
+                                ))) {
+                            // Line start with quote
+                            lineStart = i;
+                            if (quoteStart == -1) quoteStart = i;
+                            if (i == 0) startsWithQuote = true;
+                        } else if (quoteStart >= 0) {
+                            // Line start without quote, apply spans there
+                            applyQuoteSpan(body, quoteStart, i - 1, darkBackground);
+                            quoteStart = -1;
+                            quoteDepth++;
+                        }
+                    }
+                } else {
+                    // Remove extra spaces between > and first character in the line
+                    // > character will be removed too
+                    if (current != ' ' && lineTextStart == -1) {
+                        lineTextStart = i;
+                    }
+                    if (current == '\n') {
+                        body.delete(lineStart, lineTextStart);
+                        i -= lineTextStart - lineStart;
+                        if (i == lineStart) {
+                            // Avoid empty lines because span over empty line can be hidden
+                            body.insert(i++, " ");
+                        }
+                        lineStart = -1;
+                        lineTextStart = -1;
                     }
                 }
-            } else {
-                // Remove extra spaces between > and first character in the line
-                // > character will be removed too
-                if (current != ' ' && lineTextStart == -1) {
-                    lineTextStart = i;
-                }
-                if (current == '\n') {
-                    body.delete(lineStart, lineTextStart);
-                    i -= lineTextStart - lineStart;
-                    if (i == lineStart) {
-                        // Avoid empty lines because span over empty line can be hidden
-                        body.insert(i++, " ");
-                    }
-                    lineStart = -1;
-                    lineTextStart = -1;
-                }
+                previous = current;
             }
-            previous = current;
-        }
-        if (quoteStart >= 0) {
-            // Apply spans to finishing open quote
-            applyQuoteSpan(body, quoteStart, body.length(), darkBackground);
+            if (quoteStart >= 0) {
+                // Apply spans to finishing open quote
+                applyQuoteSpan(body, quoteStart, body.length(), darkBackground);
+                quoteDepth++;
+            }
         }
         return startsWithQuote;
     }
