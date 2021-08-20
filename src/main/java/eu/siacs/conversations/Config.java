@@ -202,6 +202,8 @@ public final class Config {
         public final static int LOCATION_FIX_SIGNIFICANT_TIME_DELTA = 1000 * 60 * 2; // ms
     }
 
-    // How deep nested quotes should become. '2' means one quote nested in another.
+    // How deep nested quotes should be displayed. '2' means one quote nested in another.
     public static final int QUOTE_MAX_DEPTH = 3;
+    // How deep nested quotes should be created on quoting a message.
+    public static final int QUOTING_MAX_DEPTH = QUOTE_MAX_DEPTH - 1;
 }

@@ -1,5 +1,6 @@
 package eu.siacs.conversations.ui.util;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.utils.UIHelper;
 
 public class QuoteHelper {
@@ -32,20 +33,19 @@ public class QuoteHelper {
         }
         return false;
     }
-    /*public static int getQuoteColors(XmppActivity activity, boolean darkBackground, int quoteDepth){
-        int[] colorsLight = R.style.ConversationsTheme_Dark;
-        int[] colorsDark = Config.QUOTE_COLOR_ARRAY_DARK;
 
-       Collections.rotate(Collections.singletonList(colorsLight), quoteDepth);
-       Collections.rotate(Collections.singletonList(colorsDark), quoteDepth);
-
-       Arrays.stream(colorsLight).toArray();
-
-        int quoteColors =  darkBackground ? ContextCompat.getColor(activity, colorsLight[quoteDepth-1])
-                : ContextCompat.getColor(activity, colorsDark[quoteDepth-1]);
-
-        Collections.rotate
-
-        return quoteColors;
-    };*/
+    public static boolean isNestedTooDeeply (CharSequence line){
+        if (isPositionQuoteCharacter(line, 0)) {
+            int nestingDepth = 1;
+            for (int i = 1; i < line.length(); i++) {
+                if (isPositionQuoteCharacter(line, i)) {
+                    nestingDepth++;
+                }
+                if (nestingDepth > (Config.QUOTING_MAX_DEPTH)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }
