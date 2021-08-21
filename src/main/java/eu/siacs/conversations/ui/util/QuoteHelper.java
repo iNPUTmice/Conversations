@@ -41,7 +41,7 @@ public class QuoteHelper {
                 if (isPositionQuoteCharacter(line, i)) {
                     nestingDepth++;
                 }
-                if (nestingDepth > (Config.QUOTING_MAX_DEPTH)) {
+                if (nestingDepth > (Config.QUOTING_MAX_DEPTH - 1)) {
                     return true;
                 }
             }
