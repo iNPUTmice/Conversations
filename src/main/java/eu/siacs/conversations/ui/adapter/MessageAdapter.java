@@ -381,7 +381,6 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                             // Line start without quote, apply spans there
                             applyQuoteSpan(body, quoteStart, i - 1, darkBackground);
                             quoteStart = -1;
-                            quoteDepth++;
                         }
                     }
                 } else {
@@ -406,8 +405,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             if (quoteStart >= 0) {
                 // Apply spans to finishing open quote
                 applyQuoteSpan(body, quoteStart, body.length(), darkBackground);
-                quoteDepth++;
             }
+            quoteDepth++;
         }
         return startsWithQuote;
     }
