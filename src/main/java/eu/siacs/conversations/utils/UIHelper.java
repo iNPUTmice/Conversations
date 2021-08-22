@@ -329,7 +329,7 @@ public class UIHelper {
                             continue;
                         }
                         char first = l.charAt(0);
-                        if ((!QuoteHelper.isPositionQuoteStart(l, 0)) && first != '\u00bb') {
+                        if ((!QuoteHelper.isPositionQuoteStart(l, 0))) {
                             CharSequence line = CharSequenceUtils.trim(l);
                             if (line.length() == 0) {
                                 continue;
@@ -373,14 +373,6 @@ public class UIHelper {
         return input.length() > 256 ? StylingHelper.subSequence(input, 0, 256) : input;
     }
 
-    public static boolean isPositionFollowedByWhitespace(CharSequence body, int pos){
-        return Character.isWhitespace(body.charAt(pos + 1));
-    }
-
-    public static boolean isPositionPrecededByWhitespace(CharSequence body, int pos){
-        return Character.isWhitespace(body.charAt(pos -1 ));
-    }
-
     public static boolean isPositionPrecededByBodyStart(CharSequence body, int pos){
         // true if not a single linebreak before current position
         for (int i = pos - 1; i >= 0; i--){
@@ -395,10 +387,7 @@ public class UIHelper {
         if (isPositionPrecededByBodyStart(body, pos)){
             return true;
         }
-        if (body.charAt(pos - 1) == '\n'){
-            return true;
-        }
-        return false;
+        return body.charAt(pos - 1) == '\n';
     }
 
     public static boolean isPositionFollowedByQuoteableCharacter(CharSequence body, int pos) {
@@ -442,26 +431,8 @@ public class UIHelper {
             final char c = body.charAt(i);
             if (Character.isWhitespace(c)) {
                 return false;
-            } else if (c == '<' || c == '>') {
+            } else if (QuoteHelper.isPositionQuoteCharacter(body, pos) || QuoteHelper.isPositionQuoteEndCharacter(body, pos)) {
                 return body.length() == i + 1 || Character.isWhitespace(body.charAt(i + 1));
-            }
-        }
-        return false;
-    }
-
-    public static boolean isPositionFollowedByQuote(CharSequence body, int pos) {
-        if (body.length() <= pos + 1 || Character.isWhitespace(body.charAt(pos + 1))) {
-            return false;
-        }
-        boolean previousWasWhitespace = false;
-        for (int i = pos + 1; i < body.length(); i++) {
-            char c = body.charAt(i);
-            if (c == '\n' || c == '»') {
-                return false;
-            } else if (c == '«' && !previousWasWhitespace) {
-                return true;
-            } else {
-                previousWasWhitespace = Character.isWhitespace(c);
             }
         }
         return false;
