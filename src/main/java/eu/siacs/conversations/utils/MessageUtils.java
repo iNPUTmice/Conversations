@@ -70,8 +70,7 @@ public class MessageUtils {
                 continue;
             }
             final char c = line.charAt(0);
-            if (QuoteHelper.isNestedTooDeeply(line)
-                    || (c == '\u00bb' && !UIHelper.isPositionFollowedByQuote(line, 0))) {
+            if (QuoteHelper.isNestedTooDeeply(line)) {
                 continue;
             }
             if (builder.length() != 0) {

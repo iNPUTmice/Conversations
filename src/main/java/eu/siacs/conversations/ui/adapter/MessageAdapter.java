@@ -371,9 +371,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                 if (lineStart == -1) {
                     if (previous == '\n') {
                         if (
-                                (QuoteHelper.isPositionQuoteStart(body, i)
-                                        || (current == '\u00bb' && !UIHelper.isPositionFollowedByQuote(body, i)
-                                ))) {
+                                QuoteHelper.isPositionQuoteStart(body, i)
+                        ) {
                             // Line start with quote
                             lineStart = i;
                             if (quoteStart == -1) quoteStart = i;
