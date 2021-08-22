@@ -24,6 +24,7 @@ import java.util.concurrent.Executors;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.ui.util.QuoteHelper;
 
 public class EditMessage extends EmojiWrapperEditText {
 
@@ -142,7 +143,8 @@ public class EditMessage extends EmojiWrapperEditText {
     }
 
     public void insertAsQuote(String text) {
-        text = text.replaceAll("(\n *){2,}", "\n").replaceAll("(^|\n)>", "$1>>").replaceAll("(^|\n)([^>])", "$1> $2").replaceAll("\n$", "");
+        text = QuoteHelper.replaceAltQuoteCharsInText(text);
+        text = text.replaceAll("(\n *){2,}", "\n").replaceAll("(^|\n)(" + QuoteHelper.QUOTE_CHAR + ")", "$1$2$2").replaceAll("(^|\n)([^>" + QuoteHelper.QUOTE_CHAR + "])", "$1> $2").replaceAll("\n$", "");
         Editable editable = getEditableText();
         int position = getSelectionEnd();
         if (position == -1) position = editable.length();
