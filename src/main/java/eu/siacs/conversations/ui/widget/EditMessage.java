@@ -144,7 +144,7 @@ public class EditMessage extends EmojiWrapperEditText {
 
     public void insertAsQuote(String text) {
         text = QuoteHelper.replaceAltQuoteCharsInText(text);
-        text = text.replaceAll("(\n *){2,}", "\n").replaceAll("(^|\n)(" + QuoteHelper.QUOTE_CHAR + ")", "$1$2$2").replaceAll("(^|\n)([^>" + QuoteHelper.QUOTE_CHAR + "])", "$1> $2").replaceAll("\n$", "");
+        text = text.replaceAll("(\n *){2,}", "\n").replaceAll("(^|\n)(" + QuoteHelper.QUOTE_CHAR + ")", "$1$2$2").replaceAll("(^|\n)([^" + QuoteHelper.QUOTE_CHAR + "])", "$1> $2").replaceAll("\n$", "");
         Editable editable = getEditableText();
         int position = getSelectionEnd();
         if (position == -1) position = editable.length();
