@@ -2,6 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:icon="?attr/icon_search"
+        app:tint="?attr/actionbar_icons_tint"
         android:orderInCategory="5"
         android:title="@string/search_messages"
         android:visible="@bool/show_combined_search_options"
@@ -18,6 +19,7 @@
     <item
         android:id="@+id/action_scan_qr_code"
         android:icon="?attr/icon_scan_qr_code"
+        app:tint="?attr/actionbar_icons_tint"
         android:orderInCategory="10"
         android:title="@string/scan_qr_code"
         android:visible="@bool/show_qr_code_scan"

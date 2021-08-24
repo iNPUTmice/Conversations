@@ -30,6 +30,6 @@
             android:contentDescription="@string/action_unfix_from_location"
             android:src="?attr/icon_directions"
             app:backgroundTint="?colorPrimary"
-            app:tint="@color/white" />
+            app:tint="?attr/actionbutton_icons_tint" />
     </RelativeLayout>
 </layout>

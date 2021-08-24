@@ -31,8 +31,12 @@ package eu.siacs.conversations.ui.util;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
-import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
+import android.util.TypedValue;
+
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Conversation;
@@ -80,111 +84,144 @@ public class SendButtonTool {
 		}
 	}
 
-	public static int getSendButtonImageResource(Activity activity, SendButtonAction action, Presence.Status status) {
+	public static Drawable getSendButtonImageResource(Activity activity, SendButtonAction action, Presence.Status status) {
+		Drawable button = ContextCompat.getDrawable(activity, getThemeResource(activity, R.attr.ic_send_text_icon));
+		DrawableCompat.setTint(button, ContextCompat.getColor(activity, getThemeResource(activity, R.attr.ic_send_text_offline)));
 		switch (action) {
 			case TEXT:
+				button = ContextCompat.getDrawable(activity, getThemeResource(activity, R.attr.ic_send_text_icon));
 				switch (status) {
 					case CHAT:
 					case ONLINE:
-						return R.drawable.ic_send_text_online;
+						DrawableCompat.setTint(button, ContextCompat.getColor(activity, getThemeResource(activity, R.attr.ic_send_text_online)));
+						return button;
 					case AWAY:
-						return R.drawable.ic_send_text_away;
+						DrawableCompat.setTint(button, ContextCompat.getColor(activity, getThemeResource(activity, R.attr.ic_send_text_away)));
+						return button;
 					case XA:
 					case DND:
-						return R.drawable.ic_send_text_dnd;
+						DrawableCompat.setTint(button, ContextCompat.getColor(activity, getThemeResource(activity, R.attr.ic_send_text_dnd)));
+						return button;
 					default:
-						return getThemeResource(activity, R.attr.ic_send_text_offline, R.drawable.ic_send_text_offline);
+						DrawableCompat.setTint(button, ContextCompat.getColor(activity, getThemeResource(activity, R.attr.ic_send_text_offline)));
+						return button;
 				}
 			case RECORD_VIDEO:
+				button = ContextCompat.getDrawable(activity, getThemeResource(activity, R.attr.ic_send_videocam_icon));
 				switch (status) {
 					case CHAT:
 					case ONLINE:
-						return R.drawable.ic_send_videocam_online;
+						DrawableCompat.setTint(button, ContextCompat.getColor(activity, getThemeResource(activity, R.attr.ic_send_videocam_online)));
+						return button;
 					case AWAY:
-						return R.drawable.ic_send_videocam_away;
+						DrawableCompat.setTint(button, ContextCompat.getColor(activity, getThemeResource(activity, R.attr.ic_send_videocam_away)));
+						return button;
 					case XA:
 					case DND:
-						return R.drawable.ic_send_videocam_dnd;
+						DrawableCompat.setTint(button, ContextCompat.getColor(activity, getThemeResource(activity, R.attr.ic_send_videocam_dnd)));
+						return button;
 					default:
-						return getThemeResource(activity, R.attr.ic_send_videocam_offline, R.drawable.ic_send_videocam_offline);
+						DrawableCompat.setTint(button, ContextCompat.getColor(activity, getThemeResource(activity, R.attr.ic_send_videocam_offline)));
+						return button;
 				}
 			case TAKE_PHOTO:
+				button = ContextCompat.getDrawable(activity, getThemeResource(activity, R.attr.ic_send_photo_icon));
 				switch (status) {
 					case CHAT:
 					case ONLINE:
-						return R.drawable.ic_send_photo_online;
+						DrawableCompat.setTint(button, ContextCompat.getColor(activity, getThemeResource(activity, R.attr.ic_send_photo_online)));
+						return button;
 					case AWAY:
-						return R.drawable.ic_send_photo_away;
+						DrawableCompat.setTint(button, ContextCompat.getColor(activity, getThemeResource(activity, R.attr.ic_send_photo_away)));
+						return button;
 					case XA:
 					case DND:
-						return R.drawable.ic_send_photo_dnd;
+						DrawableCompat.setTint(button, ContextCompat.getColor(activity, getThemeResource(activity, R.attr.ic_send_photo_dnd)));
+						return button;
 					default:
-						return getThemeResource(activity, R.attr.ic_send_photo_offline, R.drawable.ic_send_photo_offline);
+						DrawableCompat.setTint(button, ContextCompat.getColor(activity, getThemeResource(activity, R.attr.ic_send_photo_offline)));
+						return button;
 				}
 			case RECORD_VOICE:
+				button = ContextCompat.getDrawable(activity, getThemeResource(activity, R.attr.ic_send_voice_icon));
 				switch (status) {
 					case CHAT:
 					case ONLINE:
-						return R.drawable.ic_send_voice_online;
+						DrawableCompat.setTint(button, ContextCompat.getColor(activity, getThemeResource(activity, R.attr.ic_send_voice_online)));
+						return button;
 					case AWAY:
-						return R.drawable.ic_send_voice_away;
+						DrawableCompat.setTint(button, ContextCompat.getColor(activity, getThemeResource(activity, R.attr.ic_send_voice_away)));
+						return button;
 					case XA:
 					case DND:
-						return R.drawable.ic_send_voice_dnd;
+						DrawableCompat.setTint(button, ContextCompat.getColor(activity, getThemeResource(activity, R.attr.ic_send_voice_dnd)));
+						return button;
 					default:
-						return getThemeResource(activity, R.attr.ic_send_voice_offline, R.drawable.ic_send_voice_offline);
+						DrawableCompat.setTint(button, ContextCompat.getColor(activity, getThemeResource(activity, R.attr.ic_send_voice_offline)));
+						return button;
 				}
 			case SEND_LOCATION:
+				button = ContextCompat.getDrawable(activity, getThemeResource(activity, R.attr.ic_send_location_icon));
 				switch (status) {
 					case CHAT:
 					case ONLINE:
-						return R.drawable.ic_send_location_online;
+						DrawableCompat.setTint(button, ContextCompat.getColor(activity, getThemeResource(activity, R.attr.ic_send_location_online)));
+						return button;
 					case AWAY:
-						return R.drawable.ic_send_location_away;
+						DrawableCompat.setTint(button, ContextCompat.getColor(activity, getThemeResource(activity, R.attr.ic_send_location_away)));
+						return button;
 					case XA:
 					case DND:
-						return R.drawable.ic_send_location_dnd;
+						DrawableCompat.setTint(button, ContextCompat.getColor(activity, getThemeResource(activity, R.attr.ic_send_location_dnd)));
+						return button;
 					default:
-						return getThemeResource(activity, R.attr.ic_send_location_offline, R.drawable.ic_send_location_offline);
+						DrawableCompat.setTint(button, ContextCompat.getColor(activity, getThemeResource(activity, R.attr.ic_send_location_offline)));
+						return button;
 				}
 			case CANCEL:
+				button = ContextCompat.getDrawable(activity, getThemeResource(activity, R.attr.ic_send_cancel_icon));
 				switch (status) {
 					case CHAT:
 					case ONLINE:
-						return R.drawable.ic_send_cancel_online;
+						DrawableCompat.setTint(button, ContextCompat.getColor(activity, getThemeResource(activity, R.attr.ic_send_cancel_online)));
+						return button;
 					case AWAY:
-						return R.drawable.ic_send_cancel_away;
+						DrawableCompat.setTint(button, ContextCompat.getColor(activity, getThemeResource(activity, R.attr.ic_send_cancel_away)));
+						return button;
 					case XA:
 					case DND:
-						return R.drawable.ic_send_cancel_dnd;
+						DrawableCompat.setTint(button, ContextCompat.getColor(activity, getThemeResource(activity, R.attr.ic_send_cancel_dnd)));
+						return button;
 					default:
-						return getThemeResource(activity, R.attr.ic_send_cancel_offline, R.drawable.ic_send_cancel_offline);
+						DrawableCompat.setTint(button, ContextCompat.getColor(activity, getThemeResource(activity, R.attr.ic_send_cancel_offline)));
+						return button;
 				}
 			case CHOOSE_PICTURE:
+				button = ContextCompat.getDrawable(activity, getThemeResource(activity, R.attr.ic_send_picture_icon));
 				switch (status) {
 					case CHAT:
 					case ONLINE:
-						return R.drawable.ic_send_picture_online;
+						DrawableCompat.setTint(button, ContextCompat.getColor(activity, getThemeResource(activity, R.attr.ic_send_picture_online)));
+						return button;
 					case AWAY:
-						return R.drawable.ic_send_picture_away;
+						DrawableCompat.setTint(button, ContextCompat.getColor(activity, getThemeResource(activity, R.attr.ic_send_picture_away)));
+						return button;
 					case XA:
 					case DND:
-						return R.drawable.ic_send_picture_dnd;
+						DrawableCompat.setTint(button, ContextCompat.getColor(activity, getThemeResource(activity, R.attr.ic_send_picture_dnd)));
+						return button;
 					default:
-						return getThemeResource(activity, R.attr.ic_send_picture_offline, R.drawable.ic_send_picture_offline);
+						DrawableCompat.setTint(button, ContextCompat.getColor(activity, getThemeResource(activity, R.attr.ic_send_picture_offline)));
+						return button;
 				}
 		}
-		return getThemeResource(activity, R.attr.ic_send_text_offline, R.drawable.ic_send_text_offline);
+		return button;
 	}
 
-	private static int getThemeResource(Activity activity, int r_attr_name, int r_drawable_def) {
-		int[] attrs = {r_attr_name};
-		TypedArray ta = activity.getTheme().obtainStyledAttributes(attrs);
+	private static int getThemeResource(Activity activity, int r_attr_name){
+		TypedValue tvattr = new TypedValue();
+		activity.getTheme().resolveAttribute(r_attr_name, tvattr, true);
 
-		int res = ta.getResourceId(0, r_drawable_def);
-		ta.recycle();
-
-		return res;
+		return tvattr.resourceId;
 	}
-
 }

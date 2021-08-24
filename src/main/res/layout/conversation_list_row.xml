@@ -103,7 +103,9 @@
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="4dp"
                             android:alpha="?attr/icon_alpha"
-                            android:src="?attr/icon_notifications" />
+                            android:src="?attr/icon_notifications"
+                            app:tint="?attr/conversations_overview_icons_tint"
+                            />
 
                         <ImageView
                             android:visibility="visible"
@@ -115,7 +117,8 @@
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="4dp"
                             android:alpha="?attr/icon_alpha"
-                            android:src="?attr/icon_pinned_on_top" />
+                            android:src="?attr/icon_pinned_on_top"
+                            app:tint="?attr/conversations_overview_icons_tint"/>
 
                         <eu.siacs.conversations.ui.widget.UnreadCountCustomView
                             android:id="@+id/unread_count"

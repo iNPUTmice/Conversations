@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
@@ -280,7 +281,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
             final MucOptions mucOptions = mConversation.getMucOptions();
             this.binding.mucEditor.setVisibility(View.VISIBLE);
             this.binding.mucDisplay.setVisibility(View.GONE);
-            this.binding.editMucNameButton.setImageResource(getThemeResource(R.attr.icon_cancel, R.drawable.ic_cancel_black_24dp));
+            this.binding.editMucNameButton.setImageDrawable(getTintedMucDetailsIcon(R.attr.icon_cancel));
             final String name = mucOptions.getName();
             this.binding.mucEditTitle.setText("");
             final boolean owner = mucOptions.getSelf().getAffiliation().ranks(MucOptions.Affiliation.OWNER);
@@ -314,7 +315,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
     private void hideEditor() {
         this.binding.mucEditor.setVisibility(View.GONE);
         this.binding.mucDisplay.setVisibility(View.VISIBLE);
-        this.binding.editMucNameButton.setImageResource(getThemeResource(R.attr.icon_edit_body, R.drawable.ic_edit_black_24dp));
+        this.binding.editMucNameButton.setImageDrawable(getTintedMucDetailsIcon(R.attr.icon_edit_body));
     }
 
     private void onMucInfoUpdated(String subject, String name) {
@@ -525,24 +526,24 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
             this.binding.mucSettings.setVisibility(View.GONE);
         }
 
-        int ic_notifications = getThemeResource(R.attr.icon_notifications, R.drawable.ic_notifications_black_24dp);
-        int ic_notifications_off = getThemeResource(R.attr.icon_notifications_off, R.drawable.ic_notifications_off_black_24dp);
-        int ic_notifications_paused = getThemeResource(R.attr.icon_notifications_paused, R.drawable.ic_notifications_paused_black_24dp);
-        int ic_notifications_none = getThemeResource(R.attr.icon_notifications_none, R.drawable.ic_notifications_none_black_24dp);
+        Drawable ic_notifications = getTintedMucDetailsIcon(R.attr.icon_notifications);
+        Drawable ic_notifications_off = getTintedMucDetailsIcon(R.attr.icon_notifications_off);
+        Drawable ic_notifications_paused = getTintedMucDetailsIcon(R.attr.icon_notifications_paused);
+        Drawable ic_notifications_none = getTintedMucDetailsIcon(R.attr.icon_notifications_none);
 
         long mutedTill = mConversation.getLongAttribute(Conversation.ATTRIBUTE_MUTED_TILL, 0);
         if (mutedTill == Long.MAX_VALUE) {
             this.binding.notificationStatusText.setText(R.string.notify_never);
-            this.binding.notificationStatusButton.setImageResource(ic_notifications_off);
+            this.binding.notificationStatusButton.setImageDrawable(ic_notifications_off);
         } else if (System.currentTimeMillis() < mutedTill) {
             this.binding.notificationStatusText.setText(R.string.notify_paused);
-            this.binding.notificationStatusButton.setImageResource(ic_notifications_paused);
+            this.binding.notificationStatusButton.setImageDrawable(ic_notifications_paused);
         } else if (mConversation.alwaysNotify()) {
             this.binding.notificationStatusText.setText(R.string.notify_on_all_messages);
-            this.binding.notificationStatusButton.setImageResource(ic_notifications);
+            this.binding.notificationStatusButton.setImageDrawable(ic_notifications);
         } else {
             this.binding.notificationStatusText.setText(R.string.notify_only_when_highlighted);
-            this.binding.notificationStatusButton.setImageResource(ic_notifications_none);
+            this.binding.notificationStatusButton.setImageDrawable(ic_notifications_none);
         }
         final List<User> users = mucOptions.getUsers();
         Collections.sort(users, (a, b) -> {
@@ -572,6 +573,10 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
             this.binding.noUsersHints.setVisibility(View.GONE);
         }
 
+    }
+
+    private Drawable getTintedMucDetailsIcon(int drawableResource){
+        return getTintedDrawable(drawableResource, R.attr.details_settings_icons_tint, R.attr.details_settings_icons_tint_on_color, false);
     }
 
     public static String getStatus(Context context, User user, final boolean advanced) {
@@ -647,9 +652,9 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
             boolean subjectChanged = changed(binding.mucEditSubject.getEditableText().toString(), mucOptions.getSubject());
             boolean nameChanged = changed(binding.mucEditTitle.getEditableText().toString(), mucOptions.getName());
             if (subjectChanged || nameChanged) {
-                this.binding.editMucNameButton.setImageResource(getThemeResource(R.attr.icon_save, R.drawable.ic_save_black_24dp));
+                this.binding.editMucNameButton.setImageDrawable(getTintedMucDetailsIcon(R.attr.icon_save));
             } else {
-                this.binding.editMucNameButton.setImageResource(getThemeResource(R.attr.icon_cancel, R.drawable.ic_cancel_black_24dp));
+                this.binding.editMucNameButton.setImageDrawable(getTintedMucDetailsIcon(R.attr.icon_cancel));
             }
         }
     }

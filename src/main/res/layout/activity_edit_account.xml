@@ -532,6 +532,7 @@
                                 android:background="?attr/selectableItemBackgroundBorderless"
                                 android:padding="@dimen/image_button_padding"
                                 android:src="?attr/icon_edit_body"
+                                app:tint="?attr/details_settings_icons_tint"
                                 android:visibility="visible"/>
                         </RelativeLayout>
 
@@ -573,6 +574,7 @@
                                 android:background="?attr/selectableItemBackgroundBorderless"
                                 android:padding="@dimen/image_button_padding"
                                 android:src="?attr/icon_remove"
+                                app:tint="?attr/details_settings_icons_tint"
                                 android:visibility="visible"/>
                         </RelativeLayout>
 
@@ -620,6 +622,7 @@
                                     android:contentDescription="@string/copy_omemo_clipboard_description"
                                     android:padding="@dimen/image_button_padding"
                                     android:src="?attr/icon_copy"
+                                    app:tint="?attr/details_settings_icons_tint"
                                     android:visibility="visible"/>
 
                                 <ImageButton
@@ -631,6 +634,7 @@
                                     android:contentDescription="@string/regenerate_omemo_key"
                                     android:padding="@dimen/image_button_padding"
                                     android:src="?attr/icon_refresh"
+                                    app:tint="?attr/details_settings_icons_tint"
                                     android:visibility="gone"/>
 
                             </LinearLayout>

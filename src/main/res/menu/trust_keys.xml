@@ -6,5 +6,6 @@
 		android:id="@+id/action_scan_qr_code"
 		android:title="@string/scan_qr_code"
 		app:showAsAction="always"
-		android:icon="?attr/icon_scan_qr_code"/>
+		android:icon="?attr/icon_scan_qr_code"
+		app:tint="?attr/actionbar_icons_tint"/>
 </menu>

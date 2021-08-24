@@ -140,6 +140,7 @@
                                         android:background="?attr/selectableItemBackgroundBorderless"
                                         android:padding="@dimen/image_button_padding"
                                         android:src="?attr/icon_edit_body"
+                                        app:tint="?attr/details_settings_icons_tint"
                                         android:layout_alignParentRight="true" />
                                 </RelativeLayout>
                             </LinearLayout>
@@ -173,6 +174,7 @@
                                 android:background="?attr/selectableItemBackgroundBorderless"
                                 android:padding="@dimen/image_button_padding"
                                 android:src="?attr/icon_settings"
+                                app:tint="?attr/details_settings_icons_tint"
                                 android:layout_alignParentRight="true" />
                         </RelativeLayout>
 
@@ -334,6 +336,7 @@
                                 android:background="?attr/selectableItemBackgroundBorderless"
                                 android:padding="@dimen/image_button_padding"
                                 android:src="?attr/icon_edit_body"
+                                app:tint="?attr/details_settings_icons_tint"
                                 android:layout_alignParentRight="true" />
                         </RelativeLayout>
 
@@ -365,6 +368,7 @@
                                 android:background="?attr/selectableItemBackgroundBorderless"
                                 android:padding="@dimen/image_button_padding"
                                 android:src="?attr/icon_notifications"
+                                app:tint="?attr/details_settings_icons_tint"
                                 android:layout_alignParentRight="true" />
                         </RelativeLayout>
 

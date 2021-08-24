@@ -6,6 +6,7 @@
         android:id="@+id/action_search"
         app:actionLayout="@layout/actionview_search"
         android:icon="?attr/icon_search"
+        app:tint="?attr/actionbar_icons_tint"
         app:showAsAction="collapseActionView|always"
         android:title="@string/search"/>
 </menu>

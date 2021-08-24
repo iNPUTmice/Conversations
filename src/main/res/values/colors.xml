@@ -23,6 +23,10 @@
 	<color name="red_a700">#ffd50000</color>
 	<color name="red_a100">#ffff8a80</color>
 	<color name="red800">#ffc62828</color>
+	<color name="redwarning">#ffad4545</color>
+	<color name="redbordeaux">#711521</color>
+	<color name="redbordeauxdark">#420C13</color>
+	<color name="redbordeauxdarker">#30090E</color>
 	<color name="orange500">#ffff9800</color>
 	<color name="blue_a100">#ff82B1FF</color>
 	<color name="blue_a200">#ff448AFF</color>
@@ -33,9 +37,21 @@
 	<color name="green700">#ff388E3C</color>
 	<color name="green800">#ff2E7D32</color>
 	<color name="green900">#ff1B5E20</color>
+	<color name="purple500">#673AB7</color>
+	<color name="purple600">#5E35B1</color>
+	<color name="purple700">#512DA8</color>
+	<color name="purple800">#4527A0</color>
+	<color name="purple900">#311B92</color>
+	<color name="purple">#4D2C8F</color>
+	<color name="purpledark">#381F6C</color>
+	<color name="purpledarker">#2B1853</color>
 
-	<color name="green700_desaturated">#ff4d8e50</color> <!-- desaturated by 15 -->
-	<color name="green900_desaturated">#ff295e2d</color> <!-- desaturated by 15 -->
+
+	<!-- desaturated by 15 -->
+	<color name="green700_desaturated">#ff4d8e50</color>
+	<color name="green900_desaturated">#ff295e2d</color>
+	<color name="purple700_desaturated">#55369f</color>
+	<color name="redbordeauxdark_desaturated">#3e1016</color>
 
 	<!-- scanner -->
 	<color name="scan_result_dots">#c04CAF50</color>

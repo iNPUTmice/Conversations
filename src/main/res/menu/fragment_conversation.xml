@@ -4,12 +4,14 @@
     <item
         android:id="@+id/action_ongoing_call"
         android:icon="?attr/icon_ongoing_call"
+        app:tint="?attr/actionbar_icons_tint"
         android:orderInCategory="9"
         android:title="@string/return_to_ongoing_call"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_call"
         android:icon="?attr/icon_call"
+        app:tint="?attr/actionbar_icons_tint"
         android:orderInCategory="10"
         android:title="@string/make_call"
         app:showAsAction="always">
@@ -27,6 +29,7 @@
     <item
         android:id="@+id/action_security"
         android:icon="?attr/icon_not_secure"
+        app:tint="?attr/actionbar_icons_tint"
         android:orderInCategory="20"
         android:title="@string/encrypted_with_omemo"
         app:showAsAction="always">
@@ -47,6 +50,7 @@
     <item
         android:id="@+id/action_attach_file"
         android:icon="?attr/icon_new_attachment"
+        app:tint="?attr/actionbar_icons_tint"
         android:orderInCategory="30"
         android:title="@string/attach_file"
         app:showAsAction="always">
@@ -91,6 +95,7 @@
     <item
         android:id="@+id/action_muc_details"
         android:icon="?attr/icon_group"
+        app:tint="?attr/actionbar_icons_tint"
         android:orderInCategory="40"
         android:title="@string/action_muc_details"
         app:showAsAction="never" />

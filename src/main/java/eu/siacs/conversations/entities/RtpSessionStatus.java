@@ -5,6 +5,7 @@ import androidx.annotation.DrawableRes;
 import com.google.common.base.Strings;
 
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.ui.XmppActivity;
 
 public class RtpSessionStatus {
 
@@ -41,18 +42,18 @@ public class RtpSessionStatus {
         return new RtpSessionStatus(made, duration);
     }
 
-    public static @DrawableRes int getDrawable(final boolean received, final boolean successful, final boolean darkTheme) {
+    public static @DrawableRes int getDrawable(final boolean received, final boolean successful, XmppActivity activity) {
         if (received) {
             if (successful) {
-                return darkTheme ? R.drawable.ic_call_received_white_18dp : R.drawable.ic_call_received_black_18dp;
+                return activity.getThemeResource(R.attr.ic_call_received);
             } else {
-                return darkTheme ? R.drawable.ic_call_missed_white_18dp : R.drawable.ic_call_missed_black_18dp;
+                return activity.getThemeResource(R.attr.ic_call_missed);
             }
         } else {
             if (successful) {
-                return darkTheme ? R.drawable.ic_call_made_white_18dp : R.drawable.ic_call_made_black_18dp;
+                return activity.getThemeResource(R.attr.ic_call_made);
             } else {
-                return darkTheme ? R.drawable.ic_call_missed_outgoing_white_18dp : R.drawable.ic_call_missed_outgoing_black_18dp;
+                return activity.getThemeResource(R.attr.ic_call_missed_outgoing);
             }
         }
     }

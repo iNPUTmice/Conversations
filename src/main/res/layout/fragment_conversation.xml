@@ -32,6 +32,7 @@
             android:layout_alignParentRight="true"
             android:alpha="0.85"
             android:src="?attr/icon_scroll_down"
+            app:tint="?attr/scrollbutton_icons_tint"
             android:visibility="gone"
             app:backgroundTint="?attr/color_background_primary"
             app:fabSize="mini"

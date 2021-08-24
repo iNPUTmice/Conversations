@@ -1,6 +1,9 @@
 #!/bin/env ruby
 
+gem 'libxml-ruby'
+
 require 'xml'
+
 
 resolutions = {
 	'mdpi' => 1,
@@ -28,54 +31,47 @@ images = {
 	'conversations_mono.svg' => ['conversations/ic_notification', 24],
     'quicksy_mono.svg' => ['quicksy/ic_notification', 24],
     'flip_camera_android-black-24dp.svg' => ['ic_flip_camera_android_black_24dp', 24],
-	'ic_send_text_offline.svg' => ['ic_send_text_offline', 36],
-	'ic_send_text_offline_white.svg' => ['ic_send_text_offline_white', 36],
+#	'ic_send_text_offline.svg' => ['ic_send_text_offline', 36],
+#	'ic_send_text_offline_white.svg' => ['ic_send_text_offline_white', 36],
 	'ic_send_text_online.svg' => ['ic_send_text_online', 36],
-	'ic_send_text_away.svg' => ['ic_send_text_away', 36],
-	'ic_send_text_dnd.svg' => ['ic_send_text_dnd', 36],
+#	'ic_send_text_away.svg' => ['ic_send_text_away', 36],
+#	'ic_send_text_dnd.svg' => ['ic_send_text_dnd', 36],
 	'ic_send_photo_online.svg' => ['ic_send_photo_online', 36],
-	'ic_send_photo_offline.svg' => ['ic_send_photo_offline', 36],
-	'ic_send_photo_offline_white.svg' => ['ic_send_photo_offline_white', 36],
-	'ic_send_photo_away.svg' => ['ic_send_photo_away', 36],
-	'ic_send_photo_dnd.svg' => ['ic_send_photo_dnd', 36],
+#	'ic_send_photo_offline.svg' => ['ic_send_photo_offline', 36],
+#	'ic_send_photo_offline_white.svg' => ['ic_send_photo_offline_white', 36],
+#	'ic_send_photo_away.svg' => ['ic_send_photo_away', 36],
+#	'ic_send_photo_dnd.svg' => ['ic_send_photo_dnd', 36],
 	'ic_send_location_online.svg' => ['ic_send_location_online', 36],
-	'ic_send_location_offline.svg' => ['ic_send_location_offline', 36],
-	'ic_send_location_offline_white.svg' => ['ic_send_location_offline_white', 36],
-	'ic_send_location_away.svg' => ['ic_send_location_away', 36],
-	'ic_send_location_dnd.svg' => ['ic_send_location_dnd', 36],
+#	'ic_send_location_offline.svg' => ['ic_send_location_offline', 36],
+#	'ic_send_location_offline_white.svg' => ['ic_send_location_offline_white', 36],
+#	'ic_send_location_away.svg' => ['ic_send_location_away', 36],
+#	'ic_send_location_dnd.svg' => ['ic_send_location_dnd', 36],
 	'ic_send_voice_online.svg' => ['ic_send_voice_online', 36],
-	'ic_send_voice_offline.svg' => ['ic_send_voice_offline', 36],
-	'ic_send_voice_offline_white.svg' => ['ic_send_voice_offline_white', 36],
-	'ic_send_voice_away.svg' => ['ic_send_voice_away', 36],
-	'ic_send_voice_dnd.svg' => ['ic_send_voice_dnd', 36],
+#	'ic_send_voice_offline.svg' => ['ic_send_voice_offline', 36],
+#	'ic_send_voice_offline_white.svg' => ['ic_send_voice_offline_white', 36],
+#	'ic_send_voice_away.svg' => ['ic_send_voice_away', 36],
+#	'ic_send_voice_dnd.svg' => ['ic_send_voice_dnd', 36],
 	'ic_send_cancel_online.svg' => ['ic_send_cancel_online', 36],
-	'ic_send_cancel_offline.svg' => ['ic_send_cancel_offline', 36],
-	'ic_send_cancel_offline_white.svg' => ['ic_send_cancel_offline_white', 36],
-	'ic_send_cancel_away.svg' => ['ic_send_cancel_away', 36],
-	'ic_send_cancel_dnd.svg' => ['ic_send_cancel_dnd', 36],
+#	'ic_send_cancel_offline.svg' => ['ic_send_cancel_offline', 36],
+#	'ic_send_cancel_offline_white.svg' => ['ic_send_cancel_offline_white', 36],
+#	'ic_send_cancel_away.svg' => ['ic_send_cancel_away', 36],
+#	'ic_send_cancel_dnd.svg' => ['ic_send_cancel_dnd', 36],
 	'ic_send_picture_online.svg' => ['ic_send_picture_online', 36],
-	'ic_send_picture_offline.svg' => ['ic_send_picture_offline', 36],
-	'ic_send_picture_offline_white.svg' => ['ic_send_picture_offline_white', 36],
-	'ic_send_picture_away.svg' => ['ic_send_picture_away', 36],
-	'ic_send_picture_dnd.svg' => ['ic_send_picture_dnd', 36],
+#	'ic_send_picture_offline.svg' => ['ic_send_picture_offline', 36],
+#	'ic_send_picture_offline_white.svg' => ['ic_send_picture_offline_white', 36],
+#	'ic_send_picture_away.svg' => ['ic_send_picture_away', 36],
+#	'ic_send_picture_dnd.svg' => ['ic_send_picture_dnd', 36],
 	'ic_send_videocam_online.svg' => ['ic_send_videocam_online', 36],
-	'ic_send_videocam_offline.svg' => ['ic_send_videocam_offline', 36],
-	'ic_send_videocam_offline_white.svg' => ['ic_send_videocam_offline_white', 36],
-	'ic_send_videocam_away.svg' => ['ic_send_videocam_away', 36],
-	'ic_send_videocam_dnd.svg' => ['ic_send_videocam_dnd', 36],
+#	'ic_send_videocam_offline.svg' => ['ic_send_videocam_offline', 36],
+#	'ic_send_videocam_offline_white.svg' => ['ic_send_videocam_offline_white', 36],
+#	'ic_send_videocam_away.svg' => ['ic_send_videocam_away', 36],
+#	'ic_send_videocam_dnd.svg' => ['ic_send_videocam_dnd', 36],
 	'ic_notifications_none_white80.svg' => ['ic_notifications_none_white80', 24],
 	'ic_notifications_off_white80.svg' => ['ic_notifications_off_white80', 24],
 	'ic_notifications_paused_white80.svg' => ['ic_notifications_paused_white80', 24],
 	'ic_notifications_white80.svg' => ['ic_notifications_white80', 24],
 	'ic_verified_fingerprint.svg' => ['ic_verified_fingerprint', 36],
     'qrcode-scan.svg' => ['ic_qr_code_scan_white_24dp', 24],
-	'message_bubble_received.svg' => ['message_bubble_received.9', 0],
-	'message_bubble_received_grey.svg' => ['message_bubble_received_grey.9', 0],
-	'message_bubble_received_dark.svg' => ['message_bubble_received_dark.9', 0],
-	'message_bubble_received_warning.svg' => ['message_bubble_received_warning.9', 0],
-	'message_bubble_received_white.svg' => ['message_bubble_received_white.9', 0],
-	'message_bubble_sent.svg' => ['message_bubble_sent.9', 0],
-	'message_bubble_sent_grey.svg' => ['message_bubble_sent_grey.9', 0],
 	'date_bubble_white.svg' => ['date_bubble_white.9', 0],
 	'date_bubble_grey.svg' => ['date_bubble_grey.9', 0],
 	'marker.svg' => ['marker', 0]
@@ -85,7 +81,7 @@ images = {
 # "/Applications/Inkscape.app/Contents/Resources/bin/inkscape"
 
 inkscape = "inkscape"
-imagemagick = "magick"
+imagemagick = "convert"
 
 def execute_cmd(cmd)
 	puts cmd

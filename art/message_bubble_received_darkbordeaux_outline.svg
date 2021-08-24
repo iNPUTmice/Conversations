@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="36"
+   height="26"
+   version="1.1"
+   id="svg24"
+   sodipodi:docname="message_bubble_received_darkbordeaux_outline.svg"
+   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview26"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     showgrid="false"
+     inkscape:zoom="25.384615"
+     inkscape:cx="33.268182"
+     inkscape:cy="13.019697"
+     inkscape:window-width="1796"
+     inkscape:window-height="1051"
+     inkscape:window-x="124"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g21" />
+  <defs
+     id="defs13">
+    <filter
+       id="filter3811"
+       height="1.22"
+       color-interpolation-filters="sRGB"
+       x="-0.085968099"
+       y="-0.085"
+       width="1.1466824">
+      <feFlood
+         flood-color="rgb(0,0,0)"
+         flood-opacity=".25"
+         result="flood"
+         id="feFlood2" />
+      <feComposite
+         in="flood"
+         in2="SourceGraphic"
+         operator="in"
+         result="composite1"
+         id="feComposite4" />
+      <feGaussianBlur
+         result="blur"
+         stdDeviation="0.5"
+         id="feGaussianBlur6" />
+      <feOffset
+         dx="0"
+         dy="1"
+         result="offset"
+         id="feOffset8" />
+      <feComposite
+         in="SourceGraphic"
+         in2="offset"
+         result="composite2"
+         id="feComposite10" />
+    </filter>
+  </defs>
+  <g
+     id="layer"
+     transform="translate(0,-2)">
+    <g
+       fill="#55369f"
+       filter="url(#filter3811)"
+       id="g21"
+       style="fill:none;fill-opacity:1;stroke:#420c13;stroke-opacity:1">
+      <path
+         transform="translate(0,2)"
+         d="m 8,6 c 2,2 4,6 4,10 L 16,6 Z"
+         display="none"
+         id="path15"
+         style="fill:none;fill-opacity:1;stroke:#420c13;stroke-opacity:1" />
+      <path
+         id="path17"
+         style="fill:#420c13;fill-opacity:0.25;stroke:#420c13;stroke-opacity:1"
+         d="m 4,2 8,8 v 10 c 0,1.108 0.892,2 2,2 h 16 c 1.108,0 2,-0.892 2,-2 V 4 C 32,2.892 31.108,2 30,2 H 16 14 Z"
+         transform="translate(0,2)" />
+    </g>
+  </g>
+</svg>

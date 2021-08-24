@@ -30,14 +30,53 @@
     <attr name="TextColorError" format="reference|color" />
     <attr name="icon_tint" format="reference|color" />
 
-    <attr name="ic_send_cancel_offline" format="reference" />
-    <attr name="ic_send_location_offline" format="reference" />
-    <attr name="ic_send_photo_offline" format="reference" />
-    <attr name="ic_send_picture_offline" format="reference" />
-    <attr name="ic_send_text_offline" format="reference" />
-    <attr name="ic_send_videocam_offline" format="reference" />
-    <attr name="ic_send_voice_offline" format="reference" />
+    <attr name="ic_call_made" format="reference" />
+    <attr name="ic_call_missed" format="reference" />
+    <attr name="ic_call_missed_outgoing" format="reference" />
+    <attr name="ic_call_received" format="reference" />
 
+    <attr name="ic_send_cancel_icon" format="reference" />
+    <attr name="ic_send_cancel_away" format="reference" />
+    <attr name="ic_send_cancel_dnd" format="reference" />
+    <attr name="ic_send_cancel_offline" format="reference" />
+    <attr name="ic_send_cancel_online" format="reference" />
+
+    <attr name="ic_send_location_icon" format="reference" />
+    <attr name="ic_send_location_away" format="reference" />
+    <attr name="ic_send_location_dnd" format="reference" />
+    <attr name="ic_send_location_offline" format="reference" />
+    <attr name="ic_send_location_online" format="reference" />
+
+    <attr name="ic_send_photo_icon" format="reference" />
+    <attr name="ic_send_photo_away" format="reference" />
+    <attr name="ic_send_photo_dnd" format="reference" />
+    <attr name="ic_send_photo_offline" format="reference" />
+    <attr name="ic_send_photo_online" format="reference" />
+
+    <attr name="ic_send_picture_icon" format="reference" />
+    <attr name="ic_send_picture_away" format="reference" />
+    <attr name="ic_send_picture_dnd" format="reference" />
+    <attr name="ic_send_picture_offline" format="reference" />
+    <attr name="ic_send_picture_online" format="reference" />
+
+    <attr name="ic_send_text_icon" format="reference" />
+    <attr name="ic_send_text_away" format="reference" />
+    <attr name="ic_send_text_dnd" format="reference" />
+    <attr name="ic_send_text_offline" format="reference" />
+    <attr name="ic_send_text_online" format="reference" />
+
+    <attr name="ic_send_videocam_icon" format="reference" />
+    <attr name="ic_send_videocam_away" format="reference" />
+    <attr name="ic_send_videocam_dnd" format="reference" />
+    <attr name="ic_send_videocam_offline" format="reference" />
+    <attr name="ic_send_videocam_online" format="reference" />
+
+    <attr name="ic_send_voice_icon" format="reference" />
+    <attr name="ic_send_voice_away" format="reference" />
+    <attr name="ic_send_voice_dnd" format="reference" />
+    <attr name="ic_send_voice_offline" format="reference" />
+    <attr name="ic_send_voice_online" format="reference" />
+    
     <attr name="ic_attach_camera" format="reference" />
     <attr name="ic_attach_videocam" format="reference" />
     <attr name="ic_attach_document" format="reference" />
@@ -48,12 +87,20 @@
     <attr name="ic_make_audio_call" format="reference" />
     <attr name="ic_make_video_call" format="reference" />
 
-
     <attr name="ic_cloud_download" format="reference" />
 
     <attr name="message_bubble_received_monochrome" format="reference" />
     <attr name="message_bubble_sent" format="reference" />
-    <attr name="message_bubble_received_green" format="reference" />
+    <attr name="message_bubble_received_colored" format="reference" />
+    <attr name="message_bubble_received_color" format="reference" />
+    <attr name="message_bubble_received_colored_color" format="reference" />
+    <attr name="message_bubble_received_warning" format="reference" />
+
+    <attr name="message_bubble_sent_color" format="reference" />
+
+    <attr name="message_highlight_color_sent" format="reference" />
+    <attr name="message_highlight_color_received" format="reference" />
+    <attr name="message_highlight_color_received_on_colored" format="reference" />
 
     <attr name="unread_count" format="reference|color" />
 
@@ -62,6 +109,8 @@
     <attr name="icon_alpha" format="float" />
     <attr name="delete_icon_alpha" format="float" />
 
+    <attr name="conversations_overview_icons_tint" format="reference" />
+    <attr name="conversations_overview_icons_tint_on_colored" format="reference" /> <!-- unused -->
     <attr name="media_preview_image" format="reference" />
     <attr name="media_preview_document" format="reference" />
     <attr name="media_preview_recording" format="reference" />
@@ -119,6 +168,17 @@
     <attr name="icon_notifications_none" format="reference" />
     <attr name="icon_pinned_on_top" format="reference" />
 
+    <attr name="details_settings_icons_tint" format="reference" />
+    <attr name="details_settings_icons_tint_on_color" format="reference" />
+
+    <attr name="actionbar_icons_tint" format="reference" />
+
+    <attr name="actionbutton_icons_tint" format="reference" />
+
+    <attr name="scrollbutton_icons_tint" format="reference" />
+
+    <attr name="media_preview_icons_tint" format="reference" />
+
     <attr name="dialog_horizontal_padding" format="dimension" />
     <attr name="dialog_vertical_padding" format="dimension" />
 
@@ -128,4 +188,28 @@
 
     <attr name="popupOverlayStyle" format="reference" />
 
+    <attr name="message_primary_text_color" format="reference" />
+    <attr name="message_primary_text_color_on_colored" format="reference" />
+    <attr name="message_secondary_text_color" format="reference" />
+    <attr name="message_secondary_text_color_on_colored" format="reference" />
+
+    <attr name="quote_text_color" format="reference" />
+    <attr name="quote_text_color_on_colored" format="reference" />
+
+    <attr name="date_bubble" format="reference" />
+
+
+    <attr name="message_icons_tint" format="reference" />
+    <attr name="message_icons_tint_on_colored" format="reference" />
+    <attr name="ic_done" format="reference" />
+    <attr name="ic_mode_edit" format="reference" />
+    <attr name="ic_lock" format="reference" />
+    <attr name="ic_verified_user" format="reference" />
+    <attr name="ic_pause" format="reference" />
+    <attr name="ic_play_arrow" format="reference" />
+
+    <attr name="audio_player_ruler_color" format="reference" />
+    <attr name="audio_player_ruler_color_on_colored" format="reference" />
+
+    <attr name="message_indicator_alpha" format="float" />
 </resources>

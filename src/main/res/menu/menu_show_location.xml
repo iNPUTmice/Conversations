@@ -5,10 +5,12 @@
         app:showAsAction="ifRoom"
         android:showAsAction="ifRoom"
         android:title="@string/action_share_location"
-        android:icon="?attr/icon_share"/>
+        android:icon="?attr/icon_share"
+        app:tint="?attr/actionbar_icons_tint"/>
     <item android:id="@+id/action_copy_location"
         android:title="@string/action_copy_location"
         android:icon="?attr/icon_copy_bar"
+        app:tint="?attr/actionbar_icons_tint"
         app:showAsAction="ifRoom"
         android:showAsAction="ifRoom"/>
 </menu>

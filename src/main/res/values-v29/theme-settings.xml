@@ -6,11 +6,21 @@
         <item>@string/pref_theme_automatic</item>
         <item>@string/pref_theme_light</item>
         <item>@string/pref_theme_dark</item>
+        <item>@string/pref_theme_black</item>
+        <item>@string/pref_theme_darkPurple</item>
+        <item>@string/pref_theme_blackPurple</item>
+        <item>@string/pref_theme_darkBordeaux</item>
+        <item>@string/pref_theme_blackBordeaux</item>
     </string-array>
     <string-array name="themes_values" tools:ignore="InconsistentArrays">
         <item>automatic</item>
 		<item>light</item>
 		<item>dark</item>
+        <item>black</item>
+        <item>darkPurple</item>
+        <item>blackPurple</item>
+        <item>darkBordeaux</item>
+        <item>blackBordeaux</item>
 	</string-array>
 
 </resources>

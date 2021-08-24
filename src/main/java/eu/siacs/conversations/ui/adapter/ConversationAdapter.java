@@ -1,6 +1,8 @@
 package eu.siacs.conversations.ui.adapter;
 
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.DrawableWrapper;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -94,33 +96,33 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
             final boolean fileAvailable = !message.isDeleted();
             final boolean showPreviewText;
             if (fileAvailable && (message.isFileOrImage() || message.treatAsDownloadable() || message.isGeoUri())) {
-                final int imageResource;
+                final Drawable imageDrawable;
                 if (message.isGeoUri()) {
-                    imageResource = activity.getThemeResource(R.attr.ic_attach_location, R.drawable.ic_attach_location);
+                    imageDrawable = getTintedConversationsOverviewIcon(R.attr.media_preview_location);
                     showPreviewText = false;
                 } else {
                     //TODO move this into static MediaPreview method and use same icons as in MediaAdapter
                     final String mime = message.getMimeType();
                     switch (mime == null ? "" : mime.split("/")[0]) {
                         case "image":
-                            imageResource = activity.getThemeResource(R.attr.ic_attach_photo, R.drawable.ic_attach_photo);
+                            imageDrawable = getTintedConversationsOverviewIcon(R.attr.ic_attach_photo);
                             showPreviewText = false;
                             break;
                         case "video":
-                            imageResource = activity.getThemeResource(R.attr.ic_attach_videocam, R.drawable.ic_attach_videocam);
+                            imageDrawable = getTintedConversationsOverviewIcon(R.attr.ic_attach_videocam);
                             showPreviewText = false;
                             break;
                         case "audio":
-                            imageResource = activity.getThemeResource(R.attr.ic_attach_record, R.drawable.ic_attach_record);
+                            imageDrawable = getTintedConversationsOverviewIcon(R.attr.ic_attach_record);
                             showPreviewText = false;
                             break;
                         default:
-                            imageResource = activity.getThemeResource(R.attr.ic_attach_document, R.drawable.ic_attach_document);
+                            imageDrawable = getTintedConversationsOverviewIcon(R.attr.ic_attach_document);
                             showPreviewText = true;
                             break;
                     }
                 }
-                viewHolder.binding.conversationLastmsgImg.setImageResource(imageResource);
+                viewHolder.binding.conversationLastmsgImg.setImageDrawable(imageDrawable);
                 viewHolder.binding.conversationLastmsgImg.setVisibility(View.VISIBLE);
             } else {
                 viewHolder.binding.conversationLastmsgImg.setVisibility(View.GONE);
@@ -175,24 +177,24 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
 
         if (ongoingCall.isPresent()) {
             viewHolder.binding.notificationStatus.setVisibility(View.VISIBLE);
-                final int ic_ongoing_call = activity.getThemeResource(R.attr.ic_ongoing_call_hint, R.drawable.ic_phone_in_talk_black_18dp);
-                viewHolder.binding.notificationStatus.setImageResource(ic_ongoing_call);
+                final Drawable ic_ongoing_call = getTintedConversationsOverviewIcon(R.attr.ic_ongoing_call_hint);
+                viewHolder.binding.notificationStatus.setImageDrawable(ic_ongoing_call);
         } else {
             final long muted_till = conversation.getLongAttribute(Conversation.ATTRIBUTE_MUTED_TILL, 0);
             if (muted_till == Long.MAX_VALUE) {
                 viewHolder.binding.notificationStatus.setVisibility(View.VISIBLE);
-                int ic_notifications_off = activity.getThemeResource(R.attr.icon_notifications_off, R.drawable.ic_notifications_off_black_24dp);
-                viewHolder.binding.notificationStatus.setImageResource(ic_notifications_off);
+                Drawable ic_notifications_off = getTintedConversationsOverviewIcon(R.attr.icon_notifications_off);
+                viewHolder.binding.notificationStatus.setImageDrawable(ic_notifications_off);
             } else if (muted_till >= System.currentTimeMillis()) {
                 viewHolder.binding.notificationStatus.setVisibility(View.VISIBLE);
-                int ic_notifications_paused = activity.getThemeResource(R.attr.icon_notifications_paused, R.drawable.ic_notifications_paused_black_24dp);
-                viewHolder.binding.notificationStatus.setImageResource(ic_notifications_paused);
+                Drawable ic_notifications_paused = getTintedConversationsOverviewIcon(R.attr.icon_notifications_paused);
+                viewHolder.binding.notificationStatus.setImageDrawable(ic_notifications_paused);
             } else if (conversation.alwaysNotify()) {
                 viewHolder.binding.notificationStatus.setVisibility(View.GONE);
             } else {
                 viewHolder.binding.notificationStatus.setVisibility(View.VISIBLE);
-                int ic_notifications_none = activity.getThemeResource(R.attr.icon_notifications_none, R.drawable.ic_notifications_none_black_24dp);
-                viewHolder.binding.notificationStatus.setImageResource(ic_notifications_none);
+                Drawable ic_notifications_none = getTintedConversationsOverviewIcon(R.attr.icon_notifications_none);
+                viewHolder.binding.notificationStatus.setImageDrawable(ic_notifications_none);
             }
         }
 
@@ -206,6 +208,10 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         viewHolder.binding.conversationLastupdate.setText(UIHelper.readableTimeDifference(activity, timestamp));
         AvatarWorkerTask.loadAvatar(conversation, viewHolder.binding.conversationImage, R.dimen.avatar_on_conversation_overview);
         viewHolder.itemView.setOnClickListener(v -> listener.onConversationClick(v, conversation));
+    }
+
+    private Drawable getTintedConversationsOverviewIcon(int drawableResource){
+        return activity.getTintedDrawable(drawableResource, R.attr.conversations_overview_icons_tint, R.attr.conversations_overview_icons_tint_on_colored, false);
     }
 
     @Override

@@ -7,6 +7,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -14,6 +15,8 @@ import android.widget.ImageView;
 import androidx.annotation.AttrRes;
 import androidx.annotation.DimenRes;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -46,6 +49,8 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
     private final ArrayList<Attachment> attachments = new ArrayList<>();
 
     private final XmppActivity activity;
+
+    private static XmppActivity xmppActivity;
 
     private int mediaSize = 0;
 
@@ -104,7 +109,7 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
     static void renderPreview(Context context, Attachment attachment, ImageView imageView) {
         imageView.setBackgroundColor(StyledAttributes.getColor(context, R.attr.color_background_tertiary));
         imageView.setImageAlpha(Math.round(StyledAttributes.getFloat(context, R.attr.icon_alpha) * 255));
-        imageView.setImageDrawable(StyledAttributes.getDrawable(context, getImageAttr(attachment)));
+        imageView.setImageDrawable(getTintedMediaPreviewIcon(context, getImageAttr(attachment)));
     }
 
     private static boolean cancelPotentialWork(Attachment attachment, ImageView imageView) {
@@ -130,6 +135,13 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
             }
         }
         return null;
+    }
+
+    private static Drawable getTintedMediaPreviewIcon(Context context, int drawableResource){
+        Drawable tintedMediaPreviewIcon = StyledAttributes.getDrawable(context, drawableResource);
+        DrawableCompat.setTint(tintedMediaPreviewIcon, StyledAttributes.getColor(context, R.attr.conversations_overview_icons_tint));
+
+        return tintedMediaPreviewIcon;
     }
 
     @NonNull

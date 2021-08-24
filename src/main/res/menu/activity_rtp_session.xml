@@ -6,11 +6,13 @@
     <item
         android:id="@+id/action_help"
         android:icon="?attr/icon_help"
+        app:tint="?attr/actionbar_icons_tint"
         android:title="@string/help"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_goto_chat"
         android:icon="?attr/icon_goto_chat"
+        app:tint="?attr/actionbar_icons_tint"
         android:title="@string/switch_to_conversation"
         app:showAsAction="always" />
 </menu>

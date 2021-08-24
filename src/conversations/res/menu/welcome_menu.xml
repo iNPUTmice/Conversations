@@ -4,6 +4,7 @@
     <item
         android:id="@+id/action_scan_qr_code"
         android:icon="?attr/icon_scan_qr_code"
+        app:tint="?attr/actionbar_icons_tint"
         android:orderInCategory="10"
         android:title="@string/scan_qr_code"
         android:visible="@bool/show_qr_code_scan"

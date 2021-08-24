@@ -34,6 +34,7 @@
     <item
         android:id="@+id/action_search"
         android:icon="?attr/icon_search"
+        app:tint="?attr/actionbar_icons_tint"
         android:title="@string/search"
         app:actionLayout="@layout/actionview_search"
         app:showAsAction="always"/>

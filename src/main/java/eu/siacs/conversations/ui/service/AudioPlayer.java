@@ -32,6 +32,7 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.MediaPlayer;
 import eu.siacs.conversations.ui.ConversationsActivity;
+import eu.siacs.conversations.ui.XmppActivity;
 import eu.siacs.conversations.ui.adapter.MessageAdapter;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.utils.WeakReferenceSet;
@@ -53,11 +54,14 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
 
     private final Handler handler = new Handler();
 
-    public AudioPlayer(MessageAdapter adapter) {
+    private final XmppActivity activity;
+
+    public AudioPlayer(MessageAdapter adapter, XmppActivity activity) {
         final Context context = adapter.getContext();
         this.messageAdapter = adapter;
         this.sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         this.proximitySensor = this.sensorManager == null ? null : this.sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+        this.activity = activity;
         initializeProximityWakeLock(context);
         synchronized (AudioPlayer.LOCK) {
             if (AudioPlayer.player != null) {
@@ -100,33 +104,33 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
     }
 
     private boolean init(ViewHolder viewHolder, Message message) {
-        if (viewHolder.darkBackground) {
+        if (viewHolder.coloredBackground) {
             viewHolder.runtime.setTextAppearance(this.messageAdapter.getContext(), R.style.TextAppearance_Conversations_Caption_OnDark);
         } else {
             viewHolder.runtime.setTextAppearance(this.messageAdapter.getContext(), R.style.TextAppearance_Conversations_Caption);
         }
         viewHolder.progress.setOnSeekBarChangeListener(this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            ColorStateList color = ContextCompat.getColorStateList(messageAdapter.getContext(), viewHolder.darkBackground ? R.color.white70 : R.color.green700_desaturated);
+            ColorStateList color = ContextCompat.getColorStateList(messageAdapter.getContext(), viewHolder.coloredBackground ? activity.getThemeResource(R.attr.audio_player_ruler_color_on_colored) : activity.getThemeResource(R.attr.audio_player_ruler_color));
             viewHolder.progress.setThumbTintList(color);
             viewHolder.progress.setProgressTintList(color);
         }
-        viewHolder.playPause.setAlpha(viewHolder.darkBackground ? 0.7f : 0.57f);
+        viewHolder.playPause.setAlpha(activity.getThemeResourceAttr(R.attr.message_indicator_alpha).getFloat());
         viewHolder.playPause.setOnClickListener(this);
         final Context context = viewHolder.playPause.getContext();
         if (message == currentlyPlayingMessage) {
             if (AudioPlayer.player != null && AudioPlayer.player.isPlaying()) {
-                viewHolder.playPause.setImageResource(viewHolder.darkBackground ? R.drawable.ic_pause_white_36dp : R.drawable.ic_pause_black_36dp);
+                viewHolder.playPause.setImageDrawable(messageAdapter.getTintedMessageIcon(R.attr.ic_pause, viewHolder.coloredBackground));
                 viewHolder.playPause.setContentDescription(context.getString(R.string.pause_audio));
                 viewHolder.progress.setEnabled(true);
             } else {
                 viewHolder.playPause.setContentDescription(context.getString(R.string.play_audio));
-                viewHolder.playPause.setImageResource(viewHolder.darkBackground ? R.drawable.ic_play_arrow_white_36dp : R.drawable.ic_play_arrow_black_36dp);
+                viewHolder.playPause.setImageDrawable(messageAdapter.getTintedMessageIcon(R.attr.ic_play_arrow, viewHolder.coloredBackground));
                 viewHolder.progress.setEnabled(false);
             }
             return true;
         } else {
-            viewHolder.playPause.setImageResource(viewHolder.darkBackground ? R.drawable.ic_play_arrow_white_36dp : R.drawable.ic_play_arrow_black_36dp);
+            viewHolder.playPause.setImageDrawable(messageAdapter.getTintedMessageIcon(R.attr.ic_play_arrow, viewHolder.coloredBackground));
             viewHolder.playPause.setContentDescription(context.getString(R.string.play_audio));
             viewHolder.runtime.setText(formatTime(message.getFileParams().runtime));
             viewHolder.progress.setProgress(0);
@@ -163,13 +167,13 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
 
     private boolean playPauseCurrent(final ViewHolder viewHolder) {
         final Context context = viewHolder.playPause.getContext();
-        viewHolder.playPause.setAlpha(viewHolder.darkBackground ? 0.7f : 0.57f);
+        viewHolder.playPause.setAlpha(activity.getThemeResourceAttr(R.attr.message_indicator_alpha).getFloat());
         if (player.isPlaying()) {
             viewHolder.progress.setEnabled(false);
             player.pause();
             messageAdapter.flagScreenOff();
             releaseProximityWakeLock();
-            viewHolder.playPause.setImageResource(viewHolder.darkBackground ? R.drawable.ic_play_arrow_white_36dp : R.drawable.ic_play_arrow_black_36dp);
+            viewHolder.playPause.setImageDrawable(messageAdapter.getTintedMessageIcon(R.attr.ic_play_arrow, viewHolder.coloredBackground));
             viewHolder.playPause.setContentDescription(context.getString(R.string.play_audio));
         } else {
             viewHolder.progress.setEnabled(true);
@@ -177,7 +181,7 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
             messageAdapter.flagScreenOn();
             acquireProximityWakeLock();
             this.stopRefresher(true);
-            viewHolder.playPause.setImageResource(viewHolder.darkBackground ? R.drawable.ic_pause_white_36dp : R.drawable.ic_pause_black_36dp);
+            viewHolder.playPause.setImageDrawable(messageAdapter.getTintedMessageIcon(R.attr.ic_play_arrow, viewHolder.coloredBackground));
             viewHolder.playPause.setContentDescription(context.getString(R.string.pause_audio));
         }
         return false;
@@ -201,7 +205,7 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
             messageAdapter.flagScreenOn();
             acquireProximityWakeLock();
             viewHolder.progress.setEnabled(true);
-            viewHolder.playPause.setImageResource(viewHolder.darkBackground ? R.drawable.ic_pause_white_36dp : R.drawable.ic_pause_black_36dp);
+            viewHolder.playPause.setImageDrawable(messageAdapter.getTintedMessageIcon(R.attr.ic_pause, viewHolder.coloredBackground));
             viewHolder.playPause.setContentDescription(viewHolder.playPause.getContext().getString(R.string.pause_audio));
             sensorManager.registerListener(this, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL);
             return true;
@@ -258,7 +262,7 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
         final ViewHolder viewHolder = ViewHolder.get(audioPlayer);
         final Message message = (Message) audioPlayer.getTag();
         viewHolder.playPause.setContentDescription(viewHolder.playPause.getContext().getString(R.string.play_audio));
-        viewHolder.playPause.setImageResource(viewHolder.darkBackground ? R.drawable.ic_play_arrow_white_36dp : R.drawable.ic_play_arrow_black_36dp);
+        viewHolder.playPause.setImageDrawable(messageAdapter.getTintedMessageIcon(R.attr.ic_play_arrow, viewHolder.coloredBackground));
         if (message != null) {
             viewHolder.runtime.setText(formatTime(message.getFileParams().runtime));
         }
@@ -435,7 +439,7 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
         private TextView runtime;
         private SeekBar progress;
         private ImageButton playPause;
-        private boolean darkBackground = false;
+        private boolean coloredBackground = false;
 
         public static ViewHolder get(RelativeLayout audioPlayer) {
             ViewHolder viewHolder = (ViewHolder) audioPlayer.getTag(R.id.TAG_AUDIO_PLAYER_VIEW_HOLDER);
@@ -449,8 +453,8 @@ public class AudioPlayer implements View.OnClickListener, MediaPlayer.OnCompleti
             return viewHolder;
         }
 
-        public void setDarkBackground(boolean darkBackground) {
-            this.darkBackground = darkBackground;
+        public void setColoredBackground(boolean coloredBackground) {
+            this.coloredBackground = coloredBackground;
         }
     }
 }
