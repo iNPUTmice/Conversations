@@ -131,7 +131,7 @@
     <string name="pref_confirm_messages">Confirm Messages</string>
     <string name="pref_confirm_messages_summary">Let your contacts know when you have received and read their messages</string>
     <string name="pref_prevent_screenshots">Prevent Screenshots</string>
-    <string name="pref_prevent_screenshots_summary">Prevent taking screenshots of this app and hide its content in the app switcher</string>
+    <string name="pref_prevent_screenshots_summary">Hide app contents in the app switcher and block screenshots</string>
     <string name="pref_ui_options">UI</string>
     <string name="openpgp_error">OpenKeychain produced an error.</string>
     <string name="bad_key_for_encryption">Bad key for encryption.</string>
