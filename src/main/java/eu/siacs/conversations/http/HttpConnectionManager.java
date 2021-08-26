@@ -133,7 +133,7 @@ public class HttpConnectionManager extends AbstractConnectionManager {
         builder.writeTimeout(30, TimeUnit.SECONDS);
         builder.readTimeout(readTimeout, TimeUnit.SECONDS);
         setupTrustManager(builder, interactive);
-        if (mXmppConnectionService.useTorToConnect() || account.isOnion() || onionSlot) {
+        if (mXmppConnectionService.useTorToConnect() || ((account.isOnion() || onionSlot) && mXmppConnectionService.useTorForOnionLinks())) {
             builder.proxy(HttpConnectionManager.getProxy()).build();
         }
         return builder.build();

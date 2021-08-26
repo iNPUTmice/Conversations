@@ -118,7 +118,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
     }
 
     private boolean isUsingClearNet(final Account account) {
-        return !account.isOnion() && !mXmppConnectionService.useTorToConnect();
+        return !(account.isOnion() && mXmppConnectionService.useTorForOnionLinks()) && !mXmppConnectionService.useTorToConnect();
     }
 
     public boolean isBusy() {

@@ -26,6 +26,7 @@
     <bool name="dont_trust_system_cas">false</bool>
     <bool name="allow_message_correction">true</bool>
     <bool name="use_tor">false</bool>
+    <bool name="use_tor_for_onion">true</bool>
     <bool name="show_connection_options">false</bool>
     <bool name="display_enter_key">false</bool>
     <bool name="manually_change_presence">false</bool>

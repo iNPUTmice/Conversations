@@ -391,7 +391,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
     private void gatherAndConnectDirectCandidates() {
         final List<JingleCandidate> directCandidates;
         if (Config.USE_DIRECT_JINGLE_CANDIDATES) {
-            if (id.account.isOnion() || xmppConnectionService.useTorToConnect()) {
+            if ((id.account.isOnion() && xmppConnectionService.useTorForOnionLinks()) || xmppConnectionService.useTorToConnect()) {
                 directCandidates = Collections.emptyList();
             } else {
                 directCandidates = DirectConnectionUtils.getLocalCandidates(id.account.getJid());

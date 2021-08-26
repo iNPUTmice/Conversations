@@ -4067,6 +4067,10 @@ public class XmppConnectionService extends Service {
         return QuickConversationsService.isConversations() && getBooleanPreference("use_tor", R.bool.use_tor);
     }
 
+    public boolean useTorForOnionLinks() {
+        return QuickConversationsService.isConversations() && getBooleanPreference("use_tor_for_onion", R.bool.use_tor_for_onion);
+    }
+
     public boolean showExtendedConnectionOptions() {
         return QuickConversationsService.isConversations() && getBooleanPreference("show_connection_options", R.bool.show_connection_options);
     }

@@ -20,6 +20,7 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.AbstractConnectionManager;
+import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.SocksSocketFactory;
 import eu.siacs.conversations.utils.WakeLockHelper;
@@ -172,7 +173,8 @@ public class JingleSocks5Transport extends JingleTransport {
         new Thread(() -> {
             final int timeout = candidate.getType() == JingleCandidate.TYPE_DIRECT ? SOCKET_TIMEOUT_DIRECT : SOCKET_TIMEOUT_PROXY;
             try {
-                final boolean useTor = this.account.isOnion() || connection.getConnectionManager().getXmppConnectionService().useTorToConnect();
+                final XmppConnectionService xmppConnectionService = connection.getConnectionManager().getXmppConnectionService();
+                final boolean useTor = (this.account.isOnion() && xmppConnectionService.useTorForOnionLinks()) || xmppConnectionService.useTorToConnect();
                 if (useTor) {
                     socket = SocksSocketFactory.createSocketOverTor(candidate.getHost(), candidate.getPort());
                 } else {

@@ -278,6 +278,11 @@
                     android:summary="@string/pref_use_tor_summary"
                     android:title="@string/pref_use_tor" />
                 <CheckBoxPreference
+                    android:defaultValue="@bool/use_tor_for_onion"
+                    android:key="use_tor_for_onion"
+                    android:summary="@string/pref_use_tor_for_onion_summary"
+                    android:title="@string/pref_use_tor_for_onion" />
+                <CheckBoxPreference
                     android:defaultValue="@bool/show_connection_options"
                     android:key="show_connection_options"
                     android:summary="@string/pref_show_connection_options_summary"

@@ -496,6 +496,8 @@
     <string name="pref_connection_options">Verbindung</string>
     <string name="pref_use_tor">Über Tor verbinden</string>
     <string name="pref_use_tor_summary">Alle Verbindungen über das Tor-Netzwerk tunneln. Benötigt Orbot</string>
+    <string name="pref_use_tor_for_onion">Tor für .onion URLs verwenden</string>
+    <string name="pref_use_tor_for_onion_summary">Immer Tor für .onion URLs verwenden. Benötigt Orbot</string>
     <string name="account_settings_hostname">Hostname</string>
     <string name="account_settings_port">Port</string>
     <string name="hostname_or_onion">Server- oder .onion-Adresse</string>

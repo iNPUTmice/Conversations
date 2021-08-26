@@ -264,7 +264,7 @@ public class XmppConnection implements Runnable {
             Socket localSocket;
             shouldAuthenticate = !account.isOptionSet(Account.OPTION_REGISTER);
             this.changeStatus(Account.State.CONNECTING);
-            final boolean useTor = mXmppConnectionService.useTorToConnect() || account.isOnion();
+            final boolean useTor = mXmppConnectionService.useTorToConnect() || (account.isOnion() && mXmppConnectionService.useTorForOnionLinks());
             final boolean extended = mXmppConnectionService.showExtendedConnectionOptions();
             if (useTor) {
                 String destination;
@@ -842,7 +842,7 @@ public class XmppConnection implements Runnable {
 
     private void processStreamFeatures(final Tag currentTag) throws IOException {
         this.streamFeatures = tagReader.readElement(currentTag);
-        final boolean isSecure = features.encryptionEnabled || Config.ALLOW_NON_TLS_CONNECTIONS || account.isOnion();
+        final boolean isSecure = features.encryptionEnabled || Config.ALLOW_NON_TLS_CONNECTIONS || (account.isOnion() && mXmppConnectionService.useTorForOnionLinks());
         final boolean needsBinding = !isBound && !account.isOptionSet(Account.OPTION_REGISTER);
         if (this.streamFeatures.hasChild("starttls") && !features.encryptionEnabled) {
             sendStartTLS();
@@ -977,7 +977,7 @@ public class XmppConnection implements Runnable {
                         is = null;
                     }
                 } else {
-                    final boolean useTor = mXmppConnectionService.useTorToConnect() || account.isOnion();
+                    final boolean useTor = mXmppConnectionService.useTorToConnect() || (account.isOnion() && mXmppConnectionService.useTorForOnionLinks());
                     try {
                         final String url = data.getValue("url");
                         final String fallbackUrl = data.getValue("captcha-fallback-url");
