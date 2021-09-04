@@ -254,6 +254,39 @@ public class Patterns {
                     + "[0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1]"
                     + "[0-9]{2}|[1-9][0-9]|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}"
                     + "|[1-9][0-9]|[0-9]))");
+
+    /**
+     * IPv6 address matcher for
+     * IPv6 addresses
+     * zero compressed IPv6 addresses (section 2.2 of rfc5952)
+     * link-local IPv6 addresses with zone index (section 11 of rfc4007)
+     * IPv4-Embedded IPv6 Address (section 2 of rfc6052)
+     * IPv4-mapped IPv6 addresses (section 2.1 of rfc2765)
+     * IPv4-translated addresses (section 2.1 of rfc2765)
+     *
+     * Taken from https://stackoverflow.com/questions/53497/regular-expression-that-matches-valid-ipv6-addresses/17871737#17871737
+     */
+    public static final Pattern IP6_ADDRESS
+            = Pattern.compile(
+                    "\\[" +
+                    "(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|" +
+                            "([0-9a-fA-F]{1,4}:){1,7}:|" +
+                            "([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|" +
+                            "([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|" +
+                            "([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|" +
+                            "([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|" +
+                            "([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|" +
+                            "[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|" +
+                            ":((:[0-9a-fA-F]{1,4}){1,7}|:)|" +
+                            "fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|" +
+                            "::(ffff(:0{1,4}){0,1}:){0,1}" +
+                            "((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}" +
+                            "(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|" +
+                            "([0-9a-fA-F]{1,4}:){1,4}:" +
+                            "((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}" +
+                            "(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))" +
+                    "\\]"
+    );
     /**
      * Valid UCS characters defined in RFC 3987. Excludes space characters.
      */
@@ -296,7 +329,7 @@ public class Patterns {
     private static final String TLD = "(" + PUNYCODE_TLD + "|" + "[" + TLD_CHAR + "]{2,63}" +")";
     private static final String HOST_NAME = "(" + IRI_LABEL + "\\.)+" + TLD;
     public static final Pattern DOMAIN_NAME
-            = Pattern.compile("(" + HOST_NAME + "|" + IP_ADDRESS + ")");
+            = Pattern.compile("(" + HOST_NAME + "|" + IP6_ADDRESS + "|" + IP_ADDRESS +")");
     private static final String PROTOCOL = "(?i:http|https|rtsp):\\/\\/";
     /* A word boundary or end of input.  This is to stop foo.sure from matching as foo.su */
     private static final String WORD_BOUNDARY = "(?:\\b|$|^)";
@@ -341,12 +374,12 @@ public class Patterns {
      * {@link #IP_ADDRESS}
      */
     private static final Pattern STRICT_DOMAIN_NAME
-            = Pattern.compile("(?:" + STRICT_HOST_NAME + "|" + IP_ADDRESS + ")");
+            = Pattern.compile("(?:" + STRICT_HOST_NAME + "|" + IP_ADDRESS + "|" + IP6_ADDRESS + ")");
     /**
      * Regular expression that matches domain names without a TLD
      */
     private static final String RELAXED_DOMAIN_NAME =
-            "(?:" + "(?:" + IRI_LABEL + "(?:\\.(?=\\S))" +"?)+" + "|" + IP_ADDRESS + ")";
+            "(?:" + "(?:" + IRI_LABEL + "(?:\\.(?=\\S))" +"?)+" + "|" + IP_ADDRESS + "|" + IP6_ADDRESS + ")";
     /**
      * Regular expression to match strings that do not start with a supported protocol. The TLDs
      * are expected to be one of the known TLDs.
