@@ -304,9 +304,15 @@ public class Patterns {
             + "\\,\\;\\?\\&\\=]|(?:\\%[a-fA-F0-9]{2})){1,64}(?:\\:(?:[a-zA-Z0-9\\$\\-\\_"
             + "\\.\\+\\!\\*\\'\\(\\)\\,\\;\\?\\&\\=]|(?:\\%[a-fA-F0-9]{2})){1,25})?\\@";
     private static final String PORT_NUMBER = "\\:\\d{1,5}";
+    private static final String PATH_AND_QUERY_CHARS_WITHOUT_SLASH =
+            "\\;\\?\\:\\@\\&\\=\\#\\~" // plus optional query params
+            + "\\-\\.\\+\\!\\*\\'\\(\\)\\,\\_";
     private static final String PATH_AND_QUERY = "\\/(?:(?:[" + LABEL_CHAR
-            + "\\;\\/\\?\\:\\@\\&\\=\\#\\~"  // plus optional query params
-            + "\\-\\.\\+\\!\\*\\'\\(\\)\\,\\_])|(?:\\%[a-fA-F0-9]{2}))*";
+            + PATH_AND_QUERY_CHARS_WITHOUT_SLASH
+            + "]+[^" + PATH_AND_QUERY_CHARS_WITHOUT_SLASH + "\\s]" // path and query chars must not be trailing
+            + "|\\/" // trailing slashes are fine
+            + ")|(?:\\%[a-fA-F0-9]{2}))*";
+
     /**
      *  Regular expression pattern to match most part of RFC 3987
      *  Internationalized URLs, aka IRIs.
