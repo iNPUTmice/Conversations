@@ -306,7 +306,7 @@ public class Patterns {
     private static final String PORT_NUMBER = "\\:\\d{1,5}";
     private static final String PATH_AND_QUERY_CHARS_WITHOUT_SLASH =
             "\\;\\?\\:\\@\\&\\=\\#\\~" // plus optional query params
-            + "\\-\\.\\+\\!\\*\\'\\(\\)\\,\\_";
+            + "\\-\\.\\+\\!\\*\\'\\(\\)\\,\\_\\$";
     private static final String PATH_AND_QUERY = "\\/(?:(?:[" + LABEL_CHAR
             + PATH_AND_QUERY_CHARS_WITHOUT_SLASH
             + "]+[^" + PATH_AND_QUERY_CHARS_WITHOUT_SLASH + "\\s]" // path and query chars must not be trailing
