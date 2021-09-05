@@ -29,6 +29,7 @@ import eu.siacs.conversations.databinding.ActivityImportBackupBinding;
 import eu.siacs.conversations.databinding.DialogEnterPasswordBinding;
 import eu.siacs.conversations.services.ImportBackupService;
 import eu.siacs.conversations.ui.adapter.BackupFileAdapter;
+import eu.siacs.conversations.ui.util.SettingsUtils;
 import eu.siacs.conversations.utils.ThemeHelper;
 
 public class ImportBackupActivity extends ActionBarActivity implements ServiceConnection, ImportBackupService.OnBackupFilesLoaded, BackupFileAdapter.OnItemClickedListener, ImportBackupService.OnBackupProcessed {
@@ -53,6 +54,12 @@ public class ImportBackupActivity extends ActionBarActivity implements ServiceCo
         this.backupFileAdapter = new BackupFileAdapter();
         this.binding.list.setAdapter(this.backupFileAdapter);
         this.backupFileAdapter.setOnItemClickedListener(this);
+    }
+    
+    @Override
+    protected void onResume(){
+        super.onResume();
+        SettingsUtils.applyScreenshotPreventionSetting(this);
     }
 
     @Override
