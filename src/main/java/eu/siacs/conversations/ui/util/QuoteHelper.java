@@ -77,10 +77,10 @@ public class QuoteHelper {
     }
 
     public static boolean isNestedTooDeeply (CharSequence line){
-        if (isPositionQuoteCharacter(line, 0)) {
+        if (isPositionQuoteStart(line, 0)) {
             int nestingDepth = 1;
             for (int i = 1; i < line.length(); i++) {
-                if (isPositionQuoteCharacter(line, i)) {
+                if (isPositionQuoteStart(line, i)) {
                     nestingDepth++;
                 }
                 if (nestingDepth > (Config.QUOTING_MAX_DEPTH - 1)) {
