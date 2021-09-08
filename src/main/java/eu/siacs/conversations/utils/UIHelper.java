@@ -422,6 +422,7 @@ public class UIHelper {
             final char first = body.charAt(pos + 1);
             return first == ';'
                     || first == ':'
+                    || first == '.' // do not quote >.< (but >>.<)
                     || closingBeforeWhitespace(body, pos + 1);
         }
     }
