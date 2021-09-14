@@ -79,6 +79,8 @@ dependencies {
     implementation 'com.google.guava:guava:30.1.1-android'
     quicksyImplementation 'io.michaelrocks:libphonenumber-android:8.12.18'
     implementation fileTree(include: ['libwebrtc-m92.aar'], dir: 'libs')
+
+    implementation 'org.webrtc:google-webrtc:1.0.+'
 }
 
 ext {
