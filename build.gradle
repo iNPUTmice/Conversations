@@ -64,7 +64,8 @@ dependencies {
     implementation 'org.whispersystems:signal-protocol-java:2.6.2'
     implementation 'com.makeramen:roundedimageview:2.3.0'
     implementation "com.wefika:flowlayout:0.4.1"
-    implementation 'net.ypresto.androidtranscoder:android-transcoder:0.3.0'
+    implementation 'com.otaliastudios:transcoder:0.10.3'
+
     implementation 'org.jxmpp:jxmpp-jid:1.0.1'
     implementation 'org.osmdroid:osmdroid-android:6.1.10'
     implementation 'org.hsluv:hsluv:0.2'
@@ -95,8 +96,8 @@ android {
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 42017
-        versionName "2.10.0-beta.2"
+        versionCode 42018
+        versionName "2.10.0"
         archivesBaseName += "-$versionName"
         applicationId "eu.siacs.conversations"
         resValue "string", "applicationId", applicationId
