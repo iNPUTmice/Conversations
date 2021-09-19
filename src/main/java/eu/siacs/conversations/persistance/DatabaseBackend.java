@@ -535,9 +535,6 @@ public class DatabaseBackend extends SQLiteOpenHelper {
             db.execSQL(CREATE_RESOLVER_RESULTS_TABLE);
         }
 
-        if (oldVersion < 42 && newVersion >= 42) {
-            db.execSQL("DROP TRIGGER IF EXISTS after_message_delete");
-        }
         if (QuickConversationsService.isQuicksy() && oldVersion < 43 && newVersion >= 43) {
             List<Account> accounts = getAccounts(db);
             for (Account account : accounts) {
@@ -576,14 +573,21 @@ public class DatabaseBackend extends SQLiteOpenHelper {
             db.beginTransaction();
             db.execSQL("DROP TRIGGER IF EXISTS after_message_insert;");
             db.execSQL("DROP TRIGGER IF EXISTS after_message_update;");
+            db.execSQL("DROP TRIGGER IF EXISTS after_message_delete;");
             db.execSQL("DROP TABLE IF EXISTS messages_index;");
+            // a hack that should not be necessary, but
+            // there was at least one occurence when SQLite failed at this
+            db.execSQL("DROP TABLE IF EXISTS messages_index_docsize;");
+            db.execSQL("DROP TABLE IF EXISTS messages_index_segdir;");
+            db.execSQL("DROP TABLE IF EXISTS messages_index_segments;");
+            db.execSQL("DROP TABLE IF EXISTS messages_index_stat;");
             db.execSQL(CREATE_MESSAGE_INDEX_TABLE);
             db.execSQL(CREATE_MESSAGE_INSERT_TRIGGER);
             db.execSQL(CREATE_MESSAGE_UPDATE_TRIGGER);
             db.execSQL(CREATE_MESSAGE_DELETE_TRIGGER);
-            requiresMessageIndexRebuild = true;
             db.setTransactionSuccessful();
             db.endTransaction();
+            requiresMessageIndexRebuild = true;
         }
     }
 
