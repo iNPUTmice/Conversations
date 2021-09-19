@@ -60,7 +60,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
             viewHolder.binding.conversationName.setText(EmojiWrapper.transform(name));
         }
 
-        if (conversation == ConversationFragment.getConversation(activity)) {
+        if (conversation == ConversationFragment.getConversation(activity.getSupportFragmentManager())) {
             viewHolder.binding.frame.setBackgroundColor(StyledAttributes.getColor(activity, R.attr.color_background_tertiary));
         } else {
             viewHolder.binding.frame.setBackgroundColor(StyledAttributes.getColor(activity, R.attr.color_background_primary));

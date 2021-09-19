@@ -172,7 +172,7 @@ public final class MucDetailsContextMenuHelper {
                 return true;
             case R.id.send_private_message:
                 if (activity instanceof ConversationsActivity) {
-                    ConversationFragment conversationFragment = ConversationFragment.get(activity);
+                    ConversationFragment conversationFragment = ConversationFragment.get(activity.getSupportFragmentManager());
                     if (conversationFragment != null) {
                         conversationFragment.privateMessageWith(user.getFullJid());
                         return true;

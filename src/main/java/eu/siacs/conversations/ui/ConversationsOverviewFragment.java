@@ -31,7 +31,6 @@ package eu.siacs.conversations.ui;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -46,6 +45,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -139,7 +140,7 @@ public class ConversationsOverviewFragment extends XmppFragment {
 				activity.xmppConnectionService.archiveConversation(c);
 				return;
 			}
-			final boolean formerlySelected = ConversationFragment.getConversation(getActivity()) == swipedConversation.peek();
+			final boolean formerlySelected = ConversationFragment.getConversation(requireActivity().getSupportFragmentManager()) == swipedConversation.peek();
 			if (activity instanceof OnConversationArchived) {
 				((OnConversationArchived) activity).onConversationArchived(swipedConversation.peek());
 			}
@@ -202,19 +203,19 @@ public class ConversationsOverviewFragment extends XmppFragment {
 
 	private ItemTouchHelper touchHelper;
 
-	public static Conversation getSuggestion(Activity activity) {
+	public static Conversation getSuggestion(FragmentManager fragmentManager) {
 		final Conversation exception;
-		Fragment fragment = activity.getFragmentManager().findFragmentById(R.id.main_fragment);
+		Fragment fragment = fragmentManager.findFragmentById(R.id.main_fragment);
 		if (fragment instanceof ConversationsOverviewFragment) {
 			exception = ((ConversationsOverviewFragment) fragment).swipedConversation.peek();
 		} else {
 			exception = null;
 		}
-		return getSuggestion(activity, exception);
+		return getSuggestion(fragmentManager, exception);
 	}
 
-	public static Conversation getSuggestion(Activity activity, Conversation exception) {
-		Fragment fragment = activity.getFragmentManager().findFragmentById(R.id.main_fragment);
+	public static Conversation getSuggestion(FragmentManager fragmentManager, Conversation exception) {
+		Fragment fragment = fragmentManager.findFragmentById(R.id.main_fragment);
 		if (fragment instanceof ConversationsOverviewFragment) {
 			List<Conversation> conversations = ((ConversationsOverviewFragment) fragment).conversations;
 			if (conversations.size() > 0) {
