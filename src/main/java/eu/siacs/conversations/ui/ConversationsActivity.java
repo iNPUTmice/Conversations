@@ -439,14 +439,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
                 conversationFragment = (ConversationFragment) mainFragment;
             } else {
                 conversationFragment = new ConversationFragment();
-                FragmentTransaction fragmentTransaction = fragmentManager
-                        .beginTransaction()
-                        .setCustomAnimations(
-                                R.anim.enter_from_right,
-                                R.anim.exit_to_left,
-                                R.anim.enter_from_left,
-                                R.anim.exit_to_right
-                        );
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.main_fragment, conversationFragment);
                 fragmentTransaction.addToBackStack(null);
                 try {
@@ -575,14 +568,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
 
     private void initializeFragments() {
         final FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager
-                .beginTransaction()
-                .setCustomAnimations(
-                        R.anim.enter_from_right,
-                        R.anim.exit_to_left,
-                        R.anim.enter_from_left,
-                        R.anim.exit_to_right
-                );
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
         final Fragment mainFragment = fragmentManager.findFragmentById(R.id.main_fragment);
         final Fragment secondaryFragment = fragmentManager.findFragmentById(R.id.secondary_fragment);
         if (mainFragment != null) {
