@@ -725,6 +725,8 @@ public class XmppConnectionService extends Service {
                         break;
                     }
                     final CharSequence body = remoteInput.getCharSequence("text_reply");
+                    final boolean hasPrivateMessage = intent.getBooleanExtra("hasPrivateMessage", false);
+                    final Jid counterPart = Jid.of(intent.getStringExtra("counterPart"));
                     final boolean dismissNotification = intent.getBooleanExtra("dismiss_notification", false);
                     if (body == null || body.length() <= 0) {
                         break;
@@ -734,7 +736,7 @@ public class XmppConnectionService extends Service {
                             restoredFromDatabaseLatch.await();
                             final Conversation c = findConversationByUuid(uuid);
                             if (c != null) {
-                                directReply(c, body.toString(), dismissNotification);
+                                directReply(c, body.toString(), dismissNotification, counterPart, hasPrivateMessage);
                             }
                         } catch (InterruptedException e) {
                             Log.d(Config.LOGTAG, "unable to process direct reply");
@@ -932,9 +934,15 @@ public class XmppConnectionService extends Service {
         }
     }
 
-    private void directReply(Conversation conversation, String body, final boolean dismissAfterReply) {
+    private void directReply(Conversation conversation, String body, final boolean dismissAfterReply, Jid counterPart, final boolean hasPrivateMessage) {
         Message message = new Message(conversation, body, conversation.getNextEncryption());
         message.markUnread();
+
+        if (hasPrivateMessage) {
+            conversation.setNextCounterpart(counterPart);
+            Message.configurePrivateMessage(message);
+        }
+
         if (message.getEncryption() == Message.ENCRYPTION_PGP) {
             getPgpEngine().encrypt(message, new UiCallback<Message>() {
                 @Override

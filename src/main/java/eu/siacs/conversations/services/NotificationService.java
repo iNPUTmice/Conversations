@@ -70,8 +70,10 @@ import eu.siacs.conversations.ui.TimePreference;
 import eu.siacs.conversations.utils.AccountUtils;
 import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.GeoHelper;
+import eu.siacs.conversations.utils.JidHelper;
 import eu.siacs.conversations.utils.TorServiceUtils;
 import eu.siacs.conversations.utils.UIHelper;
+import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.jingle.AbstractJingleConnection;
 import eu.siacs.conversations.xmpp.jingle.Media;
@@ -794,13 +796,13 @@ public class NotificationService {
                 NotificationCompat.Action replyAction = new NotificationCompat.Action.Builder(
                         R.drawable.ic_send_text_offline,
                         replyLabel,
-                        createReplyIntent(conversation, false))
+                        createReplyIntent(conversation, false, messages))
                         .setSemanticAction(NotificationCompat.Action.SEMANTIC_ACTION_REPLY)
                         .setShowsUserInterface(false)
                         .addRemoteInput(remoteInput).build();
                 NotificationCompat.Action wearReplyAction = new NotificationCompat.Action.Builder(R.drawable.ic_wear_reply,
                         replyLabel,
-                        createReplyIntent(conversation, true)).addRemoteInput(remoteInput).build();
+                        createReplyIntent(conversation, true, messages)).addRemoteInput(remoteInput).build();
                 mBuilder.extend(new NotificationCompat.WearableExtender().addAction(wearReplyAction));
                 int addedActionsCount = 1;
                 mBuilder.addAction(markReadAction);
@@ -1066,13 +1068,32 @@ public class NotificationService {
         return PendingIntent.getService(mXmppConnectionService, 0, intent, 0);
     }
 
-    private PendingIntent createReplyIntent(Conversation conversation, boolean dismissAfterReply) {
+    private PendingIntent createReplyIntent(Conversation conversation, boolean dismissAfterReply, ArrayList<Message> messages) {
         final Intent intent = new Intent(mXmppConnectionService, XmppConnectionService.class);
         intent.setAction(XmppConnectionService.ACTION_REPLY_TO_CONVERSATION);
         intent.putExtra("uuid", conversation.getUuid());
+
+        boolean hasPrivateMessage = false;
+        String counterPart = "";
+        for (int i = 0; i < messages.size(); i++){ // if any of messages is a private message, answer with private message. If the private messages come from different senders, answer to the last one.
+            Message message = messages.get(i);
+            if (message.isPrivateMessage()) {
+                hasPrivateMessage = true;
+                counterPart = message.getCounterpart().toString();
+            }
+        }
+
+       if (hasPrivateMessage) {
+            intent.putExtra("hasPrivateMessage", true);
+            intent.putExtra("counterPart", counterPart);
+        } else {
+            intent.putExtra("hasPrivateMessage", false);
+            intent.putExtra("counterPart", conversation.getMucOptions().getSelf().getFullJid().toString());
+        }
+
         intent.putExtra("dismiss_notification", dismissAfterReply);
         final int id = generateRequestCode(conversation, dismissAfterReply ? 12 : 14);
-        return PendingIntent.getService(mXmppConnectionService, id, intent, 0);
+        return PendingIntent.getService(mXmppConnectionService, id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private PendingIntent createReadPendingIntent(Conversation conversation) {
