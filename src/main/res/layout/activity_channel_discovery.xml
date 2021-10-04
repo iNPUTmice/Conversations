@@ -34,6 +34,7 @@
                 android:background="?attr/color_background_primary"
                 android:orientation="vertical"
                 android:scrollbars="vertical"
+                android:scrollbarThumbVertical="?attr/scrollbar_color"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

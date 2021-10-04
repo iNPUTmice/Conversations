@@ -176,6 +176,7 @@
     <attr name="actionbutton_icons_tint" format="reference" />
 
     <attr name="scrollbutton_icons_tint" format="reference" />
+    <attr name="scrollbar_color" format="reference" />
 
     <attr name="media_preview_icons_tint" format="reference" />
 

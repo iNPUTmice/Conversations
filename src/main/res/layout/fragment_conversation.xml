@@ -21,7 +21,9 @@
             android:listSelector="@android:color/transparent"
             android:stackFromBottom="true"
             android:transcriptMode="normal"
-            tools:listitem="@layout/message_sent"></ListView>
+            tools:listitem="@layout/message_sent"
+            android:scrollbarThumbVertical="?attr/scrollbar_color"
+            ></ListView>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/scroll_to_bottom_button"

@@ -180,6 +180,7 @@
 
         <item name="scrollbutton_icons_tint">@color/black</item>
         <item name="icon_scroll_down" type="reference">@drawable/ic_scroll_to_end_white</item>
+        <item name="scrollbar_color">?attr/colorPrimaryDark</item>
 
         <item name="icon_add_group" type="reference">@drawable/ic_group_add_white_24dp</item> <!-- unused -->
         <item name="icon_discard" type="reference">@drawable/ic_delete_white_24dp</item><!-- unused -->
@@ -392,6 +393,7 @@
 
         <item name="scrollbutton_icons_tint">@color/white</item>
         <item name="icon_scroll_down" type="reference">@drawable/ic_scroll_to_end_white</item>
+        <item name="scrollbar_color">?attr/colorPrimaryDark</item>
 
         <item name="icon_add_group" type="reference">@drawable/ic_group_add_white_24dp</item> <!-- unused -->
         <item name="icon_discard" type="reference">@drawable/ic_delete_white_24dp</item><!-- unused -->

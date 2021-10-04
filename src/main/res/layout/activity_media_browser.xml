@@ -18,7 +18,8 @@
             android:orientation="horizontal"
             android:clipToPadding="false"
             android:padding="2dp"
-            android:scrollbars="vertical"/>
+            android:scrollbars="vertical"
+            android:scrollbarThumbVertical="?attr/scrollbar_color"/>
 
     </LinearLayout>
 </layout>
