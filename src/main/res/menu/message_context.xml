@@ -57,4 +57,8 @@
         android:id="@+id/delete_file"
         android:title="@string/delete_x_file"
         android:visible="false" />
+    <item
+        android:id="@+id/delete_message"
+        android:title="Delete message"
+        android:visible="true" />
 </menu>

@@ -1235,6 +1235,9 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             case R.id.open_with:
                 openWith(selectedMessage);
                 return true;
+            case R.id.delete_message:
+                deleteMessage(selectedMessage);
+                return true;
             default:
                 return super.onContextItemSelected(item);
         }
@@ -1842,6 +1845,16 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         });
         builder.create().show();
 
+    }
+
+    private void deleteMessage(final Message message) {
+        message.setDeleted(true);
+        // Remove the body from the database. This makes sure that the message body can't be extracted
+        // from the application database even if the device is compromised.
+        // Note that the message might still possibly be retrieved from the MAM.
+        message.setBody("");
+        activity.xmppConnectionService.updateMessage(message, false);
+        refresh();
     }
 
     private void resendMessage(final Message message) {
