@@ -186,7 +186,7 @@
                     app:elevation="4dp"
                     app:fabCustomSize="72dp"
                     app:maxImageSize="36dp"
-                    tools:visibility="gone" />
+                    tools:visibility="visible" />
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/accept_call"
@@ -201,7 +201,7 @@
                     app:elevation="4dp"
                     app:fabCustomSize="72dp"
                     app:maxImageSize="36dp"
-                    tools:visibility="gone" />
+                    tools:visibility="visible" />
 
             </RelativeLayout>
 
@@ -212,7 +212,7 @@
                 android:layout_centerVertical="true"
                 android:layout_margin="@dimen/in_call_fab_margin"
                 android:layout_toStartOf="@+id/end_call"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:backgroundTint="?color_background_primary"
                 app:elevation="4dp"
                 app:fabSize="mini"
@@ -238,7 +238,7 @@
                 android:layout_centerVertical="true"
                 android:layout_margin="@dimen/in_call_fab_margin"
                 android:layout_toEndOf="@+id/end_call"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:backgroundTint="?color_background_primary"
                 app:elevation="4dp"
                 app:fabSize="mini"
@@ -251,7 +251,7 @@
                 android:layout_centerVertical="true"
                 android:layout_margin="@dimen/in_call_fab_margin"
                 android:layout_toEndOf="@+id/in_call_action_right"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:backgroundTint="?color_background_primary"
                 app:elevation="4dp"
                 app:fabSize="mini"

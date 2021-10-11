@@ -58,6 +58,7 @@ import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.services.AppRTCAudioManager;
 import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.ui.widget.DialpadView;
 import eu.siacs.conversations.ui.util.AvatarWorkerTask;
 import eu.siacs.conversations.ui.util.MainThreadExecutor;
 import eu.siacs.conversations.ui.util.Rationals;
@@ -159,34 +160,14 @@ public class RtpSessionActivity extends XmppActivity
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_rtp_session);
         setSupportActionBar(binding.toolbar);
 
-        //TODO: remove this - for testing dialpad input
-        //((DialpadView)findViewById(R.id.action_dialpad)).
-
-        findViewById(R.id.dialpad_1_holder).setOnClickListener(view -> dialpadPressed(view));
-        findViewById(R.id.dialpad_2_holder).setOnClickListener(view -> dialpadPressed(view));
-        findViewById(R.id.dialpad_3_holder).setOnClickListener(view -> dialpadPressed(view));
-        findViewById(R.id.dialpad_4_holder).setOnClickListener(view -> dialpadPressed(view));
-        findViewById(R.id.dialpad_5_holder).setOnClickListener(view -> dialpadPressed(view));
-        findViewById(R.id.dialpad_6_holder).setOnClickListener(view -> dialpadPressed(view));
-        findViewById(R.id.dialpad_7_holder).setOnClickListener(view -> dialpadPressed(view));
-        findViewById(R.id.dialpad_8_holder).setOnClickListener(view -> dialpadPressed(view));
-        findViewById(R.id.dialpad_9_holder).setOnClickListener(view -> dialpadPressed(view));
-        findViewById(R.id.dialpad_0_holder).setOnClickListener(view -> dialpadPressed(view));
-        findViewById(R.id.dialpad_asterisk_holder).setOnClickListener(view -> dialpadPressed(view));
-        findViewById(R.id.dialpad_pound_holder).setOnClickListener(view -> dialpadPressed(view));
+        binding.dialpad.setClickConsumer(tag -> {
+            requireRtpConnection().applyDtmfTone(tag);
+        });
 
         if (savedInstanceState != null) {
             int dialpad_visibility = savedInstanceState.getInt("dialpad_visibility");
-            System.out.println("dialpad_visibility onCreate = " + dialpad_visibility);
             findViewById(R.id.dialpad).setVisibility(dialpad_visibility);
         }
-    }
-
-
-
-    private void dialpadPressed(View dialpadKeyHolderView) {
-        JingleRtpConnection rtpConnection = requireRtpConnection();
-        rtpConnection.applyDtmfTone(dialpadKeyHolderView.getTag().toString());
     }
 
     @Override

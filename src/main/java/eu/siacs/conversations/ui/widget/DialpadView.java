@@ -23,9 +23,10 @@ import android.view.View;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import eu.siacs.conversations.R;
-import eu.siacs.conversations.xmpp.jingle.JingleRtpConnection;
 
 public class DialpadView extends ConstraintLayout implements View.OnClickListener {
+
+    protected java.util.function.Consumer<String> clickConsumer = null;
 
     public DialpadView(Context context) {
         super(context);
@@ -40,6 +41,10 @@ public class DialpadView extends ConstraintLayout implements View.OnClickListene
     public DialpadView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
+    }
+
+    public void setClickConsumer(java.util.function.Consumer<String> clickConsumer) {
+        this.clickConsumer = clickConsumer;
     }
 
     private void init() {
@@ -64,10 +69,7 @@ public class DialpadView extends ConstraintLayout implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
-        /* TODO: this widget doesn't know anything about the RTP Connection,
-            so how to make this widget generic but also able to send touch-tone sounds
-         */
-        System.out.println("v.getTag() = " + v.getTag());
+        clickConsumer.accept(v.getTag().toString());
     }
 
 }

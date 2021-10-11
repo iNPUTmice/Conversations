@@ -532,11 +532,6 @@ public class WebRTCWrapper {
         return peerConnection;
     }
 
-    //TODO: remove - hack to test dtmfSending
-    public DtmfSender getDtmfSender() {
-        return peerConnection.getSenders().get(0).dtmf();
-    }
-
     public boolean applyDtmfTone(String tone) {
         if (toneManager == null || peerConnection.getSenders().isEmpty()) {
             return false;
