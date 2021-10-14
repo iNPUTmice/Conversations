@@ -577,6 +577,9 @@
     <string name="pref_theme_blackPurple">Black Purple</string>
     <string name="pref_theme_darkBordeaux">Dark Bordeaux</string>
     <string name="pref_theme_blackBordeaux">Black Bordeaux</string>
+    <string name="pref_theme_orange">Orange</string>
+    <string name="pref_theme_darkOrange">Dark Orange</string>
+    <string name="pref_theme_blackOrange">Black Orange</string>
     <string name="pref_use_green_background">Colored Background</string>
     <string name="pref_use_green_background_summary">Use colored background for received messages</string>
     <string name="unable_to_connect_to_keychain">Could not connect to OpenKeychain</string>

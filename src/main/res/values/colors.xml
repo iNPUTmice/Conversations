@@ -7,6 +7,7 @@
 	<color name="black12">#1f000000</color>
 	<color name="white">#ffffffff</color>
 	<color name="white87">#deffffff</color>
+	<color name="white50">#80FFFFFF</color>
 	<color name="white70">#b2ffffff</color>
 	<color name="white12">#1fffffff</color>
 	<color name="grey50">#fffafafa</color>
@@ -28,6 +29,10 @@
 	<color name="redbordeauxdark">#420C13</color>
 	<color name="redbordeauxdarker">#30090E</color>
 	<color name="orange500">#ffff9800</color>
+	<color name="orange600">#fffb8c00</color>
+	<color name="orange700">#ffF57C00</color>
+	<color name="orange800">#ffef6c00</color>
+	<color name="orange900">#ffe65100</color>
 	<color name="blue_a100">#ff82B1FF</color>
 	<color name="blue_a200">#ff448AFF</color>
 	<color name="blue_a400">#ff2979FF</color>
@@ -52,6 +57,8 @@
 	<color name="green900_desaturated">#ff295e2d</color>
 	<color name="purple700_desaturated">#55369f</color>
 	<color name="redbordeauxdark_desaturated">#3e1016</color>
+	<color name="orange700_desaturated">#ffF57C50</color>
+	<color name="orange900_desaturated">#ffe65150</color>
 
 	<!-- scanner -->
 	<color name="scan_result_dots">#c04CAF50</color>

@@ -68,6 +68,12 @@ public class ThemeHelper {
 						return R.style.ConversationsTheme_DarkBordeaux_Medium;
 					case "blackBordeaux":
 						return R.style.ConversationsTheme_BlackBordeaux_Medium;
+					case "orange":
+						return R.style.ConversationsTheme_Orange_Medium;
+					case "darkOrange":
+						return R.style.ConversationsTheme_DarkOrange_Medium;
+					case "blackOrange":
+						return R.style.ConversationsTheme_BlackOrange_Medium;
 					default:
 						return R.style.ConversationsTheme_Medium;
 				}
@@ -85,6 +91,12 @@ public class ThemeHelper {
 						return R.style.ConversationsTheme_DarkBordeaux_Large;
 					case "blackBordeaux":
 						return R.style.ConversationsTheme_BlackBordeaux_Large;
+					case "orange":
+						return R.style.ConversationsTheme_Orange_Large;
+					case "darkOrange":
+						return R.style.ConversationsTheme_DarkOrange_Large;
+					case "blackOrange":
+						return R.style.ConversationsTheme_BlackOrange_Large;
 					default:
 						return R.style.ConversationsTheme_Large;
 				}
@@ -102,6 +114,12 @@ public class ThemeHelper {
 						return R.style.ConversationsTheme_DarkBordeaux;
 					case "blackBordeaux":
 						return R.style.ConversationsTheme_BlackBordeaux;
+					case "orange":
+						return R.style.ConversationsTheme_Orange;
+					case "darkOrange":
+						return R.style.ConversationsTheme_DarkOrange;
+					case "blackOrange":
+						return R.style.ConversationsTheme_BlackOrange;
 					default:
 						return R.style.ConversationsTheme;
 				}
@@ -128,6 +146,10 @@ public class ThemeHelper {
 						return R.style.ConversationsTheme_DarkBordeaux_Dialog_Medium;
 					case "blackBordeaux":
 						return R.style.ConversationsTheme_DarkBordeaux_Dialog_Medium;
+					case "darkOrange":
+						return R.style.ConversationsTheme_DarkOrange_Dialog_Medium;
+					case "blackOrange":
+						return R.style.ConversationsTheme_DarkOrange_Dialog_Medium;
 					default:
 						return R.style.ConversationsTheme_Dialog_Medium;
 				}
@@ -145,6 +167,10 @@ public class ThemeHelper {
 						return R.style.ConversationsTheme_DarkBordeaux_Dialog_Large;
 					case "blackBordeaux":
 						return R.style.ConversationsTheme_DarkBordeaux_Dialog_Large;
+					case "darkOrange":
+						return R.style.ConversationsTheme_DarkOrange_Dialog_Large;
+					case "blackOrange":
+						return R.style.ConversationsTheme_DarkOrange_Dialog_Large;
 					default:
 						return R.style.ConversationsTheme_Dialog_Large;
 				}
@@ -162,6 +188,10 @@ public class ThemeHelper {
 						return R.style.ConversationsTheme_DarkBordeaux_Dialog;
 					case "blackBordeaux":
 						return R.style.ConversationsTheme_DarkBordeaux_Dialog;
+					case "darkOrange":
+						return R.style.ConversationsTheme_DarkOrange_Dialog;
+					case "blackOrange":
+						return R.style.ConversationsTheme_DarkOrange_Dialog;
 					default:
 						return R.style.ConversationsTheme_Dialog;
 				}

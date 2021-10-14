@@ -215,6 +215,17 @@
         <item name="message_indicator_alpha" type="float">0.57</item>
     </style>
 
+    <style name="ConversationsTheme.Orange" parent="ConversationsTheme">
+        <item name="colorPrimary">@color/orange600</item>
+        <item name="colorPrimaryDark">@color/orange800</item>
+
+        <item name="unread_count">?attr/colorPrimaryDark</item>
+
+        <item name="conversations_overview_background">?attr/colorPrimaryDark</item>
+
+        <item name="message_bubble_received_colored_color">@color/orange700_desaturated</item>
+    </style>
+
     <style name="ConversationsTheme.Dark" parent="Theme.AppCompat.NoActionBar">
         <item name="colorPrimary">@color/green800</item>
         <item name="colorPrimaryDark">@color/green900</item>
@@ -519,6 +530,37 @@
         </item>
     </style>
 
+    <style name="ConversationsTheme.DarkOrange" parent="ConversationsTheme.Dark">
+        <item name="colorPrimary">@color/orange800</item>
+        <item name="colorPrimaryDark">@color/orange900</item>
+
+        <item name="unread_count">?attr/colorPrimaryDark</item>
+
+        <item name="conversations_overview_background">?attr/colorPrimaryDark</item>
+
+        <item name="message_primary_text_color_on_colored">@color/white70</item>
+        <item name="message_secondary_text_color_on_colored">@color/white50</item>
+
+        <item name="message_bubble_received_colored_color">@color/orange700_desaturated</item>
+    </style>
+
+    <style name="ConversationsTheme.BlackOrange" parent="ConversationsTheme.DarkOrange">
+        <item name="message_bubble_sent">@drawable/message_bubble_sent_grey_outline</item>
+
+        <item name="message_bubble_received_monochrome">@drawable/message_bubble_received_outline</item>
+        <item name="message_bubble_received_colored_color">@color/orange900</item>
+
+        <item name="color_background_primary">@color/black</item>
+        <item name="color_background_secondary">@color/black</item>
+        <item name="color_background_tertiary">@color/grey700</item>
+
+        <item name="activity_background_search">@drawable/search_background_black</item>
+        <item name="activity_background_no_results">@drawable/no_results_background_black</item>
+        <item name="activity_primary_background_no_results">
+            @drawable/no_results_primary_background_black
+        </item>
+    </style>
+
     <style name="ConversationsTheme.Medium" parent="ConversationsTheme">
         <item name="TextSizeCaption">14sp</item>
         <item name="TextSizeBody1">16sp</item>
@@ -567,7 +609,44 @@
         <item name="IconSize">20sp</item>
     </style>
 
+    <style name="ConversationsTheme.Orange.Medium" parent="ConversationsTheme.Orange">
+        <item name="TextSizeCaption">14sp</item>
+        <item name="TextSizeBody1">16sp</item>
+        <item name="TextSizeBody2">16sp</item>
+        <item name="TextSizeSubhead">18sp</item>
+        <item name="TextSizeTitle">22sp</item>
+        <item name="TextSizeDisplay2">47sp</item>
+        <item name="TextSizeInput">18sp</item>
+        <item name="TextSeparation">6sp</item>
+        <item name="IconSize">20sp</item>
+    </style>
+
+
+    <style name="ConversationsTheme.DarkOrange.Medium" parent="ConversationsTheme.DarkOrange">
+        <item name="TextSizeCaption">14sp</item>
+        <item name="TextSizeBody1">16sp</item>
+        <item name="TextSizeBody2">16sp</item>
+        <item name="TextSizeSubhead">18sp</item>
+        <item name="TextSizeTitle">22sp</item>
+        <item name="TextSizeDisplay2">47sp</item>
+        <item name="TextSizeInput">18sp</item>
+        <item name="TextSeparation">6sp</item>
+        <item name="IconSize">20sp</item>
+    </style>
+
     <style name="ConversationsTheme.BlackPurple.Medium" parent="ConversationsTheme.BlackPurple">
+        <item name="TextSizeCaption">14sp</item>
+        <item name="TextSizeBody1">16sp</item>
+        <item name="TextSizeBody2">16sp</item>
+        <item name="TextSizeSubhead">18sp</item>
+        <item name="TextSizeTitle">22sp</item>
+        <item name="TextSizeDisplay2">47sp</item>
+        <item name="TextSizeInput">18sp</item>
+        <item name="TextSeparation">6sp</item>
+        <item name="IconSize">20sp</item>
+    </style>
+
+    <style name="ConversationsTheme.BlackOrange.Medium" parent="ConversationsTheme.BlackOrange">
         <item name="TextSizeCaption">14sp</item>
         <item name="TextSizeBody1">16sp</item>
         <item name="TextSizeBody2">16sp</item>
@@ -639,7 +718,43 @@
         <item name="IconSize">22sp</item>
     </style>
 
+    <style name="ConversationsTheme.Orange.Large" parent="ConversationsTheme.Orange">
+        <item name="TextSizeCaption">16sp</item>
+        <item name="TextSizeBody1">18sp</item>
+        <item name="TextSizeBody2">18sp</item>
+        <item name="TextSizeSubhead">20sp</item>
+        <item name="TextSizeTitle">24sp</item>
+        <item name="TextSizeDisplay2">48sp</item>
+        <item name="TextSizeInput">20sp</item>
+        <item name="TextSeparation">7sp</item>
+        <item name="IconSize">22sp</item>
+    </style>
+
+    <style name="ConversationsTheme.DarkOrange.Large" parent="ConversationsTheme.DarkOrange">
+        <item name="TextSizeCaption">16sp</item>
+        <item name="TextSizeBody1">18sp</item>
+        <item name="TextSizeBody2">18sp</item>
+        <item name="TextSizeSubhead">20sp</item>
+        <item name="TextSizeTitle">24sp</item>
+        <item name="TextSizeDisplay2">48sp</item>
+        <item name="TextSizeInput">20sp</item>
+        <item name="TextSeparation">7sp</item>
+        <item name="IconSize">22sp</item>
+    </style>
+
     <style name="ConversationsTheme.BlackPurple.Large" parent="ConversationsTheme.BlackPurple">
+        <item name="TextSizeCaption">16sp</item>
+        <item name="TextSizeBody1">18sp</item>
+        <item name="TextSizeBody2">18sp</item>
+        <item name="TextSizeSubhead">20sp</item>
+        <item name="TextSizeTitle">24sp</item>
+        <item name="TextSizeDisplay2">48sp</item>
+        <item name="TextSizeInput">20sp</item>
+        <item name="TextSeparation">7sp</item>
+        <item name="IconSize">22sp</item>
+    </style>
+
+    <style name="ConversationsTheme.BlackOrange.Large" parent="ConversationsTheme.BlackOrange">
         <item name="TextSizeCaption">16sp</item>
         <item name="TextSizeBody1">18sp</item>
         <item name="TextSizeBody2">18sp</item>
@@ -736,6 +851,11 @@
         <item name="colorPrimaryDark">@color/redbordeauxdark</item>
     </style>
 
+    <style name="ConversationsTheme.DarkOrange.Dialog" parent="ConversationsTheme.Dark.Dialog">
+        <item name="colorPrimary">@color/orange800</item>
+        <item name="colorPrimaryDark">@color/orange900</item>
+    </style>
+
     <style name="ConversationsTheme.Dialog.Medium" parent="ConversationsTheme.Dialog">
         <item name="TextSizeBody2">16sp</item>
         <item name="TextSizeDisplay2">51sp</item>
@@ -752,6 +872,9 @@
     <style name="ConversationsTheme.DarkBordeaux.Dialog.Medium" parent="ConversationsTheme.Dark.Dialog.Medium">
     </style>
 
+    <style name="ConversationsTheme.DarkOrange.Dialog.Medium" parent="ConversationsTheme.Dark.Dialog.Medium">
+    </style>
+
     <style name="ConversationsTheme.Dialog.Large" parent="ConversationsTheme.Dialog">
         <item name="TextSizeBody2">18sp</item>
         <item name="TextSizeDisplay2">56sp</item>
@@ -766,6 +889,9 @@
     </style>
 
     <style name="ConversationsTheme.DarkBordeaux.Dialog.Large" parent="ConversationsTheme.Dark.Dialog.Large">
+    </style>
+
+    <style name="ConversationsTheme.DarkOrange.Dialog.Large" parent="ConversationsTheme.Dark.Dialog.Large">
     </style>
 
 </resources>

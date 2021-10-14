@@ -11,6 +11,9 @@
         <item>@string/pref_theme_blackPurple</item>
         <item>@string/pref_theme_darkBordeaux</item>
         <item>@string/pref_theme_blackBordeaux</item>
+        <item>@string/pref_theme_orange</item>
+        <item>@string/pref_theme_darkOrange</item>
+        <item>@string/pref_theme_blackOrange</item>
     </string-array>
     <string-array name="themes_values" tools:ignore="InconsistentArrays">
         <item>automatic</item>
@@ -21,6 +24,8 @@
         <item>blackPurple</item>
         <item>darkBordeaux</item>
         <item>blackBordeaux</item>
+        <item>orange</item>
+        <item>darkOrange</item>
+        <item>blackOrange</item>
 	</string-array>
-
 </resources>
