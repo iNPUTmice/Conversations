@@ -1372,8 +1372,7 @@ public class RtpSessionActivity extends XmppActivity
     @Override
     protected void onSaveInstanceState(@NonNull @NotNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        int visibility = findViewById(R.id.action_dialpad).getVisibility();
-        System.out.println("visibility onSave = " + visibility);
+        int visibility = findViewById(R.id.dialpad).getVisibility();
         outState.putInt("dialpad_visibility", visibility);
     }
 
