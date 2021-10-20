@@ -49,6 +49,9 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
+                android:focusable="false"
+                android:clickable="false"
+                android:cursorVisible="false"
                 android:imeOptions="actionDone|flagNoExtractUi"/>
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>

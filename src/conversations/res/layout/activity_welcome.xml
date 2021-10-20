@@ -36,25 +36,28 @@
                     <Space
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="1" />
+                        android:layout_weight="1"
+                        android:visibility="gone" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/welcome_header"
-                        android:textAppearance="@style/TextAppearance.Conversations.Title" />
+                        android:textAppearance="@style/TextAppearance.Conversations.Title"
+                        android:visibility="gone" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="@string/do_you_have_an_account"
-                        android:textAppearance="@style/TextAppearance.Conversations.Body1" />
+                        android:textAppearance="@style/TextAppearance.Conversations.Body1"
+                        android:visibility="gone" />
 
                     <Button
                         android:id="@+id/register_new_account"
                         style="@style/Widget.Conversations.Button.Borderless"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="right"
                         android:text="@string/create_new_account"
@@ -63,7 +66,7 @@
                     <Button
                         android:id="@+id/use_existing"
                         style="@style/Widget.Conversations.Button.Borderless"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="right"
                         android:text="@string/i_already_have_an_account"
@@ -80,8 +83,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
+                        android:layout_centerInParent="true"
                         android:padding="8dp"
                         android:src="@drawable/main_logo" />
                 </RelativeLayout>

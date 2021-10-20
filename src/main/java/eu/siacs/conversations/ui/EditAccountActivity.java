@@ -1013,9 +1013,9 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         if (this.mAccount.isOnlineAndConnected() && !this.mFetchingAvatar) {
             Features features = this.mAccount.getXmppConnection().getFeatures();
             this.binding.stats.setVisibility(View.VISIBLE);
-            boolean showBatteryWarning = !xmppConnectionService.getPushManagementService().available(mAccount) && isOptimizingBattery();
-            boolean showDataSaverWarning = isAffectedByDataSaver();
-            showOsOptimizationWarning(showBatteryWarning, showDataSaverWarning);
+            //boolean showBatteryWarning = !xmppConnectionService.getPushManagementService().available(mAccount) && isOptimizingBattery();
+            //boolean showDataSaverWarning = isAffectedByDataSaver();
+            //showOsOptimizationWarning(showBatteryWarning, showDataSaverWarning);
             this.binding.sessionEst.setText(UIHelper.readableTimeDifferenceFull(this, this.mAccount.getXmppConnection()
                     .getLastSessionEstablished()));
             if (features.rosterVersioning()) {

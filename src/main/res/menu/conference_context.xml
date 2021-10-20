@@ -6,5 +6,6 @@
         android:title="@string/delete_bookmark"/>
     <item
         android:id="@+id/context_share_uri"
-        android:title="@string/share_uri_with"/>
+        android:title="@string/share_uri_with"
+        android:visible="false" />
 </menu>

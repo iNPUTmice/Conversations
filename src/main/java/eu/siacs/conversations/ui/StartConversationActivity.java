@@ -310,29 +310,29 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
         mRequestedContactsPermission.set(savedInstanceState != null && savedInstanceState.getBoolean("requested_contacts_permission", false));
         mOpenedFab.set(savedInstanceState != null && savedInstanceState.getBoolean("opened_fab", false));
         binding.speedDial.setOnActionSelectedListener(actionItem -> {
-            final String searchString = mSearchEditText != null ? mSearchEditText.getText().toString() : null;
+            /*final String searchString = mSearchEditText != null ? mSearchEditText.getText().toString() : null;
             final String prefilled;
             if (isValidJid(searchString)) {
                 prefilled = Jid.ofEscaped(searchString).toEscapedString();
             } else {
                 prefilled = null;
-            }
+            }*/
             switch (actionItem.getId()) {
                 case R.id.discover_public_channels:
                     startActivity(new Intent(this, ChannelDiscoveryActivity.class));
                     break;
-                case R.id.join_public_channel:
+                /*case R.id.join_public_channel:
                     showJoinConferenceDialog(prefilled);
-                    break;
+                    break;*/
                 case R.id.create_private_group_chat:
                     showCreatePrivateGroupChatDialog();
                     break;
                 case R.id.create_public_channel:
                     showPublicChannelDialog();
                     break;
-                case R.id.create_contact:
+                /*case R.id.create_contact:
                     showCreateContactDialog(prefilled, null);
-                    break;
+                    break;*/
             }
             return false;
         });
@@ -368,7 +368,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
             recreate();
         } else {
             if (pendingViewIntent.peek() == null) {
-                askForContactsPermissions();
+                //askForContactsPermissions();
             }
         }
         mConferenceAdapter.refreshSettings();
@@ -637,7 +637,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
         AccountUtils.showHideMenuItems(menu);
         MenuItem menuHideOffline = menu.findItem(R.id.action_hide_offline);
         MenuItem qrCodeScanMenuItem = menu.findItem(R.id.action_scan_qr_code);
-        qrCodeScanMenuItem.setVisible(isCameraFeatureAvailable());
+        //qrCodeScanMenuItem.setVisible(isCameraFeatureAvailable());
         if (QuickConversationsService.isQuicksy()) {
             menuHideOffline.setVisible(false);
         } else {
@@ -669,9 +669,9 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
             case android.R.id.home:
                 navigateBack();
                 return true;
-            case R.id.action_scan_qr_code:
+            /*case R.id.action_scan_qr_code:
                 UriHandlerActivity.scan(this);
-                return true;
+                return true;*/
             case R.id.action_hide_offline:
                 mHideOfflineContacts = !item.isChecked();
                 getPreferences().edit().putBoolean("hide_offline", mHideOfflineContacts).apply();
@@ -779,6 +779,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length > 0)
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 ScanActivity.onRequestPermissionResult(this, requestCode, grantResults);

@@ -51,23 +51,34 @@ public class ChannelSearchResultAdapter extends ListAdapter<Room, ChannelSearchR
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
         final Room searchResult = getItem(position);
-        viewHolder.binding.name.setText(searchResult.getName());
+        if(searchResult.getName() == null)
+        {
+            int index = searchResult.getRoom().asBareJid().toString().indexOf('@');
+            String room_name = searchResult.getRoom().asBareJid().toString().substring(0,index);
+            viewHolder.binding.name.setText(room_name);
+        }
+        else {
+            viewHolder.binding.name.setText(searchResult.getName());
+        }
         final String description = searchResult.getDescription();
-        final String language = searchResult.getLanguage();
+        //final String language = searchResult.getLanguage();
+        final int nusers = searchResult.getNusers();
         if (TextUtils.isEmpty(description)) {
             viewHolder.binding.description.setVisibility(View.GONE);
         } else {
             viewHolder.binding.description.setText(description);
             viewHolder.binding.description.setVisibility(View.VISIBLE);
         }
-        if (language == null || language.length() != 2) {
+        viewHolder.binding.room.setText(nusers + " Participents");
+        viewHolder.binding.room.setVisibility(View.VISIBLE);
+        /*if (language == null || language.length() != 2) {
             viewHolder.binding.language.setVisibility(View.GONE);
         } else {
             viewHolder.binding.language.setText(language.toUpperCase(Locale.ENGLISH));
             viewHolder.binding.language.setVisibility(View.VISIBLE);
         }
         final Jid room = searchResult.getRoom();
-        viewHolder.binding.room.setText(room != null ? room.asBareJid().toString() : "");
+        viewHolder.binding.room.setText(room != null ? room.asBareJid().toString() : "");*/
         AvatarWorkerTask.loadAvatar(searchResult, viewHolder.binding.avatar, R.dimen.avatar);
         final View root = viewHolder.binding.getRoot();
         root.setTag(searchResult);

@@ -3,7 +3,7 @@
     <item
         android:id="@+id/verify_scan"
         android:title="@string/scan_qr_code"
-        />
+        android:visible="false" />
     <item
         android:id="@+id/distrust_key"
         android:title="@string/distrust_omemo_key"/>

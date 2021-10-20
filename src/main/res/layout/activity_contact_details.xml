@@ -110,8 +110,8 @@
                             android:id="@+id/details_account"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
                             android:layout_below="@+id/details_jidbox"
+                            android:layout_alignParentRight="true"
                             android:layout_marginTop="32dp"
                             android:text="@string/using_account"
                             android:textAppearance="@style/TextAppearance.Conversations.Caption" />
@@ -201,7 +201,8 @@
                                 android:paddingLeft="16dp"
                                 android:paddingRight="16dp"
                                 android:text="@string/scan_qr_code"
-                                android:textColor="?attr/colorAccent" />
+                                android:textColor="?attr/colorAccent"
+                                android:visibility="gone" />
 
                             <Button
                                 android:id="@+id/show_inactive_devices"

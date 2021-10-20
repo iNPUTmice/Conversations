@@ -6,5 +6,6 @@
         android:id="@+id/action_share"
         android:icon="?attr/icon_share"
         android:title="@string/invite"
+        android:visible="false"
         app:showAsAction="always" />
 </menu>

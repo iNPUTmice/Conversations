@@ -95,9 +95,9 @@ android {
         versionCode 42022
         versionName "2.10.1"
         archivesBaseName += "-$versionName"
-        applicationId "eu.siacs.conversations"
+        applicationId "com.hantir.android"
         resValue "string", "applicationId", applicationId
-        def appName = "Conversations"
+        def appName = "Hantir"
         resValue "string", "app_name", appName
         buildConfigField "String", "APP_NAME", "\"$appName\"";
     }

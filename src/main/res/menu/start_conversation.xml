@@ -10,9 +10,10 @@
         app:showAsAction="collapseActionView|always"/>
     <item
         android:id="@+id/action_scan_qr_code"
-        android:title="@string/scan_qr_code"
         android:icon="?attr/icon_scan_qr_code"
-        app:showAsAction="always"/>
+        android:title="@string/scan_qr_code"
+        android:visible="false"
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/action_hide_offline"

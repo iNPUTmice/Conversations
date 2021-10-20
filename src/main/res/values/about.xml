@@ -1,65 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright (c) 2018, Daniel Gultsch All rights reserved.
-  ~
-  ~ Redistribution and use in source and binary forms, with or without modification,
-  ~ are permitted provided that the following conditions are met:
-  ~
-  ~ 1. Redistributions of source code must retain the above copyright notice, this
-  ~ list of conditions and the following disclaimer.
-  ~
-  ~ 2. Redistributions in binary form must reproduce the above copyright notice,
-  ~ this list of conditions and the following disclaimer in the documentation and/or
-  ~ other materials provided with the distribution.
-  ~
-  ~ 3. Neither the name of the copyright holder nor the names of its contributors
-  ~ may be used to endorse or promote products derived from this software without
-  ~ specific prior written permission.
-  ~
-  ~ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-  ~ ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-  ~ WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-  ~ DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
-  ~ ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-  ~ (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-  ~ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-  ~ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-  ~ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-  ~ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-  -->
-
 <resources>
     <string name="pref_about_message" translatable="false">
-			Conversations • the very last word in instant messaging.
-			\n\nCopyright © 2014-2021 Daniel Gultsch
-			\n\nThis program is free software: you can redistribute it and/or modify
-			it under the terms of the GNU General Public License as published by
-			the Free Software Foundation, either version 3 of the License, or
-			(at your option) any later version.
-			\n\nThis program is distributed in the hope that it will be useful,
-			but WITHOUT ANY WARRANTY; without even the implied warranty of
-			MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-			GNU General Public License for more details.
-			\n\nYou should have received a copy of the GNU General Public License
-			along with this program. If not, see https://www.gnu.org/licenses
-			\n\nDownload the full source code at https://github.com/iNPUTmice/Conversations
-			\n\n\nLibraries
-			\n\nhttps://webrtc.org\nCopyright (c) 2011, The WebRTC project authors. All rights reserved. (https://webrtc.org/support/license)
-			\n\nhttps://github.com/ypresto/android-transcoder\n(Apache License, Version 2.0)
-			\n\nhttps://www.bouncycastle.org\n(The MIT License (MIT))
-			\n\nhttps://www.gnu.org/software/libidn\n(Apache License, Version 2.0)
-			\n\nhttps://github.com/ge0rg/MemorizingTrustManager\n(The MIT License (MIT))
-			\n\nhttps://github.com/rtreffer/minidns\n(WTFPL)
-			\n\nhttps://github.com/open-keychain/openkeychain-api-lib\n(Apache License, Version 2.0)
-			\n\nhttps://developer.android.com/tools/support-library\n(Apache License, Version 2.0)
-			\n\nhttps://github.com/google/material-design-icons\n(CC BY 4.0)
-			\n\nhttps://github.com/leolin310148/ShortcutBadger\n(Apache License, Version 2.0)
-			\n\nhttps://github.com/WhisperSystems/libaxolotl-java\n(GPLv3)
-			\n\nhttps://github.com/vinc3m1/RoundedImageView\n(Apache License, Version 2.0)
-			\n\nhttps://github.com/jdamcd/android-crop\n(Apache License, Version 2.0)
-			\n\nhttps://github.com/zxing/zxing\n(Apache License, Version 2.0)
-			\n\nhttps://github.com/osmdroid/osmdroid\n(Apache License, Version 2.0)
-			\n\n\nMaps
+			Hantir • One stop for all fun.
+			\n\nFind Publich Chat Rooms, Meet New People Online. Explore hundreds of public chat rooms and join or create your own chat room to meet real people online.
+			\n\nMeet and chat with strangers by using available chat rooms. Enjoy private chat with many available stickers, emojis and our very own cute smileys.
+			\n\nShare pics with your friends easily.
 			\n\nMaps by Open Street Map (https://www.openstreetmap.org). Copyright restrictions may apply.
 	</string>
 </resources>

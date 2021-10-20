@@ -13,18 +13,19 @@
         android:id="@+id/action_share"
         android:icon="?attr/icon_share"
         android:orderInCategory="15"
-        app:showAsAction="always"
-        android:title="@string/share_uri_with">
+        android:title="@string/share_uri_with"
+        android:visible="false"
+        app:showAsAction="always">
         <menu>
             <item
                 android:id="@+id/action_share_uri"
-                android:title="@string/share_as_uri"/>
+                android:title="@string/share_as_uri" />
             <item
                 android:id="@+id/action_share_http"
-                android:title="@string/share_as_http"/>
+                android:title="@string/share_as_http" />
             <item
                 android:id="@+id/action_show_qr_code"
-                android:title="@string/show_qr_code"/>
+                android:title="@string/show_qr_code" />
         </menu>
     </item>
     <item

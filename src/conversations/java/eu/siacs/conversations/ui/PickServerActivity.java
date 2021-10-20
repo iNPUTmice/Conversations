@@ -54,6 +54,7 @@ public class PickServerActivity extends XmppActivity {
 
     @Override
     public void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
         if (intent != null) {
             setIntent(intent);
         }

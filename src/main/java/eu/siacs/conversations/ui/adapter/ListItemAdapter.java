@@ -1,6 +1,7 @@
 package eu.siacs.conversations.ui.adapter;
 
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 
 import com.wefika.flowlayout.FlowLayout;
@@ -78,15 +80,33 @@ public class ListItemAdapter extends ArrayAdapter<ListItem> {
 				viewHolder.tags.addView(tv);
 			}
 		}
+		viewHolder.jid.setVisibility(View.GONE);
 		final Jid jid = item.getJid();
-		if (jid != null) {
+		/*if (jid != null) {
 			viewHolder.jid.setVisibility(View.VISIBLE);
 			viewHolder.jid.setText(IrregularUnicodeDetector.style(activity, jid));
 		} else {
 			viewHolder.jid.setVisibility(View.GONE);
-		}
+		}*/
 		viewHolder.name.setText(EmojiWrapper.transform(item.getDisplayName()));
 		AvatarWorkerTask.loadAvatar(item, viewHolder.avatar, R.dimen.avatar);
+
+		if (tags.size() == 0) {
+			viewHolder.jid.setVisibility(View.GONE);
+		} else
+		{
+			viewHolder.jid.setVisibility(View.VISIBLE);
+			if (tags.size() >= 2) {
+				viewHolder.jid.setTextColor(ContextCompat.getColor(getContext(), R.color.green800));
+				viewHolder.jid.setTypeface(null, Typeface.BOLD);
+				viewHolder.jid.setText(tags.get(1).getName());
+			}
+			else
+			{
+				viewHolder.jid.setTextColor(ContextCompat.getColor(getContext(), R.color.grey500));
+				viewHolder.jid.setText(tags.get(0).getName());
+			}
+		}
 		return view;
 	}
 

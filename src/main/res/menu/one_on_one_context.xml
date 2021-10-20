@@ -5,5 +5,6 @@
         android:title="@string/action_contact_details"/>
     <item
         android:id="@+id/action_show_qr_code"
-        android:title="@string/show_qr_code"/>
+        android:title="@string/show_qr_code"
+        android:visible="false" />
 </menu>

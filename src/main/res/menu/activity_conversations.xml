@@ -20,6 +20,6 @@
         android:icon="?attr/icon_scan_qr_code"
         android:orderInCategory="10"
         android:title="@string/scan_qr_code"
-        android:visible="@bool/show_qr_code_scan"
+        android:visible="false"
         app:showAsAction="always" />
 </menu>

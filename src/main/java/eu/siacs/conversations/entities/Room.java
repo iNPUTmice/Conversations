@@ -90,4 +90,8 @@ public class Room implements AvatarService.Avatarable, Comparable<Room> {
                 .compare(Strings.nullToEmpty(address), Strings.nullToEmpty(o.address))
                 .result();
     }
+
+    public int getNusers() {
+        return nusers;
+    }
 }

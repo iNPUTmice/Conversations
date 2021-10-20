@@ -35,34 +35,38 @@
                     <Space
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="1" />
+                        android:layout_weight="1"
+                        android:visibility="gone" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/pick_a_server"
-                        android:textAppearance="@style/TextAppearance.Conversations.Title" />
+                        android:textAppearance="@style/TextAppearance.Conversations.Title"
+                        android:visibility="gone" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="@string/server_select_text"
-                        android:textAppearance="@style/TextAppearance.Conversations.Body1" />
+                        android:textAppearance="@style/TextAppearance.Conversations.Body1"
+                        android:visibility="gone" />
 
                     <Button
                         android:id="@+id/use_cim"
                         style="@style/Widget.Conversations.Button.Borderless"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="right"
                         android:text="@string/use_conversations.im"
-                        android:textColor="?colorAccent" />
+                        android:textColor="?colorAccent"
+                        android:visibility="gone" />
 
                     <Button
                         android:id="@+id/use_own_provider"
                         style="@style/Widget.Conversations.Button.Borderless"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="right"
                         android:text="@string/use_own_provider"
@@ -79,8 +83,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
+                        android:layout_centerInParent="true"
                         android:padding="8dp"
                         android:src="@drawable/main_logo" />
                 </RelativeLayout>

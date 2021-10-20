@@ -6,7 +6,8 @@
         android:title="@string/view_contact_details"/>
     <item
         android:id="@+id/context_show_qr"
-        android:title="@string/show_qr_code"/>
+        android:title="@string/show_qr_code"
+        android:visible="false" />
     <item
         android:id="@+id/context_contact_block_unblock"
         android:title="@string/block_contact"/>

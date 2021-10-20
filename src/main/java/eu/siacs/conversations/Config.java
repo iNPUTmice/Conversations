@@ -38,15 +38,15 @@ public final class Config {
 
     public static final String LOGTAG = BuildConfig.APP_NAME.toLowerCase(Locale.US);
 
-    public static final Jid BUG_REPORTS = Jid.of("bugs@conversations.im");
-    public static final Uri HELP = Uri.parse("https://help.conversations.im");
+    public static final Jid BUG_REPORTS = Jid.of("admin@hantir.com");
+    public static final Uri HELP = Uri.parse("https://help.hantir.com");
 
 
-    public static final String DOMAIN_LOCK = null; //only allow account creation for this domain
-    public static final String MAGIC_CREATE_DOMAIN = "conversations.im";
-    public static final Jid QUICKSY_DOMAIN = Jid.of("quicksy.im");
+    public static final String DOMAIN_LOCK = "hantir.com"; //only allow account creation for this domain
+    public static final String MAGIC_CREATE_DOMAIN = "hantir.com";
+    public static final Jid QUICKSY_DOMAIN = null; //Jid.of("quicksy.im");
 
-    public static final String CHANNEL_DISCOVERY = "https://search.jabber.network";
+    public static final String CHANNEL_DISCOVERY = "https://hantir.com";
 
     public static final boolean DISALLOW_REGISTRATION_IN_UI = false; //hide the register checkbox
 
@@ -180,8 +180,8 @@ public final class Config {
         //if the contacts domain matches one of the following domains OMEMO won’t be turned on automatically
         //can be used for well known, widely used gateways
         private static final List<String> CONTACT_DOMAINS = Arrays.asList(
-                "cheogram.com",
-                "*.covid.monal.im"
+                "hantir.com",
+                "*.hantir.com"
         );
 
         public static boolean matchesContactDomain(final String domain) {
