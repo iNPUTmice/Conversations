@@ -278,7 +278,7 @@
         <item name="icon_share" type="reference">@drawable/ic_share_white_24dp</item>
         <item name="ic_cloud_download" type="reference">@drawable/ic_cloud_download_white_24dp
         </item>
-        <item name="icon_scan_qr_code" type="reference">@drawable/ic_qr_code_scan_white_24dp</item>
+        <!--item name="icon_scan_qr_code" type="reference">@drawable/ic_qr_code_scan_white_24dp</item-->
         <item name="icon_scroll_down" type="reference">@drawable/ic_scroll_to_end_white</item>
 
         <item name="icon_gps_not_fixed" type="reference">@drawable/ic_gps_not_fixed_white_24dp
