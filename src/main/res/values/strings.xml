@@ -225,7 +225,7 @@
     <string name="fetching_keys">Fetching keys…</string>
     <string name="done">Done</string>
     <string name="decrypt">Decrypt</string>
-    <string name="bookmarks">Recent Rooms</string>
+    <string name="bookmarks">All Rooms</string>
     <string name="search">Search</string>
     <string name="enter_contact">Enter User</string>
     <string name="delete_contact">Delete user</string>
@@ -292,7 +292,7 @@
     <string name="title_pref_enable_quiet_hours">Enable quiet hours</string>
     <string name="pref_quiet_hours_summary">Notifications will be silenced during quiet hours</string>
     <string name="pref_expert_options_other">Other</string>
-    <string name="pref_autojoin">Synchronize with recent rooms</string>
+    <string name="pref_autojoin">Synchronize with all rooms</string>
     <string name="pref_autojoin_summary">Join group chats automatically if the bookmark says so</string>
     <string name="toast_message_omemo_fingerprint">OMEMO fingerprint copied to clipboard</string>
     <string name="conference_banned">You are banned from this group chat</string>
@@ -453,7 +453,7 @@
     <string name="recently_used">Most recently used</string>
     <string name="choose_quick_action">Choose quick action</string>
     <string name="search_contacts">Search all users</string>
-    <string name="search_bookmarks">Search Recent Rooms</string>
+    <string name="search_bookmarks">Search All Rooms</string>
     <string name="send_private_message">Send private message</string>
     <string name="user_has_left_conference">%1$s has left the group chat</string>
     <string name="username">Username</string>
