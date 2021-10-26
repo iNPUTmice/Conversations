@@ -26,7 +26,7 @@ import eu.siacs.conversations.R;
 
 public class DialpadView extends ConstraintLayout implements View.OnClickListener {
 
-    protected java.util.function.Consumer<String> clickConsumer = null;
+    protected Consumer<String> clickConsumer = null;
 
     public DialpadView(Context context) {
         super(context);
@@ -43,7 +43,7 @@ public class DialpadView extends ConstraintLayout implements View.OnClickListene
         init();
     }
 
-    public void setClickConsumer(java.util.function.Consumer<String> clickConsumer) {
+    public void setClickConsumer(Consumer<String> clickConsumer) {
         this.clickConsumer = clickConsumer;
     }
 
@@ -72,4 +72,8 @@ public class DialpadView extends ConstraintLayout implements View.OnClickListene
         clickConsumer.accept(v.getTag().toString());
     }
 
+	// Based on java.util.function.Consumer to avoid Android 24 dependency
+	public interface Consumer<T> {
+		void accept(T t);
+	}
 }
