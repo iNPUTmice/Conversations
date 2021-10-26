@@ -19,9 +19,12 @@ package eu.siacs.conversations.ui.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.databinding.DataBindingUtil;
+import eu.siacs.conversations.databinding.DialpadBinding;
 import eu.siacs.conversations.R;
 
 public class DialpadView extends ConstraintLayout implements View.OnClickListener {
@@ -48,23 +51,13 @@ public class DialpadView extends ConstraintLayout implements View.OnClickListene
     }
 
     private void init() {
-        inflate(getContext(), R.layout.dialpad, this);
-        initViews();
-    }
-
-    private void initViews() {
-        findViewById(R.id.dialpad_1_holder).setOnClickListener(this);
-        findViewById(R.id.dialpad_2_holder).setOnClickListener(this);
-        findViewById(R.id.dialpad_3_holder).setOnClickListener(this);
-        findViewById(R.id.dialpad_4_holder).setOnClickListener(this);
-        findViewById(R.id.dialpad_5_holder).setOnClickListener(this);
-        findViewById(R.id.dialpad_6_holder).setOnClickListener(this);
-        findViewById(R.id.dialpad_7_holder).setOnClickListener(this);
-        findViewById(R.id.dialpad_8_holder).setOnClickListener(this);
-        findViewById(R.id.dialpad_9_holder).setOnClickListener(this);
-        findViewById(R.id.dialpad_0_holder).setOnClickListener(this);
-        findViewById(R.id.dialpad_asterisk_holder).setOnClickListener(this);
-        findViewById(R.id.dialpad_pound_holder).setOnClickListener(this);
+        DialpadBinding binding = DataBindingUtil.inflate(
+            LayoutInflater.from(getContext()),
+            R.layout.dialpad,
+            this,
+            true
+        );
+        binding.setDialpadView(this);
     }
 
     @Override
