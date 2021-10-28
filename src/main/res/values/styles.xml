@@ -159,4 +159,8 @@
     <style name="TextAppearance.Conversations.Body1.Secondary.OnDark" parent="TextAppearance.Conversations.Body1">
         <item name="android:textColor">@color/white70</item>
     </style>
+    <style name="CustomTextAppearanceTab" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
 </resources>

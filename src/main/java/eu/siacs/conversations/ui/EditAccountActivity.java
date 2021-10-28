@@ -1139,14 +1139,16 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             if (this.mAccount.errorStatus()) {
                 if (this.mAccount.getStatus() == Account.State.UNAUTHORIZED || this.mAccount.getStatus() == Account.State.DOWNGRADE_ATTACK) {
                     errorLayout = this.binding.accountPasswordLayout;
+                    errorLayout.setError(getResources().getString(R.string.username_password_wrong));
                 } else if (mShowOptions
                         && this.mAccount.getStatus() == Account.State.SERVER_NOT_FOUND
                         && this.binding.hostname.getText().length() > 0) {
                     errorLayout = this.binding.hostnameLayout;
+                    errorLayout.setError(getString(this.mAccount.getStatus().getReadableId()));
                 } else {
                     errorLayout = this.binding.accountJidLayout;
+                    errorLayout.setError(getString(this.mAccount.getStatus().getReadableId()));
                 }
-                errorLayout.setError(getString(this.mAccount.getStatus().getReadableId()));
                 if (init || !accountInfoEdited()) {
                     errorLayout.requestFocus();
                 }

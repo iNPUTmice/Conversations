@@ -30,13 +30,11 @@
             app:errorTextAppearance="@style/TextAppearance.Conversations.Design.Error"
             app:hintTextAppearance="@style/TextAppearance.Conversations.Design.Hint">
 
-            <AutoCompleteTextView
+            <EditText
                 android:id="@+id/jid"
                 style="@style/Widget.Conversations.EditText"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:imeOptions="actionDone|flagNoExtractUi"
-                android:inputType="textEmailAddress" />
+                android:layout_height="wrap_content"/>
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 </layout>

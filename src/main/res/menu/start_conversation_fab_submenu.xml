@@ -7,8 +7,7 @@
     <!--item
         android:id="@+id/join_public_channel"
         android:icon="@drawable/ic_input_white_24dp"
-        android:title="@string/join_public_channel"
-        android:visible="false" /-->
+        android:title="@string/join_public_channel" /-->
     <item
         android:id="@+id/create_public_channel"
         android:title="@string/create_public_channel"
@@ -17,9 +16,8 @@
         android:id="@+id/create_private_group_chat"
         android:title="@string/create_private_group_chat"
         android:icon="@drawable/ic_group_white_24dp"/>
-    <!--item
+    <item
         android:id="@+id/create_contact"
         android:icon="@drawable/ic_person_white_48dp"
-        android:title="@string/add_contact"
-        android:visible="false" /-->
+        android:title="@string/add_contact" />
 </menu>

@@ -65,15 +65,15 @@ public final class Config {
 
     public static final boolean DISABLE_BAN = false; // disables the ability to ban users from rooms
 
-    public static final int PING_MAX_INTERVAL = 300;
+    public static final int PING_MAX_INTERVAL = 600;
     public static final int IDLE_PING_INTERVAL = 600; //540 is minimum according to docs;
-    public static final int PING_MIN_INTERVAL = 30;
+    public static final int PING_MIN_INTERVAL = 300;
     public static final int LOW_PING_TIMEOUT = 1; // used after push received
     public static final int PING_TIMEOUT = 15;
-    public static final int SOCKET_TIMEOUT = 15;
-    public static final int CONNECT_TIMEOUT = 90;
+    public static final int SOCKET_TIMEOUT = 60;
+    public static final int CONNECT_TIMEOUT = 180;
     public static final int POST_CONNECTIVITY_CHANGE_PING_INTERVAL = 30;
-    public static final int CONNECT_DISCO_TIMEOUT = 20;
+    public static final int CONNECT_DISCO_TIMEOUT = 60;
     public static final int MINI_GRACE_PERIOD = 750;
 
     public static final boolean XEP_0392 = true; //enables XEP-0392 v0.6.0

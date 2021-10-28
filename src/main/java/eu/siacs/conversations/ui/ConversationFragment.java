@@ -361,7 +361,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             final Contact contact = conversation == null ? null : conversation.getContact();
             if (contact != null) {
                 activity.xmppConnectionService.createContact(contact, true);
-                activity.switchToContactDetails(contact);
+                //activity.switchToContactDetails(contact);
             }
         }
     };

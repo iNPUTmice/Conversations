@@ -384,20 +384,20 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 
             if (contact.getOption(Contact.Options.FROM)) {
                 binding.detailsSendPresence.setText(R.string.send_presence_updates);
-                binding.detailsSendPresence.setChecked(true);
+                //binding.detailsSendPresence.setChecked(true);
             } else if (contact.getOption(Contact.Options.PENDING_SUBSCRIPTION_REQUEST)) {
-                binding.detailsSendPresence.setChecked(false);
+                //binding.detailsSendPresence.setChecked(false);
                 binding.detailsSendPresence.setText(R.string.send_presence_updates);
             } else {
                 binding.detailsSendPresence.setText(R.string.preemptively_grant);
-                binding.detailsSendPresence.setChecked(contact.getOption(Contact.Options.PREEMPTIVE_GRANT));
+                //binding.detailsSendPresence.setChecked(contact.getOption(Contact.Options.PREEMPTIVE_GRANT));
             }
             if (contact.getOption(Contact.Options.TO)) {
                 binding.detailsReceivePresence.setText(R.string.receive_presence_updates);
-                binding.detailsReceivePresence.setChecked(true);
+                //binding.detailsReceivePresence.setChecked(true);
             } else {
                 binding.detailsReceivePresence.setText(R.string.ask_for_presence_updates);
-                binding.detailsReceivePresence.setChecked(contact.getOption(Contact.Options.ASKING));
+                //binding.detailsReceivePresence.setChecked(contact.getOption(Contact.Options.ASKING));
             }
             if (contact.getAccount().isOnlineAndConnected()) {
                 binding.detailsReceivePresence.setEnabled(true);

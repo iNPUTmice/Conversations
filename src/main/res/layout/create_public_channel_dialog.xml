@@ -39,7 +39,7 @@
             android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/xmpp_address"
+            android:hint="@string/public_room_xmpp_address"
             app:errorTextAppearance="@style/TextAppearance.Conversations.Design.Error"
             app:hintTextAppearance="@style/TextAppearance.Conversations.Design.Hint">
 

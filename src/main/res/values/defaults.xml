@@ -16,7 +16,7 @@
     <string name="notification_ringtone">content://settings/system/notification_sound</string>
     <string name="incoming_call_ringtone">content://settings/system/ringtone</string>
     <integer name="grace_period">144</integer>
-    <integer name="auto_accept_filesize">524288</integer>
+    <integer name="auto_accept_filesize">1000000</integer>
     <string name="picture_compression">auto</string>
     <bool name="use_green_background">true</bool>
     <string name="quick_action">recent</string>
@@ -28,13 +28,13 @@
     <bool name="use_tor">false</bool>
     <bool name="show_connection_options">false</bool>
     <bool name="display_enter_key">false</bool>
-    <bool name="manually_change_presence">false</bool>
+    <bool name="manually_change_presence">true</bool>
     <bool name="away_when_screen_off">false</bool>
     <bool name="autojoin">true</bool>
     <bool name="enable_foreground_service">true</bool>
     <bool name="never_send">false</bool>
     <bool name="validate_hostname">false</bool>
-    <bool name="show_qr_code_scan">true</bool>
+    <bool name="show_qr_code_scan">false</bool>
     <bool name="show_individual_search_options">true</bool>
     <bool name="show_combined_search_options">false</bool>
     <bool name="scroll_to_bottom">true</bool>

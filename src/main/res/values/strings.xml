@@ -58,7 +58,7 @@
     <string name="start_conversation">Start Chat</string>
     <string name="invite_contact">Invite user</string>
     <string name="invite">Invite</string>
-    <string name="contacts">All Users</string>
+    <string name="contacts">Friends</string>
     <string name="contact">User</string>
     <string name="cancel">Cancel</string>
     <string name="set">Set</string>
@@ -70,7 +70,7 @@
     <string name="save">Save</string>
     <string name="ok">OK</string>
     <string name="crash_report_title">%1$s has crashed</string>
-    <string name="crash_report_message">Using your XMPP account to send in stack traces helps the ongoing development of %1$s.</string>
+    <string name="crash_report_message">Using your username to send in stack traces helps the ongoing development of %1$s.</string>
     <string name="send_now">Send now</string>
     <string name="send_never">Never ask again</string>
     <string name="problem_connecting_to_account">Could not connect to account</string>
@@ -78,7 +78,7 @@
     <string name="touch_to_fix">Tap to manage your accounts</string>
     <string name="attach_file">Attach file</string>
     <string name="not_in_roster">Add this missing user to your user list?</string>
-    <string name="add_contact">Add user</string>
+    <string name="add_contact">Add Friend</string>
     <string name="send_failed">delivery failed</string>
     <string name="preparing_image">Getting ready to send image</string>
     <string name="preparing_images">Getting ready to send images</string>
@@ -185,11 +185,11 @@
     <string name="mgmt_account_are_you_sure">Are you sure?</string>
     <string name="mgmt_account_delete_confirm_text">Deleting your account erases your entire chat history</string>
     <string name="attach_record_voice">Record voice</string>
-    <string name="account_settings_jabber_id">XMPP address</string>
-    <string name="block_jabber_id">Block XMPP address</string>
+    <string name="account_settings_jabber_id">username</string>
+    <string name="block_jabber_id">Block user</string>
     <string name="account_settings_example_jabber_id">username@hantir.com</string>
     <string name="password">Password</string>
-    <string name="invalid_jid">This is not a valid XMPP address</string>
+    <string name="invalid_jid">This is not a valid username</string>
     <string name="error_out_of_memory">Out of memory. Image too big</string>
     <string name="add_phone_book_text">Do you want to add %s to your address book?</string>
     <string name="server_info_show_more">Server info</string>
@@ -225,7 +225,7 @@
     <string name="fetching_keys">Fetching keys…</string>
     <string name="done">Done</string>
     <string name="decrypt">Decrypt</string>
-    <string name="bookmarks">All Rooms</string>
+    <string name="bookmarks">Chat rooms</string>
     <string name="search">Search</string>
     <string name="enter_contact">Enter User</string>
     <string name="delete_contact">Delete user</string>
@@ -292,7 +292,7 @@
     <string name="title_pref_enable_quiet_hours">Enable quiet hours</string>
     <string name="pref_quiet_hours_summary">Notifications will be silenced during quiet hours</string>
     <string name="pref_expert_options_other">Other</string>
-    <string name="pref_autojoin">Synchronize with all rooms</string>
+    <string name="pref_autojoin">Synchronize with chat rooms</string>
     <string name="pref_autojoin_summary">Join group chats automatically if the bookmark says so</string>
     <string name="toast_message_omemo_fingerprint">OMEMO fingerprint copied to clipboard</string>
     <string name="conference_banned">You are banned from this group chat</string>
@@ -314,7 +314,7 @@
     <string name="send_again">Send again</string>
     <string name="file_url">File URL</string>
     <string name="url_copied_to_clipboard">Copied URL to clipboard</string>
-    <string name="jabber_id_copied_to_clipboard">Copied XMPP address to clipboard</string>
+    <string name="jabber_id_copied_to_clipboard">Copied username to clipboard</string>
     <string name="error_message_copied_to_clipboard">Copied error message to clipboard</string>
     <string name="web_address">web address</string>
     <string name="scan_qr_code">Scan 2D Barcode</string>
@@ -396,7 +396,7 @@
     <string name="conference_options">Private group chat configuration</string>
     <string name="channel_options">Public room configuration</string>
     <string name="members_only">Private, members only</string>
-    <string name="non_anonymous">Make XMPP addresses visible to anyone</string>
+    <string name="non_anonymous">Make username visible to anyone</string>
     <string name="moderated">Make room moderated</string>
     <string name="you_are_not_participating">You are not participating</string>
     <string name="modified_conference_options">Modified group chat options!</string>
@@ -452,8 +452,8 @@
     <string name="none">None</string>
     <string name="recently_used">Most recently used</string>
     <string name="choose_quick_action">Choose quick action</string>
-    <string name="search_contacts">Search all users</string>
-    <string name="search_bookmarks">Search All Rooms</string>
+    <string name="search_contacts">Search friends</string>
+    <string name="search_bookmarks">Search chat rooms</string>
     <string name="send_private_message">Send private message</string>
     <string name="user_has_left_conference">%1$s has left the group chat</string>
     <string name="username">Username</string>
@@ -476,7 +476,7 @@
     <string name="pref_treat_vibrate_as_dnd_summary">Show as Busy when device is on vibrate</string>
     <string name="pref_show_connection_options">Extended connection settings</string>
     <string name="pref_show_connection_options_summary">Show hostname and port settings when setting up an account</string>
-    <string name="hostname_example">xmpp.example.com</string>
+    <string name="hostname_example">hantir.com</string>
     <string name="action_add_account_with_certificate">Login with certificate</string>
     <string name="unable_to_parse_certificate">Could not parse certificate</string>
     <string name="mam_prefs">Archiving preferences</string>
@@ -486,7 +486,7 @@
     <string name="captcha_required">CAPTCHA required</string>
     <string name="captcha_hint">Enter the text from the image above</string>
     <string name="certificate_chain_is_not_trusted">Untrusted certificate chain</string>
-    <string name="jid_does_not_match_certificate">XMPP address does not match certificate</string>
+    <string name="jid_does_not_match_certificate">Username does not match certificate</string>
     <string name="action_renew_certificate">Renew certificate</string>
     <string name="error_fetching_omemo_key">Error fetching OMEMO key!</string>
     <string name="verified_omemo_key_with_certificate">Verified OMEMO key with certificate!</string>
@@ -512,7 +512,7 @@
     <string name="no_storage_permission">Grant %1$s access to external storage</string>
     <string name="no_camera_permission">Grant %1$s access to the camera</string>
     <string name="sync_with_contacts">Synchronize with users</string>
-    <string name="sync_with_contacts_long">%1$s wants permission to access your address book to match it with your XMPP user list.\nThis will display your contacts’ full names and avatars.\n\n%1$s will only read your address book and match it locally without uploading anything to your server.</string>
+    <string name="sync_with_contacts_long">%1$s wants permission to access your address book to match it with your friends list.\nThis will display your contacts’ full names and avatars.\n\n%1$s will only read your address book and match it locally without uploading anything to your server.</string>
     <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy needs access to your users’ phone numbers to make suggestions about possible users who are already on Quicksy.<br><br>We will not store a copy of those phone numbers.\n\nFor more information read our <a href="https://quicksy.im/#privacy">privacy policy</a>.<br><br>You will now be asked to grant permission to access your contacts.]]></string>
     <string name="notify_on_all_messages">Notify on all messages</string>
     <string name="notify_only_when_highlighted">Notify only when mentioned</string>
@@ -540,8 +540,8 @@
     <string name="welcome_header_quicksy" translatable="false">Have some Quick Chat</string>
     <string name="welcome_text_quicksy"><![CDATA[Quicksy is a spin off of the popular XMPP client Hantir with automatic user discovery.<br><br>You sign up with your phone number and Quicksy will automatically—based on the phone numbers in your address book—suggest possible contacts to you.<br><br>By signing up you agree to our <a href="https://quicksy.im/#privacy">privacy policy</a>.]]></string>
     <string name="agree_and_continue">Agree and continue</string>
-    <string name="magic_create_text">A guide is set up for account creation on Hantir.com.¹\nWhen picking Hantir.com as a provider you will be able to communicate with users of other providers by giving them your full XMPP address.</string>
-    <string name="your_full_jid_will_be">Your full XMPP address will be: %s</string>
+    <string name="magic_create_text">A guide is set up for account creation on Hantir.com.¹\nWhen picking Hantir.com as a provider you will be able to communicate with users of other providers by giving them your full username.</string>
+    <string name="your_full_jid_will_be">Your full username will be: %s</string>
     <string name="create_account">Create Account</string>
     <string name="use_own_provider">Create New Account</string>
     <string name="pick_your_username">Pick your username</string>
@@ -590,7 +590,7 @@
     <string name="remote_server_not_found">Remote server not found</string>
     <string name="remote_server_timeout">Remote server timeout</string>
     <string name="unable_to_update_account">Could not update account</string>
-    <string name="report_jid_as_spammer">Report this XMPP address for spamming.</string>
+    <string name="report_jid_as_spammer">Report this username for spamming.</string>
     <string name="pref_delete_omemo_identities">Delete OMEMO identities</string>
     <string name="pref_delete_omemo_identities_summary">Regenerate your OMEMO keys. All your users will have to verify you again. Only use this as a last resort.</string>
     <string name="delete_selected_keys">Delete selected keys</string>
@@ -676,7 +676,7 @@
     <string name="yesterday">Yesterday</string>
     <string name="pref_validate_hostname">Validate hostname with DNSSEC</string>
     <string name="pref_validate_hostname_summary">Server certificates that contain the validated hostname are considered verified</string>
-    <string name="certificate_does_not_contain_jid">Certificate does not contain a XMPP address</string>
+    <string name="certificate_does_not_contain_jid">Certificate does not contain a username</string>
     <string name="server_info_partial">partial</string>
     <string name="attach_record_video">Record video</string>
     <string name="copy_to_clipboard">Copy to clipboard</string>
@@ -738,7 +738,7 @@
     <string name="pref_use_share_location_plugin">Share Location Plugin</string>
     <string name="pref_use_share_location_plugin_summary">Use the Share Location Plugin instead of the built-in map</string>
     <string name="copy_link">Copy web address</string>
-    <string name="copy_jabber_id">Copy XMPP address</string>
+    <string name="copy_jabber_id">Copy username</string>
     <string name="p1_s3_filetransfer">HTTP File Sharing for S3</string>
     <string name="pref_start_search">Direct Search</string>
     <string name="pref_start_search_summary">At ‘Start Conversation’ screen open keyboard and place cursor in search field</string>
@@ -829,7 +829,7 @@
     <string name="install_orbot">Install Orbot</string>
     <string name="start_orbot">Start Orbot</string>
     <string name="no_market_app_installed">No market app installed.</string>
-    <string name="group_chat_will_make_your_jabber_id_public">This room will make your XMPP address public</string>
+    <string name="group_chat_will_make_your_jabber_id_public">This room will make your username public</string>
     <string name="ebook">e-book</string>
     <string name="video_original">Original (uncompressed)</string>
     <string name="open_with">Open with…</string>
@@ -842,16 +842,16 @@
     <string name="unable_to_restore_backup">Could not restore backup.</string>
     <string name="unable_to_decrypt_backup">Could not decrypt backup. Is the password correct?</string>
     <string name="backup_channel_name">Backup &amp; Restore</string>
-    <string name="enter_jabber_id">Enter XMPP address</string>
+    <string name="enter_jabber_id">Enter username</string>
     <string name="create_group_chat">Create group chat</string>
     <string name="join_public_channel">Join public room</string>
     <string name="create_private_group_chat">Create private room</string>
     <string name="create_public_channel">Create public room</string>
     <string name="create_dialog_channel_name">Room name</string>
-    <string name="xmpp_address">XMPP address</string>
+    <string name="xmpp_address">Username</string>
     <string name="please_enter_name">Please provide a name for the room</string>
-    <string name="please_enter_xmpp_address">Please provide an XMPP address</string>
-    <string name="this_is_an_xmpp_address">This is an XMPP address. Please provide a name.</string>
+    <string name="please_enter_xmpp_address">Please provide an username</string>
+    <string name="this_is_an_xmpp_address">This is an username. Please provide a name.</string>
     <string name="creating_channel">Creating public room…</string>
     <string name="channel_already_exists">This room already exists</string>
     <string name="joined_an_existing_channel">You’ve joined an existing room</string>
@@ -863,16 +863,16 @@
     <string name="admins_can_edit_subject">Admins can edit the topic.</string>
     <string name="owners_can_invite_others">Owners can invite others.</string>
     <string name="anyone_can_invite_others">Anyone can invite others.</string>
-    <string name="jabber_ids_are_visible_to_admins">XMPP addresses are visible to admins.</string>
-    <string name="jabber_ids_are_visible_to_anyone">XMPP addresses are visible to anyone.</string>
-    <string name="no_users_hint_channel">This public room has no participants. Invite your users or use the share button to distribute its XMPP address.</string>
+    <string name="jabber_ids_are_visible_to_admins">Usernames are visible to admins.</string>
+    <string name="jabber_ids_are_visible_to_anyone">Usernames are visible to anyone.</string>
+    <string name="no_users_hint_channel">This public room has no participants. Invite your users or use the share button to distribute roomname.</string>
     <string name="no_users_hint_group_chat">This private group chat has no participants.</string>
     <string name="manage_permission">Manage privileges</string>
     <string name="search_participants">Search participants</string>
     <string name="file_too_large">File too large</string>
     <string name="attach">Attach</string>
-    <string name="discover_channels">Find Public Rooms</string>
-    <string name="search_channels">Search rooms</string>
+    <string name="discover_channels">Find Public Chat Rooms</string>
+    <string name="search_channels">Search chat rooms</string>
     <string name="channel_discovery_opt_in_title">Possible privacy violation!</string>
     <string name="channel_discover_opt_in_message"><![CDATA[Room discovery uses a third party service called <a href="https://search.jabber.network">search.jabber.network</a>.<br><br>Using this feature will transmit your IP address and search terms to that service. See their <a href="https://search.jabber.network/privacy">Privacy Policy</a> for more information.]]></string>
     <string name="i_already_have_an_account">Log in</string>
@@ -969,6 +969,8 @@
     <string name="unable_to_enable_video">Unable to enable video.</string>
     <string name="plain_text_document">Plain text document</string>
     <string name="account_registrations_are_not_supported">Account registrations are not supported</string>
-    <string name="no_xmpp_adddress_found">No XMPP address found</string>
-    <string name="txtProgress">Please wait while loading all public rooms</string>
+    <string name="no_xmpp_adddress_found">No username found</string>
+    <string name="txtProgress">Loading available public chat rooms, Please wait.</string>
+    <string name="public_room_xmpp_address">username</string>
+    <string name="username_password_wrong">Username or Password wrong</string>
 </resources>

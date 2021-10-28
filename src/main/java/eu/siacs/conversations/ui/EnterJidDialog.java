@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.ArrayAdapter;
 
@@ -91,7 +92,7 @@ public class EnterJidDialog extends DialogFragment implements OnBackendConnected
 		builder.setTitle(getArguments().getString(TITLE_KEY));
 		binding = DataBindingUtil.inflate(getActivity().getLayoutInflater(), R.layout.enter_jid_dialog, null, false);
 		this.knownHostsAdapter = new KnownHostsAdapter(getActivity(), R.layout.simple_list_item);
-		binding.jid.setAdapter(this.knownHostsAdapter);
+		//binding.jid.setAdapter(this.knownHostsAdapter);
 		binding.jid.addTextChangedListener(this);
 		String prefilledJid = getArguments().getString(PREFILLED_JID_KEY);
 		if (prefilledJid != null) {
@@ -105,7 +106,7 @@ public class EnterJidDialog extends DialogFragment implements OnBackendConnected
 		}
 		sanityCheckJid = getArguments().getBoolean(SANITY_CHECK_JID, false);
 
-		DelayedHintHelper.setHint(R.string.account_settings_example_jabber_id, binding.jid);
+		//DelayedHintHelper.setHint(R.string.account_settings_example_jabber_id, binding.jid);
 
 		String account = getArguments().getString(ACCOUNT_KEY);
 		if (account == null) {
@@ -155,8 +156,15 @@ public class EnterJidDialog extends DialogFragment implements OnBackendConnected
 			return;
 		}
 		final Jid contactJid;
+		String contactUsername = binding.jid.getText().toString().trim();
 		try {
-			contactJid = Jid.ofEscaped(binding.jid.getText().toString());
+			if (Config.DOMAIN_LOCK != null && !contactUsername.contains("@")) {
+				contactJid = Jid.ofEscaped(binding.jid.getText().toString(), Config.DOMAIN_LOCK, null);
+			} else {
+				binding.jidLayout.setError(getActivity().getString(R.string.invalid_username));
+				//contactJid = Jid.ofEscaped(binding.jid.getText().toString());
+				return;
+			}
 		} catch (final IllegalArgumentException e) {
 			binding.jidLayout.setError(getActivity().getString(R.string.invalid_jid));
 			return;

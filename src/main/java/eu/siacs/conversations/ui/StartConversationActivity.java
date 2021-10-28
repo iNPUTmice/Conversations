@@ -310,6 +310,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
         mRequestedContactsPermission.set(savedInstanceState != null && savedInstanceState.getBoolean("requested_contacts_permission", false));
         mOpenedFab.set(savedInstanceState != null && savedInstanceState.getBoolean("opened_fab", false));
         binding.speedDial.setOnActionSelectedListener(actionItem -> {
+            final String prefilled = null;
             /*final String searchString = mSearchEditText != null ? mSearchEditText.getText().toString() : null;
             final String prefilled;
             if (isValidJid(searchString)) {
@@ -330,9 +331,9 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
                 case R.id.create_public_channel:
                     showPublicChannelDialog();
                     break;
-                /*case R.id.create_contact:
+                case R.id.create_contact:
                     showCreateContactDialog(prefilled, null);
-                    break;*/
+                    break;
             }
             return false;
         });
