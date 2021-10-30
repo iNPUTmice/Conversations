@@ -90,14 +90,14 @@
     <string name="delete_file_dialog_msg">Are you sure you want to delete this file?\n\n<b>Warning:</b> This will not delete copies of this file that are stored on other devices or servers. </string>
     <string name="also_end_conversation">Close this chat afterwards</string>
     <string name="choose_presence">Choose device</string>
-    <string name="send_unencrypted_message">Send unencrypted message</string>
+    <string name="send_unencrypted_message">Send message</string>
     <string name="send_message">Send message</string>
     <string name="send_message_to_x">Send message to %s</string>
     <string name="send_omemo_message">Send OMEMO encrypted message</string>
     <string name="send_omemo_x509_message">Send v\\OMEMO encrypted message</string>
     <string name="send_pgp_message">Send OpenPGP encrypted message</string>
     <string name="your_nick_has_been_changed">New nickname in use</string>
-    <string name="send_unencrypted">Send unencrypted</string>
+    <string name="send_unencrypted">Send</string>
     <string name="decryption_failed">Decryption failed. Maybe you don’t have the proper private key.</string>
     <string name="openkeychain_required">OpenKeychain</string>
     <string name="openkeychain_required_long"><![CDATA[%1$s uses <b>OpenKeychain</b> to encrypt and decrypt messages and manage your public keys.<br><br>It is licensed under GPLv3+ and available on F-Droid and Google Play.<br><br><small>(Please restart %1$s afterwards.)</small>]]></string>
