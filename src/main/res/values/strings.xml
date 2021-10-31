@@ -970,7 +970,7 @@
     <string name="plain_text_document">Plain text document</string>
     <string name="account_registrations_are_not_supported">Account registrations are not supported</string>
     <string name="no_xmpp_adddress_found">No username found</string>
-    <string name="txtProgress">Loading available public chat rooms, Please wait.</string>
+    <string name="txtProgress">Please wait… \n Loading available public chat rooms.</string>
     <string name="public_room_xmpp_address">username</string>
     <string name="username_password_wrong">Username or Password wrong</string>
 </resources>
