@@ -957,7 +957,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
                 }
             }
         }
-        Collections.sort(this.contacts);
+        //Collections.sort(this.contacts);
         mContactsAdapter.notifyDataSetChanged();
     }
 
@@ -972,7 +972,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
                 }
             }
         }
-        Collections.sort(this.conferences);
+        //Collections.sort(this.conferences);
         mConferenceAdapter.notifyDataSetChanged();
     }
 
