@@ -62,10 +62,11 @@
                                 android:id="@+id/tags"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginBottom="4dp"
                                 android:layout_marginLeft="-2dp"
                                 android:layout_marginTop="4dp"
-                                android:orientation="horizontal"></com.wefika.flowlayout.FlowLayout>
+                                android:layout_marginBottom="4dp"
+                                android:orientation="horizontal">
+                            </com.wefika.flowlayout.FlowLayout>
 
                             <TextView
                                 android:id="@+id/details_lastseen"
@@ -95,7 +96,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
                                 android:text="@string/send_presence_updates"
-                                android:textAppearance="@style/TextAppearance.Conversations.Body1" />
+                                android:textAppearance="@style/TextAppearance.Conversations.Body1"
+                                android:visibility="gone" />
 
                             <CheckBox
                                 android:id="@+id/details_receive_presence"
@@ -103,7 +105,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/receive_presence_updates"
-                                android:textAppearance="@style/TextAppearance.Conversations.Body1" />
+                                android:textAppearance="@style/TextAppearance.Conversations.Body1"
+                                android:visibility="gone" />
                         </LinearLayout>
 
                         <TextView

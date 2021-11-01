@@ -187,7 +187,7 @@
     <string name="attach_record_voice">Record voice</string>
     <string name="account_settings_jabber_id">username</string>
     <string name="block_jabber_id">Block user</string>
-    <string name="account_settings_example_jabber_id">username@hantir.com</string>
+    <string name="account_settings_example_jabber_id">username</string>
     <string name="password">Password</string>
     <string name="invalid_jid">This is not a valid username</string>
     <string name="error_out_of_memory">Out of memory. Image too big</string>

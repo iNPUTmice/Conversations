@@ -39,13 +39,13 @@
             android:summary="@string/pref_prevent_screenshots_summary"
             android:title="@string/pref_prevent_screenshots" />
 
-        <ListPreference
+        <!--ListPreference
             android:defaultValue="@string/omemo_setting_default"
             android:entries="@array/omemo_setting_entries"
             android:entryValues="@array/omemo_setting_entry_values"
             android:key="omemo"
             android:summary="@string/pref_omemo_setting_summary_default_on"
-            android:title="@string/pref_omemo_setting" />
+            android:title="@string/pref_omemo_setting" /-->
     </PreferenceCategory>
     <PreferenceCategory
         android:key="notification_category"
@@ -169,11 +169,11 @@
             android:key="use_green_background"
             android:summary="@string/pref_use_green_background_summary"
             android:title="@string/pref_use_green_background" />
-        <CheckBoxPreference
+        <!--CheckBoxPreference
             android:defaultValue="@bool/show_dynamic_tags"
             android:key="show_dynamic_tags"
             android:summary="@string/pref_show_dynamic_tags_summary"
-            android:title="@string/pref_show_dynamic_tags" />
+            android:title="@string/pref_show_dynamic_tags" /-->
         <ListPreference
             android:defaultValue="@string/theme"
             android:entries="@array/themes"
@@ -205,7 +205,7 @@
             android:summary="@string/pref_create_backup_summary"
             android:title="@string/pref_create_backup" />
     </PreferenceCategory>
-    <PreferenceCategory
+    <!--PreferenceCategory
         android:key="advanced"
         android:title="@string/pref_advanced_options">
         <CheckBoxPreference
@@ -356,7 +356,7 @@
                     android:value="expert" />
             </intent>
         </PreferenceScreen>
-    </PreferenceCategory>
+    </PreferenceCategory-->
     <PreferenceCategory android:title="@string/category_about">
         <eu.siacs.conversations.ui.AboutPreference />
     </PreferenceCategory>
