@@ -9,11 +9,11 @@
         android:visible="false"
         app:showAsAction="ifRoom" />
 
-    <item
+    <!--item
         android:id="@+id/action_add_account_with_cert"
         android:title="@string/action_add_account_with_certificate"
         android:visible="true"
-        app:showAsAction="never" />
+        app:showAsAction="never" /-->
 
     <item
         android:id="@+id/action_import_backup"
