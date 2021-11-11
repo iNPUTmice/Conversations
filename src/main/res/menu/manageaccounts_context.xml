@@ -10,7 +10,8 @@
         android:title="@string/mgmt_account_publish_avatar"/>
     <item
         android:id="@+id/mgmt_account_announce_pgp"
-        android:title="@string/mgmt_account_publish_pgp"/>
+        android:title="@string/mgmt_account_publish_pgp"
+        android:visible="false" />
     <item
         android:id="@+id/mgmt_account_disable"
         app:showAsAction="never"

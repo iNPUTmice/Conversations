@@ -2,7 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/share_with"
-        android:title="@string/share_uri_with" />
+        android:title="@string/share_uri_with"
+        android:visible="false" />
     <item
         android:id="@+id/open_join_dialog"
         android:title="@string/open_join_dialog"/>

@@ -1017,7 +1017,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 menuUnmute.setVisible(false);
             }
             ConversationMenuConfigurator.configureAttachmentMenu(conversation, menu);
-            ConversationMenuConfigurator.configureEncryptionMenu(conversation, menu);
+            //ConversationMenuConfigurator.configureEncryptionMenu(conversation, menu);
             if (conversation.getBooleanAttribute(Conversation.ATTRIBUTE_PINNED_ON_TOP, false)) {
                 menuTogglePinned.setTitle(R.string.remove_from_favorites);
             } else {
@@ -1248,11 +1248,11 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
             return super.onOptionsItemSelected(item);
         }
         switch (item.getItemId()) {
-            case R.id.encryption_choice_axolotl:
+            /*case R.id.encryption_choice_axolotl:
             case R.id.encryption_choice_pgp:
             case R.id.encryption_choice_none:
                 handleEncryptionSelection(item);
-                break;
+                break;*/
             case R.id.attach_choose_picture:
             case R.id.attach_take_picture:
             case R.id.attach_record_video:
@@ -1426,7 +1426,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
         }
         final boolean updated;
         switch (item.getItemId()) {
-            case R.id.encryption_choice_none:
+            /*case R.id.encryption_choice_none:
                 updated = conversation.setNextEncryption(Message.ENCRYPTION_NONE);
                 item.setChecked(true);
                 break;
@@ -1449,7 +1449,7 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                         + "Enabled axolotl for Contact " + conversation.getContact().getJid());
                 updated = conversation.setNextEncryption(Message.ENCRYPTION_AXOLOTL);
                 item.setChecked(true);
-                break;
+                break;*/
             default:
                 updated = conversation.setNextEncryption(Message.ENCRYPTION_NONE);
                 break;

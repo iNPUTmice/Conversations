@@ -67,7 +67,7 @@ public class ConversationMenuConfigurator {
 		menu.findItem(R.id.attach_record_voice).setVisible(microphoneAvailable);
 	}
 
-	public static void configureEncryptionMenu(@NonNull Conversation conversation, Menu menu) {
+	/*public static void configureEncryptionMenu(@NonNull Conversation conversation, Menu menu) {
 		final MenuItem menuSecure = menu.findItem(R.id.action_security);
 
 		final boolean participating = conversation.getMode() == Conversational.MODE_SINGLE || conversation.getMucOptions().participating();
@@ -123,5 +123,5 @@ public class ConversationMenuConfigurator {
 				none.setChecked(true);
 				break;
 		}
-	}
+	}*/
 }

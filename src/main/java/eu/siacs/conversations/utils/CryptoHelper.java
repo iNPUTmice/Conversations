@@ -260,7 +260,7 @@ public final class CryptoHelper {
         }
     }
 
-    public static int encryptionTypeToText(int encryption) {
+    /*public static int encryptionTypeToText(int encryption) {
         switch (encryption) {
             case Message.ENCRYPTION_OTR:
                 return R.string.encryption_choice_otr;
@@ -273,7 +273,7 @@ public final class CryptoHelper {
             default:
                 return R.string.encryption_choice_pgp;
         }
-    }
+    }*/
 
     public static boolean isPgpEncryptedUrl(String url) {
         if (url == null) {

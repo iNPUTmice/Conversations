@@ -7,7 +7,7 @@
         app:showAsAction="always"
         android:title="@string/edit_status_message"/>
 
-    <item
+    <!--item
         android:id="@+id/action_share"
         android:icon="?attr/icon_share"
         android:title="@string/share_uri_with"
@@ -27,7 +27,7 @@
                 android:id="@+id/action_show_qr_code"
                 android:title="@string/show_qr_code" />
         </menu>
-    </item>
+    </item-->
 
     <item
         android:id="@+id/action_show_block_list"
@@ -44,8 +44,9 @@
         android:id="@+id/action_server_info_show_more"
         android:checkable="true"
         android:checked="false"
-        app:showAsAction="never"
-        android:title="@string/server_info_show_more"/>
+        android:title="@string/server_info_show_more"
+        android:visible="false"
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/action_mam_prefs"

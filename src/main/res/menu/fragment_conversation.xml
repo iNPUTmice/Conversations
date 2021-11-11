@@ -24,7 +24,7 @@
                 android:title="@string/video_call" />
         </menu>
     </item>
-    <item
+    <!--item
         android:id="@+id/action_security"
         android:icon="?attr/icon_not_secure"
         android:orderInCategory="20"
@@ -43,7 +43,7 @@
                     android:title="@string/encryption_choice_pgp" />
             </group>
         </menu>
-    </item>
+    </item-->
     <item
         android:id="@+id/action_attach_file"
         android:icon="?attr/icon_new_attachment"

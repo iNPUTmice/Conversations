@@ -8,5 +8,6 @@
         android:title="@string/action_accounts"/>
     <item
         android:id="@+id/action_show_qr_code"
-        android:title="@string/show_qr_code"/>
+        android:title="@string/show_qr_code"
+        android:visible="false" />
 </menu>
