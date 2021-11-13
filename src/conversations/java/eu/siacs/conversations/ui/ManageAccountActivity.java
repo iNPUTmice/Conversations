@@ -126,13 +126,13 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
         this.selectedAccount = accountList.get(acmi.position);
         if (this.selectedAccount.isEnabled()) {
             menu.findItem(R.id.mgmt_account_enable).setVisible(false);
-            menu.findItem(R.id.mgmt_account_announce_pgp).setVisible(Config.supportOpenPgp());
+            //menu.findItem(R.id.mgmt_account_announce_pgp).setVisible(Config.supportOpenPgp());
         } else {
             menu.findItem(R.id.mgmt_account_disable).setVisible(false);
-            menu.findItem(R.id.mgmt_account_announce_pgp).setVisible(false);
+            //menu.findItem(R.id.mgmt_account_announce_pgp).setVisible(false);
             menu.findItem(R.id.mgmt_account_publish_avatar).setVisible(false);
         }
-        menu.setHeaderTitle(this.selectedAccount.getJid().asBareJid().toEscapedString());
+        menu.setHeaderTitle(this.selectedAccount.getJid().getLocal());
     }
 
     @Override
@@ -186,11 +186,16 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
                 enableAccount(selectedAccount);
                 return true;
             case R.id.mgmt_account_delete:
-                deleteAccount(selectedAccount);
+                //deleteAccount(selectedAccount);
+                xmppConnectionService.deleteAccount(selectedAccount);
+                selectedAccount = null;
+                if (xmppConnectionService.getAccounts().size() == 0 && Config.MAGIC_CREATE_DOMAIN != null) {
+                    WelcomeActivity.launch(this);
+                }
                 return true;
-            case R.id.mgmt_account_announce_pgp:
+            /*case R.id.mgmt_account_announce_pgp:
                 publishOpenPGPPublicKey(selectedAccount);
-                return true;
+                return true;*/
             default:
                 return super.onContextItemSelected(item);
         }

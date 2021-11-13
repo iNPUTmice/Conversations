@@ -8,10 +8,10 @@
     <item
         android:id="@+id/mgmt_account_publish_avatar"
         android:title="@string/mgmt_account_publish_avatar"/>
-    <item
+    <!--item
         android:id="@+id/mgmt_account_announce_pgp"
         android:title="@string/mgmt_account_publish_pgp"
-        android:visible="false" />
+        android:visible="false" /-->
     <item
         android:id="@+id/mgmt_account_disable"
         app:showAsAction="never"

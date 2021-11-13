@@ -527,7 +527,7 @@
     <string name="battery_optimizations_enabled_dialog">Your device is employing heavy battery optimizations for %1$s which may lead to delayed notifications or even message loss.\n\nYou will now be asked to disable them.</string>
     <string name="disable">Disable</string>
     <string name="selection_too_large">The selected area is too large</string>
-    <string name="no_accounts">No activated accounts, Go to Manage Accounts and Enable</string>
+    <string name="no_accounts">No activated accounts, Go to Manage Accounts to add</string>
     <string name="this_field_is_required">This field is required</string>
     <string name="correct_message">Correct message</string>
     <string name="send_corrected_message">Send corrected message</string>
