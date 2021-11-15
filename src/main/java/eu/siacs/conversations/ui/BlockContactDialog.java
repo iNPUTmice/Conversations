@@ -27,19 +27,19 @@ public final class BlockContactDialog {
 		@StringRes int res;
 		if (blockable.getJid().isFullJid()) {
 			builder.setTitle(isBlocked ? R.string.action_unblock_participant : R.string.action_block_participant);
-			value = blockable.getJid().toEscapedString();
+			value = blockable.getJid().getLocal();
 			res = isBlocked ? R.string.unblock_contact_text : R.string.block_contact_text;
 		} else if (blockable.getJid().getLocal() == null || blockable.getAccount().isBlocked(blockable.getJid().getDomain())) {
 			builder.setTitle(isBlocked ? R.string.action_unblock_domain : R.string.action_block_domain);
-			value =blockable.getJid().getDomain().toEscapedString();
+			value =blockable.getJid().getDomain().getLocal();
 			res = isBlocked ? R.string.unblock_domain_text : R.string.block_domain_text;
 		} else {
 			int resBlockAction = blockable instanceof Conversation && ((Conversation) blockable).isWithStranger() ? R.string.block_stranger : R.string.action_block_contact;
 			builder.setTitle(isBlocked ? R.string.action_unblock_contact : resBlockAction);
-			value = blockable.getJid().asBareJid().toEscapedString();
+			value = blockable.getJid().asBareJid().getLocal();
 			res = isBlocked ? R.string.unblock_contact_text : R.string.block_contact_text;
 		}
-		binding.text.setText(JidDialog.style(xmppActivity, res, value));
+		binding.text.setText(JidDialog.style(xmppActivity, res, "\""+value+"\""));
 		builder.setPositiveButton(isBlocked ? R.string.unblock : R.string.block, (dialog, which) -> {
 			if (isBlocked) {
 				xmppActivity.xmppConnectionService.sendUnblockRequest(blockable);

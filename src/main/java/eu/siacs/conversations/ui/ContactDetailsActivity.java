@@ -281,7 +281,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
                 break;
             case R.id.action_delete_contact:
                 builder.setTitle(getString(R.string.action_delete_contact))
-                        .setMessage(JidDialog.style(this, R.string.remove_contact_text, contact.getJid().toEscapedString()))
+                        .setMessage(JidDialog.style(this, R.string.remove_contact_text, "\""+contact.getJid().getLocal()+"\""))
                         .setPositiveButton(getString(R.string.delete),
                                 removeFromRoster).create().show();
                 break;
@@ -518,7 +518,8 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
     }
 
     private void onBadgeClick(View view) {
-        final Uri systemAccount = contact.getSystemAccount();
+        //AvatarWorkerTask.loadAvatar(contact, binding.detailsContactBadge, R.dimen.avatar_on_full_size);
+        /*final Uri systemAccount = contact.getSystemAccount();
         if (systemAccount == null) {
             checkContactPermissionAndShowAddDialog();
         } else {
@@ -529,7 +530,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
             } catch (final ActivityNotFoundException e) {
                 Toast.makeText(this, R.string.no_application_found_to_view_contact, Toast.LENGTH_SHORT).show();
             }
-        }
+        }*/
     }
 
     public void onBackendConnected() {

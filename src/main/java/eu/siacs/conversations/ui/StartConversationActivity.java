@@ -463,7 +463,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setNegativeButton(R.string.cancel, null);
         builder.setTitle(R.string.action_delete_contact);
-        builder.setMessage(JidDialog.style(this, R.string.remove_contact_text, contact.getJid().toEscapedString()));
+        builder.setMessage(JidDialog.style(this, R.string.remove_contact_text, "\""+contact.getJid().getLocal()+"\""));
         builder.setPositiveButton(R.string.delete, (dialog, which) -> {
             xmppConnectionService.deleteContactOnServer(contact);
             filter(mSearchEditText.getText().toString());

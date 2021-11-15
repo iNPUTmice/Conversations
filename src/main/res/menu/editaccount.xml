@@ -50,7 +50,8 @@
 
     <item
         android:id="@+id/action_mam_prefs"
-        android:title="@string/mam_prefs"/>
+        android:title="@string/mam_prefs"
+        android:visible="false" />
 
     <item
         android:id="@+id/action_change_password_on_server"

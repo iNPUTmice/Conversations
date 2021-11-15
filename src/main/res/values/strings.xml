@@ -11,7 +11,7 @@
     <string name="action_add_account">Add account</string>
     <string name="action_edit_contact">Edit name</string>
     <string name="action_add_phone_book">Add to address book</string>
-    <string name="action_delete_contact">Delete from roster</string>
+    <string name="action_delete_contact">Delete from Friends list</string>
     <string name="action_block_contact">Block user</string>
     <string name="action_unblock_contact">Unblock user</string>
     <string name="action_block_domain">Block domain</string>
@@ -44,7 +44,7 @@
     <string name="moderator">Moderator</string>
     <string name="participant">Participant</string>
     <string name="visitor">Visitor</string>
-    <string name="remove_contact_text">Would you like to remove %s from your user list? Messages with this user will not be removed.</string>
+    <string name="remove_contact_text">Would you like to remove %s from your friend list? Messages with this user will not be removed.</string>
     <string name="block_contact_text">Would you like to block %s from sending you messages?</string>
     <string name="unblock_contact_text">Would you like to unblock %s and allow them to send you messages?</string>
     <string name="block_domain_text">Block all users from %s?</string>
@@ -77,7 +77,7 @@
     <string name="problem_connecting_to_accounts">Could not connect to multiple accounts</string>
     <string name="touch_to_fix">Tap to manage your accounts</string>
     <string name="attach_file">Attach file</string>
-    <string name="not_in_roster">Add this missing user to your user list?</string>
+    <string name="not_in_roster">Add this missing user to your "Friends" list?</string>
     <string name="add_contact">Add Friend</string>
     <string name="send_failed">delivery failed</string>
     <string name="preparing_image">Getting ready to send image</string>
@@ -174,7 +174,7 @@
     <string name="encryption_choice_otr">OTR</string>
     <string name="encryption_choice_pgp">OpenPGP</string>
     <string name="encryption_choice_omemo">OMEMO</string>
-    <string name="mgmt_account_delete">Delete account</string>
+    <string name="mgmt_account_delete">Log Out Account</string>
     <string name="mgmt_account_disable">Temporarily disable</string>
     <string name="mgmt_account_publish_avatar">Publish avatar</string>
     <string name="mgmt_account_publish_pgp">Publish OpenPGP public key</string>
@@ -225,7 +225,7 @@
     <string name="fetching_keys">Fetching keys…</string>
     <string name="done">Done</string>
     <string name="decrypt">Decrypt</string>
-    <string name="bookmarks">Chat rooms</string>
+    <string name="bookmarks">Chat Rooms</string>
     <string name="search">Search</string>
     <string name="enter_contact">Enter User</string>
     <string name="delete_contact">Delete user</string>
@@ -250,7 +250,7 @@
     <string name="topic">Topic</string>
     <string name="joining_conference">Joining group chat…</string>
     <string name="leave">Leave</string>
-    <string name="contact_added_you">User added you to user list</string>
+    <string name="contact_added_you">User added you to "Friends" list</string>
     <string name="add_back">Add back</string>
     <string name="contact_has_read_up_to_this_point">%s has read up to this point</string>
     <string name="contacts_have_read_up_to_this_point">%s have read up to this point</string>
@@ -301,7 +301,7 @@
     <string name="conference_kicked">You have been kicked from this group chat</string>
     <string name="conference_shutdown">The group chat was shut down</string>
     <string name="conference_unknown_error">You are no longer in this group chat</string>
-    <string name="using_account">using account %s</string>
+    <string name="using_account">Using Account %s</string>
     <string name="hosted_on">hosted on %s</string>
     <string name="checking_x">Checking %s on HTTP host</string>
     <string name="not_connected_try_again">You are not connected. Try again later</string>
