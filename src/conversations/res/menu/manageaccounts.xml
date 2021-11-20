@@ -9,8 +9,9 @@
 		android:title="@string/action_add_account"/>
 	<item
 		android:id="@+id/action_import_backup"
-		app:showAsAction="never"
-		android:title="@string/restore_backup"/>
+		android:title="@string/restore_backup"
+		android:visible="false"
+		app:showAsAction="never" />
 	<item
 		android:id="@+id/action_add_account_with_cert"
 		android:icon="?attr/icon_add_person"

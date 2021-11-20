@@ -25,13 +25,15 @@
     <item
         android:id="@+id/action_save_as_bookmark"
         android:orderInCategory="80"
-        app:showAsAction="never"
-        android:title="@string/save_as_bookmark"/>
+        android:title="@string/save_as_bookmark"
+        android:visible="false"
+        app:showAsAction="never" />
     <item
         android:id="@+id/action_delete_bookmark"
         android:orderInCategory="80"
-        app:showAsAction="never"
-        android:title="@string/delete_bookmark"/>
+        android:title="@string/delete_bookmark"
+        android:visible="false"
+        app:showAsAction="never" />
     <item
         android:id="@+id/action_destroy_room"
         android:orderInCategory="82"
@@ -42,8 +44,9 @@
         android:checkable="true"
         android:checked="false"
         android:orderInCategory="85"
-        app:showAsAction="never"
-        android:title="@string/advanced_mode"/>
+        android:title="@string/advanced_mode"
+        android:visible="false"
+        app:showAsAction="never" />
     <item
         android:id="@+id/action_accounts"
         android:orderInCategory="90"

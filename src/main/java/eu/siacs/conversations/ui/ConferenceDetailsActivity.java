@@ -355,11 +355,11 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
             return true;
         }
         if (mConversation.getBookmark() != null) {
-            menuItemSaveBookmark.setVisible(false);
-            menuItemDeleteBookmark.setVisible(true);
+            //menuItemSaveBookmark.setVisible(false);
+            //menuItemDeleteBookmark.setVisible(true);
         } else {
-            menuItemDeleteBookmark.setVisible(false);
-            menuItemSaveBookmark.setVisible(true);
+            //menuItemDeleteBookmark.setVisible(false);
+            //menuItemSaveBookmark.setVisible(true);
         }
         menuItemDestroyRoom.setVisible(mConversation.getMucOptions().getSelf().getAffiliation().ranks(MucOptions.Affiliation.OWNER));
         return true;
@@ -369,8 +369,8 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
     public boolean onCreateOptionsMenu(Menu menu) {
         final boolean groupChat = mConversation != null && mConversation.isPrivateAndNonAnonymous();
         getMenuInflater().inflate(R.menu.muc_details, menu);
-        final MenuItem share = menu.findItem(R.id.action_share);
-        share.setVisible(!groupChat);
+        //final MenuItem share = menu.findItem(R.id.action_share);
+        //share.setVisible(!groupChat);
         final MenuItem destroy = menu.findItem(R.id.action_destroy_room);
         destroy.setTitle(groupChat ? R.string.destroy_room : R.string.destroy_channel);
         AccountUtils.showHideMenuItems(menu);

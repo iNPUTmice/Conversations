@@ -3,7 +3,8 @@
 
     <item
         android:id="@+id/context_delete_conference"
-        android:title="@string/delete_bookmark"/>
+        android:title="@string/delete_bookmark"
+        android:visible="false" />
     <item
         android:id="@+id/context_share_uri"
         android:title="@string/share_uri_with"

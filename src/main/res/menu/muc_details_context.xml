@@ -3,56 +3,56 @@
     <item
         android:id="@+id/start_conversation"
         android:title="@string/start_conversation"
-        android:visible="false" />
+        android:visible="true" />
     <item
         android:id="@+id/action_contact_details"
         android:title="@string/action_contact_details"
-        android:visible="false" />
+        android:visible="true" />
     <item
         android:id="@+id/invite"
         android:title="@string/invite_again"
-        android:visible="false" />
+        android:visible="true" />
     <item
         android:id="@+id/send_private_message"
         android:title="@string/send_private_message"
-        android:visible="false" />
+        android:visible="true" />
     <item
         android:id="@+id/manage_permissions"
         android:title="@string/manage_permission"
-        android:visible="false">
+        android:visible="true">
         <menu>
             <item
                 android:id="@+id/give_membership"
                 android:title="@string/grant_membership"
-                android:visible="false" />
+                android:visible="true" />
             <item
                 android:id="@+id/remove_membership"
                 android:title="@string/remove_membership"
-                android:visible="false" />
+                android:visible="true" />
             <item
                 android:id="@+id/give_admin_privileges"
                 android:title="@string/grant_admin_privileges"
-                android:visible="false" />
+                android:visible="true" />
             <item
                 android:id="@+id/remove_admin_privileges"
                 android:title="@string/remove_admin_privileges"
-                android:visible="false" />
+                android:visible="true" />
             <item
                 android:id="@+id/give_owner_privileges"
                 android:title="@string/grant_owner_privileges"
-                android:visible="false" />
+                android:visible="true" />
             <item
                 android:id="@+id/revoke_owner_privileges"
                 android:title="@string/remove_owner_privileges"
-                android:visible="false" />
+                android:visible="true" />
             <item
                 android:id="@+id/ban_from_conference"
                 android:title="@string/ban_from_conference"
-                android:visible="false" />
+                android:visible="true" />
         </menu>
     </item>
     <item
         android:id="@+id/remove_from_room"
         android:title="@string/remove_from_room"
-        android:visible="false" />
+        android:visible="true" />
 </menu>
