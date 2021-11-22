@@ -221,6 +221,9 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                             case "file-too-large":
                                 info = getContext().getString(R.string.file_too_large);
                                 break;
+                            case "service-unavailable":
+                                info = getContext().getString(R.string.service_unavailable);
+                                break;
                             default:
                                 info = getContext().getString(R.string.send_failed);
                                 break;

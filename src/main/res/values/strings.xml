@@ -79,7 +79,7 @@
     <string name="attach_file">Attach file</string>
     <string name="not_in_roster">Add this missing user to your "Friends" list?</string>
     <string name="add_contact">Add Friend</string>
-    <string name="send_failed">delivery failed</string>
+    <string name="send_failed">Delivery failed</string>
     <string name="preparing_image">Getting ready to send image</string>
     <string name="preparing_images">Getting ready to send images</string>
     <string name="sharing_files_please_wait">Sharing files. Please wait…</string>
@@ -871,7 +871,7 @@
     <string name="search_participants">Search participants</string>
     <string name="file_too_large">File too large</string>
     <string name="attach">Attach</string>
-    <string name="discover_channels">Public Chat Rooms</string>
+    <string name="discover_channels">Find Public Rooms</string>
     <string name="search_channels">Search chat rooms</string>
     <string name="channel_discovery_opt_in_title">Possible privacy violation!</string>
     <string name="channel_discover_opt_in_message"><![CDATA[Room discovery uses a third party service called <a href="https://search.jabber.network">search.jabber.network</a>.<br><br>Using this feature will transmit your IP address and search terms to that service. See their <a href="https://search.jabber.network/privacy">Privacy Policy</a> for more information.]]></string>
@@ -975,4 +975,5 @@
     <string name="username_password_wrong">Username or Password wrong</string>
     <string name="empty_contacts_hint">Click + button to add friends</string>
     <string name="empty_bookmarks_hint">Click + button to find rooms or create room</string>
+    <string name="service_unavailable">Delivery failed, check username</string>
 </resources>
