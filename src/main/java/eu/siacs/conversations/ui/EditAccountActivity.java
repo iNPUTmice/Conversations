@@ -208,7 +208,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                 }
             } catch (final NullPointerException | IllegalArgumentException e) {
                 if (mUsernameMode) {
-                    binding.accountJidLayout.setError(getString(R.string.invalid_username));
+                    binding.accountJidLayout.setError(getString(R.string.invalid_username_null));
                 } else {
                     binding.accountJidLayout.setError(getString(R.string.invalid_jid));
                 }

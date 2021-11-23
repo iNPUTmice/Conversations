@@ -21,7 +21,7 @@
     <string name="title_activity_manage_accounts">Manage Accounts</string>
     <string name="title_activity_settings">Settings</string>
     <string name="title_activity_sharewith">Share with Hantir</string>
-    <string name="title_activity_start_conversation">Start Chatting</string>
+    <string name="title_activity_start_conversation">Hantir</string>
     <string name="title_activity_choose_contact">Choose User</string>
     <string name="title_activity_choose_contacts">Choose Users</string>
     <string name="title_activity_share_via_account">Share via account</string>
@@ -32,7 +32,6 @@
     <plurals name="x_unread_conversations">
         <item quantity="one">%d unread message</item>
         <item quantity="other">%d unread messages</item>
-
     </plurals>
     <string name="sending">sending…</string>
     <string name="message_decrypting">Decrypting message. Please wait…</string>
@@ -398,7 +397,7 @@
     <string name="members_only">Private, members only</string>
     <string name="non_anonymous">Make username visible to anyone</string>
     <string name="moderated">Make room moderated</string>
-    <string name="you_are_not_participating">You are not participating</string>
+    <string name="you_are_not_participating">You are joining, please wait</string>
     <string name="modified_conference_options">Modified room options!</string>
     <string name="could_not_modify_conference_options">Could not modify room options</string>
     <string name="never">Never</string>
@@ -536,7 +535,7 @@
     <string name="security_error_invalid_file_access">Security error: Invalid file access!</string>
     <string name="no_application_to_share_uri">No app found to share URI</string>
     <string name="share_uri_with">Share URI with…</string>
-    <string name="welcome_header" translatable="false">Join the Chat</string>
+    <string name="welcome_header" translatable="false">Join the Hantir</string>
     <string name="welcome_header_quicksy" translatable="false">Have some Quick Chat</string>
     <string name="welcome_text_quicksy"><![CDATA[Quicksy is a spin off of the popular XMPP client Hantir with automatic user discovery.<br><br>You sign up with your phone number and Quicksy will automatically—based on the phone numbers in your address book—suggest possible contacts to you.<br><br>By signing up you agree to our <a href="https://quicksy.im/#privacy">privacy policy</a>.]]></string>
     <string name="agree_and_continue">Agree and continue</string>
@@ -976,4 +975,5 @@
     <string name="empty_contacts_hint">Click + button to add friends</string>
     <string name="empty_bookmarks_hint">Click + button to find rooms or create room</string>
     <string name="service_unavailable">Delivery failed, check username</string>
+    <string name="invalid_username_null">This is not a valid username</string>
 </resources>

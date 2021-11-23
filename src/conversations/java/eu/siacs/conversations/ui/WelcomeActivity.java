@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.security.KeyChain;
 import android.security.KeyChainAliasCallback;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -148,7 +149,7 @@ public class WelcomeActivity extends XmppActivity implements XmppConnectionServi
             addInviteUri(intent);
             startActivity(intent);
         });
-
+        binding.termsPolicy.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     @Override

@@ -3,7 +3,7 @@
     <string name="pick_a_server">Pick your XMPP provider</string>
     <string name="use_conversations.im">Use conversations.im</string>
     <string name="create_new_account">Create new account</string>
-    <string name="do_you_have_an_account">Do you already have an XMPP account? This might be the case if you are already using a different XMPP client or have used Conversations before. If not you can create a new XMPP account right now.\nHint: Some email providers also provide XMPP accounts.</string>
+    <string name="terms_policy">By clicking Create Account, you agree to our\n<a href="https://hantir.com/hantir_terms.html">\t\t\tTerms, Data Policy and Cookie Policy.</a></string>
     <string name="server_select_text">XMPP is a provider independent instant messaging network. You can use this client with what ever XMPP server you choose.\nHowever for your convenience we made it easy to create an account on conversations.im¹; a provider specially suited for the use with Conversations.</string>
     <string name="magic_create_text_on_x">You have been invited to %1$s. We will guide you through the process of creating an account.\nWhen picking %1$s as a provider you will be able to communicate with users of other providers by giving them your full XMPP address.</string>
     <string name="magic_create_text_fixed">You have been invited to %1$s. A username has already been picked for you. We will guide you through the process of creating an account.\nYou will be able to communicate with users of other providers by giving them your full XMPP address.</string>
