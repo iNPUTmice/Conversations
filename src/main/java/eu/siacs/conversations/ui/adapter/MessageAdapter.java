@@ -511,9 +511,11 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         toggleWhisperInfo(viewHolder, message, darkBackground);
         viewHolder.image.setVisibility(View.GONE);
         viewHolder.audioPlayer.setVisibility(View.GONE);
-        viewHolder.download_button.setVisibility(View.VISIBLE);
-        viewHolder.download_button.setText(text);
-        viewHolder.download_button.setOnClickListener(v -> ConversationFragment.downloadFile(activity, message));
+        //viewHolder.download_button.setVisibility(View.VISIBLE);
+        //viewHolder.download_button.setText(text);
+        //viewHolder.download_button.setOnClickListener(v -> ConversationFragment.downloadFile(activity, message));
+        ConversationFragment.downloadFile(activity, message);
+        displayMediaPreviewMessage(viewHolder, message, darkBackground);
     }
 
     private void displayOpenableMessage(ViewHolder viewHolder, final Message message, final boolean darkBackground) {
