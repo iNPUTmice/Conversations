@@ -263,8 +263,8 @@
     <string name="error_saving_avatar">Could not save avatar to disk</string>
     <string name="or_long_press_for_default">(Or long press to bring back default)</string>
     <string name="error_publish_avatar_no_server_support">Your server does not support publicizing avatars</string>
-    <string name="private_message">whispered</string>
-    <string name="private_message_to">to %s</string>
+    <string name="private_message">PM: </string>
+    <string name="private_message_to">PM: %s</string>
     <string name="send_private_message_to">Send private message to %s</string>
     <string name="connect">Connect</string>
     <string name="account_already_exists">This account already exists</string>
