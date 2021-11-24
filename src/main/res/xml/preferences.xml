@@ -161,7 +161,7 @@
             android:entryValues="@array/filesizes_values"
             android:key="auto_accept_file_size"
             android:summary="@string/pref_accept_files_summary"
-            android:title="@string/pref_accept_files" />
+            android:title="@string/pref_accept_files"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_ui_options">
         <CheckBoxPreference

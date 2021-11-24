@@ -48,17 +48,14 @@
                                 android:layout_height="@dimen/avatar_on_details_screen_size"
                                 android:layout_alignParentStart="true"
                                 app:riv_corner_radius="2dp"
-                                android:layout_marginEnd="@dimen/avatar_item_distance"
-                                android:layout_alignParentLeft="true"
-                                android:layout_marginRight="@dimen/avatar_item_distance" />
+                                android:layout_marginEnd="@dimen/avatar_item_distance" />
 
                             <LinearLayout
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentTop="true"
                                 android:layout_toEndOf="@+id/your_photo"
-                                android:orientation="vertical"
-                                android:layout_toRightOf="@+id/your_photo">
+                                android:orientation="vertical">
 
                                 <RelativeLayout
                                     android:layout_width="match_parent"
@@ -70,9 +67,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_alignParentStart="true"
                                         android:layout_toStartOf="@+id/edit_muc_name_button"
-                                        android:orientation="vertical"
-                                        android:layout_alignParentLeft="true"
-                                        android:layout_toLeftOf="@+id/edit_muc_name_button">
+                                        android:orientation="vertical">
 
                                         <TextView
                                             android:id="@+id/muc_title"
@@ -96,9 +91,7 @@
                                         android:layout_alignParentStart="true"
                                         android:layout_toStartOf="@+id/edit_muc_name_button"
                                         android:orientation="vertical"
-                                        android:visibility="gone"
-                                        android:layout_alignParentLeft="true"
-                                        android:layout_toLeftOf="@+id/edit_muc_name_button">
+                                        android:visibility="gone">
 
                                         <com.google.android.material.textfield.TextInputLayout
                                             android:layout_width="match_parent"
@@ -139,8 +132,7 @@
                                         android:alpha="?attr/icon_alpha"
                                         android:background="?attr/selectableItemBackgroundBorderless"
                                         android:padding="@dimen/image_button_padding"
-                                        android:src="?attr/icon_edit_body"
-                                        android:layout_alignParentRight="true" />
+                                        android:src="?attr/icon_edit_body" />
                                 </RelativeLayout>
                             </LinearLayout>
                         </RelativeLayout>
@@ -157,9 +149,7 @@
                                 android:layout_alignParentStart="true"
                                 android:layout_centerVertical="true"
                                 android:layout_toStartOf="@+id/change_conference_button"
-                                android:textAppearance="@style/TextAppearance.Conversations.Body1"
-                                android:layout_alignParentLeft="true"
-                                android:layout_toLeftOf="@+id/change_conference_button" />
+                                android:textAppearance="@style/TextAppearance.Conversations.Body1" />
 
                             <ImageButton
                                 android:id="@+id/change_conference_button"
@@ -172,8 +162,7 @@
                                 android:alpha="?attr/icon_alpha"
                                 android:background="?attr/selectableItemBackgroundBorderless"
                                 android:padding="@dimen/image_button_padding"
-                                android:src="?attr/icon_settings"
-                                android:layout_alignParentRight="true" />
+                                android:src="?attr/icon_settings" />
                         </RelativeLayout>
 
                         <TableLayout
@@ -214,7 +203,8 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="end"
                             android:layout_marginTop="32dp"
-                            android:textAppearance="@style/TextAppearance.Conversations.Caption"/>
+                            android:textAppearance="@style/TextAppearance.Conversations.Caption"
+                            android:visibility="gone"/>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
@@ -333,8 +323,7 @@
                                 android:alpha="?attr/icon_alpha"
                                 android:background="?attr/selectableItemBackgroundBorderless"
                                 android:padding="@dimen/image_button_padding"
-                                android:src="?attr/icon_edit_body"
-                                android:layout_alignParentRight="true" />
+                                android:src="?attr/icon_edit_body" />
                         </RelativeLayout>
 
                         <RelativeLayout
@@ -349,9 +338,7 @@
                                 android:layout_centerVertical="true"
                                 android:layout_toStartOf="@+id/notification_status_button"
                                 android:text="@string/notify_on_all_messages"
-                                android:textAppearance="@style/TextAppearance.Conversations.Body1"
-                                android:layout_alignParentLeft="true"
-                                android:layout_toLeftOf="@+id/notification_status_button" />
+                                android:textAppearance="@style/TextAppearance.Conversations.Body1" />
 
                             <ImageButton
                                 android:id="@+id/notification_status_button"
@@ -364,8 +351,7 @@
                                 android:alpha="?attr/icon_alpha"
                                 android:background="?attr/selectableItemBackgroundBorderless"
                                 android:padding="@dimen/image_button_padding"
-                                android:src="?attr/icon_notifications"
-                                android:layout_alignParentRight="true" />
+                                android:src="?attr/icon_notifications" />
                         </RelativeLayout>
 
                         <TextView

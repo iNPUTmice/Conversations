@@ -542,7 +542,7 @@
     <string name="magic_create_text">A guide is set up for account creation on Hantir.com.¹\nWhen picking Hantir.com as a provider you will be able to communicate with users of other providers by giving them your full username.</string>
     <string name="your_full_jid_will_be">Your full username will be: %s</string>
     <string name="create_account">Create Account</string>
-    <string name="use_own_provider">Create New Account</string>
+    <string name="use_own_provider">Create Account</string>
     <string name="pick_your_username">Pick your username</string>
     <string name="pref_manually_change_presence">Manage availability manually</string>
     <string name="pref_manually_change_presence_summary">Set your availability when editing your status message.</string>
