@@ -30,14 +30,18 @@ public class QuoteHelper {
     }
 
     public static boolean isPositionAltQuoteStart(CharSequence body, int pos) {
-        return isPositionAltQuoteCharacter(body, pos) && !isPositionFollowedByAltQuoteEnd(body, pos);
+        return isPositionAltQuoteCharacter(body, pos)
+                && isPositionPrecededByPreQuote(body, pos)
+                && !isPositionFollowedByAltQuoteEnd(body, pos);
     }
 
     public static boolean isPositionFollowedByQuoteChar(CharSequence body, int pos) {
         return body.length() > pos + 1 && isPositionQuoteCharacter(body, pos + 1);
     }
 
-    // 'Prequote' means anything we require or can accept in front of a QuoteChar
+    /**
+     *  'Prequote' means anything we require or can accept in front of a QuoteChar.
+     */
     public static boolean isPositionPrecededByPreQuote(CharSequence body, int pos) {
         return UIHelper.isPositionPrecededByLineStart(body, pos);
     }
