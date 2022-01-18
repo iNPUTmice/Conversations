@@ -59,7 +59,8 @@ public class WebRTCWrapper {
 
     private static final String EXTENDED_LOGGING_TAG = WebRTCWrapper.class.getSimpleName();
 
-    //we should probably keep this in sync with: https://github.com/signalapp/Signal-Android/blob/master/app/src/main/java/org/thoughtcrime/securesms/ApplicationContext.java#L296
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+
     private static final Set<String> HARDWARE_AEC_BLACKLIST = new ImmutableSet.Builder<String>()
             .add("Pixel")
             .add("Pixel XL")
@@ -73,6 +74,9 @@ public class WebRTCWrapper {
             .add("Redmi Note 5")
             .add("FP2") // Fairphone FP2
             .add("MI 5")
+            .add("GT-I9515") // Samsung Galaxy S4 Value Edition (jfvelte)
+            .add("GT-I9515L") // Samsung Galaxy S4 Value Edition (jfvelte)
+            .add("GT-I9505") // Samsung Galaxy S4 (jfltexx)
             .build();
 
     private static final int CAPTURING_RESOLUTION = 1920;
