@@ -551,7 +551,7 @@ public class XmppConnectionService extends Service {
         }
     }
 
-    public void attachFileToConversation(final Conversation conversation, final Uri uri, final String type, final UiCallback<Message> callback) {
+    public void attachFileToConversation(final Conversation conversation, Uri uri, final String type, final UiCallback<Message> callback) {
         final Message message;
         if (conversation.getNextEncryption() == Message.ENCRYPTION_PGP) {
             message = new Message(conversation, "", Message.ENCRYPTION_DECRYPTED);
@@ -562,6 +562,14 @@ public class XmppConnectionService extends Service {
             message.setCounterpart(conversation.getNextCounterpart());
             message.setType(Message.TYPE_FILE);
         }
+        if (message.getType() == Message.TYPE_IMAGE){
+            try {
+                getFileBackend().copyFileToPrivateStorage(message, uri, type);
+            }
+            catch(FileBackend.FileCopyException e){
+                Log.d(Config.LOGTAG,"Failed to copy image. use original image instead");
+            }
+        }
         Log.d(Config.LOGTAG, "attachFile: type=" + message.getType());
         Log.d(Config.LOGTAG, "counterpart=" + message.getCounterpart());
         final AttachFileToConversationRunnable runnable = new AttachFileToConversationRunnable(this, uri, type, message, callback);
@@ -570,6 +578,7 @@ public class XmppConnectionService extends Service {
         } else {
             FILE_ATTACHMENT_EXECUTOR.execute(runnable);
         }
+
     }
 
     public void attachImageToConversation(final Conversation conversation, final Uri uri,  final String type, final UiCallback<Message> callback) {

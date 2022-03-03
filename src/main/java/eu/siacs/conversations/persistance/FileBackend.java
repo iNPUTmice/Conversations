@@ -517,23 +517,38 @@ public class FileBackend {
 
 
     public DownloadableFile getFileForPath(String path) {
-        return getFileForPath(path, MimeUtils.guessMimeTypeFromExtension(MimeUtils.extractRelevantExtension(path)));
+        return getFileForPath(path, MimeUtils.guessMimeTypeFromExtension(MimeUtils.extractRelevantExtension(path)), true);
+    }
+
+    public DownloadableFile getFileForPath(String path, String mime, boolean isSent) {
+
+        /// if you want to just check that path is in /sent folder (maybe because
+        /// you don't know that file is sent or received) you can set isSent to true.
+        final DownloadableFile file;
+        if (path.startsWith("/")) {
+            if (!isSent || new File(path).exists()){
+                return new DownloadableFile(path);
+            }
+            /// else file has been deleted
+        }
+        String filePath;
+        if (mime != null && mime.startsWith("image/")) {
+            filePath = getConversationsDirectory("Images");
+        } else if (mime != null && mime.startsWith("video/")) {
+            filePath = getConversationsDirectory("Videos");
+        } else {
+            filePath = getConversationsDirectory("Files");
+        }
+        /// file is not sent in old version
+        if (isSent && !new File(filePath+path).exists())
+            file = new DownloadableFile(filePath + "sent/" + path);
+        else
+            file = new DownloadableFile(filePath + path);
+        return file;
     }
 
     public DownloadableFile getFileForPath(String path, String mime) {
-        final DownloadableFile file;
-        if (path.startsWith("/")) {
-            file = new DownloadableFile(path);
-        } else {
-            if (mime != null && mime.startsWith("image/")) {
-                file = new DownloadableFile(getConversationsDirectory("Images") + path);
-            } else if (mime != null && mime.startsWith("video/")) {
-                file = new DownloadableFile(getConversationsDirectory("Videos") + path);
-            } else {
-                file = new DownloadableFile(getConversationsDirectory("Files") + path);
-            }
-        }
-        return file;
+        return getFileForPath(path, mime, false);
     }
 
     public boolean isInternalFile(final File file) {
@@ -549,7 +564,7 @@ public class FileBackend {
         if (path == null) {
             path = message.getUuid();
         }
-        final DownloadableFile file = getFileForPath(path, message.getMimeType());
+        final DownloadableFile file = getFileForPath(path, message.getMimeType(), message.getStatus() != Message.STATUS_RECEIVED);
         if (encrypted) {
             return new DownloadableFile(getConversationsDirectory("Files") + file.getName() + ".pgp");
         } else {
