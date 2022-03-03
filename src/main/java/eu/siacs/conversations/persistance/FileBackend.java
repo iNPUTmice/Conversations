@@ -2,11 +2,15 @@ package eu.siacs.conversations.persistance;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.ImageDecoder;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.RectF;
@@ -946,10 +950,10 @@ public class FileBackend {
         }
     }
 
-    public Bitmap getThumbnail(Message message, int size, boolean cacheOnly) throws IOException {
+    public Drawable getThumbnail(Message message, Resources res, int size, boolean cacheOnly) throws IOException {
         final String uuid = message.getUuid();
-        final LruCache<String, Bitmap> cache = mXmppConnectionService.getBitmapCache();
-        Bitmap thumbnail = cache.get(uuid);
+        final LruCache<String, Drawable> cache = mXmppConnectionService.getDrawableCache();
+        Drawable thumbnail = cache.get(uuid);
         if ((thumbnail == null) && (!cacheOnly)) {
             synchronized (THUMBNAIL_LOCK) {
                 thumbnail = cache.get(uuid);
@@ -959,26 +963,13 @@ public class FileBackend {
                 DownloadableFile file = getFile(message);
                 final String mime = file.getMimeType();
                 if ("application/pdf".equals(mime)) {
-                    thumbnail = getPdfDocumentPreview(file, size);
+                    thumbnail = new BitmapDrawable(res, getPdfDocumentPreview(file, size));
                 } else if (mime.startsWith("video/")) {
-                    thumbnail = getVideoPreview(file, size);
+                    thumbnail = new BitmapDrawable(res, getVideoPreview(file, size));
                 } else {
-                    final Bitmap fullSize = getFullSizeImagePreview(file, size);
-                    if (fullSize == null) {
+                    thumbnail = getImagePreview(file, res, size, mime);
+                    if (thumbnail == null) {
                         throw new FileNotFoundException();
-                    }
-                    thumbnail = resize(fullSize, size);
-                    thumbnail = rotate(thumbnail, getRotation(file));
-                    if (mime.equals("image/gif")) {
-                        Bitmap withGifOverlay = thumbnail.copy(Bitmap.Config.ARGB_8888, true);
-                        drawOverlay(
-                                withGifOverlay,
-                                paintOverlayBlack(withGifOverlay)
-                                        ? R.drawable.play_gif_black
-                                        : R.drawable.play_gif_white,
-                                1.0f);
-                        thumbnail.recycle();
-                        thumbnail = withGifOverlay;
                     }
                 }
                 cache.put(uuid, thumbnail);
@@ -987,15 +978,72 @@ public class FileBackend {
         return thumbnail;
     }
 
-    private Bitmap getFullSizeImagePreview(File file, int size) {
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inSampleSize = calcSampleSize(file, size);
-        try {
-            return BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-        } catch (OutOfMemoryError e) {
-            options.inSampleSize *= 2;
-            return BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+    public Bitmap getThumbnailBitmap(Message message, Resources res, int size, boolean cacheOnly) throws IOException {
+        final String uuid = message.getUuid();
+        final LruCache<String, Bitmap> cache = mXmppConnectionService.getBitmapCache();
+        Bitmap thumbnail = cache.get(uuid);
+        if ((thumbnail == null) && (!cacheOnly)) {
+          final Drawable drawable = getThumbnail(message, res, size, cacheOnly);
+          if (drawable != null) {
+              thumbnail = drawDrawable(drawable);
+              cache.put(uuid, thumbnail);
+          }
         }
+        return thumbnail;
+    }
+
+    private Drawable getImagePreview(File file, Resources res, int size, final String mime) throws IOException {
+        if (android.os.Build.VERSION.SDK_INT >= 28) {
+            ImageDecoder.Source source = ImageDecoder.createSource(file);
+            return ImageDecoder.decodeDrawable(source, (decoder, info, src) -> {
+                int w = info.getSize().getWidth();
+                int h = info.getSize().getHeight();
+                int scalledW;
+                int scalledH;
+                if (w <= h) {
+                    scalledW = Math.max((int) (w / ((double) h / size)), 1);
+                    scalledH = size;
+                } else {
+                    scalledW = size;
+                    scalledH = Math.max((int) (h / ((double) w / size)), 1);
+                }
+                decoder.setTargetSize(scalledW, scalledH);
+            });
+        } else {
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inSampleSize = calcSampleSize(file, size);
+            Bitmap bitmap = null;
+            try {
+                bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+            } catch (OutOfMemoryError e) {
+                options.inSampleSize *= 2;
+                bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+            }
+            bitmap = resize(bitmap, size);
+            bitmap = rotate(bitmap, getRotation(file));
+            if (mime.equals("image/gif")) {
+                Bitmap withGifOverlay = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+                drawOverlay(withGifOverlay, paintOverlayBlack(withGifOverlay) ? R.drawable.play_gif_black : R.drawable.play_gif_white, 1.0f);
+                bitmap.recycle();
+                bitmap = withGifOverlay;
+            }
+            return new BitmapDrawable(res, bitmap);
+        }
+    }
+
+    protected Bitmap drawDrawable(Drawable drawable) {
+        Bitmap bitmap = null;
+
+        if (drawable instanceof BitmapDrawable) {
+            bitmap = ((BitmapDrawable) drawable).getBitmap();
+            if (bitmap != null) return bitmap;
+        }
+
+        bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bitmap;
     }
 
     private void drawOverlay(Bitmap bitmap, int resource, float factor) {
