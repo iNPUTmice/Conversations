@@ -233,7 +233,9 @@ public class WebRTCWrapper {
     public void setup(final XmppConnectionService service, final AppRTCAudioManager.SpeakerPhonePreference speakerPhonePreference) throws InitializationException {
         try {
             PeerConnectionFactory.initialize(
-                    PeerConnectionFactory.InitializationOptions.builder(service).createInitializationOptions()
+                    PeerConnectionFactory.InitializationOptions.builder(service)
+                    .setFieldTrials("WebRTC-BindUsingInterfaceName/Enabled/")
+                    .createInitializationOptions()
             );
         } catch (final UnsatisfiedLinkError e) {
             throw new InitializationException("Unable to initialize PeerConnectionFactory", e);
