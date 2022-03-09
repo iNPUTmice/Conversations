@@ -978,18 +978,10 @@ public class FileBackend {
         return thumbnail;
     }
 
-    public Bitmap getThumbnailBitmap(Message message, Resources res, int size, boolean cacheOnly) throws IOException {
-        final String uuid = message.getUuid();
-        final LruCache<String, Bitmap> cache = mXmppConnectionService.getBitmapCache();
-        Bitmap thumbnail = cache.get(uuid);
-        if ((thumbnail == null) && (!cacheOnly)) {
-          final Drawable drawable = getThumbnail(message, res, size, cacheOnly);
-          if (drawable != null) {
-              thumbnail = drawDrawable(drawable);
-              cache.put(uuid, thumbnail);
-          }
-        }
-        return thumbnail;
+    public Bitmap getThumbnailBitmap(Message message, Resources res, int size) throws IOException {
+          final Drawable drawable = getThumbnail(message, res, size, false);
+          if (drawable == null) return null;
+          return drawDrawable(drawable);
     }
 
     private Drawable getImagePreview(File file, Resources res, int size, final String mime) throws IOException {
