@@ -151,6 +151,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
                 if (message.getEncryption() == Message.ENCRYPTION_PGP || message.getEncryption() == Message.ENCRYPTION_DECRYPTED) {
                     file.delete();
                 }
+                disconnectSocks5Connections();
             }
             Log.d(Config.LOGTAG, "successfully transmitted file:" + file.getAbsolutePath() + " (" + CryptoHelper.bytesToHex(file.getSha1Sum()) + ")");
             if (message.getEncryption() != Message.ENCRYPTION_PGP) {
