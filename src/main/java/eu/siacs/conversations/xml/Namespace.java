@@ -28,7 +28,6 @@ public final class Namespace {
     public static final String SYNCHRONIZATION = "im.quicksy.synchronization:0";
     public static final String AVATAR_CONVERSION = "urn:xmpp:pep-vcard-conversion:0";
     public static final String JINGLE = "urn:xmpp:jingle:1";
-    public static final String JINGLE_ERRORS = "urn:xmpp:jingle:errors:1";
     public static final String JINGLE_MESSAGE = "urn:xmpp:jingle-message:0";
     public static final String JINGLE_ENCRYPTED_TRANSPORT = "urn:xmpp:jingle:jet:0";
     public static final String JINGLE_ENCRYPTED_TRANSPORT_OMEMO = "urn:xmpp:jingle:jet-omemo:0";

@@ -306,9 +306,6 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         if (existingCredentials.equals(newCredentials)) {
             return false;
         }
-        //TODO an alternative approach is to check if we already got an iq result to our ICE-restart
-        // and if that's the case we are seeing an answer.
-        // This might be more spec compliant but also more error prone potentially
         final boolean isOffer = rtpContentMap.emptyCandidates();
         final RtpContentMap restartContentMap;
         try {
@@ -333,8 +330,8 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             respondOk(jinglePacket);
             final Throwable rootCause = Throwables.getRootCause(exception);
             if (rootCause instanceof WebRTCWrapper.PeerConnectionNotInitialized) {
-                //If this happens a termination is already in progress
-                Log.d(Config.LOGTAG, "ignoring PeerConnectionNotInitialized on ICE restart");
+                Log.d(Config.LOGTAG, "ignoring PeerConnectionNotInitialized");
+                //TODO don’t respond OK but respond with out-of-order
                 return true;
             }
             Log.d(Config.LOGTAG, "failure to apply ICE restart", rootCause);
@@ -487,7 +484,8 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     private void receiveSessionInitiate(final JinglePacket jinglePacket, final RtpContentMap contentMap) {
         try {
             contentMap.requireContentDescriptions();
-            contentMap.requireDTLSFingerprint(true);
+            //TODO require actpass
+            contentMap.requireDTLSFingerprint();
         } catch (final RuntimeException e) {
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": improperly formatted contents", Throwables.getRootCause(e));
             respondOk(jinglePacket);
@@ -1074,48 +1072,36 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     private synchronized void handleIqResponse(final Account account, final IqPacket response) {
         if (response.getType() == IqPacket.TYPE.ERROR) {
-            handleIqErrorResponse(response);
-            return;
+            final String errorCondition = response.getErrorCondition();
+            Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": received IQ-error from " + response.getFrom() + " in RTP session. " + errorCondition);
+            if (isTerminated()) {
+                Log.i(Config.LOGTAG, id.account.getJid().asBareJid() + ": ignoring error because session was already terminated");
+                return;
+            }
+            this.webRTCWrapper.close();
+            final State target;
+            if (Arrays.asList(
+                    "service-unavailable",
+                    "recipient-unavailable",
+                    "remote-server-not-found",
+                    "remote-server-timeout"
+            ).contains(errorCondition)) {
+                target = State.TERMINATED_CONNECTIVITY_ERROR;
+            } else {
+                target = State.TERMINATED_APPLICATION_FAILURE;
+            }
+            transitionOrThrow(target);
+            this.finish();
+        } else if (response.getType() == IqPacket.TYPE.TIMEOUT) {
+            Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": received IQ timeout in RTP session with " + id.with + ". terminating with connectivity error");
+            if (isTerminated()) {
+                Log.i(Config.LOGTAG, id.account.getJid().asBareJid() + ": ignoring error because session was already terminated");
+                return;
+            }
+            this.webRTCWrapper.close();
+            transitionOrThrow(State.TERMINATED_CONNECTIVITY_ERROR);
+            this.finish();
         }
-        if (response.getType() == IqPacket.TYPE.TIMEOUT) {
-            handleIqTimeoutResponse(response);
-        }
-    }
-
-    private void handleIqErrorResponse(final IqPacket response) {
-        Preconditions.checkArgument(response.getType() == IqPacket.TYPE.ERROR);
-        final String errorCondition = response.getErrorCondition();
-        Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": received IQ-error from " + response.getFrom() + " in RTP session. " + errorCondition);
-        if (isTerminated()) {
-            Log.i(Config.LOGTAG, id.account.getJid().asBareJid() + ": ignoring error because session was already terminated");
-            return;
-        }
-        this.webRTCWrapper.close();
-        final State target;
-        if (Arrays.asList(
-                "service-unavailable",
-                "recipient-unavailable",
-                "remote-server-not-found",
-                "remote-server-timeout"
-        ).contains(errorCondition)) {
-            target = State.TERMINATED_CONNECTIVITY_ERROR;
-        } else {
-            target = State.TERMINATED_APPLICATION_FAILURE;
-        }
-        transitionOrThrow(target);
-        this.finish();
-    }
-
-    private void handleIqTimeoutResponse(final IqPacket response) {
-        Preconditions.checkArgument(response.getType() == IqPacket.TYPE.ERROR);
-        Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": received IQ timeout in RTP session with " + id.with + ". terminating with connectivity error");
-        if (isTerminated()) {
-            Log.i(Config.LOGTAG, id.account.getJid().asBareJid() + ": ignoring error because session was already terminated");
-            return;
-        }
-        this.webRTCWrapper.close();
-        transitionOrThrow(State.TERMINATED_CONNECTIVITY_ERROR);
-        this.finish();
     }
 
     private void terminateWithOutOfOrder(final JinglePacket jinglePacket) {
@@ -1517,9 +1503,8 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         try {
             sessionDescription = setLocalSessionDescription();
         } catch (final Exception e) {
-            final Throwable cause = Throwables.getRootCause(e);
-            Log.d(Config.LOGTAG, "failed to renegotiate", cause);
-            sendSessionTerminate(Reason.FAILED_APPLICATION, cause.getMessage());
+            Log.d(Config.LOGTAG, "failed to renegotiate", e);
+            //TODO send some sort of failure (comparable to when initiating)
             return;
         }
         final RtpContentMap rtpContentMap = RtpContentMap.of(sessionDescription);
@@ -1532,18 +1517,10 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                 Log.d(Config.LOGTAG, "received success to our ice restart");
                 setLocalContentMap(rtpContentMap);
                 webRTCWrapper.setIsReadyToReceiveIceCandidates(true);
-                return;
-            }
-            if (response.getType() == IqPacket.TYPE.ERROR) {
-                final Element error = response.findChild("error");
-                if (error != null && error.hasChild("tie-break", Namespace.JINGLE_ERRORS)) {
-                    Log.d(Config.LOGTAG, "received tie-break as result of ice restart");
-                    return;
-                }
-                handleIqErrorResponse(response);
-            }
-            if (response.getType() == IqPacket.TYPE.TIMEOUT) {
-                handleIqTimeoutResponse(response);
+            } else {
+                Log.d(Config.LOGTAG, "received failure to our ice restart");
+                //TODO ignore tie break (maybe rollback?)
+                //TODO handle other errors
             }
         });
     }

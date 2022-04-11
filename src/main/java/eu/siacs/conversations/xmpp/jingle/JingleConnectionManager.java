@@ -206,7 +206,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         final Element error = response.addChild("error");
         error.setAttribute("type", conditionType);
         error.addChild(condition, "urn:ietf:params:xml:ns:xmpp-stanzas");
-        error.addChild(jingleCondition, Namespace.JINGLE_ERRORS);
+        error.addChild(jingleCondition, "urn:xmpp:jingle:errors:1");
         account.getXmppConnection().sendIqPacket(response, null);
     }
 

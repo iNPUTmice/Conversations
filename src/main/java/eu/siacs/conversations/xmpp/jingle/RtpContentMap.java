@@ -96,10 +96,6 @@ public class RtpContentMap {
     }
 
     void requireDTLSFingerprint() {
-        requireDTLSFingerprint(false);
-    }
-
-    void requireDTLSFingerprint(final boolean requireActPass) {
         if (this.contents.size() == 0) {
             throw new IllegalStateException("No contents available");
         }
@@ -112,9 +108,6 @@ public class RtpContentMap {
             final IceUdpTransportInfo.Setup setup = fingerprint.getSetup();
             if (setup == null) {
                 throw new SecurityException(String.format("Use of DTLS-SRTP (XEP-0320) is required for content %s but missing setup attribute", entry.getKey()));
-            }
-            if (requireActPass && setup != IceUdpTransportInfo.Setup.ACTPASS) {
-                 throw new SecurityException("Initiator needs to offer ACTPASS as setup for DTLS-SRTP (XEP-0320)");
             }
         }
     }
