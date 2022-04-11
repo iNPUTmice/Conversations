@@ -311,7 +311,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                 restartContentMap = existing.modifiedCredentials(newCredentials, IceUdpTransportInfo.Setup.ACTPASS);
             } else {
                 final IceUdpTransportInfo.Setup setup = getPeerDtlsSetup();
-                Log.d(Config.LOGTAG, "received confirmation of ICE restart" + newCredentials.values() + " peer_setup=" + setup);
+                Log.d(Config.LOGTAG, "received confirmation of ICE restart" + newCredentials.values()+" peer_setup="+setup);
                 // DTLS setup attribute needs to be rewritten to reflect current peer state
                 // https://groups.google.com/g/discuss-webrtc/c/DfpIMwvUfeM
                 restartContentMap = existing.modifiedCredentials(newCredentials, setup);
@@ -319,18 +319,12 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             if (applyIceRestart(jinglePacket, restartContentMap, isOffer)) {
                 return isOffer;
             } else {
-                Log.d(Config.LOGTAG,"ignored ice restart. offer="+isOffer);
                 respondWithTieBreak(jinglePacket);
                 return true;
             }
         } catch (final Exception exception) {
             respondOk(jinglePacket);
             final Throwable rootCause = Throwables.getRootCause(exception);
-            if (rootCause instanceof WebRTCWrapper.PeerConnectionNotInitialized) {
-                Log.d(Config.LOGTAG,"ignoring PeerConnectionNotInitialized");
-                //TODO don’t respond OK but respond with out-of-order
-                return true;
-            }
             Log.d(Config.LOGTAG, "failure to apply ICE restart", rootCause);
             webRTCWrapper.close();
             sendSessionTerminate(Reason.ofThrowable(rootCause), rootCause.getMessage());
@@ -1472,18 +1466,21 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         }
 
         final boolean neverConnected = !this.stateHistory.contains(PeerConnection.PeerConnectionState.CONNECTED);
+        final boolean failedOrDisconnected = Arrays.asList(
+                PeerConnection.PeerConnectionState.FAILED,
+                PeerConnection.PeerConnectionState.DISCONNECTED
+        ).contains(newState);
 
-        if (newState == PeerConnection.PeerConnectionState.FAILED) {
-            if (neverConnected) {
-                if (isTerminated()) {
-                    Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": not sending session-terminate after connectivity error because session is already in state " + this.state);
-                    return;
-                }
-                webRTCWrapper.execute(this::closeWebRTCSessionAfterFailedConnection);
+
+        if (neverConnected && failedOrDisconnected) {
+            if (isTerminated()) {
+                Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": not sending session-terminate after connectivity error because session is already in state " + this.state);
                 return;
-            } else {
-                webRTCWrapper.restartIce();
             }
+            webRTCWrapper.execute(this::closeWebRTCSessionAfterFailedConnection);
+        } else if (newState == PeerConnection.PeerConnectionState.FAILED) {
+            Log.d(Config.LOGTAG, "attempting to restart ICE");
+            webRTCWrapper.restartIce();
         }
         updateEndUserState();
     }
@@ -1494,7 +1491,6 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     }
 
     private void initiateIceRestart() {
-        this.stateHistory.clear();
         this.webRTCWrapper.setIsReadyToReceiveIceCandidates(false);
         final SessionDescription sessionDescription;
         try {
