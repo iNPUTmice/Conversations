@@ -646,6 +646,7 @@ public class RtpSessionActivity extends XmppActivity
         final RtpEndUserState currentState = requireRtpConnection().getEndUserState();
         final boolean verified = requireRtpConnection().isVerified();
         if (currentState == RtpEndUserState.ENDED) {
+            reference.get().throwStateTransitionException();
             finish();
             return true;
         }
