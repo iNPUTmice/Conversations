@@ -155,11 +155,7 @@ public class RtpContentMap {
                 contents.values(),
                 dt->dt.transport.getFingerprint().getSetup()
         ));
-        final IceUdpTransportInfo.Setup setup = Iterables.getFirst(setups, null);
-        if (setups.size() == 1 && setup != null) {
-            return setup;
-        }
-        throw new IllegalStateException("Content map doesn't have distinct DTLS setup");
+        return setups.size() == 1 ? Iterables.getFirst(setups, null) : null;
     }
 
     public boolean emptyCandidates() {

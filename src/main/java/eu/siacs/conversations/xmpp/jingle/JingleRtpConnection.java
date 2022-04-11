@@ -150,7 +150,6 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     private Set<Media> proposedMedia;
     private RtpContentMap initiatorRtpContentMap;
     private RtpContentMap responderRtpContentMap;
-    private IceUdpTransportInfo.Setup peerDtlsSetup;
     private final Stopwatch sessionDuration = Stopwatch.createUnstarted();
     private final Queue<PeerConnection.PeerConnectionState> stateHistory = new LinkedList<>();
     private ScheduledFuture<?> ringingTimeoutFuture;
@@ -333,18 +332,11 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     }
 
     private IceUdpTransportInfo.Setup getPeerDtlsSetup() {
-        final IceUdpTransportInfo.Setup peerSetup = this.peerDtlsSetup;
-        if (peerSetup == null || peerSetup == IceUdpTransportInfo.Setup.ACTPASS) {
-            throw new IllegalStateException("Invalid peer setup");
+        final IceUdpTransportInfo.Setup responderSetup = this.responderRtpContentMap.getDtlsSetup();
+        if (responderSetup == null || responderSetup == IceUdpTransportInfo.Setup.ACTPASS) {
+            throw new IllegalStateException("Invalid DTLS setup value in responder content map");
         }
-        return peerSetup;
-    }
-
-    private void storePeerDtlsSetup(final IceUdpTransportInfo.Setup setup) {
-        if (setup == null || setup == IceUdpTransportInfo.Setup.ACTPASS) {
-            throw new IllegalArgumentException("Trying to store invalid peer dtls setup");
-        }
-        this.peerDtlsSetup = setup;
+        return isInitiator() ? responderSetup : responderSetup.flip();
     }
 
     private boolean applyIceRestart(final JinglePacket jinglePacket, final RtpContentMap restartContentMap, final boolean isOffer) throws ExecutionException, InterruptedException {
@@ -360,7 +352,11 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             webRTCWrapper.rollbackLocalDescription().get();
         }
         webRTCWrapper.setRemoteDescription(sdp).get();
-        setRemoteContentMap(restartContentMap);
+        if (isInitiator()) {
+            this.responderRtpContentMap = restartContentMap;
+        } else {
+            this.initiatorRtpContentMap = restartContentMap;
+        }
         if (isOffer) {
             webRTCWrapper.setIsReadyToReceiveIceCandidates(false);
             final SessionDescription localSessionDescription = setLocalSessionDescription();
@@ -368,8 +364,6 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             //We need to respond OK before sending any candidates
             respondOk(jinglePacket);
             webRTCWrapper.setIsReadyToReceiveIceCandidates(true);
-        } else {
-            storePeerDtlsSetup(restartContentMap.getDtlsSetup());
         }
         return true;
     }
@@ -575,7 +569,6 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     private void receiveSessionAccept(final RtpContentMap contentMap) {
         this.responderRtpContentMap = contentMap;
-        this.storePeerDtlsSetup(contentMap.getDtlsSetup());
         final SessionDescription sessionDescription;
         try {
             sessionDescription = SessionDescription.of(contentMap);
@@ -670,7 +663,6 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         final SessionDescription sessionDescription = SessionDescription.parse(webRTCSessionDescription.description);
         final RtpContentMap respondingRtpContentMap = RtpContentMap.of(sessionDescription);
         this.responderRtpContentMap = respondingRtpContentMap;
-        storePeerDtlsSetup(respondingRtpContentMap.getDtlsSetup().flip());
         webRTCWrapper.setIsReadyToReceiveIceCandidates(true);
         final ListenableFuture<RtpContentMap> outgoingContentMapFuture = prepareOutgoingContentMap(respondingRtpContentMap);
         Futures.addCallback(outgoingContentMapFuture,
@@ -1525,14 +1517,6 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             this.initiatorRtpContentMap = rtpContentMap;
         } else {
             this.responderRtpContentMap = rtpContentMap;
-        }
-    }
-
-    private void setRemoteContentMap(final RtpContentMap rtpContentMap) {
-        if (isInitiator()) {
-            this.responderRtpContentMap = rtpContentMap;
-        } else {
-            this.initiatorRtpContentMap = rtpContentMap;
         }
     }
 
