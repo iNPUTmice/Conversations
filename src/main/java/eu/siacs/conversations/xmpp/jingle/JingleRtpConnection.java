@@ -1338,8 +1338,8 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     }
 
     @Override
-    public void onConnectionChange(final PeerConnection.PeerConnectionState newState) {
-        Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": PeerConnectionState changed to" + newState);
+    public void onConnectionChange(final PeerConnection.PeerConnectionState oldState, final PeerConnection.PeerConnectionState newState) {
+        Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": PeerConnectionState changed: " + oldState + "->" + newState);
         this.stateHistory.add(newState);
         if (newState == PeerConnection.PeerConnectionState.CONNECTED) {
             this.sessionDuration.start();
