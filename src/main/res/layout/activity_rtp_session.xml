@@ -247,15 +247,5 @@
                 app:tint="?attr/icon_tint" />
         </RelativeLayout>
 
-        <TextView
-            android:id="@+id/using_account"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_margin="8dp"
-            android:text="@string/using_account"
-            android:textAppearance="@style/TextAppearance.Conversations.Caption"/>
-
     </RelativeLayout>
 </layout>
