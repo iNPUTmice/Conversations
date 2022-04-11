@@ -356,6 +356,8 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                 //We ignore the offer and respond with tie-break. This will clause the responder not to apply the content map
                 return false;
             }
+            //rollback our own local description. should happen automatically but doesn't
+            webRTCWrapper.rollbackLocalDescription().get();
         }
         webRTCWrapper.setRemoteDescription(sdp).get();
         setRemoteContentMap(restartContentMap);

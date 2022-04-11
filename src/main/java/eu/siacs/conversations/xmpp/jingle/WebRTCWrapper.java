@@ -88,6 +88,7 @@ public class WebRTCWrapper {
 
     private final EventCallback eventCallback;
     private final AtomicBoolean readyToReceivedIceCandidates = new AtomicBoolean(false);
+    private final AtomicBoolean ignoreOnRenegotiationNeeded = new AtomicBoolean(false);
     private final Queue<IceCandidate> iceCandidates = new LinkedList<>();
     private final AppRTCAudioManager.AudioManagerEvents audioManagerEvents = new AppRTCAudioManager.AudioManagerEvents() {
         @Override
@@ -164,6 +165,10 @@ public class WebRTCWrapper {
 
         @Override
         public void onRenegotiationNeeded() {
+            if (ignoreOnRenegotiationNeeded.get()) {
+                Log.d(EXTENDED_LOGGING_TAG, "ignoring onRenegotiationNeeded()");
+                return;
+            }
             Log.d(EXTENDED_LOGGING_TAG, "onRenegotiationNeeded()");
             final PeerConnection.PeerConnectionState currentState = peerConnection == null ? null : peerConnection.connectionState();
             if (currentState != null && currentState != PeerConnection.PeerConnectionState.NEW) {
@@ -274,7 +279,6 @@ public class WebRTCWrapper {
         rtcConfig.continualGatheringPolicy = PeerConnection.ContinualGatheringPolicy.GATHER_CONTINUALLY;
         rtcConfig.sdpSemantics = PeerConnection.SdpSemantics.UNIFIED_PLAN;
         rtcConfig.rtcpMuxPolicy = PeerConnection.RtcpMuxPolicy.NEGOTIATE;
-        rtcConfig.enableImplicitRollback = true;
         final PeerConnection peerConnection = peerConnectionFactory.createPeerConnection(rtcConfig, peerConnectionObserver);
         if (peerConnection == null) {
             throw new InitializationException("Unable to create PeerConnection");
@@ -453,6 +457,26 @@ public class WebRTCWrapper {
             return future;
         }, MoreExecutors.directExecutor());
     }
+
+    public ListenableFuture<Void> rollbackLocalDescription() {
+        final SettableFuture<Void> future = SettableFuture.create();
+        final SessionDescription rollback = new SessionDescription(SessionDescription.Type.ROLLBACK, "");
+        ignoreOnRenegotiationNeeded.set(true);
+        requirePeerConnection().setLocalDescription(new SetSdpObserver() {
+            @Override
+            public void onSetSuccess() {
+                future.set(null);
+                ignoreOnRenegotiationNeeded.set(false);
+            }
+
+            @Override
+            public void onSetFailure(final String message) {
+                future.setException(new FailureToSetDescriptionException(message));
+            }
+        }, rollback);
+        return future;
+    }
+
 
     private static void logDescription(final SessionDescription sessionDescription) {
         for (final String line : sessionDescription.description.split(eu.siacs.conversations.xmpp.jingle.SessionDescription.LINE_DIVIDER)) {
