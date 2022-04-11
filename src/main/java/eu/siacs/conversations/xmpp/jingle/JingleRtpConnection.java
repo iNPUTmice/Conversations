@@ -1511,7 +1511,6 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     }
 
     private void initiateIceRestart() {
-        //TODO discover new TURN/STUN credentials
         this.stateHistory.clear();
         this.webRTCWrapper.setIsReadyToReceiveIceCandidates(false);
         final SessionDescription sessionDescription;
