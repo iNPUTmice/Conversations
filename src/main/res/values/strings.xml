@@ -923,8 +923,6 @@
     <string name="hang_up">Hang up</string>
     <string name="ongoing_call">Ongoing call</string>
     <string name="ongoing_video_call">Ongoing video call</string>
-    <string name="reconnecting_call">Reconnecting call</string>
-    <string name="reconnecting_video_call">Reconnecting video call</string>
     <string name="disable_tor_to_make_call">Disable Tor to make calls</string>
     <string name="incoming_call">Incoming call</string>
     <string name="incoming_call_duration">Incoming call · %s</string>
