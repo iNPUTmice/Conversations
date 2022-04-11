@@ -53,26 +53,23 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/status"
                 android:layout_marginLeft="16dp"
+                android:layout_marginTop="0dp"
                 android:layout_marginRight="16dp"
+                android:layout_marginBottom="8dp"
                 android:textAppearance="@style/TextAppearance.Conversations.Display2"
                 android:textColor="@color/white"
                 tools:text="Juliet Capulet" />
             <TextView
-                android:visibility="visible"
                 android:id="@+id/with_jid"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/status"
-                android:layout_marginTop="8dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
+                android:layout_marginBottom="32dp"
                 android:textAppearance="@style/TextAppearance.Conversations.Body1"
                 android:textColor="@color/white"
                 tools:text="jcapulet@example.com" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="32dp"/>
 
 
         </com.google.android.material.appbar.AppBarLayout>
