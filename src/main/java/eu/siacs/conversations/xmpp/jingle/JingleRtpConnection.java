@@ -319,17 +319,14 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                 respondWithTieBreak(jinglePacket);
                 return true;
             }
-        } catch (final Exception exception) {
-            respondOk(jinglePacket);
-            final Throwable rootCause = Throwables.getRootCause(exception);
-            Log.d(Config.LOGTAG, "failure to apply ICE restart", rootCause);
-            webRTCWrapper.close();
-            sendSessionTerminate(Reason.ofThrowable(rootCause), rootCause.getMessage());
+        } catch (Exception e) {
+            Log.d(Config.LOGTAG, "failure to apply ICE restart. sending error", e);
+            //TODO respond OK and then terminate session
             return true;
         }
     }
 
-    private boolean applyIceRestart(final JinglePacket jinglePacket, final RtpContentMap restartContentMap, final boolean isOffer) throws ExecutionException, InterruptedException {
+    private boolean applyIceRestart(final JinglePacket jinglePacket, final RtpContentMap restartContentMap,  final boolean isOffer) throws ExecutionException, InterruptedException {
         final SessionDescription sessionDescription = SessionDescription.of(restartContentMap);
         final org.webrtc.SessionDescription.Type type = isOffer ? org.webrtc.SessionDescription.Type.OFFER : org.webrtc.SessionDescription.Type.ANSWER;
         org.webrtc.SessionDescription sdp = new org.webrtc.SessionDescription(type, sessionDescription.toString());
@@ -577,7 +574,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         } catch (final Exception e) {
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": unable to set remote description after receiving session-accept", Throwables.getRootCause(e));
             webRTCWrapper.close();
-            sendSessionTerminate(Reason.FAILED_APPLICATION, Throwables.getRootCause(e).getMessage());
+            sendSessionTerminate(Reason.FAILED_APPLICATION);
             return;
         }
         processCandidates(contentMap.contents.entrySet());
@@ -627,6 +624,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             org.webrtc.SessionDescription webRTCSessionDescription = this.webRTCWrapper.setLocalDescription().get();
             prepareSessionAccept(webRTCSessionDescription);
         } catch (final Exception e) {
+            //TODO sending the error text is worthwhile as well. Especially for FailureToSet exceptions
             failureToAcceptSession(e);
         }
     }
@@ -635,10 +633,9 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         if (isTerminated()) {
             return;
         }
-        final Throwable rootCause = Throwables.getRootCause(throwable);
-        Log.d(Config.LOGTAG, "unable to send session accept", rootCause);
+        Log.d(Config.LOGTAG, "unable to send session accept", Throwables.getRootCause(throwable));
         webRTCWrapper.close();
-        sendSessionTerminate(Reason.ofThrowable(rootCause), rootCause.getMessage());
+        sendSessionTerminate(Reason.ofThrowable(throwable));
     }
 
     private void addIceCandidatesFromBlackLog() {
