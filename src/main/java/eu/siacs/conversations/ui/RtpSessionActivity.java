@@ -400,7 +400,7 @@ public class RtpSessionActivity extends XmppActivity
             }
         } else if (asList(ACTION_MAKE_VIDEO_CALL, ACTION_MAKE_VOICE_CALL).contains(action)) {
             proposeJingleRtpSession(account, with, actionToMedia(action));
-            setWith(account.getRoster().getContact(with));
+            binding.with.setText(account.getRoster().getContact(with).getDisplayName());
         } else {
             throw new IllegalStateException("received onNewIntent without sessionId");
         }
@@ -424,7 +424,7 @@ public class RtpSessionActivity extends XmppActivity
             }
         } else if (asList(ACTION_MAKE_VIDEO_CALL, ACTION_MAKE_VOICE_CALL).contains(action)) {
             proposeJingleRtpSession(account, with, actionToMedia(action));
-            setWith(account.getRoster().getContact(with));
+            binding.with.setText(account.getRoster().getContact(with).getDisplayName());
         } else if (Intent.ACTION_VIEW.equals(action)) {
             final String extraLastState = intent.getStringExtra(EXTRA_LAST_REPORTED_STATE);
             final RtpEndUserState state =
@@ -437,7 +437,7 @@ public class RtpSessionActivity extends XmppActivity
                 updateProfilePicture(state);
                 invalidateOptionsMenu();
             }
-            setWith(account.getRoster().getContact(with));
+            binding.with.setText(account.getRoster().getContact(with).getDisplayName());
             if (xmppConnectionService
                     .getJingleConnectionManager()
                     .fireJingleRtpConnectionStateUpdates()) {
@@ -452,15 +452,6 @@ public class RtpSessionActivity extends XmppActivity
             Log.d(Config.LOGTAG, "restored state (" + state + ") was not an end card. finishing");
             finish();
         }
-    }
-
-    private void setWidth() {
-        setWith(getWith());
-    }
-
-    private void setWith(final Contact contact) {
-        binding.with.setText(contact.getDisplayName());
-        binding.withJid.setText(contact.getJid().asBareJid().toEscapedString());
     }
 
     private void proposeJingleRtpSession(
@@ -666,7 +657,7 @@ public class RtpSessionActivity extends XmppActivity
                 requireRtpConnection().getState())) {
             putScreenInCallMode();
         }
-        setWidth();
+        binding.with.setText(getWith().getDisplayName());
         updateVideoViews(currentState);
         updateStateDisplay(currentState, media);
         updateVerifiedShield(verified && STATES_SHOWING_SWITCH_TO_CHAT.contains(currentState));
@@ -693,7 +684,7 @@ public class RtpSessionActivity extends XmppActivity
         updateCallDuration();
         updateVerifiedShield(false);
         invalidateOptionsMenu();
-        setWith(account.getRoster().getContact(with));
+        binding.with.setText(account.getRoster().getContact(with).getDisplayName());
     }
 
     private void reInitializeActivityWithRunningRtpSession(
