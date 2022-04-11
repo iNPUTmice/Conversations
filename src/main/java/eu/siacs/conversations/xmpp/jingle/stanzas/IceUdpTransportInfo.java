@@ -1,7 +1,6 @@
 package eu.siacs.conversations.xmpp.jingle.stanzas;
 
 import com.google.common.base.Joiner;
-import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.ArrayListMultimap;
@@ -9,7 +8,6 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.LinkedHashMap;
@@ -60,12 +58,6 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
         return fingerprint == null ? null : Fingerprint.upgrade(fingerprint);
     }
 
-    public Credentials getCredentials() {
-        final String ufrag = this.getAttribute("ufrag");
-        final String password = this.getAttribute("pwd");
-        return new Credentials(ufrag, password);
-    }
-
     public List<Candidate> getCandidates() {
         final ImmutableList.Builder<Candidate> builder = new ImmutableList.Builder<>();
         for (final Element child : getChildren()) {
@@ -80,37 +72,6 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
         final IceUdpTransportInfo transportInfo = new IceUdpTransportInfo();
         transportInfo.setAttributes(new Hashtable<>(getAttributes()));
         return transportInfo;
-    }
-
-    public IceUdpTransportInfo modifyCredentials(Credentials credentials) {
-        final IceUdpTransportInfo transportInfo = new IceUdpTransportInfo();
-        transportInfo.setAttribute("ufrag", credentials.ufrag);
-        transportInfo.setAttribute("pwd", credentials.password);
-        transportInfo.setChildren(getChildren());
-        return transportInfo;
-    }
-
-    public static class Credentials {
-        public final String ufrag;
-        public final String password;
-
-        public Credentials(String ufrag, String password) {
-            this.ufrag = ufrag;
-            this.password = password;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            Credentials that = (Credentials) o;
-            return Objects.equal(ufrag, that.ufrag) && Objects.equal(password, that.password);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hashCode(ufrag, password);
-        }
     }
 
     public static class Candidate extends Element {
@@ -128,7 +89,7 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
         }
 
         // https://tools.ietf.org/html/draft-ietf-mmusic-ice-sip-sdp-39#section-5.1
-        public static Candidate fromSdpAttribute(final String attribute, Collection<String> currentUfrags) {
+        public static Candidate fromSdpAttribute(final String attribute) {
             final String[] pair = attribute.split(":", 2);
             if (pair.length == 2 && "candidate".equals(pair[0])) {
                 final String[] segments = pair[1].split(" ");
@@ -143,10 +104,6 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
                     final HashMap<String, String> additional = new HashMap<>();
                     for (int i = 6; i < segments.length - 1; i = i + 2) {
                         additional.put(segments[i], segments[i + 1]);
-                    }
-                    final String ufrag = additional.get("ufrag");
-                    if (ufrag != null && !currentUfrags.contains(ufrag)) {
-                        return null;
                     }
                     final Candidate candidate = new Candidate();
                     candidate.setAttribute("component", component);

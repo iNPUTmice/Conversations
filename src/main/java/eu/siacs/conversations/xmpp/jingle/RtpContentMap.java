@@ -1,5 +1,7 @@
 package eu.siacs.conversations.xmpp.jingle;
 
+import android.util.Log;
+
 import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
@@ -15,9 +17,9 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Content;
 import eu.siacs.conversations.xmpp.jingle.stanzas.GenericDescription;
 import eu.siacs.conversations.xmpp.jingle.stanzas.GenericTransportInfo;
@@ -135,37 +137,7 @@ public class RtpContentMap {
         final IceUdpTransportInfo newTransportInfo = transportInfo.cloneWrapper();
         newTransportInfo.addChild(candidate);
         return new RtpContentMap(null, ImmutableMap.of(contentName, new DescriptionTransport(null, newTransportInfo)));
-    }
 
-    RtpContentMap transportInfo() {
-        return new RtpContentMap(
-                null,
-                Maps.transformValues(contents, dt -> new DescriptionTransport(null, dt.transport.cloneWrapper()))
-        );
-    }
-
-    public Map<String, IceUdpTransportInfo.Credentials> getCredentials() {
-        return Maps.transformValues(contents, dt -> dt.transport.getCredentials());
-    }
-
-    public boolean emptyCandidates() {
-        int count = 0;
-        for (DescriptionTransport descriptionTransport : contents.values()) {
-            count += descriptionTransport.transport.getCandidates().size();
-        }
-        return count == 0;
-    }
-
-    public RtpContentMap modifiedCredentials(Map<String, IceUdpTransportInfo.Credentials> credentialsMap) {
-        final ImmutableMap.Builder<String, DescriptionTransport> contentMapBuilder = new ImmutableMap.Builder<>();
-        for (final Map.Entry<String, DescriptionTransport> content : contents.entrySet()) {
-            final RtpDescription rtpDescription = content.getValue().description;
-            IceUdpTransportInfo transportInfo = content.getValue().transport;
-            final IceUdpTransportInfo.Credentials credentials = Objects.requireNonNull(credentialsMap.get(content.getKey()));
-            final IceUdpTransportInfo modifiedTransportInfo = transportInfo.modifyCredentials(credentials);
-            contentMapBuilder.put(content.getKey(), new DescriptionTransport(rtpDescription, modifiedTransportInfo));
-        }
-        return new RtpContentMap(this.group, contentMapBuilder.build());
     }
 
     public static class DescriptionTransport {

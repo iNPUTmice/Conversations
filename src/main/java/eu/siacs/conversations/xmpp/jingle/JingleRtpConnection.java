@@ -25,6 +25,7 @@ import org.webrtc.IceCandidate;
 import org.webrtc.PeerConnection;
 import org.webrtc.VideoTrack;
 
+import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -141,8 +142,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     }
 
     private final WebRTCWrapper webRTCWrapper = new WebRTCWrapper(this);
-    //TODO convert to Queue<Map.Entry<String, Description>>?
-    private final Queue<Map.Entry<String, RtpContentMap.DescriptionTransport>> pendingIceCandidates = new LinkedList<>();
+    private final ArrayDeque<Set<Map.Entry<String, RtpContentMap.DescriptionTransport>>> pendingIceCandidates = new ArrayDeque<>();
     private final OmemoVerification omemoVerification = new OmemoVerification();
     private final Message message;
     private State state = State.NULL;
@@ -193,6 +193,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     @Override
     synchronized void deliverPacket(final JinglePacket jinglePacket) {
+        Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": packet delivered to JingleRtpConnection");
         switch (jinglePacket.getAction()) {
             case SESSION_INITIATE:
                 receiveSessionInitiate(jinglePacket);
@@ -253,29 +254,23 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     private void receiveTransportInfo(final JinglePacket jinglePacket) {
         //Due to the asynchronicity of processing session-init we might move from NULL|PROCEED to INITIALIZED only after transport-info has been received
         if (isInState(State.NULL, State.PROCEED, State.SESSION_INITIALIZED, State.SESSION_INITIALIZED_PRE_APPROVED, State.SESSION_ACCEPTED)) {
+            respondOk(jinglePacket);
             final RtpContentMap contentMap;
             try {
                 contentMap = RtpContentMap.of(jinglePacket);
-            } catch (final IllegalArgumentException | NullPointerException e) {
+            } catch (IllegalArgumentException | NullPointerException e) {
                 Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": improperly formatted contents; ignoring", e);
-                respondOk(jinglePacket);
                 return;
             }
             final Set<Map.Entry<String, RtpContentMap.DescriptionTransport>> candidates = contentMap.contents.entrySet();
             if (this.state == State.SESSION_ACCEPTED) {
-                //zero candidates + modified credentials are an ICE restart offer
-                if (checkForIceRestart(contentMap, jinglePacket)) {
-                    return;
-                }
-                respondOk(jinglePacket);
                 try {
                     processCandidates(candidates);
                 } catch (final WebRTCWrapper.PeerConnectionNotInitialized e) {
                     Log.w(Config.LOGTAG, id.account.getJid().asBareJid() + ": PeerConnection was not initialized when processing transport info. this usually indicates a race condition that can be ignored");
                 }
             } else {
-                respondOk(jinglePacket);
-                pendingIceCandidates.addAll(candidates);
+                pendingIceCandidates.push(candidates);
             }
         } else {
             if (isTerminated()) {
@@ -288,106 +283,37 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         }
     }
 
-    private boolean checkForIceRestart(final RtpContentMap rtpContentMap, final JinglePacket jinglePacket) {
-        final RtpContentMap existing = getRemoteContentMap();
-        final Map<String, IceUdpTransportInfo.Credentials> existingCredentials = existing.getCredentials();
-        final Map<String, IceUdpTransportInfo.Credentials> newCredentials = rtpContentMap.getCredentials();
-        if (!existingCredentials.keySet().equals(newCredentials.keySet())) {
-            return false;
-        }
-        if (existingCredentials.equals(newCredentials)) {
-            return false;
-        }
-        final boolean isOffer = rtpContentMap.emptyCandidates();
-        Log.d(Config.LOGTAG, "detected ICE restart. offer=" + isOffer + " " + jinglePacket);
-        //TODO reset to 'actpass'?
-        final RtpContentMap restartContentMap = existing.modifiedCredentials(newCredentials);
-        try {
-            if (applyIceRestart(isOffer, restartContentMap)) {
-                return false;
-            } else {
-                Log.d(Config.LOGTAG, "responding with tie break");
-                //TODO respond with conflict
-                return true;
-            }
-        } catch (Exception e) {
-            Log.d(Config.LOGTAG, "failure to apply ICE restart. sending error", e);
-            //TODO send some kind of error
-            return true;
-        }
-    }
-
-    private boolean applyIceRestart(final boolean isOffer, final RtpContentMap restartContentMap) throws ExecutionException, InterruptedException {
-        final SessionDescription sessionDescription = SessionDescription.of(restartContentMap);
-        final org.webrtc.SessionDescription.Type type = isOffer ? org.webrtc.SessionDescription.Type.OFFER : org.webrtc.SessionDescription.Type.ANSWER;
-        org.webrtc.SessionDescription sdp = new org.webrtc.SessionDescription(type, sessionDescription.toString());
-        if (isOffer && webRTCWrapper.getSignalingState() != PeerConnection.SignalingState.STABLE) {
-            if (isInitiator()) {
-                //We ignore the offer and respond with tie-break. This will clause the responder not to apply the content map
-                return false;
-            }
-            //rollback our own local description. should happen automatically but doesn't
-            webRTCWrapper.rollbackLocalDescription().get();
-        }
-        webRTCWrapper.setRemoteDescription(sdp).get();
-        if (isInitiator()) {
-            this.responderRtpContentMap = restartContentMap;
-        } else {
-            this.initiatorRtpContentMap = restartContentMap;
-        }
-        if (isOffer) {
-            webRTCWrapper.setIsReadyToReceiveIceCandidates(false);
-            final SessionDescription localSessionDescription = setLocalSessionDescription();
-            setLocalContentMap(RtpContentMap.of(localSessionDescription));
-            webRTCWrapper.setIsReadyToReceiveIceCandidates(true);
-        }
-        return true;
-    }
-
     private void processCandidates(final Set<Map.Entry<String, RtpContentMap.DescriptionTransport>> contents) {
-        for (final Map.Entry<String, RtpContentMap.DescriptionTransport> content : contents) {
-            processCandidate(content);
-        }
-    }
-
-    private void processCandidate(final Map.Entry<String, RtpContentMap.DescriptionTransport> content) {
-        final RtpContentMap rtpContentMap = getRemoteContentMap();
-        final List<String> indices = toIdentificationTags(rtpContentMap);
-        final String sdpMid = content.getKey(); //aka content name
-        final IceUdpTransportInfo transport = content.getValue().transport;
-        final IceUdpTransportInfo.Credentials credentials = transport.getCredentials();
-
-        //TODO check that credentials remained the same
-
-        for (final IceUdpTransportInfo.Candidate candidate : transport.getCandidates()) {
-            final String sdp;
-            try {
-                sdp = candidate.toSdpAttribute(credentials.ufrag);
-            } catch (final IllegalArgumentException e) {
-                Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": ignoring invalid ICE candidate " + e.getMessage());
-                continue;
-            }
-            final int mLineIndex = indices.indexOf(sdpMid);
-            if (mLineIndex < 0) {
-                Log.w(Config.LOGTAG, "mLineIndex not found for " + sdpMid + ". available indices " + indices);
-            }
-            final IceCandidate iceCandidate = new IceCandidate(sdpMid, mLineIndex, sdp);
-            Log.d(Config.LOGTAG, "received candidate: " + iceCandidate);
-            this.webRTCWrapper.addIceCandidate(iceCandidate);
-        }
-    }
-
-    private RtpContentMap getRemoteContentMap() {
-        return isInitiator() ? this.responderRtpContentMap : this.initiatorRtpContentMap;
-    }
-
-    private List<String> toIdentificationTags(final RtpContentMap rtpContentMap) {
+        final RtpContentMap rtpContentMap = isInitiator() ? this.responderRtpContentMap : this.initiatorRtpContentMap;
         final Group originalGroup = rtpContentMap.group;
         final List<String> identificationTags = originalGroup == null ? rtpContentMap.getNames() : originalGroup.getIdentificationTags();
         if (identificationTags.size() == 0) {
             Log.w(Config.LOGTAG, id.account.getJid().asBareJid() + ": no identification tags found in initial offer. we won't be able to calculate mLineIndices");
         }
-        return identificationTags;
+        processCandidates(identificationTags, contents);
+    }
+
+    private void processCandidates(final List<String> indices, final Set<Map.Entry<String, RtpContentMap.DescriptionTransport>> contents) {
+        for (final Map.Entry<String, RtpContentMap.DescriptionTransport> content : contents) {
+            final String ufrag = content.getValue().transport.getAttribute("ufrag");
+            for (final IceUdpTransportInfo.Candidate candidate : content.getValue().transport.getCandidates()) {
+                final String sdp;
+                try {
+                    sdp = candidate.toSdpAttribute(ufrag);
+                } catch (IllegalArgumentException e) {
+                    Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": ignoring invalid ICE candidate " + e.getMessage());
+                    continue;
+                }
+                final String sdpMid = content.getKey();
+                final int mLineIndex = indices.indexOf(sdpMid);
+                if (mLineIndex < 0) {
+                    Log.w(Config.LOGTAG, "mLineIndex not found for " + sdpMid + ". available indices " + indices);
+                }
+                final IceCandidate iceCandidate = new IceCandidate(sdpMid, mLineIndex, sdp);
+                Log.d(Config.LOGTAG, "received candidate: " + iceCandidate);
+                this.webRTCWrapper.addIceCandidate(iceCandidate);
+            }
+        }
     }
 
     private ListenableFuture<RtpContentMap> receiveRtpContentMap(final JinglePacket jinglePacket, final boolean expectVerification) {
@@ -475,7 +401,11 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         }
         if (transition(target, () -> this.initiatorRtpContentMap = contentMap)) {
             respondOk(jinglePacket);
-            pendingIceCandidates.addAll(contentMap.contents.entrySet());
+
+            final Set<Map.Entry<String, RtpContentMap.DescriptionTransport>> candidates = contentMap.contents.entrySet();
+            if (candidates.size() > 0) {
+                pendingIceCandidates.push(candidates);
+            }
             if (target == State.SESSION_INITIALIZED_PRE_APPROVED) {
                 Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": automatically accepting session-initiate");
                 sendSessionAccept();
@@ -565,7 +495,8 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             sendSessionTerminate(Reason.FAILED_APPLICATION);
             return;
         }
-        processCandidates(contentMap.contents.entrySet());
+        final List<String> identificationTags = contentMap.group == null ? contentMap.getNames() : contentMap.group.getIdentificationTags();
+        processCandidates(identificationTags, contentMap.contents.entrySet());
     }
 
     private void sendSessionAccept() {
@@ -627,10 +558,9 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     }
 
     private void addIceCandidatesFromBlackLog() {
-        Map.Entry<String, RtpContentMap.DescriptionTransport> foo;
-        while ((foo = this.pendingIceCandidates.poll()) != null) {
-            processCandidate(foo);
-            Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": added candidate from back log");
+        while (!this.pendingIceCandidates.isEmpty()) {
+            processCandidates(this.pendingIceCandidates.poll());
+            Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": added candidates from back log");
         }
     }
 
@@ -1405,13 +1335,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     @Override
     public void onIceCandidate(final IceCandidate iceCandidate) {
-        final RtpContentMap rtpContentMap = isInitiator() ? this.initiatorRtpContentMap : this.responderRtpContentMap;
-        final Collection<String> currentUfrags = Collections2.transform(rtpContentMap.getCredentials().values(), c -> c.ufrag);
-        final IceUdpTransportInfo.Candidate candidate = IceUdpTransportInfo.Candidate.fromSdpAttribute(iceCandidate.sdp, currentUfrags);
-        if (candidate == null) {
-            Log.d(Config.LOGTAG,"ignoring (not sending) candidate: "+iceCandidate.toString());
-            return;
-        }
+        final IceUdpTransportInfo.Candidate candidate = IceUdpTransportInfo.Candidate.fromSdpAttribute(iceCandidate.sdp);
         Log.d(Config.LOGTAG, "sending candidate: " + iceCandidate.toString());
         sendTransportInfo(iceCandidate.sdpMid, candidate);
     }
@@ -1449,42 +1373,23 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     @Override
     public void onRenegotiationNeeded() {
         Log.d(Config.LOGTAG, "onRenegotiationNeeded()");
-        this.webRTCWrapper.execute(this::initiateIceRestart);
+        this.webRTCWrapper.execute(this::renegotiate);
     }
 
-    private void initiateIceRestart() {
-        PeerConnection.SignalingState signalingState = webRTCWrapper.getSignalingState();
-        Log.d(Config.LOGTAG, "initiateIceRestart() - " + signalingState);
-        if (signalingState != PeerConnection.SignalingState.STABLE) {
-            return;
-        }
+    private void renegotiate() {
         this.webRTCWrapper.setIsReadyToReceiveIceCandidates(false);
-        final SessionDescription sessionDescription;
         try {
-            sessionDescription = setLocalSessionDescription();
+            final SessionDescription sessionDescription = setLocalSessionDescription();
+            final RtpContentMap rtpContentMap = RtpContentMap.of(sessionDescription);
+            setRenegotiatedContentMap(rtpContentMap);
+            this.webRTCWrapper.setIsReadyToReceiveIceCandidates(true);
         } catch (final Exception e) {
             Log.d(Config.LOGTAG, "failed to renegotiate", e);
             //TODO send some sort of failure (comparable to when initiating)
-            return;
         }
-        final RtpContentMap rtpContentMap = RtpContentMap.of(sessionDescription);
-        final RtpContentMap transportInfo = rtpContentMap.transportInfo();
-        final JinglePacket jinglePacket = transportInfo.toJinglePacket(JinglePacket.Action.TRANSPORT_INFO, id.sessionId);
-        Log.d(Config.LOGTAG, "initiating ice restart: " + jinglePacket);
-        jinglePacket.setTo(id.with);
-        xmppConnectionService.sendIqPacket(id.account, jinglePacket, (account, response) -> {
-            if (response.getType() == IqPacket.TYPE.RESULT) {
-                Log.d(Config.LOGTAG, "received success to our ice restart");
-                setLocalContentMap(rtpContentMap);
-                webRTCWrapper.setIsReadyToReceiveIceCandidates(true);
-            } else {
-                Log.d(Config.LOGTAG, "received failure to our ice restart");
-                //TODO handle tie-break. Rollback?
-            }
-        });
     }
 
-    private void setLocalContentMap(final RtpContentMap rtpContentMap) {
+    private void setRenegotiatedContentMap(final RtpContentMap rtpContentMap) {
         if (isInitiator()) {
             this.initiatorRtpContentMap = rtpContentMap;
         } else {

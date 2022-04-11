@@ -17,6 +17,7 @@ import com.google.common.util.concurrent.SettableFuture;
 
 import org.webrtc.AudioSource;
 import org.webrtc.AudioTrack;
+import org.webrtc.Camera1Enumerator;
 import org.webrtc.Camera2Enumerator;
 import org.webrtc.CameraEnumerationAndroid;
 import org.webrtc.CameraEnumerator;
@@ -88,7 +89,6 @@ public class WebRTCWrapper {
 
     private final EventCallback eventCallback;
     private final AtomicBoolean readyToReceivedIceCandidates = new AtomicBoolean(false);
-    private final AtomicBoolean ignoreOnRenegotiationNeeded = new AtomicBoolean(false);
     private final Queue<IceCandidate> iceCandidates = new LinkedList<>();
     private final AppRTCAudioManager.AudioManagerEvents audioManagerEvents = new AppRTCAudioManager.AudioManagerEvents() {
         @Override
@@ -165,10 +165,6 @@ public class WebRTCWrapper {
 
         @Override
         public void onRenegotiationNeeded() {
-            if (ignoreOnRenegotiationNeeded.get()) {
-                Log.d(EXTENDED_LOGGING_TAG, "ignoring onRenegotiationNeeded()");
-                return;
-            }
             Log.d(EXTENDED_LOGGING_TAG, "onRenegotiationNeeded()");
             final PeerConnection.PeerConnectionState currentState = peerConnection == null ? null : peerConnection.connectionState();
             if (currentState != null && currentState != PeerConnection.PeerConnectionState.NEW) {
@@ -313,12 +309,12 @@ public class WebRTCWrapper {
     }
 
     void restartIce() {
-        executorService.execute(() -> requirePeerConnection().restartIce());
+        executorService.execute(()-> requirePeerConnection().restartIce());
     }
 
     public void setIsReadyToReceiveIceCandidates(final boolean ready) {
         readyToReceivedIceCandidates.set(ready);
-        while (ready && iceCandidates.peek() != null) {
+        while(ready && iceCandidates.peek() != null) {
             eventCallback.onIceCandidate(iceCandidates.poll());
         }
     }
@@ -458,26 +454,6 @@ public class WebRTCWrapper {
         }, MoreExecutors.directExecutor());
     }
 
-    public ListenableFuture<Void> rollbackLocalDescription() {
-        final SettableFuture<Void> future = SettableFuture.create();
-        final SessionDescription rollback = new SessionDescription(SessionDescription.Type.ROLLBACK, "");
-        ignoreOnRenegotiationNeeded.set(true);
-        requirePeerConnection().setLocalDescription(new SetSdpObserver() {
-            @Override
-            public void onSetSuccess() {
-                future.set(null);
-                ignoreOnRenegotiationNeeded.set(false);
-            }
-
-            @Override
-            public void onSetFailure(final String message) {
-                future.setException(new FailureToSetDescriptionException(message));
-            }
-        }, rollback);
-        return future;
-    }
-
-
     private static void logDescription(final SessionDescription sessionDescription) {
         for (final String line : sessionDescription.description.split(eu.siacs.conversations.xmpp.jingle.SessionDescription.LINE_DIVIDER)) {
             Log.d(EXTENDED_LOGGING_TAG, line);
@@ -576,10 +552,6 @@ public class WebRTCWrapper {
 
     void execute(final Runnable command) {
         executorService.execute(command);
-    }
-
-    public PeerConnection.SignalingState getSignalingState() {
-        return requirePeerConnection().signalingState();
     }
 
     public interface EventCallback {

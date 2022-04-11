@@ -1,7 +1,5 @@
 package eu.siacs.conversations.xml;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -167,9 +165,8 @@ public class Element {
 		return this.attributes;
 	}
 
-	@NotNull
 	public String toString() {
-		final StringBuilder elementOutput = new StringBuilder();
+		StringBuilder elementOutput = new StringBuilder();
 		if ((content == null) && (children.size() == 0)) {
 			Tag emptyTag = Tag.empty(name);
 			emptyTag.setAtttributes(this.attributes);
