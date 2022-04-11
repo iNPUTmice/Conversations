@@ -1,7 +1,6 @@
 package eu.siacs.conversations.xmpp.jingle.stanzas;
 
 import com.google.common.base.Joiner;
-import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
@@ -111,14 +110,6 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
         @Override
         public int hashCode() {
             return Objects.hashCode(ufrag, password);
-        }
-
-        @Override
-        public String toString() {
-            return MoreObjects.toStringHelper(this)
-                    .add("ufrag", ufrag)
-                    .add("password", password)
-                    .toString();
         }
     }
 
