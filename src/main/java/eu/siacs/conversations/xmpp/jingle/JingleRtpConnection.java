@@ -1107,7 +1107,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     }
 
     private void handleIqTimeoutResponse(final IqPacket response) {
-        Preconditions.checkArgument(response.getType() == IqPacket.TYPE.TIMEOUT);
+        Preconditions.checkArgument(response.getType() == IqPacket.TYPE.ERROR);
         Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": received IQ timeout in RTP session with " + id.with + ". terminating with connectivity error");
         if (isTerminated()) {
             Log.i(Config.LOGTAG, id.account.getJid().asBareJid() + ": ignoring error because session was already terminated");
