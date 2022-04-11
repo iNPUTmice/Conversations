@@ -34,7 +34,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
@@ -568,7 +567,6 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         final SessionDescription sessionDescription = SessionDescription.parse(webRTCSessionDescription.description);
         final RtpContentMap respondingRtpContentMap = RtpContentMap.of(sessionDescription);
         this.responderRtpContentMap = respondingRtpContentMap;
-        webRTCWrapper.setIsReadyToReceiveIceCandidates(true);
         final ListenableFuture<RtpContentMap> outgoingContentMapFuture = prepareOutgoingContentMap(respondingRtpContentMap);
         Futures.addCallback(outgoingContentMapFuture,
                 new FutureCallback<RtpContentMap>() {
@@ -874,7 +872,6 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         final SessionDescription sessionDescription = SessionDescription.parse(webRTCSessionDescription.description);
         final RtpContentMap rtpContentMap = RtpContentMap.of(sessionDescription);
         this.initiatorRtpContentMap = rtpContentMap;
-        this.webRTCWrapper.setIsReadyToReceiveIceCandidates(true);
         final ListenableFuture<RtpContentMap> outgoingContentMapFuture = encryptSessionInitiate(rtpContentMap);
         Futures.addCallback(outgoingContentMapFuture, new FutureCallback<RtpContentMap>() {
             @Override
@@ -1342,7 +1339,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     @Override
     public void onConnectionChange(final PeerConnection.PeerConnectionState newState) {
-        Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": PeerConnectionState changed to " + newState);
+        Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": PeerConnectionState changed to" + newState);
         this.stateHistory.add(newState);
         if (newState == PeerConnection.PeerConnectionState.CONNECTED) {
             this.sessionDuration.start();
@@ -1351,10 +1348,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         }
 
         final boolean neverConnected = !this.stateHistory.contains(PeerConnection.PeerConnectionState.CONNECTED);
-        final boolean failedOrDisconnected = Arrays.asList(
-                PeerConnection.PeerConnectionState.FAILED,
-                PeerConnection.PeerConnectionState.DISCONNECTED
-        ).contains(newState);
+        final boolean failedOrDisconnected = Arrays.asList(PeerConnection.PeerConnectionState.FAILED, PeerConnection.PeerConnectionState.DISCONNECTED).contains(newState);
 
 
         if (neverConnected && failedOrDisconnected) {
@@ -1362,7 +1356,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                 Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": not sending session-terminate after connectivity error because session is already in state " + this.state);
                 return;
             }
-            webRTCWrapper.execute(this::closeWebRTCSessionAfterFailedConnection);
+            new Thread(this::closeWebRTCSessionAfterFailedConnection).start();
         } else if (newState == PeerConnection.PeerConnectionState.FAILED) {
             Log.d(Config.LOGTAG, "attempting to restart ICE");
             webRTCWrapper.restartIce();
@@ -1373,33 +1367,6 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     @Override
     public void onRenegotiationNeeded() {
         Log.d(Config.LOGTAG, "onRenegotiationNeeded()");
-        this.webRTCWrapper.execute(this::renegotiate);
-    }
-
-    private void renegotiate() {
-        this.webRTCWrapper.setIsReadyToReceiveIceCandidates(false);
-        try {
-            final SessionDescription sessionDescription = setLocalSessionDescription();
-            final RtpContentMap rtpContentMap = RtpContentMap.of(sessionDescription);
-            setRenegotiatedContentMap(rtpContentMap);
-            this.webRTCWrapper.setIsReadyToReceiveIceCandidates(true);
-        } catch (final Exception e) {
-            Log.d(Config.LOGTAG, "failed to renegotiate", e);
-            //TODO send some sort of failure (comparable to when initiating)
-        }
-    }
-
-    private void setRenegotiatedContentMap(final RtpContentMap rtpContentMap) {
-        if (isInitiator()) {
-            this.initiatorRtpContentMap = rtpContentMap;
-        } else {
-            this.responderRtpContentMap = rtpContentMap;
-        }
-    }
-
-    private SessionDescription setLocalSessionDescription() throws ExecutionException, InterruptedException {
-        final org.webrtc.SessionDescription sessionDescription = this.webRTCWrapper.setLocalDescription().get();
-        return SessionDescription.parse(sessionDescription.description);
     }
 
     private void closeWebRTCSessionAfterFailedConnection() {
