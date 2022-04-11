@@ -33,6 +33,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -347,16 +349,16 @@ public class JingleRtpConnection extends AbstractJingleConnection
     private boolean checkForIceRestart(
             final JinglePacket jinglePacket, final RtpContentMap rtpContentMap) {
         final RtpContentMap existing = getRemoteContentMap();
-        final Set<IceUdpTransportInfo.Credentials> existingCredentials;
+        final IceUdpTransportInfo.Credentials existingCredentials;
         final IceUdpTransportInfo.Credentials newCredentials;
         try {
             existingCredentials = existing.getCredentials();
-            newCredentials = rtpContentMap.getDistinctCredentials();
+            newCredentials = rtpContentMap.getCredentials();
         } catch (final IllegalStateException e) {
             Log.d(Config.LOGTAG, "unable to gather credentials for comparison", e);
             return false;
         }
-        if (existingCredentials.contains(newCredentials)) {
+        if (existingCredentials.equals(newCredentials)) {
             return false;
         }
         // TODO an alternative approach is to check if we already got an iq result to our
@@ -1847,16 +1849,9 @@ public class JingleRtpConnection extends AbstractJingleConnection
     public void onIceCandidate(final IceCandidate iceCandidate) {
         final RtpContentMap rtpContentMap =
                 isInitiator() ? this.initiatorRtpContentMap : this.responderRtpContentMap;
-        final IceUdpTransportInfo.Credentials credentials;
-        try {
-            credentials = rtpContentMap.getCredentials(iceCandidate.sdpMid);
-        } catch (final IllegalArgumentException e) {
-            Log.d(Config.LOGTAG, "ignoring (not sending) candidate: " + iceCandidate, e);
-            return;
-        }
-        final String uFrag = credentials.ufrag;
+        final String ufrag = rtpContentMap.getCredentials().ufrag;
         final IceUdpTransportInfo.Candidate candidate =
-                IceUdpTransportInfo.Candidate.fromSdpAttribute(iceCandidate.sdp, uFrag);
+                IceUdpTransportInfo.Candidate.fromSdpAttribute(iceCandidate.sdp, ufrag);
         if (candidate == null) {
             Log.d(Config.LOGTAG, "ignoring (not sending) candidate: " + iceCandidate);
             return;
