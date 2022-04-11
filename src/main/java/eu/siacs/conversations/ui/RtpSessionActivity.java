@@ -939,11 +939,14 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             this.binding.duration.setVisibility(View.GONE);
             return;
         }
-        if (connection.zeroDuration()) {
-            this.binding.duration.setVisibility(View.GONE);
-        } else {
-            this.binding.duration.setText(TimeFrameUtils.formatElapsedTime(connection.getCallDuration(), false));
+        final long rtpConnectionStarted = connection.getRtpConnectionStarted();
+        final long rtpConnectionEnded = connection.getRtpConnectionEnded();
+        if (rtpConnectionStarted != 0) {
+            final long ended = rtpConnectionEnded == 0 ? SystemClock.elapsedRealtime() : rtpConnectionEnded;
+            this.binding.duration.setText(TimeFrameUtils.formatTimePassed(rtpConnectionStarted, ended, false));
             this.binding.duration.setVisibility(View.VISIBLE);
+        } else {
+            this.binding.duration.setVisibility(View.GONE);
         }
     }
 
