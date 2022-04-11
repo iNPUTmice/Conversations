@@ -1035,7 +1035,24 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                     return RtpEndUserState.CONNECTING;
                 }
             case SESSION_ACCEPTED:
-                return getPeerConnectionStateAsEndUserState();
+                //TODO refactor this out into separate method (that uses switch for better readability)
+                final PeerConnection.PeerConnectionState state;
+                try {
+                    state = webRTCWrapper.getState();
+                } catch (final WebRTCWrapper.PeerConnectionNotInitialized e) {
+                    //We usually close the WebRTCWrapper *before* transitioning so we might still
+                    //be in SESSION_ACCEPTED even though the peerConnection has been torn down
+                    return RtpEndUserState.ENDING_CALL;
+                }
+                if (state == PeerConnection.PeerConnectionState.CONNECTED) {
+                    return RtpEndUserState.CONNECTED;
+                } else if (state == PeerConnection.PeerConnectionState.NEW || state == PeerConnection.PeerConnectionState.CONNECTING) {
+                    return RtpEndUserState.CONNECTING;
+                } else if (state == PeerConnection.PeerConnectionState.CLOSED) {
+                    return RtpEndUserState.ENDING_CALL;
+                } else {
+                    return rtpConnectionStarted == 0 ? RtpEndUserState.CONNECTIVITY_ERROR : RtpEndUserState.CONNECTIVITY_LOST_ERROR;
+                }
             case REJECTED:
             case REJECTED_RACED:
             case TERMINATED_DECLINED_OR_BUSY:
@@ -1063,29 +1080,6 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                 return RtpEndUserState.SECURITY_ERROR;
         }
         throw new IllegalStateException(String.format("%s has no equivalent EndUserState", this.state));
-    }
-
-
-    private RtpEndUserState getPeerConnectionStateAsEndUserState() {
-        final PeerConnection.PeerConnectionState state;
-        try {
-            state = webRTCWrapper.getState();
-        } catch (final WebRTCWrapper.PeerConnectionNotInitialized e) {
-            //We usually close the WebRTCWrapper *before* transitioning so we might still
-            //be in SESSION_ACCEPTED even though the peerConnection has been torn down
-            return RtpEndUserState.ENDING_CALL;
-        }
-        switch (state) {
-            case CONNECTED:
-                return RtpEndUserState.CONNECTED;
-            case NEW:
-            case CONNECTING:
-                return RtpEndUserState.CONNECTING;
-            case CLOSED:
-                return RtpEndUserState.ENDING_CALL;
-            default:
-                return rtpConnectionStarted == 0 ? RtpEndUserState.CONNECTIVITY_ERROR : RtpEndUserState.RECONNECTING;
-        }
     }
 
     public Set<Media> getMedia() {
@@ -1337,31 +1331,29 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     @Override
     public void onConnectionChange(final PeerConnection.PeerConnectionState oldState, final PeerConnection.PeerConnectionState newState) {
-        Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": PeerConnectionState changed: " + oldState + "->" + newState);
-        final boolean neverConnected = this.rtpConnectionStarted == 0;
+        Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": PeerConnectionState changed: "+oldState+"->" + newState);
         if (newState == PeerConnection.PeerConnectionState.CONNECTED && this.rtpConnectionStarted == 0) {
             this.rtpConnectionStarted = SystemClock.elapsedRealtime();
         }
         if (newState == PeerConnection.PeerConnectionState.CLOSED && this.rtpConnectionEnded == 0) {
             this.rtpConnectionEnded = SystemClock.elapsedRealtime();
         }
-
-        if (neverConnected && Arrays.asList(PeerConnection.PeerConnectionState.FAILED, PeerConnection.PeerConnectionState.DISCONNECTED).contains(newState)) {
+        //TODO 'failed' means we need to restart ICE
+        //
+        //TODO 'disconnected' can probably be ignored as "This is a less stringent test than failed
+        // and may trigger intermittently and resolve just as spontaneously on less reliable networks,
+        // or during temporary disconnections. When the problem resolves, the connection may return
+        // to the connected state."
+        // Obviously the UI needs to reflect this new state with a 'reconnecting' display or something
+        if (Arrays.asList(PeerConnection.PeerConnectionState.FAILED, PeerConnection.PeerConnectionState.DISCONNECTED).contains(newState)) {
             if (isTerminated()) {
                 Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": not sending session-terminate after connectivity error because session is already in state " + this.state);
                 return;
             }
             new Thread(this::closeWebRTCSessionAfterFailedConnection).start();
-        } else if (newState == PeerConnection.PeerConnectionState.FAILED) {
-            Log.d(Config.LOGTAG, "attempting to restart ICE");
-            webRTCWrapper.restartIce();
+        } else {
+            updateEndUserState();
         }
-        updateEndUserState();
-    }
-
-    @Override
-    public void onRenegotiationNeeded() {
-        Log.d(Config.LOGTAG, "onRenegotiationNeeded()");
     }
 
     private void closeWebRTCSessionAfterFailedConnection() {

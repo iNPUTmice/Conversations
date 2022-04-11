@@ -907,7 +907,6 @@
     <string name="rtp_state_incoming_video_call">Incoming video call</string>
     <string name="rtp_state_connecting">Connecting</string>
     <string name="rtp_state_connected">Connected</string>
-    <string name="rtp_state_reconnecting">Reconnecting</string>
     <string name="rtp_state_accepting_call">Accepting call</string>
     <string name="rtp_state_ending_call">Ending call</string>
     <string name="answer_call">Answer</string>

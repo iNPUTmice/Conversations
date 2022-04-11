@@ -100,14 +100,13 @@ public class WebRTCWrapper {
 
         @Override
         public void onConnectionChange(final PeerConnection.PeerConnectionState newState) {
-            final PeerConnection.PeerConnectionState oldState = currentState;
+            eventCallback.onConnectionChange(currentState, newState);
             currentState = newState;
-            eventCallback.onConnectionChange(oldState, newState);
         }
 
         @Override
         public void onIceConnectionChange(PeerConnection.IceConnectionState iceConnectionState) {
-            Log.d(EXTENDED_LOGGING_TAG, "onIceConnectionChange(" + iceConnectionState + ")");
+
         }
 
         @Override
@@ -153,10 +152,7 @@ public class WebRTCWrapper {
 
         @Override
         public void onRenegotiationNeeded() {
-            Log.d(EXTENDED_LOGGING_TAG, "onRenegotiationNeeded()");
-            if (currentState != null && currentState != PeerConnection.PeerConnectionState.NEW) {
-                eventCallback.onRenegotiationNeeded();
-            }
+            Log.d(EXTENDED_LOGGING_TAG,"onRenegotiationNeeded - current state: "+currentState);
         }
 
         @Override
@@ -295,10 +291,6 @@ public class WebRTCWrapper {
         peerConnection.setAudioPlayout(true);
         peerConnection.setAudioRecording(true);
         this.peerConnection = peerConnection;
-    }
-
-    void restartIce() {
-        requirePeerConnection().restartIce();
     }
 
     synchronized void close() {
@@ -538,8 +530,6 @@ public class WebRTCWrapper {
         void onConnectionChange(PeerConnection.PeerConnectionState oldState, PeerConnection.PeerConnectionState newState);
 
         void onAudioDeviceChanged(AppRTCAudioManager.AudioDevice selectedAudioDevice, Set<AppRTCAudioManager.AudioDevice> availableAudioDevices);
-
-        void onRenegotiationNeeded();
     }
 
     private static abstract class SetSdpObserver implements SdpObserver {
