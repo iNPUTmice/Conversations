@@ -51,7 +51,7 @@ class ToneManager {
                 return ToneState.ENDING_CALL;
             }
         }
-        if (state == RtpEndUserState.CONNECTED || state == RtpEndUserState.RECONNECTING) {
+        if (state == RtpEndUserState.CONNECTED) {
             if (media.contains(Media.VIDEO)) {
                 return ToneState.NULL;
             } else {
