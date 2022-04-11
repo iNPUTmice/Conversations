@@ -537,10 +537,9 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         try {
             this.webRTCWrapper.setRemoteDescription(sdp).get();
             addIceCandidatesFromBlackLog();
-            org.webrtc.SessionDescription webRTCSessionDescription = this.webRTCWrapper.setLocalDescription().get();
+            org.webrtc.SessionDescription webRTCSessionDescription = this.webRTCWrapper.createAnswer().get();
             prepareSessionAccept(webRTCSessionDescription);
         } catch (final Exception e) {
-            //TODO sending the error text is worthwhile as well. Especially for FailureToSet exceptions
             failureToAcceptSession(e);
         }
     }
@@ -570,7 +569,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                 new FutureCallback<RtpContentMap>() {
                     @Override
                     public void onSuccess(final RtpContentMap outgoingContentMap) {
-                        sendSessionAccept(outgoingContentMap);
+                        sendSessionAccept(outgoingContentMap, webRTCSessionDescription);
                     }
 
                     @Override
@@ -582,7 +581,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         );
     }
 
-    private void sendSessionAccept(final RtpContentMap rtpContentMap) {
+    private void sendSessionAccept(final RtpContentMap rtpContentMap, final org.webrtc.SessionDescription webRTCSessionDescription) {
         if (isTerminated()) {
             Log.w(Config.LOGTAG, id.account.getJid().asBareJid() + ": preparing session accept was too slow. already terminated. nothing to do.");
             return;
@@ -590,6 +589,11 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         transitionOrThrow(State.SESSION_ACCEPTED);
         final JinglePacket sessionAccept = rtpContentMap.toJinglePacket(JinglePacket.Action.SESSION_ACCEPT, id.sessionId);
         send(sessionAccept);
+        try {
+            webRTCWrapper.setLocalDescription(webRTCSessionDescription).get();
+        } catch (Exception e) {
+            failureToAcceptSession(e);
+        }
     }
 
     private ListenableFuture<RtpContentMap> prepareOutgoingContentMap(final RtpContentMap rtpContentMap) {
@@ -837,10 +841,9 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             return;
         }
         try {
-            org.webrtc.SessionDescription webRTCSessionDescription = this.webRTCWrapper.setLocalDescription().get();
+            org.webrtc.SessionDescription webRTCSessionDescription = this.webRTCWrapper.createOffer().get();
             prepareSessionInitiate(webRTCSessionDescription, targetState);
         } catch (final Exception e) {
-            //TODO sending the error text is worthwhile as well. Especially for FailureToSet exceptions
             failureToInitiateSession(e, targetState);
         }
     }
@@ -874,7 +877,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         Futures.addCallback(outgoingContentMapFuture, new FutureCallback<RtpContentMap>() {
             @Override
             public void onSuccess(final RtpContentMap outgoingContentMap) {
-                sendSessionInitiate(outgoingContentMap, targetState);
+                sendSessionInitiate(outgoingContentMap, webRTCSessionDescription, targetState);
             }
 
             @Override
@@ -884,7 +887,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         }, MoreExecutors.directExecutor());
     }
 
-    private void sendSessionInitiate(final RtpContentMap rtpContentMap, final State targetState) {
+    private void sendSessionInitiate(final RtpContentMap rtpContentMap, final org.webrtc.SessionDescription webRTCSessionDescription, final State targetState) {
         if (isTerminated()) {
             Log.w(Config.LOGTAG, id.account.getJid().asBareJid() + ": preparing session was too slow. already terminated. nothing to do.");
             return;
@@ -892,6 +895,11 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         this.transitionOrThrow(targetState);
         final JinglePacket sessionInitiate = rtpContentMap.toJinglePacket(JinglePacket.Action.SESSION_INITIATE, id.sessionId);
         send(sessionInitiate);
+        try {
+            this.webRTCWrapper.setLocalDescription(webRTCSessionDescription).get();
+        } catch (Exception e) {
+            failureToInitiateSession(e, targetState);
+        }
     }
 
     private ListenableFuture<RtpContentMap> encryptSessionInitiate(final RtpContentMap rtpContentMap) {
