@@ -6,7 +6,6 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -105,8 +104,7 @@ public class RtpContentMap {
             if (fingerprint == null || Strings.isNullOrEmpty(fingerprint.getContent()) || Strings.isNullOrEmpty(fingerprint.getHash())) {
                 throw new SecurityException(String.format("Use of DTLS-SRTP (XEP-0320) is required for content %s", entry.getKey()));
             }
-            final IceUdpTransportInfo.Setup setup = fingerprint.getSetup();
-            if (setup == null) {
+            if (Strings.isNullOrEmpty(fingerprint.getSetup())) {
                 throw new SecurityException(String.format("Use of DTLS-SRTP (XEP-0320) is required for content %s but missing setup attribute", entry.getKey()));
             }
         }
@@ -150,14 +148,6 @@ public class RtpContentMap {
         return Maps.transformValues(contents, dt -> dt.transport.getCredentials());
     }
 
-    public IceUdpTransportInfo.Setup getDtlsSetup() {
-        final Set<IceUdpTransportInfo.Setup> setups = ImmutableSet.copyOf(Collections2.transform(
-                contents.values(),
-                dt->dt.transport.getFingerprint().getSetup()
-        ));
-        return setups.size() == 1 ? Iterables.getFirst(setups, null) : null;
-    }
-
     public boolean emptyCandidates() {
         int count = 0;
         for (DescriptionTransport descriptionTransport : contents.values()) {
@@ -166,13 +156,13 @@ public class RtpContentMap {
         return count == 0;
     }
 
-    public RtpContentMap modifiedCredentials(Map<String, IceUdpTransportInfo.Credentials> credentialsMap, final IceUdpTransportInfo.Setup setup) {
+    public RtpContentMap modifiedCredentials(Map<String, IceUdpTransportInfo.Credentials> credentialsMap) {
         final ImmutableMap.Builder<String, DescriptionTransport> contentMapBuilder = new ImmutableMap.Builder<>();
         for (final Map.Entry<String, DescriptionTransport> content : contents.entrySet()) {
             final RtpDescription rtpDescription = content.getValue().description;
             IceUdpTransportInfo transportInfo = content.getValue().transport;
             final IceUdpTransportInfo.Credentials credentials = Objects.requireNonNull(credentialsMap.get(content.getKey()));
-            final IceUdpTransportInfo modifiedTransportInfo = transportInfo.modifyCredentials(credentials, setup);
+            final IceUdpTransportInfo modifiedTransportInfo = transportInfo.modifyCredentials(credentials);
             contentMapBuilder.put(content.getKey(), new DescriptionTransport(rtpDescription, modifiedTransportInfo));
         }
         return new RtpContentMap(this.group, contentMapBuilder.build());

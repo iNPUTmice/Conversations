@@ -303,18 +303,16 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             return false;
         }
         final boolean isOffer = rtpContentMap.emptyCandidates();
-        final RtpContentMap restartContentMap;
+        if (isOffer) {
+            Log.d(Config.LOGTAG, "received offer to restart ICE " + newCredentials);
+        } else {
+            Log.d(Config.LOGTAG, "received confirmation of ICE restart" + newCredentials);
+        }
+        //TODO rewrite setup attribute
+        //https://groups.google.com/g/discuss-webrtc/c/DfpIMwvUfeM
+        //https://datatracker.ietf.org/doc/html/draft-ietf-mmusic-dtls-sdp-15#section-5.5
+        final RtpContentMap restartContentMap = existing.modifiedCredentials(newCredentials);
         try {
-            if (isOffer) {
-                Log.d(Config.LOGTAG, "received offer to restart ICE " + newCredentials.values());
-                restartContentMap = existing.modifiedCredentials(newCredentials, IceUdpTransportInfo.Setup.ACTPASS);
-            } else {
-                final IceUdpTransportInfo.Setup setup = getPeerDtlsSetup();
-                Log.d(Config.LOGTAG, "received confirmation of ICE restart" + newCredentials.values()+" peer_setup="+setup);
-                // DTLS setup attribute needs to be rewritten to reflect current peer state
-                // https://groups.google.com/g/discuss-webrtc/c/DfpIMwvUfeM
-                restartContentMap = existing.modifiedCredentials(newCredentials, setup);
-            }
             if (applyIceRestart(jinglePacket, restartContentMap, isOffer)) {
                 return isOffer;
             } else {
@@ -329,14 +327,6 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             sendSessionTerminate(Reason.ofThrowable(rootCause), rootCause.getMessage());
             return true;
         }
-    }
-
-    private IceUdpTransportInfo.Setup getPeerDtlsSetup() {
-        final IceUdpTransportInfo.Setup responderSetup = this.responderRtpContentMap.getDtlsSetup();
-        if (responderSetup == null || responderSetup == IceUdpTransportInfo.Setup.ACTPASS) {
-            throw new IllegalStateException("Invalid DTLS setup value in responder content map");
-        }
-        return isInitiator() ? responderSetup : responderSetup.flip();
     }
 
     private boolean applyIceRestart(final JinglePacket jinglePacket, final RtpContentMap restartContentMap, final boolean isOffer) throws ExecutionException, InterruptedException {
@@ -1506,8 +1496,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
                 webRTCWrapper.setIsReadyToReceiveIceCandidates(true);
             } else {
                 Log.d(Config.LOGTAG, "received failure to our ice restart");
-                //TODO ignore tie break (maybe rollback?)
-                //TODO handle other errors
+                //TODO handle tie-break. Rollback?
             }
         });
     }
