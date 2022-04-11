@@ -146,22 +146,14 @@ public class RtpContentMap {
         );
     }
 
-    public IceUdpTransportInfo.Credentials getCredentials() {
-        final Set<IceUdpTransportInfo.Credentials> allCredentials = ImmutableSet.copyOf(Collections2.transform(
-                contents.values(),
-                dt -> dt.transport.getCredentials()
-        ));
-        final IceUdpTransportInfo.Credentials credentials = Iterables.getFirst(allCredentials, null);
-        if (allCredentials.size() == 1 && credentials != null) {
-            return credentials;
-        }
-        throw new IllegalStateException("Content map does not have distinct credentials");
+    public Map<String, IceUdpTransportInfo.Credentials> getCredentials() {
+        return Maps.transformValues(contents, dt -> dt.transport.getCredentials());
     }
 
     public IceUdpTransportInfo.Setup getDtlsSetup() {
         final Set<IceUdpTransportInfo.Setup> setups = ImmutableSet.copyOf(Collections2.transform(
                 contents.values(),
-                dt -> dt.transport.getFingerprint().getSetup()
+                dt->dt.transport.getFingerprint().getSetup()
         ));
         final IceUdpTransportInfo.Setup setup = Iterables.getFirst(setups, null);
         if (setups.size() == 1 && setup != null) {
@@ -178,11 +170,12 @@ public class RtpContentMap {
         return count == 0;
     }
 
-    public RtpContentMap modifiedCredentials(IceUdpTransportInfo.Credentials credentials, final IceUdpTransportInfo.Setup setup) {
+    public RtpContentMap modifiedCredentials(Map<String, IceUdpTransportInfo.Credentials> credentialsMap, final IceUdpTransportInfo.Setup setup) {
         final ImmutableMap.Builder<String, DescriptionTransport> contentMapBuilder = new ImmutableMap.Builder<>();
         for (final Map.Entry<String, DescriptionTransport> content : contents.entrySet()) {
             final RtpDescription rtpDescription = content.getValue().description;
             IceUdpTransportInfo transportInfo = content.getValue().transport;
+            final IceUdpTransportInfo.Credentials credentials = Objects.requireNonNull(credentialsMap.get(content.getKey()));
             final IceUdpTransportInfo modifiedTransportInfo = transportInfo.modifyCredentials(credentials, setup);
             contentMapBuilder.put(content.getKey(), new DescriptionTransport(rtpDescription, modifiedTransportInfo));
         }

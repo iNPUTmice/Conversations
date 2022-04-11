@@ -141,6 +141,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     }
 
     private final WebRTCWrapper webRTCWrapper = new WebRTCWrapper(this);
+    //TODO convert to Queue<Map.Entry<String, Description>>?
     private final Queue<Map.Entry<String, RtpContentMap.DescriptionTransport>> pendingIceCandidates = new LinkedList<>();
     private final OmemoVerification omemoVerification = new OmemoVerification();
     private final Message message;
@@ -294,13 +295,9 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
 
     private boolean checkForIceRestart(final JinglePacket jinglePacket, final RtpContentMap rtpContentMap) {
         final RtpContentMap existing = getRemoteContentMap();
-        final IceUdpTransportInfo.Credentials existingCredentials;
-        final IceUdpTransportInfo.Credentials newCredentials;
-        try {
-            existingCredentials = existing.getCredentials();
-            newCredentials = rtpContentMap.getCredentials();
-        } catch (final IllegalStateException e) {
-            Log.d(Config.LOGTAG, "unable to gather credentials for comparison", e);
+        final Map<String, IceUdpTransportInfo.Credentials> existingCredentials = existing.getCredentials();
+        final Map<String, IceUdpTransportInfo.Credentials> newCredentials = rtpContentMap.getCredentials();
+        if (!existingCredentials.keySet().equals(newCredentials.keySet())) {
             return false;
         }
         if (existingCredentials.equals(newCredentials)) {
@@ -310,11 +307,11 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
         final RtpContentMap restartContentMap;
         try {
             if (isOffer) {
-                Log.d(Config.LOGTAG, "received offer to restart ICE " + newCredentials);
+                Log.d(Config.LOGTAG, "received offer to restart ICE " + newCredentials.values());
                 restartContentMap = existing.modifiedCredentials(newCredentials, IceUdpTransportInfo.Setup.ACTPASS);
             } else {
                 final IceUdpTransportInfo.Setup setup = getPeerDtlsSetup();
-                Log.d(Config.LOGTAG, "received confirmation of ICE restart" + newCredentials + " peer_setup=" + setup);
+                Log.d(Config.LOGTAG, "received confirmation of ICE restart" + newCredentials.values() + " peer_setup=" + setup);
                 // DTLS setup attribute needs to be rewritten to reflect current peer state
                 // https://groups.google.com/g/discuss-webrtc/c/DfpIMwvUfeM
                 restartContentMap = existing.modifiedCredentials(newCredentials, setup);
@@ -322,7 +319,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             if (applyIceRestart(jinglePacket, restartContentMap, isOffer)) {
                 return isOffer;
             } else {
-                Log.d(Config.LOGTAG, "ignoring ICE restart. sending tie-break");
+                Log.d(Config.LOGTAG,"ignored ice restart. offer="+isOffer);
                 respondWithTieBreak(jinglePacket);
                 return true;
             }
@@ -330,7 +327,7 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
             respondOk(jinglePacket);
             final Throwable rootCause = Throwables.getRootCause(exception);
             if (rootCause instanceof WebRTCWrapper.PeerConnectionNotInitialized) {
-                Log.d(Config.LOGTAG, "ignoring PeerConnectionNotInitialized");
+                Log.d(Config.LOGTAG,"ignoring PeerConnectionNotInitialized");
                 //TODO don’t respond OK but respond with out-of-order
                 return true;
             }
@@ -1454,8 +1451,8 @@ public class JingleRtpConnection extends AbstractJingleConnection implements Web
     @Override
     public void onIceCandidate(final IceCandidate iceCandidate) {
         final RtpContentMap rtpContentMap = isInitiator() ? this.initiatorRtpContentMap : this.responderRtpContentMap;
-        final String ufrag = rtpContentMap.getCredentials().ufrag;
-        final IceUdpTransportInfo.Candidate candidate = IceUdpTransportInfo.Candidate.fromSdpAttribute(iceCandidate.sdp, ufrag);
+        final Collection<String> currentUfrags = Collections2.transform(rtpContentMap.getCredentials().values(), c -> c.ufrag);
+        final IceUdpTransportInfo.Candidate candidate = IceUdpTransportInfo.Candidate.fromSdpAttribute(iceCandidate.sdp, currentUfrags);
         if (candidate == null) {
             Log.d(Config.LOGTAG, "ignoring (not sending) candidate: " + iceCandidate.toString());
             return;
