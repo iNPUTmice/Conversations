@@ -59,8 +59,6 @@ public class WebRTCWrapper {
 
     private static final String EXTENDED_LOGGING_TAG = WebRTCWrapper.class.getSimpleName();
 
-    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
-
     private static final Set<String> HARDWARE_AEC_BLACKLIST = new ImmutableSet.Builder<String>()
             .add("Pixel")
             .add("Pixel XL")
