@@ -103,11 +103,6 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             RtpEndUserState.CONNECTED,
             RtpEndUserState.RECONNECTING
     );
-    private static final List<RtpEndUserState> STATES_SHOWING_PIP_PLACEHOLDER = Arrays.asList(
-            RtpEndUserState.ACCEPTING_CALL,
-            RtpEndUserState.CONNECTING,
-            RtpEndUserState.RECONNECTING
-    );
     private static final String PROXIMITY_WAKE_LOCK_TAG = "conversations:in-rtp-session";
     private static final int REQUEST_ACCEPT_CALL = 0x1111;
     private WeakReference<JingleRtpConnection> rtpConnectionReference;
@@ -645,8 +640,8 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
         surfaceViewRenderer.setVisibility(View.VISIBLE);
         try {
             surfaceViewRenderer.init(requireRtpConnection().getEglBaseContext(), null);
-        } catch (final IllegalStateException e) {
-            //Log.d(Config.LOGTAG, "SurfaceViewRenderer was already initialized");
+        } catch (IllegalStateException e) {
+            Log.d(Config.LOGTAG, "SurfaceViewRenderer was already initialized");
         }
         surfaceViewRenderer.setEnableHardwareScaler(true);
     }
@@ -980,7 +975,7 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
             return;
         }
-        if (isPictureInPicture() && STATES_SHOWING_PIP_PLACEHOLDER.contains(state)) {
+        if (isPictureInPicture() && (state == RtpEndUserState.CONNECTING || state == RtpEndUserState.ACCEPTING_CALL)) {
             binding.localVideo.setVisibility(View.GONE);
             binding.remoteVideoWrapper.setVisibility(View.GONE);
             binding.appBarLayout.setVisibility(View.GONE);
@@ -1008,12 +1003,12 @@ public class RtpSessionActivity extends XmppActivity implements XmppConnectionSe
                     RendererCommon.ScalingType.SCALE_ASPECT_FILL,
                     RendererCommon.ScalingType.SCALE_ASPECT_FIT
             );
-            if (state == RtpEndUserState.CONNECTED) {
+            //TODO this should probably only be 'connected'
+            if (STATES_CONSIDERED_CONNECTED.contains(state)) {
                 binding.appBarLayout.setVisibility(View.GONE);
                 getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
                 binding.remoteVideoWrapper.setVisibility(View.VISIBLE);
             } else {
-                binding.appBarLayout.setVisibility(View.VISIBLE);
                 getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
                 binding.remoteVideoWrapper.setVisibility(View.GONE);
             }
