@@ -533,7 +533,7 @@ public class WebRTCWrapper {
     }
 
     public boolean applyDtmfTone(String tone) {
-        if (toneManager == null || peerConnection.getSenders().isEmpty()) {
+        if (toneManager == null || peerConnection == null || peerConnection.getSenders().isEmpty()) {
             return false;
         }
         peerConnection.getSenders().get(0).dtmf().insertDtmf(tone, TONE_DURATION, 100);
