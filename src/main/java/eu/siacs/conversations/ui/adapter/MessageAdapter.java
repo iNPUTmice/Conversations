@@ -766,6 +766,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                 displayDownloadableMessage(viewHolder, message, activity.getString(R.string.download_x_file, UIHelper.getFileDescriptionString(activity, message)), darkBackground);
             } else if (transferable != null && transferable.getStatus() == Transferable.STATUS_OFFER_CHECK_FILESIZE) {
                 displayDownloadableMessage(viewHolder, message, activity.getString(R.string.check_x_filesize, UIHelper.getFileDescriptionString(activity, message)), darkBackground);
+            } else if (message.isDeleted()) {
+                displayInfoMessage(viewHolder, activity.getString(R.string.message_deleted), darkBackground);
             } else {
                 displayInfoMessage(viewHolder, UIHelper.getMessagePreview(activity, message).first, darkBackground);
             }
