@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pref_notification_grace_period_summary">Czas, jak dugo Quicksy je cichy po ôboczyniu aktywności na inkszyj maszinie</string>
+    <string name="pref_never_send_crash_summary">Jak wysyłosz sztreki sztapla, to pōmogosz przi budowaniu Quicksy</string>
+    <string name="pref_broadcast_last_activity_summary">Informuj wszyske twoje kōntakty ô tym, kedy używosz Quicksy</string>
+    <string name="huawei_protected_apps_summary">Żeby durch dostować powiadōmiynia, nawet jak ekran je zgaszōny, musisz dodać Quicksy do listy chrōniōnych aplikacyji.</string>
+    <string name="set_profile_picture">Profilowy ôbrozek Quicksy</string>
+    <string name="not_available_in_your_country">Quicksy niy ma dostympne we twojim kraju.</string>
+    <string name="unable_to_verify_server_identity">Niy idzie zweryfikować tożsamości ôd serwera.</string>
+    <string name="unknown_security_error">Niyznōmy feler bezpieczyństwa.</string>
+    <string name="timeout_while_connecting_to_server">Przekroczynie czasu przi łōnczyniu ze serwerym.</string>
+</resources>

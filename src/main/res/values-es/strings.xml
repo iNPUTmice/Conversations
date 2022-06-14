@@ -33,6 +33,9 @@
         <item quantity="one">%d conversación sin leer</item>
 
     
+        <item quantity="many">%dconversaciones sin leer</item>
+
+    
         <item quantity="other">%dconversaciones sin leer</item>
 
     </plurals>
@@ -447,6 +450,7 @@
     <string name="dialog_manage_certs_negativebutton">Cancelar</string>
     <plurals name="toast_delete_certificates">
         <item quantity="one">%d certificado eliminado</item>
+        <item quantity="many">%d certificados eliminados</item>
         <item quantity="other">%d certificados eliminados</item>
     </plurals>
     <string name="pref_quick_action_summary">Cambiar el botón de “Enviar” por el botón de acción rápida</string>
@@ -465,6 +469,7 @@
     <string name="download_failed_file_not_found">Error al descargar: Archivo no encontrado</string>
     <string name="download_failed_could_not_connect">Error al descargar: No se ha podido conectar con el servidor</string>
     <string name="download_failed_could_not_write_file">Falló la descarga: No se puede escribir el fichero</string>
+    <string name="download_failed_invalid_file">Error al descargar: Archivo no válido</string>
     <string name="account_status_tor_unavailable">Red Tor no disponible.</string>
     <string name="account_status_bind_failure">Fallo de enlace</string>
     <string name="account_status_host_unknown">El servidor no es responsable de este dominio</string>
@@ -504,6 +509,7 @@
     <string name="connected_accounts">%1$d de %2$d cuentas conectadas</string>
     <plurals name="x_messages">
         <item quantity="one">%d mensaje</item>
+        <item quantity="many">%d mensajes</item>
         <item quantity="other">%d mensajes</item>
     </plurals>
     <string name="load_more_messages">Cargar más mensajes</string>
@@ -622,6 +628,8 @@
     <string name="pref_clean_private_storage_summary">Limpiar datos privados de ficheros descargados (Pueden volver a descargarse desde el servidor)</string>
     <string name="i_followed_this_link_from_a_trusted_source">Enlace desde una fuente de confianza</string>
     <string name="verifying_omemo_keys_trusted_source">Vas a verificar las claves OMEMO de %1$s después de hacer click en el enlace. Esto solo es seguro si conseguiste este enlace desde una fuente de confianza donde solo %2$s pudo haber publicado el enlace</string>
+    <string name="verifying_omemo_keys_trusted_source_account">Está a punto de verificar las claves OMEMO de su propia cuenta. Esto solamente es seguro si ha seguido este enlace desde una fuente segura, donde solo usted lo haya publicado.</string>
+    <string name="continue_btn">Continuar</string>
     <string name="verify_omemo_keys">Verificar claves OMEMO</string>
     <string name="show_inactive_devices">Mostrar inactivos</string>
     <string name="hide_inactive_devices">Ocultar inactivos</string>
@@ -629,26 +637,32 @@
     <string name="distrust_omemo_key_text">¿Estás seguro de que quieres eliminar la verificación de este dispositivo?\nEste dispositivo y los mensajes que lleguen desde allí serán marcados como \"No confiables\". </string>
     <plurals name="seconds">
         <item quantity="one">%d segundo</item>
+        <item quantity="many">%d segundos</item>
         <item quantity="other">%d segundos</item>
     </plurals>
     <plurals name="minutes">
         <item quantity="one">%d minuto</item>
+        <item quantity="many">%d minutos</item>
         <item quantity="other">%d minutos</item>
     </plurals>
     <plurals name="hours">
         <item quantity="one">%d hora</item>
+        <item quantity="many">%d horas</item>
         <item quantity="other">%d horas</item>
     </plurals>
     <plurals name="days">
         <item quantity="one">%d día</item>
+        <item quantity="many">%d días</item>
         <item quantity="other">%d días</item>
     </plurals>
     <plurals name="weeks">
         <item quantity="one">%d semana</item>
+        <item quantity="many">%d semanas</item>
         <item quantity="other">%d semanas</item>
     </plurals>
     <plurals name="months">
         <item quantity="one">%d mes</item>
+        <item quantity="many">%d meses</item>
         <item quantity="other">%d meses</item>
     </plurals>
     <string name="pref_automatically_delete_messages">Borrado automático de mensajes</string>
@@ -904,6 +918,7 @@
     <string name="rtp_state_incoming_video_call">Videollamada entrante</string>
     <string name="rtp_state_connecting">Conectando</string>
     <string name="rtp_state_connected">Conectado</string>
+    <string name="rtp_state_reconnecting">Reconectando</string>
     <string name="rtp_state_accepting_call">Aceptar llamada</string>
     <string name="rtp_state_ending_call">Terminar llamada</string>
     <string name="answer_call">Contestar</string>
@@ -919,6 +934,8 @@
     <string name="hang_up">Colgar</string>
     <string name="ongoing_call">Llamada saliente</string>
     <string name="ongoing_video_call">Video llamada saliente</string>
+    <string name="reconnecting_call">Reconectando llamada</string>
+    <string name="reconnecting_video_call">Reconectando video llamada</string>
     <string name="disable_tor_to_make_call">Deshabilitar Tor para hacer llamadas</string>
     <string name="incoming_call">Llamada entrante</string>
     <string name="incoming_call_duration">Llamada entrante · %s</string>
@@ -952,10 +969,12 @@
     <string name="add_contact_or_create_or_join_group_chat">Añadir contacto, crear o unirse a un grupo de chat, o descubrir canales</string>
     <plurals name="view_users">
         <item quantity="one">Ver %1$d Participante</item>
+        <item quantity="many">Ver %1$d Participantes</item>
         <item quantity="other">Ver %1$d Participantes</item>
     </plurals>
     <plurals name="some_messages_could_not_be_delivered">
         <item quantity="one">Un mensaje no se ha podido entregar</item>
+        <item quantity="many">Algunos mensajes no se han podido entregar</item>
         <item quantity="other">Algunos mensajes no se han podido entregar</item>
     </plurals>
     <string name="failed_deliveries">Envíos fallidos</string>
@@ -968,4 +987,6 @@
     <string name="backup_started_message">La copia de seguridad ha empezado. Recibirás una notificación cuando se haya completado.</string>
     <string name="unable_to_enable_video">No se ha podido habilitar el vídeo.</string>
     <string name="plain_text_document">Documento de texto plano</string>
+    <string name="account_registrations_are_not_supported">Los registros de cuenta no están soportados</string>
+    <string name="no_xmpp_adddress_found">Dirección XMPP no encontrada</string>
     </resources>

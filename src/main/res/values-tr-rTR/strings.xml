@@ -976,5 +976,4 @@
     <string name="plain_text_document">Düz metin dosyası</string>
     <string name="account_registrations_are_not_supported">Hesap kayıtları desteklenmemektedir.</string>
     <string name="no_xmpp_adddress_found">Herhangi bir XMPP adresi bulunamadı</string>
-
-</resources>
+    </resources>

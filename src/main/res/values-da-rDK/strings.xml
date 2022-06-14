@@ -465,6 +465,7 @@
     <string name="download_failed_file_not_found">Download mislykkes: Fil ikke fundet</string>
     <string name="download_failed_could_not_connect">Download mislykkes: Kunne ikke forbinde til vært</string>
     <string name="download_failed_could_not_write_file">Download mislykkes: Kunne ikke skrive til fil</string>
+    <string name="download_failed_invalid_file">Download mislykkes: Ugyldig fil</string>
     <string name="account_status_tor_unavailable">TOR netværk er utilgængelig</string>
     <string name="account_status_bind_failure">Bind fejl</string>
     <string name="account_status_host_unknown">Serveren er ikke ansvarlig for dette domæne</string>
@@ -622,6 +623,8 @@
     <string name="pref_clean_private_storage_summary">Tøm privat lagerplads, hvor filer opbevares (De kan downloades igen fra serveren)</string>
     <string name="i_followed_this_link_from_a_trusted_source">Jeg fulgte dette link fra en pålidelig kilde</string>
     <string name="verifying_omemo_keys_trusted_source">Du er ved bekræfte OMEMO-nøgler af %1$s efter du har klikket på et link.  Dette er kun sikkert, hvis du fulgte linket fra troværdig kilde hvor kun %2$s kunne have offentliggjort dette link.</string>
+    <string name="verifying_omemo_keys_trusted_source_account">Du er ved at bekræfte dine OMEMO-nøgler til din konto. Det er kun sikkert, hvis du fulgte linket fra en troværdig kilde, hvor kun du kan have offentliggjort dette link.</string>
+    <string name="continue_btn">Fortsæt</string>
     <string name="verify_omemo_keys">Beskræft OMEMO-nøgler</string>
     <string name="show_inactive_devices">Vis inaktive</string>
     <string name="hide_inactive_devices">Skjul inaktive</string>
@@ -904,6 +907,7 @@
     <string name="rtp_state_incoming_video_call">Indkommende videoopkald</string>
     <string name="rtp_state_connecting">Forbinder</string>
     <string name="rtp_state_connected">Forbundet</string>
+    <string name="rtp_state_reconnecting">Forbinder igen</string>
     <string name="rtp_state_accepting_call">Accepter opkald</string>
     <string name="rtp_state_ending_call">Afslut opkald</string>
     <string name="answer_call">Svar</string>
@@ -919,6 +923,8 @@
     <string name="hang_up">Læg på</string>
     <string name="ongoing_call">Udgående opkald</string>
     <string name="ongoing_video_call">Igangværende videoopkald</string>
+    <string name="reconnecting_call">Forbinder igen opkald</string>
+    <string name="reconnecting_video_call">Forbinder igen videoopkald</string>
     <string name="disable_tor_to_make_call">Deaktiver TOR for at lave opkald</string>
     <string name="incoming_call">Indkommende opkald</string>
     <string name="incoming_call_duration">Indkommende opkald · %s</string>
@@ -968,4 +974,6 @@
     <string name="backup_started_message">Sikkerhedskopieringen er startet. Du får en notifikation, når den er afsluttet.</string>
     <string name="unable_to_enable_video">Kunne ikke aktivere video.</string>
     <string name="plain_text_document">Ren tekstdokument</string>
+    <string name="account_registrations_are_not_supported">Kontoregistrering er ikke understøttet</string>
+    <string name="no_xmpp_adddress_found">Ingen XMPP-adresse fundet</string>
     </resources>

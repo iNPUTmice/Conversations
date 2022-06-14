@@ -989,5 +989,4 @@
     <string name="plain_text_document">Document text</string>
     <string name="account_registrations_are_not_supported">Nu este posibilă înregistrarea unui cont</string>
     <string name="no_xmpp_adddress_found">Nu a fost găsită o adresă XMPP</string>
-
-</resources>
+    </resources>

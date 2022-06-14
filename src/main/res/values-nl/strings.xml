@@ -4,6 +4,7 @@
     <string name="action_add">Nieuw gesprek</string>
     <string name="action_accounts">Accounts beheren</string>
     <string name="action_account">Account beheren</string>
+    <string name="action_end_conversation">Gesprek sluiten</string>
     <string name="action_contact_details">Contactgegevens</string>
     <string name="action_muc_details">Gespreksgegevens</string>
     <string name="channel_details">Kanaalinformatie</string>
@@ -28,6 +29,13 @@
     <string name="just_now">zojuist</string>
     <string name="minute_ago">1 min. geleden</string>
     <string name="minutes_ago">%d min. geleden</string>
+    <plurals name="x_unread_conversations">
+        <item quantity="one">%d ongelezen gesprek</item>
+
+    
+        <item quantity="other">%d ongelezen gesprekken</item>
+
+    </plurals>
     <string name="sending">versturen…</string>
     <string name="message_decrypting">Bericht aan het ontsleutelen. Even geduld…</string>
     <string name="pgp_message">OpenPGP-versleuteld bericht</string>
@@ -63,6 +71,8 @@
     <string name="unblock">Deblokkeren</string>
     <string name="save">Opslaan</string>
     <string name="ok">Oké</string>
+    <string name="crash_report_title">%1$s is gecrasht</string>
+    <string name="crash_report_message">Door crashrapportages via uw XMPP account te sturen help je de ontwikkeling van %1$s.</string>
     <string name="send_now">Nu versturen</string>
     <string name="send_never">Niet opnieuw vragen</string>
     <string name="problem_connecting_to_account">Verbinding maken met account mislukt</string>
@@ -155,6 +165,7 @@
     <string name="mgmt_account_publish_pgp">OpenPGP-publieke sleutel publiceren</string>
     <string name="unpublish_pgp">OpenPGP-publieke sleutel verwijderen</string>
     <string name="unpublish_pgp_message">Weet je zeker dat je je OpenPGP-publieke sleutel uit je aanwezigheidsaankondiging wil verwijderen?\nJe contacten zullen je geen OpenPGP-versleutelde berichten meer kunnen sturen.</string>
+    <string name="openpgp_has_been_published">OpenPGP-publieke sleutel gepubliceerd.</string>
     <string name="mgmt_account_enable">Account inschakelen</string>
     <string name="mgmt_account_are_you_sure">Weet je het zeker?</string>
     <string name="attach_record_voice">Stem opnemen</string>
@@ -178,8 +189,11 @@
     <string name="server_info_unavailable">niet beschikbaar</string>
     <string name="missing_public_keys">Ontbrekende publieke sleutel-aankondigingen</string>
     <string name="last_seen_now">zojuist voor het laatst gezien</string>
+    <string name="last_seen_min">een minuut geleden voor het laatst gezien</string>
     <string name="last_seen_mins">%d minuten geleden voor het laatst gezien</string>
+    <string name="last_seen_hour">een uur geleden voor het laatst gezien</string>
     <string name="last_seen_hours">%d uur geleden voor het laatst gezien</string>
+    <string name="last_seen_day">een dag geleden voor het laatst gezien</string>
     <string name="last_seen_days">%d dagen geleden voor het laatst gezien</string>
     <string name="openpgp_key_id">OpenPGP-sleutel-ID</string>
     <string name="omemo_fingerprint">OMEMO-vingerafdruk</string>
@@ -220,6 +234,7 @@
     <string name="contacts_have_read_up_to_this_point">%s hebben tot hier gelezen</string>
     <string name="everyone_has_read_up_to_this_point">Iedereen heeft tot hier gelezen</string>
     <string name="publish">Publiceer</string>
+    <string name="touch_to_choose_picture">Tik op avatar om een foto uit de galerij te kiezen</string>
     <string name="publishing">Publiceren…</string>
     <string name="error_publish_avatar_server_reject">De server weigerde de publicatie van je afbeelding</string>
     <string name="error_saving_avatar">Fout bij opslaan van avatar</string>
@@ -230,6 +245,7 @@
     <string name="connect">Verbind</string>
     <string name="account_already_exists">Deze account bestaat al</string>
     <string name="next">Volgende</string>
+    <string name="server_info_session_established">Sessie is tot stand gekomen</string>
     <string name="skip">Overslaan</string>
     <string name="disable_notifications">Meldingen uitschakelen</string>
     <string name="enable">Inschakelen</string>
@@ -297,6 +313,7 @@
     <string name="x_file_offered_for_download">%s aangeboden om te downloaden</string>
     <string name="cancel_transmission">Bestandsoverdracht annuleren</string>
     <string name="file_transmission_cancelled">bestandsoverdracht geannuleerd</string>
+    <string name="no_application_found_to_open_file">Geen app om bestand te openen</string>
     <string name="pref_show_dynamic_tags">Dynamische tags</string>
     <string name="pref_show_dynamic_tags_summary">Toon enkel-lezen tags onder contacten</string>
     <string name="enable_notifications">Meldingen inschakelen</string>
@@ -314,6 +331,7 @@
     <string name="change_password">Wachtwoord wijzigen</string>
     <string name="current_password">Huidig wachtwoord</string>
     <string name="new_password">Nieuw wachtwoord</string>
+    <string name="password_should_not_be_empty">Wachtwoord mag niet leeg zijn</string>
     <string name="enable_all_accounts">Alle accounts inschakelen</string>
     <string name="disable_all_accounts">Alle accounts uitschakelen</string>
     <string name="perform_action_with">Actie uitvoeren met</string>
@@ -370,6 +388,7 @@
     <string name="pref_chat_states_summary">Laat je contacten weten wanneer je ze een nieuw bericht schrijft</string>
     <string name="send_location">Locatie versturen</string>
     <string name="show_location">Locatie weergeven</string>
+    <string name="no_application_found_to_display_location">Geen app om locatie weer te geven</string>
     <string name="location">Locatie</string>
     <string name="title_undo_swipe_out_conversation">Gesprek gesloten</string>
     <string name="title_undo_swipe_out_group_chat">Privégroep verlaten</string>

@@ -976,5 +976,4 @@
     <string name="plain_text_document">Textdokument</string>
     <string name="account_registrations_are_not_supported">Kontoregistrierungen werden nicht unterstützt</string>
     <string name="no_xmpp_adddress_found">Keine XMPP-Adresse gefunden</string>
-
-</resources>
+    </resources>

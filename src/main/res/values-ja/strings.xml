@@ -217,6 +217,8 @@
     <string name="openpgp_key_id">OpenPGP 鍵 ID</string>
     <string name="omemo_fingerprint">OMEMO フィンガープリント</string>
     <string name="omemo_fingerprint_x509">v\\OMEMO フィンガープリント</string>
+    <string name="omemo_fingerprint_selected_message">OMEMO フィンガープリント (メッセージ起源)</string>
+    <string name="omemo_fingerprint_x509_selected_message">v\\OMEMO フィンガープリント (メッセージ起源)</string>
     <string name="other_devices">他のデバイス</string>
     <string name="trust_omemo_fingerprints">OMEMO フィンガープリントを信頼</string>
     <string name="fetching_keys">鍵の取得中…</string>
@@ -459,6 +461,7 @@
     <string name="download_failed_file_not_found">ダウンロードに失敗しました: ファイルが見つかりません</string>
     <string name="download_failed_could_not_connect">ダウンロードに失敗しました: ホストに接続できませんでした</string>
     <string name="download_failed_could_not_write_file">ダウンロードに失敗しました: ファイルに書き込みできません</string>
+    <string name="download_failed_invalid_file">ダウンロード失敗: 無効なファイル</string>
     <string name="account_status_tor_unavailable">Tor ネットワークが利用できません</string>
     <string name="account_status_bind_failure">バインド失敗</string>
     <string name="account_status_host_unknown">そのサーバーはこのドメインに責任を持ちません</string>
@@ -954,5 +957,4 @@
     <string name="plain_text_document">プレーンテキスト文書</string>
     <string name="account_registrations_are_not_supported">アカウント登録はサポートされていません</string>
     <string name="no_xmpp_adddress_found">XMPPアドレスがみつかりません</string>
-
-</resources>
+    </resources>

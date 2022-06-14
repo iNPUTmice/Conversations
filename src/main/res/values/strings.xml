@@ -976,5 +976,6 @@
     <string name="plain_text_document">Plain text document</string>
     <string name="account_registrations_are_not_supported">Account registrations are not supported</string>
     <string name="no_xmpp_adddress_found">No XMPP address found</string>
+    <string name="account_status_temporary_auth_failure">Temporary authentication failure</string>
 
 </resources>

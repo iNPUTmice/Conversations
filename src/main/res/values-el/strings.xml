@@ -975,5 +975,4 @@
     <string name="plain_text_document">Έγγραφο απλού κειμένου</string>
     <string name="account_registrations_are_not_supported">Δεν υποστηρίζονται εγγραφές λογαριασμών</string>
     <string name="no_xmpp_adddress_found">Δεν βρέθηκε διεύθυνση XMPP</string>
-
-</resources>
+    </resources>

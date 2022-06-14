@@ -308,6 +308,7 @@
     <string name="dialog_manage_certs_negativebutton">Cancelar</string>
     <plurals name="toast_delete_certificates">
         <item quantity="one">%d certificado apagado</item>
+        <item quantity="many">%d certificados apagados</item>
         <item quantity="other">%d certificados apagados</item>
     </plurals>
     <string name="pref_quick_action">Ação rápida</string>
@@ -348,6 +349,7 @@
     <string name="connected_accounts">%1$d de %2$d contas conectadas</string>
     <plurals name="x_messages">
         <item quantity="one">%d mensagem</item>
+        <item quantity="many">%d mensagens</item>
         <item quantity="other">%d mensagens</item>
     </plurals>
     <string name="load_more_messages">Carregar mais mensagens</string>

@@ -33,6 +33,9 @@
         <item quantity="one">%d conversation non lue</item>
 
     
+        <item quantity="many">%d conversations non lues</item>
+
+    
         <item quantity="other">%d conversations non lues</item>
 
     </plurals>
@@ -444,6 +447,7 @@
     <string name="dialog_manage_certs_negativebutton">Annuler</string>
     <plurals name="toast_delete_certificates">
         <item quantity="one">%d certificat supprimé</item>
+        <item quantity="many">%d certificats supprimés</item>
         <item quantity="other">%d certificats supprimés</item>
     </plurals>
     <string name="pref_quick_action_summary">Remplacer le bouton « Envoyer » par une action rapide</string>
@@ -462,12 +466,14 @@
     <string name="download_failed_file_not_found">Échec du téléchargement : impossible de trouver le fichier</string>
     <string name="download_failed_could_not_connect">Échec du téléchargement : impossible de se connecter à l\'hôte</string>
     <string name="download_failed_could_not_write_file">Échec du téléchargement : Écriture impossible</string>
+    <string name="download_failed_invalid_file">Échec du téléchargement : Fichier non valide</string>
     <string name="account_status_tor_unavailable">Réseau Tor inaccessible</string>
     <string name="account_status_bind_failure">La liaison a échoué</string>
     <string name="account_status_host_unknown">Le serveur n\'est pas responsable pour ce domaine</string>
     <string name="server_info_broken">Détraqué</string>
     <string name="pref_presence_settings">Disponibilité</string>
     <string name="pref_away_when_screen_off">Absent quand l\'appareil est verrouillé</string>
+    <string name="pref_away_when_screen_off_summary">Afficher comme étant absent lorsque l\'appareil est verrouillé</string>
     <string name="pref_dnd_on_silent_mode">Occupé en mode silence</string>
     <string name="pref_dnd_on_silent_mode_summary">Occupé lorsque l\'appareil est en mode silencieux</string>
     <string name="pref_treat_vibrate_as_silent">Indisponible en mode vibreur</string>
@@ -500,6 +506,7 @@
     <string name="connected_accounts">%1$d compte(s) sur %2$d connecté(s)</string>
     <plurals name="x_messages">
         <item quantity="one">%d message</item>
+        <item quantity="many">%d messages</item>
         <item quantity="other">%d messages</item>
     </plurals>
     <string name="load_more_messages">Charger plus de messages</string>
@@ -624,26 +631,32 @@
     <string name="distrust_omemo_key_text">Êtes-vous sûr de vouloir retirer la vérification pour cet appareil ?\nCet appareil et les messages qui en proviennent seront marqués comme « indignes de confiance ».</string>
     <plurals name="seconds">
         <item quantity="one">%d seconde</item>
+        <item quantity="many">%d secondes</item>
         <item quantity="other">%d secondes</item>
     </plurals>
     <plurals name="minutes">
         <item quantity="one">%d minute</item>
+        <item quantity="many">%d minutes</item>
         <item quantity="other">%d minutes</item>
     </plurals>
     <plurals name="hours">
         <item quantity="one">%d heure</item>
+        <item quantity="many">%d heures</item>
         <item quantity="other">%d heures</item>
     </plurals>
     <plurals name="days">
         <item quantity="one">%d jour</item>
+        <item quantity="many">%d jours</item>
         <item quantity="other">%d jours</item>
     </plurals>
     <plurals name="weeks">
         <item quantity="one">%d semaine</item>
+        <item quantity="many">%d semaines</item>
         <item quantity="other">%d semaines</item>
     </plurals>
     <plurals name="months">
         <item quantity="one">%d mois</item>
+        <item quantity="many">%d mois</item>
         <item quantity="other">%d mois</item>
     </plurals>
     <string name="pref_automatically_delete_messages">Suppression messages auto</string>
@@ -899,6 +912,7 @@
     <string name="rtp_state_incoming_video_call">Appel vidéo entrant</string>
     <string name="rtp_state_connecting">Connexion en cours</string>
     <string name="rtp_state_connected">Connecté</string>
+    <string name="rtp_state_reconnecting">Reconnexion en cours</string>
     <string name="rtp_state_accepting_call">Accepter les appels</string>
     <string name="rtp_state_ending_call">Fin d\'appel</string>
     <string name="answer_call">Décrocher</string>
@@ -910,9 +924,12 @@
     <string name="rtp_state_connectivity_lost_error">Connexion perdue</string>
     <string name="rtp_state_retracted">Appel annulé</string>
     <string name="rtp_state_application_failure">Échec de l\'application</string>
+    <string name="rtp_state_security_error">Vérification du problème</string>
     <string name="hang_up">Raccrocher</string>
     <string name="ongoing_call">Appel en cours</string>
     <string name="ongoing_video_call">Appel vidéo en cours</string>
+    <string name="reconnecting_call">En cours de reconnexion de l\'appel</string>
+    <string name="reconnecting_video_call">En cours de reconnexion de l\'appel vidéo</string>
     <string name="disable_tor_to_make_call">Désactivez Tor afin de passer des appels</string>
     <string name="incoming_call">Appel entrant</string>
     <string name="incoming_call_duration">Appel entrant · %s</string>
@@ -946,10 +963,12 @@
     <string name="add_contact_or_create_or_join_group_chat">Ajouter un contact, créer ou joindre un groupe de discussion, ou découvrir les salons</string>
     <plurals name="view_users">
         <item quantity="one">Voir %1$d participant</item>
+        <item quantity="many">Voir %1$d participants</item>
         <item quantity="other">Voir %1$d participants</item>
     </plurals>
     <plurals name="some_messages_could_not_be_delivered">
         <item quantity="one">Certains messages n\'ont pas pu être distribués</item>
+        <item quantity="many">Certains messages n\'ont pu être distribués</item>
         <item quantity="other">Certains messages n\'ont pu être distribués</item>
     </plurals>
     <string name="failed_deliveries">Échec lors de la livraison</string>
@@ -957,8 +976,9 @@
     <string name="no_application_found">Aucune application trouvée</string>
     <string name="invite_to_app">Inviter à Conversations</string>
     <string name="unable_to_parse_invite">Impossible de lire l\'invitation</string>
+    <string name="server_does_not_support_easy_onboarding_invites">Le serveur ne prend pas en charge la génération d\'invitations</string>
+    <string name="no_active_accounts_support_this">Aucun compte actif ne prend en charge cette fonctionalité</string>
     <string name="unable_to_enable_video">Impossible d’activer la vidéo.</string>
     <string name="account_registrations_are_not_supported">La création de nouveaux comptes n’est pas prise en charge</string>
     <string name="no_xmpp_adddress_found">Aucune adresse XMPP trouvée</string>
-
-</resources>
+    </resources>

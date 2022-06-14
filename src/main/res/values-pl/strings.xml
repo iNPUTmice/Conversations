@@ -1003,5 +1003,4 @@ Administrator twojego serwera będzie mógł czytać twoje wiadomości, ale moż
     <string name="plain_text_document">Dokument zwykłego tekstu</string>
     <string name="account_registrations_are_not_supported">Rejestracja kont nie jest wspierana</string>
     <string name="no_xmpp_adddress_found">Nie znaleziono adresu XMPP</string>
-
-</resources>
+    </resources>

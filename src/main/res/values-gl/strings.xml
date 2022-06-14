@@ -976,5 +976,4 @@
     <string name="plain_text_document">Documento de texto plano</string>
     <string name="account_registrations_are_not_supported">Non está permitido o rexistro de novas contas</string>
     <string name="no_xmpp_adddress_found">Non se atopa un enderezo XMPP</string>
-
-</resources>
+    </resources>

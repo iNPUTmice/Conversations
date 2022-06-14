@@ -963,5 +963,4 @@
     <string name="plain_text_document">纯文本文档</string>
     <string name="account_registrations_are_not_supported">不支持注册账户</string>
     <string name="no_xmpp_adddress_found">未找到 XMPP 地址</string>
-
-</resources>
+    </resources>

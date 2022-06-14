@@ -33,6 +33,9 @@
         <item quantity="one">%d conversa não lida</item>
 
     
+        <item quantity="many">%d conversas não lidas</item>
+
+    
         <item quantity="other">%d conversas não lidas</item>
 
     </plurals>
@@ -447,6 +450,7 @@
     <string name="dialog_manage_certs_negativebutton">Cancelar</string>
     <plurals name="toast_delete_certificates">
         <item quantity="one">%d certificado cancelado</item>
+        <item quantity="many">%d certificados cancelados</item>
         <item quantity="other">%d certificados cancelados</item>
     </plurals>
     <string name="pref_quick_action_summary">Troca o botão \"Enviar\" pelo de ação rápida</string>
@@ -505,6 +509,7 @@
     <string name="connected_accounts">%1$d de %2$d contas conectadas</string>
     <plurals name="x_messages">
         <item quantity="one">%d mensagem</item>
+        <item quantity="many">%d mensagens</item>
         <item quantity="other">%d mensagens</item>
     </plurals>
     <string name="load_more_messages">Carregar mais mensagens</string>
@@ -632,26 +637,32 @@
     <string name="distrust_omemo_key_text">Tem certeza que deseja remover a verificação para este dispositivo?\nEste dispositivo e as mensagens oriundas dele serão marcadas como \"não confiáveis\".</string>
     <plurals name="seconds">
         <item quantity="one">%d segundo</item>
+        <item quantity="many">%d segundos</item>
         <item quantity="other">%d segundos</item>
     </plurals>
     <plurals name="minutes">
         <item quantity="one">%d minuto</item>
+        <item quantity="many">%d minutos</item>
         <item quantity="other">%d minutos</item>
     </plurals>
     <plurals name="hours">
         <item quantity="one">%d hora</item>
+        <item quantity="many">%d horas</item>
         <item quantity="other">%d horas</item>
     </plurals>
     <plurals name="days">
         <item quantity="one">%d dia</item>
+        <item quantity="many">%d dias</item>
         <item quantity="other">%d dias</item>
     </plurals>
     <plurals name="weeks">
         <item quantity="one">%d semana</item>
+        <item quantity="many">%d semanas</item>
         <item quantity="other">%d semanas</item>
     </plurals>
     <plurals name="months">
         <item quantity="one">%d mês</item>
+        <item quantity="many">%d meses</item>
         <item quantity="other">%d meses</item>
     </plurals>
     <string name="pref_automatically_delete_messages">Exclusão automática de mensagens</string>
@@ -958,10 +969,12 @@
     <string name="add_contact_or_create_or_join_group_chat">Adicionar contato, criar ou associar-se a uma conversa em grupo ou descobrir canais</string>
     <plurals name="view_users">
         <item quantity="one">Ver %1$d participante</item>
+        <item quantity="many">Ver %1$d participantes</item>
         <item quantity="other">Ver %1$d participantes</item>
     </plurals>
     <plurals name="some_messages_could_not_be_delivered">
         <item quantity="one">Não foi possível enviar a mensagem</item>
+        <item quantity="many">Não foi possível enviar algumas mensagens</item>
         <item quantity="other">Não foi possível enviar algumas mensagens</item>
     </plurals>
     <string name="failed_deliveries">Entregas não efetuadas</string>
@@ -976,5 +989,4 @@
     <string name="plain_text_document">Documento em texto puro</string>
     <string name="account_registrations_are_not_supported">O registro de contas não está ativo</string>
     <string name="no_xmpp_adddress_found">Não foi encontrado nenhum endereço XMPP</string>
-
-</resources>
+    </resources>

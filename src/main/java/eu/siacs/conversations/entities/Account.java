@@ -627,6 +627,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
         ONLINE(false),
         NO_INTERNET(false),
         UNAUTHORIZED,
+        TEMPORARY_AUTH_FAILURE,
         SERVER_NOT_FOUND,
         REGISTRATION_SUCCESSFUL(false),
         REGISTRATION_FAILED(true, false),
@@ -732,6 +733,8 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
                     return R.string.payment_required;
                 case MISSING_INTERNET_PERMISSION:
                     return R.string.missing_internet_permission;
+                case TEMPORARY_AUTH_FAILURE:
+                    return R.string.account_status_temporary_auth_failure;
                 default:
                     return R.string.account_status_unknown;
             }
