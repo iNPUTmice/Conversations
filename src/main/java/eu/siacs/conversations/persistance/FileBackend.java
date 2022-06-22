@@ -1166,6 +1166,24 @@ public class FileBackend {
         return getUriForFile(mXmppConnectionService, file);
     }
 
+    public Uri getTakeVideoUri() {
+        final String filename =
+                String.format("VIDEO_%s.%s", IMAGE_DATE_FORMAT.format(new Date()), "mp4");
+        final File directory;
+        if (Config.ONLY_INTERNAL_STORAGE) {
+            directory = new File(mXmppConnectionService.getCacheDir(), "Camera");
+        } else {
+            directory =
+                    new File(
+                            Environment.getExternalStoragePublicDirectory(
+                                    Environment.DIRECTORY_DCIM),
+                            "Camera");
+        }
+        final File file = new File(directory, filename);
+        file.getParentFile().mkdirs();
+        return getUriForFile(mXmppConnectionService, file);
+    }
+
     public Avatar getPepAvatar(Uri image, int size, Bitmap.CompressFormat format) {
 
         final Avatar uncompressAvatar = getUncompressedAvatar(image);
@@ -1235,7 +1253,7 @@ public class FileBackend {
             Log.d(Config.LOGTAG, "settled on char length " + chars + " with quality=" + quality);
             final Avatar avatar = new Avatar();
             avatar.sha1sum = CryptoHelper.bytesToHex(digest.digest());
-            avatar.image = new String(mByteArrayOutputStream.toByteArray());
+            avatar.image = mByteArrayOutputStream.toString();
             if (format.equals(Bitmap.CompressFormat.WEBP)) {
                 avatar.type = "image/webp";
             } else if (format.equals(Bitmap.CompressFormat.JPEG)) {
@@ -1280,7 +1298,7 @@ public class FileBackend {
             os.flush();
             os.close();
             avatar.sha1sum = CryptoHelper.bytesToHex(digest.digest());
-            avatar.image = new String(mByteArrayOutputStream.toByteArray());
+            avatar.image = mByteArrayOutputStream.toString();
             avatar.height = options.outHeight;
             avatar.width = options.outWidth;
             avatar.type = options.outMimeType;
@@ -1406,7 +1424,7 @@ public class FileBackend {
                 return cropCenterSquare(input, size);
             }
         } catch (FileNotFoundException | SecurityException e) {
-            Log.d(Config.LOGTAG, "unable to open file " + image.toString(), e);
+            Log.d(Config.LOGTAG, "unable to open file " + image, e);
             return null;
         } finally {
             close(is);

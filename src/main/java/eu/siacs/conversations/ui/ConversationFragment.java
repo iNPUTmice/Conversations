@@ -1,5 +1,12 @@
 package eu.siacs.conversations.ui;
 
+import static eu.siacs.conversations.ui.XmppActivity.EXTRA_ACCOUNT;
+import static eu.siacs.conversations.ui.XmppActivity.REQUEST_INVITE_TO_CONVERSATION;
+import static eu.siacs.conversations.ui.util.SoftKeyboardUtils.hideSoftKeyboard;
+import static eu.siacs.conversations.utils.PermissionUtils.allGranted;
+import static eu.siacs.conversations.utils.PermissionUtils.getFirstDenied;
+import static eu.siacs.conversations.utils.PermissionUtils.writeGranted;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -55,6 +62,8 @@ import androidx.core.view.inputmethod.InputContentInfoCompat;
 import androidx.databinding.DataBindingUtil;
 
 import com.google.common.base.Optional;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -128,15 +137,6 @@ import eu.siacs.conversations.xmpp.jingle.JingleFileTransferConnection;
 import eu.siacs.conversations.xmpp.jingle.Media;
 import eu.siacs.conversations.xmpp.jingle.OngoingRtpSession;
 import eu.siacs.conversations.xmpp.jingle.RtpCapability;
-
-import static eu.siacs.conversations.ui.XmppActivity.EXTRA_ACCOUNT;
-import static eu.siacs.conversations.ui.XmppActivity.REQUEST_INVITE_TO_CONVERSATION;
-import static eu.siacs.conversations.ui.util.SoftKeyboardUtils.hideSoftKeyboard;
-import static eu.siacs.conversations.utils.PermissionUtils.allGranted;
-import static eu.siacs.conversations.utils.PermissionUtils.getFirstDenied;
-import static eu.siacs.conversations.utils.PermissionUtils.writeGranted;
-
-import org.jetbrains.annotations.NotNull;
 
 
 public class ConversationFragment extends XmppFragment implements EditMessage.KeyboardListener, MessageAdapter.OnContactPictureLongClicked, MessageAdapter.OnContactPictureClicked {
@@ -1717,6 +1717,10 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 chooser = true;
                 break;
             case ATTACHMENT_CHOICE_RECORD_VIDEO:
+                final Uri videoUri = activity.xmppConnectionService.getFileBackend().getTakeVideoUri();
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, videoUri);
+                intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 intent.setAction(MediaStore.ACTION_VIDEO_CAPTURE);
                 break;
             case ATTACHMENT_CHOICE_TAKE_PHOTO:
