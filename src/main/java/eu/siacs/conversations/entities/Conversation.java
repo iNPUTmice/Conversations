@@ -1076,7 +1076,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                 && !contact.isOwnServer()
                 && !contact.showInContactList()
                 && !contact.isSelf()
-                && !JidHelper.isQuicksyDomain(contact.getJid())
+                && !(contact.getJid().isDomainJid() && JidHelper.isQuicksyDomain(contact.getJid()))
                 && sentMessagesCount() == 0;
     }
 
