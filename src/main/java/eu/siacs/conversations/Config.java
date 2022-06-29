@@ -18,6 +18,13 @@ public final class Config {
     private static final int OTR = 4;
     private static final int OMEMO = 8;
 
+    public static String HOST_KEY = "HOST";
+    public static String DEFAULT_HOST = "conversations.im";
+    public static String HOST = DEFAULT_HOST;
+    public static String A_HOST = "@" + HOST;
+    public static String CONFERENCE = "conference." + HOST;
+    public static String P2 = "p2." + HOST;
+
     private static final int ENCRYPTION_MASK = UNENCRYPTED | OPENPGP | OTR | OMEMO;
 
     public static boolean supportUnencrypted() {

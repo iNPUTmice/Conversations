@@ -7,7 +7,6 @@ import com.google.android.gms.common.GoogleApiAvailabilityLight;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import eu.siacs.conversations.Config;
-import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.utils.PhoneHelper;
 import eu.siacs.conversations.xml.Element;
@@ -32,7 +31,8 @@ public class PushManagementService {
     }
 
     private Jid getAppServer() {
-        return Jid.of(mXmppConnectionService.getString(R.string.app_server));
+//        return Jid.of(mXmppConnectionService.getString(R.string.app_server));
+        return Jid.of(Config.P2);
     }
 
     void registerPushTokenOnServer(final Account account) {
