@@ -26,4 +26,4 @@ This tutorial explains how you can transfer your Conversations data from an old 
 6. Enter your account password to decrypt the backup.
 7. Remember to activate your account (head back to "manage accounts", see step 1.2).
 
-Done!
+Done! If you have more questions regarding backups, you may want to [read this](https://github.com/iNPUTmice/Conversations#how-do-i-backup--move-conversations-to-a-new-device).
