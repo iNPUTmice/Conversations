@@ -7,9 +7,9 @@ This tutorial explains how you can transfer your Conversations data from an old 
 3. Import the backup (new device)
 
 ## 1. Make a backup (old device)
-1. Make sure that you know the password to your account(s). You will need it later to decrypt your backup.
+1. Make sure that you know the password to your account(s)! You will need it later to decrypt your backup.
 2. Deactivate all your account(s): on the chat screen, tap on the three buttons in the upper right, and go to "manage accounts".
-3. On your old device, open Conversations, go to Settings, scroll down until you find the option to create a new backup. Tap on that option.
+3. Go back to Settings, scroll down until you find the option to create a new backup. Tap on that option.
 4. Wait, until the notification tells you that the backup is finished.
 
 ## 2. Move that backup to your new device
@@ -25,5 +25,10 @@ This tutorial explains how you can transfer your Conversations data from an old 
 5. If your backup files are not listed, tap on the cloud symbol in the upper right corner to choose the files from the where you saved them.
 6. Enter your account password to decrypt the backup.
 7. Remember to activate your account (head back to "manage accounts", see step 1.2).
+8. Check if chats work.
+
+Once confirmed that the new device is running fine you can just uninstall the app from the old device.
+
+Note: The backup only contains your text chats and required encryption keys, all the files need to be transferred separately and put on the new device in the same locations.
 
 Done! If you have more questions regarding backups, you may want to [read this](https://github.com/iNPUTmice/Conversations#how-do-i-backup--move-conversations-to-a-new-device).
