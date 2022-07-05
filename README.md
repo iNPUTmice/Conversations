@@ -273,16 +273,10 @@ the translation team and then step by our group chat on
 and introduce yourself to `iNPUTmice` so he can approve your join request.
 
 #### How do I backup / move Conversations to a new device?
-On the one hand Conversations supports Message Archive Management to keep a server side history of your messages so when migrating to a new device that device can display your entire history. However that does not work if you enable OMEMO due to its forward secrecy. (Read [The State of Mobile XMPP in 2016](https://gultsch.de/xmpp_2016.html) especially the section on encryption.)
 
-As of version 2.4.0 an integrated Backup & Restore function will help with this, go to Settings and you’ll find a setting called Create backup. A notification will pop-up during the creation process that will announce you when it's ready. After the files, one for each account, are created, you can move the **Conversations** folder *(if you want your old media files too)* or only the **Conversations/Backup** folder *(for OMEMO keys and history only)* to your new device (or to a storage place) where a freshly installed Conversations can restore each account. Don't forget to enable the accounts after a successfull restore.
-
-This backup method will include your OMEMO keys. Due to forward secrecy you will not be able to recover messages sent and received between creating the backup and restoring it. If you have a server side archive (MAM) those messages will be retrieved but displayed as *unable to decrypt*. For technical reasons you might also lose the first message you either sent or receive after the restore; for each conversation you have. This message will then also show up as *unable to decrypt*, but this will automatically recover itself as long as both participants are on Conversations 2.3.11+. Note that this doesn’t happen if you just transfer to a new phone and no messages have been exchanged between backup and restore.
-
-In the vast, vast majority of cases you won’t have to manually delete OMEMO keys or do anything like that. Conversations only introduced the official backup feature in 2.4.0 after making sure the *OMEMO self healing* mechanism introduced in 2.3.11 works fine.
-
-**WARNING**: Be sure to know your accounts passwords or find ways to reset them **before** doing the backup as the files are encrypted using those passwords and the Restore process will ask for them.  
-**WARNING**: Do not use the restore backup feature in an attempt to clone (run simultaneously) an installation. Restoring a backup is only meant for migrations or in case you’ve lost the original device.
+See the dedicated guides for 
+- [backups](docs/user/backup.md)
+- [migrations](docs/user/migrating_to_new_device.md)
 
 #### Conversations is missing a certain feature
 

@@ -6,6 +6,8 @@ This tutorial explains how you can transfer your Conversations data from an old 
 2. Move that backup to your new device
 3. Import the backup (new device)
 
+**WARNING**: Do not use the restore backup feature in an attempt to clone (run simultaneously) an installation. Restoring a backup is only meant for migrations or in case you’ve lost the original device.
+
 ## 1. Make a backup (old device)
 1. Make sure that you know the password to your account(s)! You will need it later to decrypt your backup.
 2. Deactivate all your account(s): on the chat screen, tap on the three buttons in the upper right, and go to "manage accounts".
@@ -31,4 +33,10 @@ Once confirmed that the new device is running fine you can just uninstall the ap
 
 Note: The backup only contains your text chats and required encryption keys, all the files need to be transferred separately and put on the new device in the same locations.
 
-Done! If you have more questions regarding backups, you may want to [read this](https://github.com/iNPUTmice/Conversations#how-do-i-backup--move-conversations-to-a-new-device).
+Done!
+
+## Further information / troubleshooting
+### Unable to decrypt 
+This backup method will include your OMEMO keys. Due to forward secrecy you will not be able to recover messages sent and received between creating the backup and restoring it. If you have a server side archive (MAM) those messages will be retrieved but displayed as *unable to decrypt*. For technical reasons you might also lose the first message you either sent or receive after the restore; for each conversation you have. This message will then also show up as *unable to decrypt*, but this will automatically recover itself as long as both participants are on Conversations 2.3.11+. Note that this doesn’t happen if you just transfer to a new phone and no messages have been exchanged between backup and restore.
+
+In the vast, vast majority of cases you won’t have to manually delete OMEMO keys or do anything like that. Conversations only introduced the official backup feature in 2.4.0 after making sure the *OMEMO self healing* mechanism introduced in 2.3.11 works fine.
