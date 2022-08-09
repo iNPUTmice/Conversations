@@ -34,7 +34,7 @@ public class Compatibility {
                     "notification_ringtone",
                     "notification_headsup",
                     "vibrate_on_notification");
-    private static final List<String> UNUESD_SETTINGS_PRE_TWENTYSIX =
+    private static final List<String> UNUSED_SETTINGS_PRE_TWENTYSIX =
             Collections.singletonList("message_notification_settings");
 
     public static boolean hasStoragePermission(Context context) {
@@ -115,7 +115,7 @@ public class Compatibility {
         for (String key :
                 (runsTwentySix()
                         ? UNUSED_SETTINGS_POST_TWENTYSIX
-                        : UNUESD_SETTINGS_PRE_TWENTYSIX)) {
+                        : UNUSED_SETTINGS_PRE_TWENTYSIX)) {
             Preference preference = settingsFragment.findPreference(key);
             if (preference != null) {
                 for (PreferenceCategory category : categories) {
