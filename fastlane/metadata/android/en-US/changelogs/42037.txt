@@ -1,0 +1,11 @@
+Version 2.10.9
+* Ask for Bluetooth permissions when making A/V calls (You can reject this if you don’t use Bluetooth headsets)
+* Fix bug when calling Movim
+* Fix wrong avatar being shown for group chats
+* Always ask for battery optimizations opt-out
+* Set local only flag on 'x connected accounts' notifications
+* Fix interaction with Google Maps Share Location Plugin
+* Remove footnote with regards to server fee
+* Store files in location appropriate for Android 11
+* Attempt to reconnect call after network switch
+* Show caller JID and account JID in incoming call screen
