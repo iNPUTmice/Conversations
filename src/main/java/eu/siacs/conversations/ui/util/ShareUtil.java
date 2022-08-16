@@ -31,6 +31,9 @@ package eu.siacs.conversations.ui.util;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.net.Uri;
+import android.text.SpannableStringBuilder;
+import android.text.style.URLSpan;
 import android.widget.Toast;
 
 import java.util.regex.Matcher;
@@ -106,25 +109,25 @@ public class ShareUtil {
 	}
 
 	public static void copyLinkToClipboard(XmppActivity activity, Message message) {
-		String body = message.getMergedBody().toString();
-		Matcher xmppPatternMatcher = Patterns.XMPP_PATTERN.matcher(body);
-		if (xmppPatternMatcher.find()) {
-			try {
-				Jid jid = new XmppUri(body.substring(xmppPatternMatcher.start(), xmppPatternMatcher.end())).getJid();
-				if (activity.copyTextToClipboard(jid.asBareJid().toString(), R.string.account_settings_jabber_id)) {
-					Toast.makeText(activity,R.string.jabber_id_copied_to_clipboard, Toast.LENGTH_SHORT).show();
+		SpannableStringBuilder body = message.getMergedBody();
+		MyLinkify.addLinks(body, true);
+		for (final URLSpan urlspan : body.getSpans(0, body.length() - 1, URLSpan.class)) {
+			Uri uri = Uri.parse(urlspan.getURL());
+			if ("xmpp".equals(uri.getScheme())) {
+				try {
+					Jid jid = new XmppUri(uri).getJid();
+					if (activity.copyTextToClipboard(jid.asBareJid().toString(), R.string.account_settings_jabber_id)) {
+						Toast.makeText(activity,R.string.jabber_id_copied_to_clipboard, Toast.LENGTH_SHORT).show();
+					}
+					return;
+				} catch (Exception e) {
+					e.printStackTrace();
+					return;
 				}
-				return;
-			} catch (Exception e) {
-				e.printStackTrace();
-				return;
-			}
-		}
-		Matcher webUrlPatternMatcher = Patterns.AUTOLINK_WEB_URL.matcher(body);
-		if (webUrlPatternMatcher.find()) {
-			String url = body.substring(webUrlPatternMatcher.start(),webUrlPatternMatcher.end());
-			if (activity.copyTextToClipboard(url,R.string.web_address)) {
-				Toast.makeText(activity,R.string.url_copied_to_clipboard, Toast.LENGTH_SHORT).show();
+			} else {
+				if (activity.copyTextToClipboard(urlspan.getURL(),R.string.web_address)) {
+					Toast.makeText(activity,R.string.url_copied_to_clipboard, Toast.LENGTH_SHORT).show();
+				}
 			}
 		}
 	}
