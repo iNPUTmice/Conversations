@@ -365,7 +365,7 @@ OTR was removed because it was highly unreliable. It didn’t work with multiple
 ### What clients do I use on other platforms
 There are XMPP Clients available for all major platforms.
 #### Windows / Linux
-For your desktop computer we recommend that you use [Gajim](https://gajim.org). You need to install the plugins `OMEMO`, `HTTP Upload` and `URL image preview` to get the best compatibility with Conversations. Plugins can be installed from within the app.
+For your desktop computer we recommend that you use [Gajim](https://gajim.org). You need to install the `OMEMO` plugin to get the best compatibility with Conversations. Plugins can be installed from within the app, from your distribution, or from flatpak if you installed it from there.
 #### iOS
 Unfortunately we don‘t have a recommendation for iPhones right now. There are three clients available [Siskin](https://siskin.im/), [ChatSecure](https://chatsecure.org/) and [Monal](https://monal.im/). Each with their own pros and cons.
 
