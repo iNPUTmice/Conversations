@@ -66,7 +66,7 @@ public class RtpDescription extends GenericDescription {
 
     public List<Source> getSources() {
         final ImmutableList.Builder<Source> builder = new ImmutableList.Builder<>();
-        for (final Element child : this.children) {
+        for (final Element child : getChildren()) {
             if ("source".equals(child.getName()) && Namespace.JINGLE_RTP_SOURCE_SPECIFIC_MEDIA_ATTRIBUTES.equals(child.getNamespace())) {
                 builder.add(Source.upgrade(child));
             }
@@ -76,7 +76,7 @@ public class RtpDescription extends GenericDescription {
 
     public List<SourceGroup> getSourceGroups() {
         final ImmutableList.Builder<SourceGroup> builder = new ImmutableList.Builder<>();
-        for (final Element child : this.children) {
+        for (final Element child : getChildren()) {
             if ("ssrc-group".equals(child.getName()) && Namespace.JINGLE_RTP_SOURCE_SPECIFIC_MEDIA_ATTRIBUTES.equals(child.getNamespace())) {
                 builder.add(SourceGroup.upgrade(child));
             }
@@ -326,16 +326,8 @@ public class RtpDescription extends GenericDescription {
             return null;
         }
 
-        public void addChildren(final List<Element> children) {
-            if (children != null) {
-                this.children.addAll(children);
-            }
-        }
-
         public void addParameters(List<Parameter> parameters) {
-            if (parameters != null) {
-                this.children.addAll(parameters);
-            }
+            addChildren(parameters);
         }
     }
 
@@ -442,7 +434,7 @@ public class RtpDescription extends GenericDescription {
 
         public List<Parameter> getParameters() {
             ImmutableList.Builder<Parameter> builder = new ImmutableList.Builder<>();
-            for (Element child : this.children) {
+            for (Element child : getChildren()) {
                 if ("parameter".equals(child.getName())) {
                     builder.add(Parameter.upgrade(child));
                 }
@@ -512,7 +504,7 @@ public class RtpDescription extends GenericDescription {
 
         public List<String> getSsrcs() {
             ImmutableList.Builder<String> builder = new ImmutableList.Builder<>();
-            for (Element child : this.children) {
+            for (Element child : getChildren()) {
                 if ("source".equals(child.getName())) {
                     final String ssrc = child.getAttribute("ssrc");
                     if (ssrc != null) {
@@ -609,11 +601,5 @@ public class RtpDescription extends GenericDescription {
             rtpDescription.addChild("rtcp-mux");
         }
         return rtpDescription;
-    }
-
-    private void addChildren(List<Element> elements) {
-        if (elements != null) {
-            this.children.addAll(elements);
-        }
     }
 }

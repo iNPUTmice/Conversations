@@ -15,7 +15,7 @@ public class Propose extends Element {
 
     public List<GenericDescription> getDescriptions() {
         final ImmutableList.Builder<GenericDescription> builder = new ImmutableList.Builder<>();
-        for (final Element child : this.children) {
+        for (final Element child : getChildren()) {
             if ("description".equals(child.getName())) {
                 final String namespace = child.getNamespace();
                 if (FileTransferDescription.NAMESPACES.contains(namespace)) {

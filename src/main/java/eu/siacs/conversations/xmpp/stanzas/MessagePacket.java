@@ -22,15 +22,13 @@ public class MessagePacket extends AbstractAcknowledgeableStanza {
 	}
 
 	public void setBody(String text) {
-		this.children.remove(findChild("body"));
-		Element body = new Element("body");
-		body.setContent(text);
-		this.children.add(0, body);
+		removeChild(findChild("body"));
+		prependChild(new Element("body").setContent(text));
 	}
 
 	public void setAxolotlMessage(Element axolotlMessage) {
-		this.children.remove(findChild("body"));
-		this.children.add(0, axolotlMessage);
+		removeChild(findChild("body"));
+		prependChild(axolotlMessage);
 	}
 
 	public void setType(int type) {
