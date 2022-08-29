@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pick_a_server">Pilih XMPP server anda</string>
+    <string name="use_conversations.im">Gunakan conversations.im</string>
+    <string name="create_new_account">Buat akun baru</string>
+    <string name="do_you_have_an_account">Anda sudah memiliki akun XMPP? Ini mungkin terjadi jika Anda sudah menggunakan aplikasi XMPP yang berbeda atau pernah menggunakan Conversations sebelumnya. Jika tidak, Anda dapat membuat akun XMPP baru. \ NPetunjuk: Beberapa penyedia layanan email juga menyediakan akun XMPP.</string>
+    <string name="server_select_text">XMPP adalah jaringan penyedia pesan instan independen. Anda dapat menggunakan aplikasi ini dengan server XMPP pilihan Anda. \ NNamun demi kenyamanan Anda, kami permudah untuk membuat akun di Conversations.im; provider yang sangat cocok digunakan dengan Conversations.</string>
+    <string name="magic_create_text_on_x">Anda telah diundang ke %1$s. Kami akan memandu Anda melalui proses pembuatan akun. \nSaat memilih %1$s sebagai penyedia, Anda akan dapat berkomunikasi dengan pengguna provider lain dengan memberikan alamat XMPP lengkap Anda kepada mereka.</string>
+    <string name="magic_create_text_fixed">Anda telah diundang ke%1$s. Username telah dipilihkan untuk Anda. Kami akan memandu Anda melalui proses pembuatan akun. \nAnda dapat berkomunikasi dengan pengguna provider lain dengan memberi mereka alamat XMPP lengkap Anda.</string>
+    <string name="your_server_invitation">Undangan server Anda</string>
+    <string name="improperly_formatted_provisioning">Kode provisioning tidak diformat dengan benar</string>
+    <string name="tap_share_button_send_invite">Klik tombol bagikan untuk mengirim undangan ke kontak Anda %1$s.</string>
+    <string name="if_contact_is_nearby_use_qr">Jika kontak Anda di dekat Anda, mereka juga dapat memindai kode di bawah ini untuk menerima undangan Anda</string>
+    <string name="easy_invite_share_text">Bergabung %1$s dan mengobrol dengan saya: %2$s</string>
+    <string name="share_invite_with">Bagikan undangan dengan...</string>
+</resources>

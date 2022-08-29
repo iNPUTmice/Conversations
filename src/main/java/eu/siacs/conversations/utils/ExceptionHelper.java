@@ -6,8 +6,9 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
+
+import androidx.appcompat.app.AlertDialog;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -83,8 +84,8 @@ public class ExceptionHelper {
             file.close();
             activity.deleteFile(FILENAME);
             AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-            builder.setTitle(activity.getString(R.string.crash_report_title));
-            builder.setMessage(activity.getText(R.string.crash_report_message));
+            builder.setTitle(activity.getString(R.string.crash_report_title, activity.getString(R.string.app_name)));
+            builder.setMessage(activity.getString(R.string.crash_report_message, activity.getString(R.string.app_name)));
             builder.setPositiveButton(activity.getText(R.string.send_now), (dialog, which) -> {
 
                 Log.d(Config.LOGTAG, "using account=" + account.getJid().asBareJid() + " to send in stack trace");

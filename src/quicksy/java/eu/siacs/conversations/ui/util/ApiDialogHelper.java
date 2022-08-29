@@ -7,7 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.SystemClock;
-import android.support.annotation.StringRes;
+import androidx.annotation.StringRes;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.services.QuickConversationsService;

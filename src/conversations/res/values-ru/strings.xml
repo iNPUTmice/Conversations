@@ -9,4 +9,8 @@
     <string name="magic_create_text_fixed">Вас пригласили на %1$s. Вам уже назначили имя пользователя. Мы проведём вас через процесс создания аккаунта. Этот аккаунт позволит вам общаться с пользователями и на этом, и на других серверах, используя ваш полный XMPP-адрес.</string>
     <string name="your_server_invitation">Ваше приглашение</string>
     <string name="improperly_formatted_provisioning">Неправильный формат кода</string>
+    <string name="tap_share_button_send_invite">Нажмите кнопку «Поделиться», чтобы отправить вашему контакту приглашение в %1$s.</string>
+    <string name="if_contact_is_nearby_use_qr">Если ваш контакт находится поблизости, он также может отсканировать приведенный ниже код, чтобы принять ваше приглашение.</string>
+    <string name="easy_invite_share_text">Присоединяйтесь к %1$s и пообщайтесь со мной: %2$s</string>
+    <string name="share_invite_with">Поделиться приглашением с…</string>
 </resources>

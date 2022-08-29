@@ -1,0 +1,2 @@
+* Fix crash when rendering some quotes
+* Fix crash in welcome screen

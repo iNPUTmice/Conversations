@@ -1,23 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="crash_report_title">Quicksy se ha detenido</string>
-    <string name="crash_report_message">Si envías informes de fallos ayudas al desarrollo de Quicksy\n<b>Aviso:</b> Esto usará tu cuenta XMPP para enviar los registros de error al desarrollador.</string>
-    <string name="openkeychain_required_long">Quicksy utiliza una aplicación de terceros llamada <b>OpenKeychain</b> para cifrar y descifrar mensajes y gestionar tus claves públicas.\n\nOpenKeychain está publicado bajo licencia GPLv3 y disponible on F-Droid y Google Play.\n\n<small>(Por favor, reinicie Quicksy después.)</small></string>
-    <string name="contact_has_no_pgp_key">Quicksy no ha podido cifrar tus mensajes porque tu contacto no está anunciando su clave publica.\n\n<small>Por favor, pide a tu contacto que configure OpenPGP.</small></string>
-    <string name="contacts_have_no_pgp_keys">Quicksy no ha podido cifrar tus mensajes porque tus contactos no están anunciando su clave publica.\n\n<small>Por favor, pide a tus contactos que configuren OpenPGP.</small></string>
     <string name="pref_notification_grace_period_summary">Periodo de tiempo en el que Quicksy deshabilita las notificaciones tras ver que tienes actividad en otro dispositivo</string>
     <string name="pref_never_send_crash_summary">Si envías registros de error ayudas al desarrollo de Quicksy</string>
-    <string name="no_storage_permission">Quicksy necesita acceder al almacenamiento externo</string>
-    <string name="no_camera_permission">Quicksy necesita acceder a la cámara</string>
-    <string name="battery_optimizations_enabled_explained">Tu dispositivo está realizando optimizaciones de uso de batería en Quicksy que pueden hacer que los mensajes se retrasen o incluso hacer que se pierdan.\nEs recomendable deshabilitarlas.</string>
-    <string name="battery_optimizations_enabled_dialog">Tu dispositivo está realizando optimizaciones de uso de batería en Quicksy que pueden hacer que los mensajes se retrasen o incluso hacer que se pierdan.\n\nA continuación se le preguntará si quiere deshabilitarlas.</string>
     <string name="pref_broadcast_last_activity_summary">Informar a tus contactos cuando usas Quicksy</string>
-    <string name="data_saver_enabled_explained">Tu sistema operativo está restringiendo a Quicksy acceder a internet cuando está en segundo plano. Para recibir notificaciones de nuevos mensajes deberías permitir a Quicksy acceder a internet cuando la optimización de datos está habilitada.\nQuicksy realizará igualmente optimizaciones para ahorrar datos cuando sea posible.</string>
-    <string name="device_does_not_support_data_saver">Tu dispositivo no soporta la opción de deshabilitar la optimización de datos para Quicksy</string>
     <string name="huawei_protected_apps_summary">Para seguir recibiendo notificaciones, incluso cuando la pantalla está apagada, necesitas añadir Quicksy a la lista de aplicaciones protegidas.</string>
-    <string name="error_trustkey_general">Quicksy no puede enviar mensajes cifrados a %1$s. Esto puede deberse a que tu contacto está usando un servidor o un cliente desactualizado que no puede manejar las claves OMEMO.</string>
-    <string name="no_microphone_permission">Quicksy necesita acceder al micrófono</string>
-    <string name="foreground_service_channel_description">Esta categoría de notificación se usa para mostrar una notificación permantente indicando que Quicksy está ejecutándose.</string>
     <string name="set_profile_picture">Foto de perfil en Quicksy</string>
     <string name="not_available_in_your_country">Quicksy no está disponible en tu país.</string>
     <string name="unable_to_verify_server_identity">No se ha podido verificar la identidad del servidor.</string>

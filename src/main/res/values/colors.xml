@@ -26,6 +26,8 @@
 	<color name="orange500">#ffff9800</color>
 	<color name="blue_a100">#ff82B1FF</color>
 	<color name="blue_a200">#ff448AFF</color>
+	<color name="blue_a400">#ff2979FF</color>
+	<color name="blue_a700">#ff2962FF</color>
 	<color name="green500">#ff4CAF50</color>
 	<color name="green600">#ff43A047</color>
 	<color name="green700">#ff388E3C</color>
@@ -37,6 +39,9 @@
 
 	<!-- scanner -->
 	<color name="scan_result_dots">#c04CAF50</color>
+
+	<color name="splash_screen_background">#fffafafa</color> <!-- gray50 -->
+	<color name="splash_screen_status_bar">#ffe0e0e0</color> <!-- gray300 -->
 
 	<color name="blue500">#ff2196f3</color>
 </resources>

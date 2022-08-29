@@ -12,7 +12,7 @@ import java.lang.reflect.Field;
  * A wrapper class to fix some weird fuck ups on Meizu devices
  * credit goes to the people in this thread https://github.com/android-in-china/Compatibility/issues/11
  */
-public class TextInputEditText extends android.support.design.widget.TextInputEditText {
+public class TextInputEditText extends com.google.android.material.textfield.TextInputEditText {
 
     public TextInputEditText(Context context) {
         super(context);

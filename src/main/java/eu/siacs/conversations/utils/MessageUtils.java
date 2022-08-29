@@ -31,86 +31,90 @@ package eu.siacs.conversations.utils;
 
 import com.google.common.base.Strings;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.regex.Pattern;
 
 import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.entities.Message;
-import eu.siacs.conversations.http.AesGcmURLStreamHandler;
-import eu.siacs.conversations.http.P1S3UrlStreamHandler;
+import eu.siacs.conversations.http.AesGcmURL;
+import eu.siacs.conversations.http.URL;
+import eu.siacs.conversations.ui.util.QuoteHelper;
 
 public class MessageUtils {
 
-	private static final Pattern LTR_RTL = Pattern.compile("(\\u200E[^\\u200F]*\\u200F){3,}");
+    private static final Pattern LTR_RTL = Pattern.compile("(\\u200E[^\\u200F]*\\u200F){3,}");
 
-	private static final String EMPTY_STRING = "";
+    private static final String EMPTY_STRING = "";
 
-	public static String prepareQuote(Message message) {
-		final StringBuilder builder = new StringBuilder();
-		final String body;
-		if (message.hasMeCommand()) {
-			final String nick;
-			if (message.getStatus() == Message.STATUS_RECEIVED) {
-				if (message.getConversation().getMode() == Conversational.MODE_MULTI) {
-					nick = Strings.nullToEmpty(message.getCounterpart().getResource());
-				} else {
-					nick = message.getContact().getPublicDisplayName();
-				}
-			} else {
-				nick =  UIHelper.getMessageDisplayName(message);
-			}
-			body = nick + " " + message.getBody().substring(Message.ME_COMMAND.length());
-		} else {
-			body = message.getMergedBody().toString();;
-		}
-		for (String line : body.split("\n")) {
-			if (line.length() <= 0) {
-				continue;
-			}
-			final char c = line.charAt(0);
-			if (c == '>' && UIHelper.isPositionFollowedByQuoteableCharacter(line, 0)
-					|| (c == '\u00bb' && !UIHelper.isPositionFollowedByQuote(line, 0))) {
-				continue;
-			}
-			if (builder.length() != 0) {
-				builder.append('\n');
-			}
-			builder.append(line.trim());
-		}
-		return builder.toString();
-	}
+    public static String prepareQuote(Message message) {
+        final StringBuilder builder = new StringBuilder();
+        final String body;
+        if (message.hasMeCommand()) {
+            final String nick;
+            if (message.getStatus() == Message.STATUS_RECEIVED) {
+                if (message.getConversation().getMode() == Conversational.MODE_MULTI) {
+                    nick = Strings.nullToEmpty(message.getCounterpart().getResource());
+                } else {
+                    nick = message.getContact().getPublicDisplayName();
+                }
+            } else {
+                nick = UIHelper.getMessageDisplayName(message);
+            }
+            body = nick + " " + message.getBody().substring(Message.ME_COMMAND.length());
+        } else {
+            body = message.getMergedBody().toString();
+        }
+        for (String line : body.split("\n")) {
+            if (line.length() <= 0) {
+                continue;
+            }
+            final char c = line.charAt(0);
+            if (QuoteHelper.isNestedTooDeeply(line)) {
+                continue;
+            }
+            if (builder.length() != 0) {
+                builder.append('\n');
+            }
+            builder.append(line.trim());
+        }
+        return builder.toString();
+    }
 
-	public static boolean treatAsDownloadable(final String body, final boolean oob) {
-		try {
-			final String[] lines = body.split("\n");
-			if (lines.length == 0) {
-				return false;
-			}
-			for (String line : lines) {
-				if (line.contains("\\s+")) {
-					return false;
-				}
-			}
-			final URL url = new URL(lines[0]);
-			final String ref = url.getRef();
-			final String protocol = url.getProtocol();
-			final boolean encrypted = ref != null && AesGcmURLStreamHandler.IV_KEY.matcher(ref).matches();
-			final boolean followedByDataUri = lines.length == 2 && lines[1].startsWith("data:");
-			final boolean validAesGcm = AesGcmURLStreamHandler.PROTOCOL_NAME.equalsIgnoreCase(protocol) && encrypted && (lines.length == 1 || followedByDataUri);
-			final boolean validProtocol = "http".equalsIgnoreCase(protocol) || "https".equalsIgnoreCase(protocol) || P1S3UrlStreamHandler.PROTOCOL_NAME.equalsIgnoreCase(protocol);
-			final boolean validOob = validProtocol && (oob || encrypted) && lines.length == 1;
-			return validAesGcm || validOob;
-		} catch (MalformedURLException e) {
-			return false;
-		}
-	}
+    public static boolean treatAsDownloadable(final String body, final boolean oob) {
+        final String[] lines = body.split("\n");
+        if (lines.length == 0) {
+            return false;
+        }
+        for (final String line : lines) {
+            if (line.contains("\\s+")) {
+                return false;
+            }
+        }
+        final URI uri;
+        try {
+            uri = new URI(lines[0]);
+        } catch (final URISyntaxException e) {
+            return false;
+        }
+        if (!URL.WELL_KNOWN_SCHEMES.contains(uri.getScheme())) {
+            return false;
+        }
+        final String ref = uri.getFragment();
+        final String protocol = uri.getScheme();
+        final boolean encrypted = ref != null && AesGcmURL.IV_KEY.matcher(ref).matches();
+        final boolean followedByDataUri = lines.length == 2 && lines[1].startsWith("data:");
+        final boolean validAesGcm = AesGcmURL.PROTOCOL_NAME.equalsIgnoreCase(protocol) && encrypted && (lines.length == 1 || followedByDataUri);
+        final boolean validProtocol = "http".equalsIgnoreCase(protocol) || "https".equalsIgnoreCase(protocol);
+        final boolean validOob = validProtocol && (oob || encrypted) && lines.length == 1;
+        return validAesGcm || validOob;
+    }
 
-	public static String filterLtrRtl(String body) {
-		return LTR_RTL.matcher(body).replaceFirst(EMPTY_STRING);
-	}
+    public static String filterLtrRtl(String body) {
+        return LTR_RTL.matcher(body).replaceFirst(EMPTY_STRING);
+    }
 
-	public static boolean unInitiatedButKnownSize(Message message) {
-		return message.getType() == Message.TYPE_TEXT && message.getTransferable() == null && message.isOOb() && message.getFileParams().size > 0 && message.getFileParams().url != null;
-	}
+    public static boolean unInitiatedButKnownSize(Message message) {
+        return message.getType() == Message.TYPE_TEXT && message.getTransferable() == null && message.isOOb() && message.getFileParams().size != null && message.getFileParams().url != null;
+    }
 }

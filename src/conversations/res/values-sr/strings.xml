@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pick_a_server">Одаберите вашег ИксМПП провајдера</string>
+    <string name="use_conversations.im">Користи conversations.im</string>
+    <string name="create_new_account">Направи нови налог</string>
+    <string name="do_you_have_an_account">Да ли већ имате ИксМПП налог? Извесно је да га имате ако користите неки ИксМПП клијент или сте раније користили Конверзацију. Ако немате, сада можете направити нови ИксМПП налог.\nСавет: неки поштански провајдери такође омогућавају и ИксМПП налоге.</string>
+    <string name="server_select_text">ИксМПП је мрежа брзих порука, независна од провајдера. Овај клијент можете користити уз било који сервер по вашем избору.\nДа бисмо вам олакшали, омогућили смо креирање налога на conversations.im; провајдеру специјално прилаг.ођеном за коришћење уз Конверзацију</string>
+    <string name="your_server_invitation">Ваша серверска позивница</string>
+    </resources>

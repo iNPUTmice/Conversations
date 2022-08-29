@@ -1,6 +1,6 @@
 package eu.siacs.conversations.xmpp.jingle.stanzas;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Preconditions;
@@ -11,8 +11,8 @@ import java.util.Map;
 
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
-import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 import eu.siacs.conversations.xmpp.Jid;
+import eu.siacs.conversations.xmpp.stanzas.IqPacket;
 
 public class JinglePacket extends IqPacket {
 

@@ -26,6 +26,8 @@ import android.widget.TextView;
 
 import java.lang.ref.WeakReference;
 
+import eu.siacs.conversations.ui.util.StyledAttributes;
+
 public class TextDrawable extends Drawable implements TextWatcher {
     private WeakReference<TextView> ref;
     private String mText;
@@ -62,6 +64,7 @@ public class TextDrawable extends Drawable implements TextWatcher {
      */
     public TextDrawable(TextView tv, String initialText, boolean bindToViewsText, boolean bindToViewsPaint) {
         this(tv.getPaint(), initialText);
+        mPaint.setColor(StyledAttributes.getColor(tv.getContext(), android.R.attr.textColorPrimary));
         ref = new WeakReference<>(tv);
         if (bindToViewsText || bindToViewsPaint) {
             if (bindToViewsText) {
@@ -157,6 +160,10 @@ public class TextDrawable extends Drawable implements TextWatcher {
         setBounds(bounds);
     }
 
+    public Paint getPaint() {
+        return mPaint;
+    }
+
     public void setPaint(Paint paint) {
         mPaint = new Paint(paint);
         //Since this can change the font used, we need to recalculate bounds.
@@ -168,8 +175,8 @@ public class TextDrawable extends Drawable implements TextWatcher {
         invalidateSelf();
     }
 
-    public Paint getPaint() {
-        return mPaint;
+    public String getText() {
+        return mText;
     }
 
     public void setText(String text) {
@@ -181,10 +188,6 @@ public class TextDrawable extends Drawable implements TextWatcher {
             init();
         }
         invalidateSelf();
-    }
-
-    public String getText() {
-        return mText;
     }
 
     @Override

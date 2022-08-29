@@ -48,17 +48,28 @@ public class EditMessageActionModeCallback implements ActionMode.Callback {
 
     public EditMessageActionModeCallback(EditMessage editMessage) {
         this.editMessage = editMessage;
-        this.clipboardManager = (ClipboardManager) editMessage.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+        this.clipboardManager =
+                (ClipboardManager)
+                        editMessage.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
     }
 
     @Override
-    public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+    public boolean onCreateActionMode(final ActionMode mode, final Menu menu) {
         final MenuInflater inflater = mode.getMenuInflater();
         inflater.inflate(R.menu.edit_message_actions, menu);
         final MenuItem pasteAsQuote = menu.findItem(R.id.paste_as_quote);
         final ClipData primaryClip = clipboardManager.getPrimaryClip();
-        if (primaryClip != null && primaryClip.getItemCount() >= 0) {
-            pasteAsQuote.setVisible(primaryClip.getDescription().getMimeType(0).startsWith("text/") && !TextUtils.isEmpty(primaryClip.getItemAt(0).getText()));
+        if (primaryClip != null && primaryClip.getItemCount() > 0) {
+            final String mimeType;
+            try {
+                mimeType = primaryClip.getDescription().getMimeType(0);
+            } catch (final Exception e) {
+                pasteAsQuote.setVisible(false);
+                return true;
+            }
+            pasteAsQuote.setVisible(
+                    mimeType.startsWith("text/")
+                            && !TextUtils.isEmpty(primaryClip.getItemAt(0).getText()));
         } else {
             pasteAsQuote.setVisible(false);
         }
@@ -71,10 +82,10 @@ public class EditMessageActionModeCallback implements ActionMode.Callback {
     }
 
     @Override
-    public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+    public boolean onActionItemClicked(final ActionMode mode, final MenuItem item) {
         if (item.getItemId() == R.id.paste_as_quote) {
             final ClipData primaryClip = clipboardManager.getPrimaryClip();
-            if (primaryClip != null && primaryClip.getItemCount() >= 1) {
+            if (primaryClip != null && primaryClip.getItemCount() > 0) {
                 editMessage.insertAsQuote(primaryClip.getItemAt(0).getText().toString());
                 return true;
             }
@@ -83,7 +94,5 @@ public class EditMessageActionModeCallback implements ActionMode.Callback {
     }
 
     @Override
-    public void onDestroyActionMode(ActionMode mode) {
-
-    }
+    public void onDestroyActionMode(ActionMode mode) {}
 }

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="splash_screen_background">#ff424242</color> <!-- gray800 -->
+    <color name="splash_screen_status_bar">#ff282828</color> <!-- gray900 -->
+</resources>

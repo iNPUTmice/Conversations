@@ -31,8 +31,9 @@ package eu.siacs.conversations.ui.util;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.v7.app.AlertDialog;
 import android.util.Pair;
+
+import androidx.appcompat.app.AlertDialog;
 
 import java.util.Collections;
 import java.util.Map;

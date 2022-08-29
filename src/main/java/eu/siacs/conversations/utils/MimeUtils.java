@@ -21,12 +21,15 @@ import android.net.Uri;
 import android.provider.OpenableColumns;
 import android.util.Log;
 
+import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableList;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -39,6 +42,13 @@ import eu.siacs.conversations.services.ExportBackupService;
  * Used to implement java.net.URLConnection and android.webkit.MimeTypeMap.
  */
 public final class MimeUtils {
+
+    public static final List<String> AMBIGUOUS_CONTAINER_FORMATS = ImmutableList.of(
+            "application/ogg",
+            "video/3gpp", // .3gp files can contain audio, video or both
+            "video/3gpp2"
+    );
+
     private static final Map<String, String> mimeTypeToExtensionMap = new HashMap<>();
     private static final Map<String, String> extensionToMimeTypeMap = new HashMap<>();
 
@@ -224,7 +234,12 @@ public final class MimeUtils {
         add("application/x-xcf", "xcf");
         add("application/x-xfig", "fig");
         add("application/xhtml+xml", "xhtml");
+        add("video/3gpp", "3gpp");
+        add("video/3gpp", "3gp");
+        add("video/3gpp2", "3gpp2");
+        add("video/3gpp2", "3g2");
         add("audio/3gpp", "3gpp");
+        add("audio/3gpp", "3gp");
         add("audio/aac", "aac");
         add("audio/aac-adts", "aac");
         add("audio/amr", "amr");
@@ -248,6 +263,7 @@ public final class MimeUtils {
         add("audio/mpeg", "m4a");
         add("audio/mpegurl", "m3u");
         add("audio/ogg", "oga");
+        add("audio/opus", "opus");
         add("audio/prs.sid", "sid");
         add("audio/x-aiff", "aif");
         add("audio/x-aiff", "aiff");
@@ -274,6 +290,8 @@ public final class MimeUtils {
         add("image/ico", "ico");
         add("image/ief", "ief");
         add("image/heic", "heic");
+        add("image/heif", "heif");
+        add("image/avif", "avif");
         // add ".jpg" first so it will be the default for guessExtensionFromMimeType
         add("image/jpeg", "jpg");
         add("image/jpeg", "jpeg");
@@ -361,10 +379,6 @@ public final class MimeUtils {
         add("text/x-tex", "cls");
         add("text/x-vcalendar", "vcs");
         add("text/x-vcard", "vcf");
-        add("video/3gpp", "3gpp");
-        add("video/3gpp", "3gp");
-        add("video/3gpp2", "3gpp2");
-        add("video/3gpp2", "3g2");
         add("video/avi", "avi");
         add("video/dl", "dl");
         add("video/dv", "dif");
@@ -564,10 +578,16 @@ public final class MimeUtils {
     }
 
     private static String getDisplayName(final Context context, final Uri uri) {
-        try (Cursor cursor = context.getContentResolver().query(uri, null, null, null, null)) {
+        try (final Cursor cursor = context.getContentResolver().query(uri, null, null, null, null)) {
             if (cursor != null && cursor.moveToFirst()) {
-                return cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                final int index = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+                if (index == -1) {
+                    return null;
+                }
+                return cursor.getString(index);
             }
+        } catch (final Exception e) {
+            return null;
         }
         return null;
     }
@@ -580,32 +600,38 @@ public final class MimeUtils {
         return null;
     }
 
-    public static String extractRelevantExtension(URL url) {
-        String path = url.getPath();
-        return extractRelevantExtension(path, true);
-    }
-
     public static String extractRelevantExtension(final String path) {
         return extractRelevantExtension(path, false);
     }
 
     public static String extractRelevantExtension(final String path, final boolean ignoreCryptoExtension) {
-        if (path == null || path.isEmpty()) {
+        if (Strings.isNullOrEmpty(path)) {
             return null;
         }
 
-        String filename = path.substring(path.lastIndexOf('/') + 1).toLowerCase();
-        int dotPosition = filename.lastIndexOf(".");
+        final String filenameQueryAnchor = path.substring(path.lastIndexOf('/') + 1);
+        final String filenameQuery = cutBefore(filenameQueryAnchor, '#');
+        final String filename = cutBefore(filenameQuery, '?');
+        final int dotPosition = filename.lastIndexOf('.');
 
-        if (dotPosition != -1) {
-            String extension = filename.substring(dotPosition + 1);
-            // we want the real file extension, not the crypto one
-            if (ignoreCryptoExtension && Transferable.VALID_CRYPTO_EXTENSIONS.contains(extension)) {
-                return extractRelevantExtension(filename.substring(0, dotPosition));
-            } else {
-                return extension;
-            }
+        if (dotPosition == -1) {
+            return null;
         }
-        return null;
+        final String extension = filename.substring(dotPosition + 1);
+        // we want the real file extension, not the crypto one
+        if (ignoreCryptoExtension && Transferable.VALID_CRYPTO_EXTENSIONS.contains(extension)) {
+            return extractRelevantExtension(filename.substring(0, dotPosition));
+        } else {
+            return extension;
+        }
+    }
+
+    private static String cutBefore(final String input, final char c) {
+        final int position = input.indexOf(c);
+        if (position > 0) {
+            return input.substring(0, position);
+        } else {
+            return input;
+        }
     }
 }

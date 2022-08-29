@@ -2,7 +2,6 @@ package eu.siacs.conversations.ui.util;
 
 import android.app.Activity;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AlertDialog;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.TypefaceSpan;
@@ -10,6 +9,8 @@ import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import androidx.appcompat.app.AlertDialog;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;

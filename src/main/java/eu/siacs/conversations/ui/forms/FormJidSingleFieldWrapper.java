@@ -6,8 +6,8 @@ import android.text.InputType;
 import java.util.List;
 
 import eu.siacs.conversations.R;
-import eu.siacs.conversations.xmpp.forms.Field;
 import eu.siacs.conversations.xmpp.Jid;
+import eu.siacs.conversations.xmpp.forms.Field;
 
 public class FormJidSingleFieldWrapper extends FormTextFieldWrapper {
 
@@ -34,7 +34,7 @@ public class FormJidSingleFieldWrapper extends FormTextFieldWrapper {
 
 	@Override
 	protected void setValues(List<String> values) {
-		StringBuilder builder = new StringBuilder("");
+		StringBuilder builder = new StringBuilder();
 		for(String value : values) {
 			builder.append(value);
 		}

@@ -1,0 +1,2 @@
+* Always verify domain name. No user overwrite
+* Support roster pre authentication

@@ -1,23 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="crash_report_title">Quicksy się zepsuło</string>
-    <string name="crash_report_message">Wysyłając nam ślady stosu pomagasz w rozwoju Quicksy\n<b>Ostrzeżenie</b> Ta funkcja użyje twojego konta XMPP do wysłania śladu stosu.</string>
-    <string name="openkeychain_required_long">Quicksy używa aplikacji <b>OpenKeychain</b> do szyfrowania i zarządzania twoimi kluczami.\n\nOpenKeychain jest na licencji GPLv3 i jest dostępny na F-Droid i Google Play.\n\n<small>(Proszę zrestartować Quicksy po instalacji.)</small></string>
-    <string name="contact_has_no_pgp_key">Quicksy nie może zaszyfrować twojej wiadomości ponieważ kontakt nie ogłasza swojego klucza publicznego.\n\n<small>Poproś kontakt aby ustawił OpenPGP.</small></string>
-    <string name="contacts_have_no_pgp_keys">Quicksy nie może zaszyfrować twojej wiadomości ponieważ kontakty nie ogłaszają swoich kluczy publicznych.\n\n<small>Poproś kontakty aby ustawili OpenPGP.</small></string>
     <string name="pref_notification_grace_period_summary">Ilość czasu kiedy Quicksy jest cicho po zobaczeniu aktywności na innym urządzeniu.</string>
     <string name="pref_never_send_crash_summary">Wysyłając nam ślady stosu pomagasz w rozwoju Quicksy</string>
-    <string name="no_storage_permission">Quicksy potrzebuje dostępu do zewnętrznej pamięci</string>
-    <string name="no_camera_permission">Quicksy potrzebuje dostępu do aparatu</string>
-    <string name="battery_optimizations_enabled_explained">Twoje urządzenie ma włączone agresywne oszczędzanie baterii przez co Quicksy może odbierać wiadomości z opóźnieniem.\nZalecamy wyłączenie tych optymalizacji. </string>
-    <string name="battery_optimizations_enabled_dialog">Twoje urządzenie ma włączone agresywne oszczędzanie baterii przez co Quicksy może odbierać wiadomości z opóźnieniem.\nZostaniesz poproszony o wyłączenie ich.</string>
     <string name="pref_broadcast_last_activity_summary">Powiadom kontakty o tym że używasz Quicksy</string>
-    <string name="data_saver_enabled_explained">Twój system operacyjny nie pozwala Quicksy korzystać z internetu kiedy jest w tle. Aby otrzymywać powiadomienia o nowych wiadomościach ustaw Quicksy nieograniczony dostęp kiedy Oszczędzanie Danych jest włączone.\nQuicksy postara się oszczędzać dane kiedy to możliwe.</string>
-    <string name="device_does_not_support_data_saver">Twoje urządzenie nie pozwala wyłączyć Oszczędzania Danych dla Quicksy.</string>
     <string name="huawei_protected_apps_summary">Aby otrzymywać powiadomienia nawet kiedy ekran jest wyłączony musisz dodać Quicksy do listy chronionych aplikacji.</string>
-    <string name="error_trustkey_general">Quicksy nie może wysłać szyfrowanych wiadomości do %1$s. To może być spowodowane tym, że kontakt używa starego serwera lub klienta nie obsługującego OMEMO.</string>
-    <string name="no_microphone_permission">Quicksy potrzebuje dostępu do mikrofonu.</string>
-    <string name="foreground_service_channel_description">Ta kategoria powiadomień jest używana do wyświetlania ciągłego powiadomienia o tym, że Quicksy działa.</string>
     <string name="set_profile_picture">Obrazek profilowy Quicksy</string>
     <string name="not_available_in_your_country">Quicksy nie jest dostępne w twoim kraju</string>
     <string name="unable_to_verify_server_identity">Nie udało się sprawdzić tożsamości serwera.</string>

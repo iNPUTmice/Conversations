@@ -3,7 +3,6 @@ package eu.siacs.conversations.parser;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -15,8 +14,8 @@ import eu.siacs.conversations.entities.MucOptions;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xmpp.InvalidJid;
-import eu.siacs.conversations.xmpp.stanzas.AbstractStanza;
 import eu.siacs.conversations.xmpp.Jid;
+import eu.siacs.conversations.xmpp.stanzas.AbstractStanza;
 
 public abstract class AbstractParser {
 
@@ -82,7 +81,7 @@ public abstract class AbstractParser {
 		} else {
 			ms = 0;
 		}
-		timestamp = timestamp.substring(0,19)+timestamp.substring(timestamp.length() -5,timestamp.length());
+		timestamp = timestamp.substring(0,19)+timestamp.substring(timestamp.length() -5);
 		dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ",Locale.US);
 		return Math.min(dateFormat.parse(timestamp).getTime()+ms, System.currentTimeMillis());
 	}
@@ -127,7 +126,7 @@ public abstract class AbstractParser {
 		return user;
 	}
 
-	public static String extractErrorMessage(Element packet) {
+	public static String extractErrorMessage(final Element packet) {
 		final Element error = packet.findChild("error");
 		if (error != null && error.getChildren().size() > 0) {
 			final List<String> errorNames = orderedElementNames(error.getChildren());
@@ -136,6 +135,20 @@ public abstract class AbstractParser {
 				return prefixError(errorNames)+text;
 			} else if (errorNames.size() > 0){
 				return prefixError(errorNames)+errorNames.get(0).replace("-"," ");
+			}
+		}
+		return null;
+	}
+
+	public static String errorMessage(Element packet) {
+		final Element error = packet.findChild("error");
+		if (error != null && error.getChildren().size() > 0) {
+			final List<String> errorNames = orderedElementNames(error.getChildren());
+			final String text = error.findChildContent("text");
+			if (text != null && !text.trim().isEmpty()) {
+				return text;
+			} else if (errorNames.size() > 0){
+				return errorNames.get(0).replace("-"," ");
 			}
 		}
 		return null;

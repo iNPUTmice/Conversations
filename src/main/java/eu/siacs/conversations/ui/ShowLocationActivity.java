@@ -5,17 +5,17 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.ComponentName;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
 import android.location.Location;
 import android.location.LocationListener;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 
 import org.osmdroid.util.GeoPoint;
 
@@ -48,7 +48,7 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 		super.onCreate(savedInstanceState);
 
 		this.binding = DataBindingUtil.setContentView(this,R.layout.activity_show_location);
-		setSupportActionBar((Toolbar) binding.toolbar);
+		setSupportActionBar(binding.toolbar);
 
 		configureActionBar(getSupportActionBar());
 		setupMapView(this.binding.map, this.loc);
@@ -193,7 +193,7 @@ public class ShowLocationActivity extends LocationActivity implements LocationLi
 	private void startNavigation() {
 		startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
 				"google.navigation:q=" +
-						String.valueOf(this.loc.getLatitude()) + "," + String.valueOf(this.loc.getLongitude())
+						this.loc.getLatitude() + "," + this.loc.getLongitude()
 		)));
 	}
 

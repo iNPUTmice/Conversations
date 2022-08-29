@@ -1,0 +1,3 @@
+* fixed search on Android <= 5
+* optimize memory consumption
+

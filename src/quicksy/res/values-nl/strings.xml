@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="crash_report_title">Quicksy is gecrasht</string>
-    <string name="crash_report_message">Door het versturen van crashrapportages help je de ontwikkeling van Quicksy.\n\n<b>Waarschuwing:</b> Deze app zal je XMPP-account gebruiken om de crashrapportages te versturen naar de ontwikkelaars.</string>
-    <string name="openkeychain_required_long">Quicksy gebruikt een derdepartijapp genaamd <b>OpenKeychain</b> om berichten te versleutelen, ontsleutelen en om publieke sleutels te beheren.\n\nOpenKeychain is beschikbaar onder de GPLv3 en beschikbaar op F-Droid en Google Play.\n\n<small>(Herstart Quicksy na installatie.)</small></string>
-    <string name="contact_has_no_pgp_key">Quicksy kan je berichten niet versleutelen omdat je contact geen publieke sleutel heeft ingesteld.\n\n<small>Vraag je contact om OpenPGP te configureren.</small></string>
-    <string name="contacts_have_no_pgp_keys">Quicksy kan je berichten niet versleutelen omdat je contacten geen publieke sleutel hebben ingesteld.\n\n<small>Vraag je contacten om OpenPGP te configureren.</small></string>
     <string name="pref_notification_grace_period_summary">Hoe lang Quicksy stil blijft na activiteit op een ander apparaat waar te nemen</string>
     <string name="pref_never_send_crash_summary">Door crashrapportages te versturen help je de ontwikkeling van Quicksy</string>
-    <string name="no_storage_permission">Quicksy heeft toegang nodig tot de externe opslag</string>
-    <string name="no_camera_permission">Quicksy heeft toegang nodig tot de camera</string>
     <string name="pref_broadcast_last_activity_summary">Laat al je contactpersonen weten wanneer je Quicksy gebruikt</string>
-    <string name="data_saver_enabled_explained">Je besturingssysteem verhindert Quicksy toegang tot het internet wanneer Quicksy zich op de achtergrond bevindt. Om meldingen van nieuwe berichten te krijgen moet je Quicksy onbeperkte toegang geven wanneer gegevensbesparing is ingeschakeld.\nQuicksy zal nog steeds proberen wanneer mogelijk gegevens te besparen.</string>
-    <string name="device_does_not_support_data_saver">Je apparaat ondersteunt het uitschakelen van gegevensbesparing voor Quicksy niet.</string>
     <string name="huawei_protected_apps_summary">Om meldingen te blijven ontvangen, zelfs wanneer het scherm uit staat, moet je Quicksy toevoegen aan de lijst met beschermde apps.</string>
-    <string name="error_trustkey_general">Quicksy kan geen versleutelde berichten sturen naar %1$s. Dit komt mogelijk omdat je contact gebruik maakt van een verouderde server, of een cliënt die geen ondersteuning biedt voor OMEMO.</string>
-    <string name="no_microphone_permission">Quicksy heeft toegang nodig tot de microfoon</string>
-    <string name="foreground_service_channel_description">Deze meldingscategorie wordt gebruikt om een permanente melding weer te geven dat Quicksy wordt uitgevoerd.</string>
     <string name="set_profile_picture">Quicksy-profielafbeelding</string>
     <string name="not_available_in_your_country">Quicksy is niet beschikbaar in je land.</string>
     <string name="unable_to_verify_server_identity">Kan serveridentiteit niet verifiëren.</string>

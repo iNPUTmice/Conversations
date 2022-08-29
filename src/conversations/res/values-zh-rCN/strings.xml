@@ -4,9 +4,13 @@
     <string name="use_conversations.im">使用conversations.im</string>
     <string name="create_new_account">创建新账户</string>
     <string name="do_you_have_an_account">您已经拥有一个XMPP账户了吗？如果您之前使用过其他的XMPP客户端的话，那么您已经拥有这种账户了。如果没有账户的话，您可以现在创建一个。\n提示：有些电子邮件服务也提供XMPP账户。</string>
-    <string name="server_select_text">XMPP是独立于提供程序的即时消息网络。 您可以将此客户端与所选的任何XMPP服务器一起使用。\ n不过，为了您的方便，我们很容易在对话中创建帐户。im¹; 特别适合与“对话”配合使用的提供商。</string>
+    <string name="server_select_text">XMPP是独立于提供程序的即时消息网络。 您可以将此客户端与所选的任何XMPP服务器一起使用。\ n不过，为了您的方便，我们很容易在对话中创建帐户。im; 特别适合与“对话”配合使用的提供商。</string>
     <string name="magic_create_text_on_x">您已受邀参加%1$s。 我们将指导您完成创建帐户的过程。\n选择%1$s作为提供者后，您可以通过提供其他人的完整XMPP地址与其他提供者的用户进行交流。</string>
     <string name="magic_create_text_fixed">您已受邀参加%1$s。 已经为您选择了一个用户名。 我们将指导您完成创建帐户的过程。\n您可以通过向其他提供商的用户提供完整的XMPP地址来与他们进行交流。</string>
     <string name="your_server_invitation">你的服务器邀请</string>
     <string name="improperly_formatted_provisioning">格式不正确的配置代码</string>
+    <string name="tap_share_button_send_invite">点击分享按钮向您的联系人发送加入 %1$s 的邀请。</string>
+    <string name="if_contact_is_nearby_use_qr">如果你的联系人在附近，他们也可以扫描下面的代码来接受你的邀请。</string>
+    <string name="easy_invite_share_text">加入 %1$s 和我聊天：%2$s</string>
+    <string name="share_invite_with">分享邀请</string>
 </resources>

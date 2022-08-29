@@ -81,9 +81,7 @@ public class MyLinkify {
         if (end < cs.length()) {
             // Reject strings that were probably matched only because they contain a dot followed by
             // by some known TLD (see also comment for WORD_BOUNDARY in Patterns.java)
-            if (isAlphabetic(cs.charAt(end-1)) && isAlphabetic(cs.charAt(end))) {
-                return false;
-            }
+            return !isAlphabetic(cs.charAt(end - 1)) || !isAlphabetic(cs.charAt(end));
         }
 
         return true;

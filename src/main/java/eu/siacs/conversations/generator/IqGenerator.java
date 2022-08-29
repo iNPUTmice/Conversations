@@ -29,12 +29,12 @@ import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.XmppConnectionService;
-import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xml.Element;
+import eu.siacs.conversations.xml.Namespace;
+import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
-import eu.siacs.conversations.xmpp.Jid;
 
 public class IqGenerator extends AbstractGenerator {
 
@@ -131,12 +131,13 @@ public class IqGenerator extends AbstractGenerator {
 
     public IqPacket publishNick(String nick) {
         final Element item = new Element("item");
+        item.setAttribute("id", "current");
         item.addChild("nick", Namespace.NICK).setContent(nick);
         return publish(Namespace.NICK, item);
     }
 
-    public IqPacket deleteNode(String node) {
-        IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
+    public IqPacket deleteNode(final String node) {
+        final IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
         final Element pubsub = packet.addChild("pubsub", Namespace.PUBSUB_OWNER);
         pubsub.addChild("delete").setAttribute("node", node);
         return packet;
@@ -155,9 +156,9 @@ public class IqGenerator extends AbstractGenerator {
     public IqPacket publishAvatar(Avatar avatar, Bundle options) {
         final Element item = new Element("item");
         item.setAttribute("id", avatar.sha1sum);
-        final Element data = item.addChild("data", "urn:xmpp:avatar:data");
+        final Element data = item.addChild("data", Namespace.AVATAR_DATA);
         data.setContent(avatar.image);
-        return publish("urn:xmpp:avatar:data", item, options);
+        return publish(Namespace.AVATAR_DATA, item, options);
     }
 
     public IqPacket publishElement(final String namespace, final Element element, String id, final Bundle options) {
@@ -171,20 +172,20 @@ public class IqGenerator extends AbstractGenerator {
         final Element item = new Element("item");
         item.setAttribute("id", avatar.sha1sum);
         final Element metadata = item
-                .addChild("metadata", "urn:xmpp:avatar:metadata");
+                .addChild("metadata", Namespace.AVATAR_METADATA);
         final Element info = metadata.addChild("info");
         info.setAttribute("bytes", avatar.size);
         info.setAttribute("id", avatar.sha1sum);
         info.setAttribute("height", avatar.height);
         info.setAttribute("width", avatar.height);
         info.setAttribute("type", avatar.type);
-        return publish("urn:xmpp:avatar:metadata", item, options);
+        return publish(Namespace.AVATAR_METADATA, item, options);
     }
 
     public IqPacket retrievePepAvatar(final Avatar avatar) {
         final Element item = new Element("item");
         item.setAttribute("id", avatar.sha1sum);
-        final IqPacket packet = retrieve("urn:xmpp:avatar:data", item);
+        final IqPacket packet = retrieve(Namespace.AVATAR_DATA, item);
         packet.setTo(avatar.owner);
         return packet;
     }
@@ -192,6 +193,13 @@ public class IqGenerator extends AbstractGenerator {
     public IqPacket retrieveVcardAvatar(final Avatar avatar) {
         final IqPacket packet = new IqPacket(IqPacket.TYPE.GET);
         packet.setTo(avatar.owner);
+        packet.addChild("vCard", "vcard-temp");
+        return packet;
+    }
+
+    public IqPacket retrieveVcardAvatar(final Jid to) {
+        final IqPacket packet = new IqPacket(IqPacket.TYPE.GET);
+        packet.setTo(to);
         packet.addChild("vCard", "vcard-temp");
         return packet;
     }
@@ -408,20 +416,6 @@ public class IqGenerator extends AbstractGenerator {
         return packet;
     }
 
-    public IqPacket requestP1S3Slot(Jid host, String md5) {
-        IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
-        packet.setTo(host);
-        packet.query(Namespace.P1_S3_FILE_TRANSFER).setAttribute("md5", md5);
-        return packet;
-    }
-
-    public IqPacket requestP1S3Url(Jid host, String fileId) {
-        IqPacket packet = new IqPacket(IqPacket.TYPE.GET);
-        packet.setTo(host);
-        packet.query(Namespace.P1_S3_FILE_TRANSFER).setAttribute("fileid", fileId);
-        return packet;
-    }
-
     private static String convertFilename(String name) {
         int pos = name.indexOf('.');
         if (pos != -1) {
@@ -430,7 +424,7 @@ public class IqGenerator extends AbstractGenerator {
                 ByteBuffer bb = ByteBuffer.wrap(new byte[16]);
                 bb.putLong(uuid.getMostSignificantBits());
                 bb.putLong(uuid.getLeastSignificantBits());
-                return Base64.encodeToString(bb.array(), Base64.URL_SAFE | Base64.NO_PADDING | Base64.NO_WRAP) + name.substring(pos, name.length());
+                return Base64.encodeToString(bb.array(), Base64.URL_SAFE | Base64.NO_PADDING | Base64.NO_WRAP) + name.substring(pos);
             } catch (Exception e) {
                 return name;
             }

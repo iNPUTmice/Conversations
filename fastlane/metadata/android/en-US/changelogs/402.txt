@@ -1,0 +1,3 @@
+* Offer Easy Invite generation on supporting servers
+* Display GIFs send from Movim
+* store avatars in cache

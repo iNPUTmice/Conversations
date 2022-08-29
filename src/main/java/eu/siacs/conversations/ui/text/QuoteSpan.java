@@ -2,13 +2,14 @@ package eu.siacs.conversations.ui.text;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.support.annotation.ColorInt;
 import android.text.Layout;
 import android.text.TextPaint;
 import android.text.style.CharacterStyle;
 import android.text.style.LeadingMarginSpan;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
+
+import androidx.annotation.ColorInt;
 
 public class QuoteSpan extends CharacterStyle implements LeadingMarginSpan {
 

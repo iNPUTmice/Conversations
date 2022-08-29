@@ -1,20 +1,22 @@
 package eu.siacs.conversations.ui;
 
+import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.databinding.DataBindingUtil;
 
 import java.util.Collections;
 import java.util.List;
@@ -44,12 +46,11 @@ import eu.siacs.conversations.ui.util.MyLinkify;
 import eu.siacs.conversations.ui.util.SoftKeyboardUtils;
 import eu.siacs.conversations.utils.AccountUtils;
 import eu.siacs.conversations.utils.Compatibility;
-import eu.siacs.conversations.utils.EmojiWrapper;
 import eu.siacs.conversations.utils.StringUtils;
 import eu.siacs.conversations.utils.StylingHelper;
 import eu.siacs.conversations.utils.XmppUri;
-import me.drakeet.support.toast.ToastCompat;
 import eu.siacs.conversations.xmpp.Jid;
+import me.drakeet.support.toast.ToastCompat;
 
 import static eu.siacs.conversations.entities.Bookmark.printableValue;
 import static eu.siacs.conversations.utils.StringUtils.changed;
@@ -65,7 +66,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 
     private boolean mAdvancedMode = false;
 
-    private UiCallback<Conversation> renameCallback = new UiCallback<Conversation>() {
+    private final UiCallback<Conversation> renameCallback = new UiCallback<Conversation>() {
         @Override
         public void success(Conversation object) {
             displayToast(getString(R.string.your_nick_has_been_changed));
@@ -86,7 +87,14 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
         }
     };
 
-    private OnClickListener mNotifyStatusClickListener = new OnClickListener() {
+    public static void open(final Activity activity, final Conversation conversation) {
+        Intent intent = new Intent(activity, ConferenceDetailsActivity.class);
+        intent.setAction(ConferenceDetailsActivity.ACTION_VIEW_MUC);
+        intent.putExtra("uuid", conversation.getUuid());
+        activity.startActivity(intent);
+    }
+
+    private final OnClickListener mNotifyStatusClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
             AlertDialog.Builder builder = new AlertDialog.Builder(ConferenceDetailsActivity.this);
@@ -118,7 +126,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
         }
     };
 
-    private OnClickListener mChangeConferenceSettings = new OnClickListener() {
+    private final OnClickListener mChangeConferenceSettings = new OnClickListener() {
         @Override
         public void onClick(View v) {
             final MucOptions mucOptions = mConversation.getMucOptions();
@@ -160,7 +168,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
         super.onCreate(savedInstanceState);
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_muc_details);
         this.binding.changeConferenceButton.setOnClickListener(this.mChangeConferenceSettings);
-        setSupportActionBar((Toolbar) binding.toolbar);
+        setSupportActionBar(binding.toolbar);
         configureActionBar(getSupportActionBar());
         this.binding.editNickButton.setOnClickListener(v -> quickEdit(mConversation.getMucOptions().getActualNick(),
                 R.string.nickname,
@@ -462,11 +470,11 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
         String subject = mucOptions.getSubject();
         final boolean hasTitle;
         if (printableValue(roomName)) {
-            this.binding.mucTitle.setText(EmojiWrapper.transform(roomName));
+            this.binding.mucTitle.setText(roomName);
             this.binding.mucTitle.setVisibility(View.VISIBLE);
             hasTitle = true;
         } else if (!printableValue(subject)) {
-            this.binding.mucTitle.setText(EmojiWrapper.transform(mConversation.getName()));
+            this.binding.mucTitle.setText(mConversation.getName());
             hasTitle = true;
             this.binding.mucTitle.setVisibility(View.VISIBLE);
         } else {
@@ -477,10 +485,11 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
             SpannableStringBuilder spannable = new SpannableStringBuilder(subject);
             StylingHelper.format(spannable, this.binding.mucSubject.getCurrentTextColor());
             MyLinkify.addLinks(spannable, false);
-            this.binding.mucSubject.setText(EmojiWrapper.transform(spannable));
+            this.binding.mucSubject.setText(spannable);
             this.binding.mucSubject.setTextAppearance(this, subject.length() > (hasTitle ? 128 : 196) ? R.style.TextAppearance_Conversations_Body1_Linkified : R.style.TextAppearance_Conversations_Subhead);
             this.binding.mucSubject.setAutoLinkMask(0);
             this.binding.mucSubject.setVisibility(View.VISIBLE);
+            this.binding.mucSubject.setMovementMethod(LinkMovementMethod.getInstance());
         } else {
             this.binding.mucSubject.setVisibility(View.GONE);
         }

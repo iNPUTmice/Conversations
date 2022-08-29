@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pick_a_server">XMPP সার্ভার নির্বাচন করুন</string>
+    <string name="use_conversations.im">conversations.im-ই ব্যবহার করা যাক</string>
+    <string name="create_new_account">নতুন অ্যকাউন্ট তৈরী করা যাক</string>
+    <string name="do_you_have_an_account">আপনার কি একটা XMPP অ্যকাউন্ট ইতিমধ্যে করা আছে? সেরকমটা হতেই পারে যদি এর আগে আপনি কোনো অন্য XMPP প্রোগ্রাম বা অ্যাপ ব্যবহার করে থাকেন। এই মুহুর্তে আরেকটা অ্যকাউন্ট তৈরী করা সম্ভব না।‌\nHint: মাঝে মাঝে ইমেল অ্যকাউন্ট খুললেও এরকম অ্যকাউন্ট নিজে থেকেই তৈরী হয়ে যায়।</string>
+    <string name="server_select_text">XMPP কোনো একটি নির্দিষ্ট সংস্থার উপরে নির্ভরশীল নয়। এই অ্যপটি আপনি যেকোনো সংস্থার XMPP সার্ভারের সাথে ব্যবহার করতে পারেন।\nমনে রাখবেন, সুধুমাত্র আপনার সুবিধার্থেই conversations.im -এ আপনার জন্যে একটি অ্যকাউন্ট তৈরী করে দেওয়া হয়েছে। Conversations অ্যপটি এই সার্ভারের সাথে সবথেকে বেশী কার্যকারী।</string>
+    <string name="magic_create_text_on_x">আপনাকে %1$s-এ আমন্ত্রিত করা হয়েছে। অ্যকাউন্ট তৈরী করার সময় আপনাকে সাহায্য করা হবে।\n%1$s ব্যবহার করলেও, অন্য সেবা-প্রদানকারী সংস্থার ব্যবহারকারীদের সাথে আপনি কথা বলতে পারবেন, আপনার সম্পূর্ণ XMPP অ্যড্রেস তাদেরকে বলে দিয়ে।</string>
+    <string name="magic_create_text_fixed">আপনাকে %1$s-এ নিমন্ত্রণ করা হয়েছে। একটি username-ও আপনার জন্যে নির্দিষ্ট করে রাখা হয়েছে। অ্যকাউন্ট তৈরী করার সময় আপনাকে সাহায্য করা হবে।\nঅন্য XMPP সেবা প্রদানকারী সংস্থার ব্যবহারকারীদের সাথে আপনিও কথা বলতে পারবেন, আপনার সম্পূর্ণ XMPP অ্যড্রেস তাদেরকে বলে দিয়ে।</string>
+    <string name="your_server_invitation">আপনার নিমন্ত্রণপত্র, সার্ভার থেকে</string>
+    <string name="improperly_formatted_provisioning">Provisioning code-এ গরমিল আছে</string>
+    <string name="tap_share_button_send_invite">Share বোতামটা টিপে %1$s-কে একটি আমন্ত্রপত্র পাঠান</string>
+    <string name="if_contact_is_nearby_use_qr">পরিচিত ব্যক্তি যদি নিকটেই থাকেন, তাহলে তারা এই কোডটাও স্ক্যান করে নিতে পারেন</string>
+    <string name="easy_invite_share_text">%1$sতে এসো, আর আমার সাথে কথা বলো: %2$s</string>
+    <string name="share_invite_with">একটি আমন্ত্রণপত্র দেওয়া যাক...</string>
+</resources>

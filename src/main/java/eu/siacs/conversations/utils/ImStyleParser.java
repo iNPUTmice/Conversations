@@ -53,7 +53,7 @@ public class ImStyleParser {
                 if (BLOCK_KEYWORDS.contains(c) && isCharRepeatedTwoTimes(text, c, i + 1, end)) {
                     int to = seekEndBlock(text, c, i + 3, end);
                     if (to != -1 && (to != i + 5 || ALLOW_EMPTY)) {
-                        String keyword = String.valueOf(c) + String.valueOf(c) + String.valueOf(c);
+                        String keyword = String.valueOf(c) + c + c;
                         styles.add(new Style(keyword, i, to));
                         i = to;
                         continue;

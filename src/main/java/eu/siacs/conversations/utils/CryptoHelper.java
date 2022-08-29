@@ -9,8 +9,7 @@ import org.bouncycastle.asn1.x500.style.BCStyle;
 import org.bouncycastle.asn1.x500.style.IETFUtils;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateHolder;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -30,7 +29,6 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Message;
-import eu.siacs.conversations.http.AesGcmURLStreamHandler;
 import eu.siacs.conversations.xmpp.Jid;
 
 public final class CryptoHelper {
@@ -38,7 +36,7 @@ public final class CryptoHelper {
     public static final Pattern UUID_PATTERN = Pattern.compile("[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}");
     final public static byte[] ONE = new byte[]{0, 0, 0, 1};
     private static final char[] CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz123456789+-/#$!?".toCharArray();
-    private static final int PW_LENGTH = 10;
+    private static final int PW_LENGTH = 12;
     private static final char[] VOWELS = "aeiou".toCharArray();
     private static final char[] CONSONANTS = "bcfghjklmnpqrstvwxyz".toCharArray();
     private final static char[] hexArray = "0123456789abcdef".toCharArray();
@@ -256,7 +254,7 @@ public final class CryptoHelper {
     public static String getFingerprint(String value) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-1");
-            return bytesToHex(md.digest(value.getBytes("UTF-8")));
+            return bytesToHex(md.digest(value.getBytes(StandardCharsets.UTF_8)));
         } catch (Exception e) {
             return "";
         }
@@ -274,28 +272,6 @@ public final class CryptoHelper {
                 return R.string.encryption_choice_unencrypted;
             default:
                 return R.string.encryption_choice_pgp;
-        }
-    }
-
-    public static URL toAesGcmUrl(URL url) {
-        if (!url.getProtocol().equalsIgnoreCase("https")) {
-            return url;
-        }
-        try {
-            return new URL(AesGcmURLStreamHandler.PROTOCOL_NAME + url.toString().substring(url.getProtocol().length()));
-        } catch (MalformedURLException e) {
-            return url;
-        }
-    }
-
-    public static URL toHttpsUrl(URL url) {
-        if (!url.getProtocol().equalsIgnoreCase(AesGcmURLStreamHandler.PROTOCOL_NAME)) {
-            return url;
-        }
-        try {
-            return new URL("https" + url.toString().substring(url.getProtocol().length()));
-        } catch (MalformedURLException e) {
-            return url;
         }
     }
 

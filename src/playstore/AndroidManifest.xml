@@ -1,24 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:tools="http://schemas.android.com/tools"
-    package="eu.siacs.conversations"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <application tools:ignore="GoogleAppIndexingWarning">
+    <application android:icon="@mipmap/new_launcher">
 
-        <meta-data android:name="firebase_analytics_collection_deactivated" android:value="true" />
-        <meta-data android:name="google_analytics_adid_collection_enabled" android:value="false" />
+        <meta-data
+            android:name="firebase_analytics_collection_deactivated"
+            android:value="true" />
+        <meta-data
+            android:name="google_analytics_adid_collection_enabled"
+            android:value="false" />
 
-        <receiver android:name=".services.MaintenanceReceiver"
-                  android:exported="true"
-                  android:permission="android.permission.CHANGE_CONFIGURATION">
+        <receiver
+            android:name=".services.MaintenanceReceiver"
+            android:exported="true"
+            android:permission="android.permission.CHANGE_CONFIGURATION">
             <intent-filter>
-                <action android:name="eu.siacs.conversations.RENEW_INSTANCE_ID"/>
+                <action android:name="eu.siacs.conversations.RENEW_INSTANCE_ID" />
             </intent-filter>
         </receiver>
 
         <service
             android:name=".services.PushMessageReceiver"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

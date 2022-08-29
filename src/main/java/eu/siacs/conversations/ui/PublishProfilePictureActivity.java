@@ -6,14 +6,18 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.StringRes;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnLongClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 
 import com.theartofdev.edmodo.cropper.CropImage;
 
@@ -40,8 +44,8 @@ public class PublishProfilePictureActivity extends XmppActivity implements XmppC
     private Account account;
     private boolean support = false;
     private boolean publishing = false;
-    private AtomicBoolean handledExternalUri = new AtomicBoolean(false);
-    private OnLongClickListener backToDefaultListener = new OnLongClickListener() {
+    private final AtomicBoolean handledExternalUri = new AtomicBoolean(false);
+    private final OnLongClickListener backToDefaultListener = new OnLongClickListener() {
 
         @Override
         public boolean onLongClick(View v) {
@@ -119,7 +123,25 @@ public class PublishProfilePictureActivity extends XmppActivity implements XmppC
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public boolean onCreateOptionsMenu(@NonNull final Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_publish_profile_picture, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        if (item.getItemId() == R.id.action_delete_avatar) {
+            if (xmppConnectionService != null && account != null) {
+                xmppConnectionService.deleteAvatar(account);
+            }
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         if (this.avatarUri != null) {
             outState.putParcelable("uri", this.avatarUri);
         }
@@ -130,6 +152,7 @@ public class PublishProfilePictureActivity extends XmppActivity implements XmppC
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {

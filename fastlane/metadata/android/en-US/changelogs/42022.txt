@@ -1,0 +1,2 @@
+* Fix issue with some videos not being compressed
+* Fix rare crash when opening notification

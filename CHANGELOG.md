@@ -1,5 +1,132 @@
 # Changelog
 
+### Version 2.10.10
+
+* Minor bug fixes
+* Restore ability to call out via JMP and other services (Playstore version)
+
+### Version 2.10.9
+
+* Ask for Bluetooth permissions when making A/V calls (You can reject this if you don’t use Bluetooth headsets)
+* Fix bug when calling Movim
+
+### Version 2.10.8
+
+* Fix wrong avatar being shown for group chats
+
+### Version 2.10.7
+
+* always ask for battery optimizations opt-out
+* set local only flag on 'x connected accounts' notifications
+* Minor bug fixes
+
+### Version 2.10.6
+
+* Minor bug fixes
+
+### Version 2.10.5
+
+* Security: Stop downloading files that exceed advertised file size
+* Security: Limit POSH files to 10K
+
+### Version 2.10.4
+
+* Fix interaction with Google Maps Share Location Plugin
+* Remove footnote with regards to server fee
+
+### Version 2.10.3
+
+* Store files in location appropriate for Android 11
+* Attempt to reconnect call after network switch
+* Show caller JID and account JID in incoming call screen
+
+### Version 2.10.2
+
+* Fix crash when rendering some quotes
+* Fix crash in welcome screen
+
+### Version 2.10.1
+
+* Fix issue with some videos not being compressed
+* Fix rare crash when opening notification
+
+### Version 2.10.0
+
+* Show black bars when remote video does not match aspect ratio of screen
+* Improve search performance
+* Add setting to prevent screenshots
+
+### Version 2.9.13
+
+* minor A/V improvements
+
+### Version 2.9.12
+
+* Always verify domain name. No user overwrite
+* Support roster pre authentication
+
+### Version 2.9.11
+
+* Fixed 'No Connectivity' issues on Android 7.1
+
+### Version 2.9.10
+* fix HTTP up/download for users that don’t trust system CAs
+
+### Version 2.9.9
+
+* Various bug fixes around Tor support
+* Improve call compatibility with Dino
+
+### Version 2.9.8
+
+* Verify A/V calls with preexisting OMEMO sessions
+* Improve compatibility with non libwebrtc WebRTC implementations
+
+### Version 2.9.7
+
+* Ability to select incoming call ringtone
+* Fix OpenPGP key id discovery for OpenKeychain 5.6+
+* Properly verify punycode TLS certificates
+* Improve stability of RTP session establishment (calling)
+
+### Version 2.9.6
+
+* Show call button for offline contacts if they previously announced support
+* Back button no longer ends call when call is connected
+* bug fixes
+
+### Version 2.9.5
+
+* Quicksy: Automatically receive verification SMS
+
+### Version 2.9.4
+* minor stability improvements for A/V calls
+* Conversations releases from here on forward require Android 5
+
+### Version 2.9.3
+
+* Fixed connectivity issues when different accounts used different SCRAM mechanisms
+* Add support for SCRAM-SHA-512
+* Allow P2P (Jingle) file transfer with self contact
+
+### Version 2.9.2
+
+* Offer Easy Invite generation on supporting servers
+* Display GIFs send from Movim
+* store avatars in cache
+
+### Version 2.9.1
+
+* fixed search on Android <= 5
+* optimize memory consumption
+
+### Version 2.9.0
+
+* Search individual conversations
+* Notify user if message delivery fails
+* Remember display names (nicks) from Quicksy users across restarts
+* Add button to start Orbot (Tor) from notification if necessary
+
 ### Version 2.8.10
 
 * Handle GPX files
@@ -412,9 +539,8 @@
 * Icons for attach menu
 
 ### Version 1.16.2
-* change mam catchup strategie. support mam:1
+* change mam catchup strategy. support mam:1
 * bug fixes
-
 
 ### Version 1.16.1
 * UI performance fixes
@@ -465,7 +591,7 @@
 * bug fixes
 
 ### Version 1.14.6
-* make error notification dismissable
+* make error notification dismissible
 * bug fixes
 
 
@@ -489,7 +615,7 @@
 * bug fixes
 
 ### Version 1.14.0
-* Improvments for N
+* Improvements for N
 * Quick Reply to Notifications on N
 * Don't download avatars and files when data saver is on
 * bug fixes
@@ -667,7 +793,7 @@
 
 ### Version 1.7.0
 * CAPTCHA support
-* SASL EXTERNAL (client certifiates)
+* SASL EXTERNAL (client certificates)
 * fetching MUC history via MAM
 * redownload deleted files from HTTP hosts
 * Expert setting to automatically set presence
@@ -775,7 +901,7 @@
 * accept more ciphers
 
 ### Version 1.0
-* MUC controls (Affiliaton changes)
+* MUC controls (Affiliation changes)
 * Added download button to notification
 * Added check box to hide offline contacts
 * Use Material theme and icons on Android L
@@ -881,7 +1007,7 @@
 * XEP-0333. Mark whether the other party has read your messages
 * Delayed messages are now tagged properly
 * Share images from the Gallery
-* Infinit history scrolling
+* Infinite history scrolling
 * Mark the last used presence in presence selection dialog
 
 ### Version 0.3

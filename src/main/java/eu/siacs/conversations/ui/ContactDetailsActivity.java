@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,9 +13,6 @@ import android.preference.PreferenceManager;
 import android.provider.ContactsContract.CommonDataKinds;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Intents;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
@@ -29,6 +25,10 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.databinding.DataBindingUtil;
 
 import org.openintents.openpgp.util.OpenPgpUtils;
 
@@ -45,6 +45,7 @@ import eu.siacs.conversations.databinding.ActivityContactDetailsBinding;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.ListItem;
+import eu.siacs.conversations.services.AbstractQuickConversationsService;
 import eu.siacs.conversations.services.XmppConnectionService.OnAccountUpdate;
 import eu.siacs.conversations.services.XmppConnectionService.OnRosterUpdate;
 import eu.siacs.conversations.ui.adapter.MediaAdapter;
@@ -58,6 +59,7 @@ import eu.siacs.conversations.utils.AccountUtils;
 import eu.siacs.conversations.utils.Compatibility;
 import eu.siacs.conversations.utils.Emoticons;
 import eu.siacs.conversations.utils.IrregularUnicodeDetector;
+import eu.siacs.conversations.utils.PhoneNumberUtilWrapper;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xml.Namespace;
@@ -73,14 +75,14 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
     private MediaAdapter mMediaAdapter;
 
     private Contact contact;
-    private DialogInterface.OnClickListener removeFromRoster = new DialogInterface.OnClickListener() {
+    private final DialogInterface.OnClickListener removeFromRoster = new DialogInterface.OnClickListener() {
 
         @Override
         public void onClick(DialogInterface dialog, int which) {
             xmppConnectionService.deleteContactOnServer(contact);
         }
     };
-    private OnCheckedChangeListener mOnSendCheckedChange = new OnCheckedChangeListener() {
+    private final OnCheckedChangeListener mOnSendCheckedChange = new OnCheckedChangeListener() {
 
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -96,7 +98,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
             }
         }
     };
-    private OnCheckedChangeListener mOnReceiveCheckedChange = new OnCheckedChangeListener() {
+    private final OnCheckedChangeListener mOnReceiveCheckedChange = new OnCheckedChangeListener() {
 
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -131,15 +133,31 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
     }
 
     private void showAddToPhoneBookDialog() {
+        final Jid jid = contact.getJid();
+        final boolean quicksyContact = AbstractQuickConversationsService.isQuicksy()
+                && Config.QUICKSY_DOMAIN.equals(jid.getDomain())
+                && jid.getLocal() != null;
+        final String value;
+        if (quicksyContact) {
+            value = PhoneNumberUtilWrapper.toFormattedPhoneNumber(this, jid);
+        } else {
+            value = jid.toEscapedString();
+        }
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.action_add_phone_book));
-        builder.setMessage(getString(R.string.add_phone_book_text, contact.getJid().toEscapedString()));
+        builder.setMessage(getString(R.string.add_phone_book_text, value));
         builder.setNegativeButton(getString(R.string.cancel), null);
         builder.setPositiveButton(getString(R.string.add), (dialog, which) -> {
             final Intent intent = new Intent(Intent.ACTION_INSERT_OR_EDIT);
             intent.setType(Contacts.CONTENT_ITEM_TYPE);
-            intent.putExtra(Intents.Insert.IM_HANDLE, contact.getJid().toEscapedString());
-            intent.putExtra(Intents.Insert.IM_PROTOCOL, CommonDataKinds.Im.PROTOCOL_JABBER);
+            if (quicksyContact) {
+                intent.putExtra(Intents.Insert.PHONE, value);
+            } else {
+                intent.putExtra(Intents.Insert.IM_HANDLE, value);
+                intent.putExtra(Intents.Insert.IM_PROTOCOL, CommonDataKinds.Im.PROTOCOL_JABBER);
+                //TODO for modern use we want PROTOCOL_CUSTOM and an extra field with a value of 'XMPP'
+                // however we don’t have such a field and thus have to use the legacy PROTOCOL_JABBER
+            }
             intent.putExtra("finishActivityOnSaveCompleted", true);
             try {
                 startActivityForResult(intent, 0);
@@ -197,7 +215,7 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
         this.messageFingerprint = getIntent().getStringExtra("fingerprint");
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_contact_details);
 
-        setSupportActionBar((Toolbar) binding.toolbar);
+        setSupportActionBar(binding.toolbar);
         configureActionBar(getSupportActionBar());
         binding.showInactiveDevices.setOnClickListener(v -> {
             showInactiveOmemo = !showInactiveOmemo;
@@ -232,7 +250,8 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length > 0)
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 if (requestCode == REQUEST_SYNC_CONTACTS && xmppConnectionServiceBound) {
@@ -371,22 +390,14 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
                 binding.detailsSendPresence.setText(R.string.send_presence_updates);
             } else {
                 binding.detailsSendPresence.setText(R.string.preemptively_grant);
-                if (contact.getOption(Contact.Options.PREEMPTIVE_GRANT)) {
-                    binding.detailsSendPresence.setChecked(true);
-                } else {
-                    binding.detailsSendPresence.setChecked(false);
-                }
+                binding.detailsSendPresence.setChecked(contact.getOption(Contact.Options.PREEMPTIVE_GRANT));
             }
             if (contact.getOption(Contact.Options.TO)) {
                 binding.detailsReceivePresence.setText(R.string.receive_presence_updates);
                 binding.detailsReceivePresence.setChecked(true);
             } else {
                 binding.detailsReceivePresence.setText(R.string.ask_for_presence_updates);
-                if (contact.getOption(Contact.Options.ASKING)) {
-                    binding.detailsReceivePresence.setChecked(true);
-                } else {
-                    binding.detailsReceivePresence.setChecked(false);
-                }
+                binding.detailsReceivePresence.setChecked(contact.getOption(Contact.Options.ASKING));
             }
             if (contact.getAccount().isOnlineAndConnected()) {
                 binding.detailsReceivePresence.setEnabled(true);
@@ -476,8 +487,8 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
         if (Config.supportOpenPgp() && contact.getPgpKeyId() != 0) {
             hasKeys = true;
             View view = inflater.inflate(R.layout.contact_key, binding.detailsContactKeys, false);
-            TextView key = (TextView) view.findViewById(R.id.key);
-            TextView keyType = (TextView) view.findViewById(R.id.key_type);
+            TextView key = view.findViewById(R.id.key);
+            TextView keyType = view.findViewById(R.id.key_type);
             keyType.setText(R.string.openpgp_key_id);
             if ("pgp".equals(messageFingerprint)) {
                 keyType.setTextAppearance(this, R.style.TextAppearance_Conversations_Caption_Highlight);

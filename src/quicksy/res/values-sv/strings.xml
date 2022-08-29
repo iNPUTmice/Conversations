@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="crash_report_title">Quicksy har kraschat</string>
-    <string name="no_camera_permission">Quicksy behöver tillgång till kameran</string>
     <string name="pref_broadcast_last_activity_summary">Berätta för alla dina kontakter när du använder Quicksy</string>
-    <string name="no_microphone_permission">Quicksy behöver tillgång till mikrofonen</string>
     <string name="not_available_in_your_country">Quicksy är inte tillgängligt i ditt land.</string>
     <string name="unknown_security_error">Okänt säkerhetsfel.</string>
     </resources>

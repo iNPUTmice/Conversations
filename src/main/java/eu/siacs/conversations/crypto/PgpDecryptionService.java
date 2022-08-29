@@ -9,12 +9,12 @@ import org.openintents.openpgp.util.OpenPgpApi;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URL;
 import java.util.ArrayDeque;
 import java.util.HashSet;
 import java.util.List;
@@ -148,9 +148,6 @@ public class PgpDecryptionService {
 						try {
 							os.flush();
 							final String body = os.toString();
-							if (body == null) {
-								throw new IOException("body was null");
-							}
 							message.setBody(body);
 							message.setEncryption(Message.ENCRYPTION_DECRYPTED);
 							final HttpConnectionManager manager = mXmppConnectionService.getHttpConnectionManager();
@@ -195,9 +192,9 @@ public class PgpDecryptionService {
 							String originalExtension = originalFilename == null ? null : MimeUtils.extractRelevantExtension(originalFilename);
 							if (originalExtension != null && MimeUtils.extractRelevantExtension(outputFile.getName()) == null) {
 								Log.d(Config.LOGTAG,"detected original filename during pgp decryption");
-								String mime = MimeUtils.guessMimeTypeFromExtension(originalExtension);
-								String path = outputFile.getName()+"."+originalExtension;
-								DownloadableFile fixedFile = mXmppConnectionService.getFileBackend().getFileForPath(path,mime);
+								final String mime = MimeUtils.guessMimeTypeFromExtension(originalExtension);
+								final String filename = outputFile.getName()+"."+originalExtension;
+								final File fixedFile = mXmppConnectionService.getFileBackend().getStorageLocation(filename,mime);
 								if (fixedFile.getParentFile().mkdirs()) {
 									Log.d(Config.LOGTAG,"created parent directories for "+fixedFile.getAbsolutePath());
 								}
@@ -206,12 +203,12 @@ public class PgpDecryptionService {
 								}
 								if (outputFile.renameTo(fixedFile)) {
 									Log.d(Config.LOGTAG, "renamed " + outputFile.getAbsolutePath() + " to " + fixedFile.getAbsolutePath());
-									message.setRelativeFilePath(path);
+									message.setRelativeFilePath(fixedFile.getAbsolutePath());
 								}
 							}
-							URL url = message.getFileParams().url;
-							mXmppConnectionService.getFileBackend().updateFileParams(message, url);
+							final String url = message.getFileParams().url;
 							message.setEncryption(Message.ENCRYPTION_DECRYPTED);
+							mXmppConnectionService.getFileBackend().updateFileParams(message, url);
 							mXmppConnectionService.updateMessage(message);
 							if (!inputFile.delete()) {
 								Log.w(Config.LOGTAG,"unable to delete pgp encrypted source file "+inputFile.getAbsolutePath());

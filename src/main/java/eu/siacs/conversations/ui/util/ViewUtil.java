@@ -37,9 +37,10 @@ public class ViewUtil {
         view(context, file, mime);
     }
 
-    public static void view(Context context, File file, String mime) {
-        Intent openIntent = new Intent(Intent.ACTION_VIEW);
-        Uri uri;
+    private static void view(Context context, File file, String mime) {
+        Log.d(Config.LOGTAG,"viewing "+file.getAbsolutePath()+" "+mime);
+        final Intent openIntent = new Intent(Intent.ACTION_VIEW);
+        final Uri uri;
         try {
             uri = FileBackend.getUriForFile(context, file);
         } catch (SecurityException e) {
@@ -49,14 +50,9 @@ public class ViewUtil {
         }
         openIntent.setDataAndType(uri, mime);
         openIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        PackageManager manager = context.getPackageManager();
-        List<ResolveInfo> info = manager.queryIntentActivities(openIntent, 0);
-        if (info.size() == 0) {
-            openIntent.setDataAndType(uri, "*/*");
-        }
         try {
             context.startActivity(openIntent);
-        } catch (ActivityNotFoundException e) {
+        } catch (final ActivityNotFoundException e) {
             Toast.makeText(context, R.string.no_application_found_to_open_file, Toast.LENGTH_SHORT).show();
         }
     }

@@ -5,8 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
+
+import com.google.common.base.Strings;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.utils.Compatibility;
@@ -19,17 +20,13 @@ public class EventReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(final Context context, final Intent originalIntent) {
         final Intent intentForService = new Intent(context, XmppConnectionService.class);
-        if (originalIntent.getAction() != null) {
-            intentForService.setAction(originalIntent.getAction());
-            final Bundle extras = originalIntent.getExtras();
-            if (extras != null) {
-                intentForService.putExtras(extras);
-            }
-        } else {
-            intentForService.setAction("other");
-        }
         final String action = originalIntent.getAction();
-        if (action.equals("ui") || hasEnabledAccounts(context)) {
+        intentForService.setAction(Strings.isNullOrEmpty(action) ? "other" : action);
+        final Bundle extras = originalIntent.getExtras();
+        if (extras != null) {
+            intentForService.putExtras(extras);
+        }
+        if ("ui".equals(action) || hasEnabledAccounts(context)) {
             Compatibility.startService(context, intentForService);
         } else {
             Log.d(Config.LOGTAG, "EventReceiver ignored action " + intentForService.getAction());

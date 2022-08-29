@@ -4,9 +4,13 @@
     <string name="use_conversations.im">Folosește conversations.im</string>
     <string name="create_new_account">Creează un cont nou</string>
     <string name="do_you_have_an_account">Aveți deja un cont XMPP? S-ar putea să fie așa dacă deja utilizați un alt client XMPP sau dacă ați folosit Conversations în trecut. Dacă nu, puteți crea un cont nou XMPP chiar acum.\nIdee: Unii furnizori de e-mail oferă de asemenea și conturi XMPP.</string>
-    <string name="server_select_text">XMPP este o rețea de mesagerie instant ce nu depinde de un anumit furnizor. Aveți posibilitatea să utilizați acest client cu orice server XMPP doriți.\nTotuși, pentru confortul dumneavoastră, am facilitat crearea unui cont pe conversations.im¹; un furnizor potrivit pentru utilizarea cu aplicația Conversations.</string>
+    <string name="server_select_text">XMPP este o rețea de mesagerie instant ce nu depinde de un anumit furnizor. Aveți posibilitatea să utilizați acest client cu orice server XMPP doriți.\nTotuși, pentru confortul dumneavoastră, am facilitat crearea unui cont pe conversations.im; un furnizor potrivit pentru utilizarea cu aplicația Conversations.</string>
     <string name="magic_create_text_on_x">Ați fost invitați la %1$s. Vă vom ghida prin procesul de creare al unui cont.\nCând alegeți %1$s ca furnizor veți putea comunica cu utilizatorii altor furnizori oferindu-le adresa dumneavoastră completă XMPP.</string>
     <string name="magic_create_text_fixed">Ați fost invitați la %1$s. Un nume de utilizator a fost deja ales pentru dumneavoastră. Vă vom ghida prin procesul de creare al unui cont.\nVeți putea comunica cu utilizatorii altor furnizori oferindu-le adresa dumneavoastră completă XMPP.</string>
     <string name="your_server_invitation">Invitația serverului dumneavoastră</string>
     <string name="improperly_formatted_provisioning">Cod de acces formatat necorespunzător</string>
+    <string name="tap_share_button_send_invite">Atingeți butonul de partajare pentru a trimite contactului o invitație la %1$s.</string>
+    <string name="if_contact_is_nearby_use_qr">Dacă e în apropiere, contactul poate scana codul de mai jos pentru a vă accepta invitația.</string>
+    <string name="easy_invite_share_text">Alătură-te %1$s și discută cu mine: %2$s</string>
+    <string name="share_invite_with">Partajează invitația cu…</string>
 </resources>

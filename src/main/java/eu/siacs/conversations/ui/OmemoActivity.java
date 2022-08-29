@@ -1,22 +1,15 @@
 package eu.siacs.conversations.ui;
 
-import android.databinding.DataBindingUtil;
-import android.net.Uri;
-import android.support.v7.app.AlertDialog;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
-
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import java.security.cert.X509Certificate;
-import java.util.Arrays;
+import androidx.appcompat.app.AlertDialog;
+import androidx.databinding.DataBindingUtil;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -211,7 +204,7 @@ public abstract class OmemoActivity extends XmppActivity {
 	}
 
 	@Override
-	public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+	public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
 		ScanActivity.onRequestPermissionResult(this, requestCode, grantResults);
 	}
 }

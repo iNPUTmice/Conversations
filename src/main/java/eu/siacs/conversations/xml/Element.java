@@ -1,13 +1,15 @@
 package eu.siacs.conversations.xml;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
 import eu.siacs.conversations.utils.XmlHelper;
 import eu.siacs.conversations.xmpp.InvalidJid;
-import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 import eu.siacs.conversations.xmpp.Jid;
+import eu.siacs.conversations.xmpp.stanzas.MessagePacket;
 
 public class Element {
 	private final String name;
@@ -165,8 +167,9 @@ public class Element {
 		return this.attributes;
 	}
 
+	@NotNull
 	public String toString() {
-		StringBuilder elementOutput = new StringBuilder();
+		final StringBuilder elementOutput = new StringBuilder();
 		if ((content == null) && (children.size() == 0)) {
 			Tag emptyTag = Tag.empty(name);
 			emptyTag.setAtttributes(this.attributes);

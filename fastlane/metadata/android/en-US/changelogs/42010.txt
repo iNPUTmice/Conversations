@@ -1,0 +1,2 @@
+* Various bug fixes around Tor support
+* Improve call compatibility with Dino

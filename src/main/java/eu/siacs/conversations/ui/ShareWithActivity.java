@@ -4,12 +4,13 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,8 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
         refreshUi();
     }
 
-    private class Share {
+    private static class Share {
+        public String type;
         ArrayList<Uri> uris = new ArrayList<>();
         public String account;
         public String contact;
@@ -44,7 +46,7 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
 
     private static final int REQUEST_START_NEW_CONVERSATION = 0x0501;
     private ConversationAdapter mAdapter;
-    private List<Conversation> mConversations = new ArrayList<>();
+    private final List<Conversation> mConversations = new ArrayList<>();
 
 
     protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
@@ -63,7 +65,8 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length > 0)
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 if (requestCode == REQUEST_STORAGE_PERMISSION) {
@@ -74,7 +77,7 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
                     }
                 }
             } else {
-                Toast.makeText(this, R.string.no_storage_permission, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.no_storage_permission, getString(R.string.app_name)), Toast.LENGTH_SHORT).show();
             }
     }
 
@@ -138,6 +141,7 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
             } else if (type != null && uri != null) {
                 this.share.uris.clear();
                 this.share.uris.add(uri);
+                this.share.type = type;
             } else {
                 this.share.text = text;
                 this.share.asQuote = asQuote;
@@ -192,6 +196,9 @@ public class ShareWithActivity extends XmppActivity implements XmppConnectionSer
             intent.setAction(Intent.ACTION_SEND_MULTIPLE);
             intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, share.uris);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            if (share.type != null) {
+                intent.putExtra(ConversationsActivity.EXTRA_TYPE, share.type);
+            }
         } else if (share.text != null) {
             intent.setAction(ConversationsActivity.ACTION_VIEW_CONVERSATION);
             intent.putExtra(Intent.EXTRA_TEXT, share.text);

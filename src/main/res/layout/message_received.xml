@@ -37,7 +37,9 @@
             android:orientation="vertical"
             android:padding="2dp">
 
-            <include layout="@layout/message_content"/>
+            <include
+                android:id="@+id/message_content"
+                layout="@layout/message_content"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -82,6 +84,8 @@
                     android:layout_gravity="center_vertical"
                     android:gravity="center_vertical"
                     android:text="@string/sending"
+                    android:accessibilityTraversalAfter="@id/message_photo"
+                    android:accessibilityTraversalBefore="@id/message_content"
                     android:textAppearance="@style/TextAppearance.Conversations.Caption"/>
             </LinearLayout>
         </LinearLayout>

@@ -23,12 +23,14 @@ public final class Namespace {
     public static final String NICK = "http://jabber.org/protocol/nick";
     public static final String FLEXIBLE_OFFLINE_MESSAGE_RETRIEVAL = "http://jabber.org/protocol/offline";
     public static final String BIND = "urn:ietf:params:xml:ns:xmpp-bind";
-    public static final String P1_S3_FILE_TRANSFER = "p1:s3filetransfer";
     public static final String BOOKMARKS_CONVERSION = "urn:xmpp:bookmarks-conversion:0";
     public static final String BOOKMARKS = "storage:bookmarks";
     public static final String SYNCHRONIZATION = "im.quicksy.synchronization:0";
+    public static final String AVATAR_DATA = "urn:xmpp:avatar:data";
+    public static final String AVATAR_METADATA =  "urn:xmpp:avatar:metadata";
     public static final String AVATAR_CONVERSION = "urn:xmpp:pep-vcard-conversion:0";
     public static final String JINGLE = "urn:xmpp:jingle:1";
+    public static final String JINGLE_ERRORS = "urn:xmpp:jingle:errors:1";
     public static final String JINGLE_MESSAGE = "urn:xmpp:jingle-message:0";
     public static final String JINGLE_ENCRYPTED_TRANSPORT = "urn:xmpp:jingle:jet:0";
     public static final String JINGLE_ENCRYPTED_TRANSPORT_OMEMO = "urn:xmpp:jingle:jet-omemo:0";
@@ -52,4 +54,6 @@ public final class Namespace {
     public static final String BOOKMARKS2_COMPAT = BOOKMARKS2 + "#compat";
     public static final String INVITE = "urn:xmpp:invite";
     public static final String PARS = "urn:xmpp:pars:0";
+    public static final String EASY_ONBOARDING_INVITE = "urn:xmpp:invite#invite";
+    public static final String OMEMO_DTLS_SRTP_VERIFICATION = "http://gultsch.de/xmpp/drafts/omemo/dlts-srtp-verification";
 }

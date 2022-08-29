@@ -30,15 +30,15 @@
 package eu.siacs.conversations.ui;
 
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.StringRes;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.annotation.StringRes;
+import androidx.databinding.DataBindingUtil;
 
 import com.theartofdev.edmodo.cropper.CropImage;
 
@@ -91,7 +91,7 @@ public class PublishGroupChatProfilePictureActivity extends XmppActivity impleme
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_publish_profile_picture);
-        setSupportActionBar((Toolbar) this.binding.toolbar);
+        setSupportActionBar(this.binding.toolbar);
         configureActionBar(getSupportActionBar());
         this.binding.cancelButton.setOnClickListener((v) -> this.finish());
         this.binding.secondaryHint.setVisibility(View.GONE);

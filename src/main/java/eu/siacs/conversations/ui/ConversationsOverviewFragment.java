@@ -30,16 +30,12 @@
 package eu.siacs.conversations.ui;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -47,13 +43,24 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.snackbar.Snackbar;
+import com.google.common.collect.Collections2;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.FragmentConversationsOverviewBinding;
+import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.ui.adapter.ConversationAdapter;
@@ -64,10 +71,12 @@ import eu.siacs.conversations.ui.util.PendingActionHelper;
 import eu.siacs.conversations.ui.util.PendingItem;
 import eu.siacs.conversations.ui.util.ScrollState;
 import eu.siacs.conversations.ui.util.StyledAttributes;
+import eu.siacs.conversations.utils.AccountUtils;
+import eu.siacs.conversations.utils.EasyOnboardingInvite;
 import eu.siacs.conversations.utils.ThemeHelper;
 
-import static android.support.v7.widget.helper.ItemTouchHelper.LEFT;
-import static android.support.v7.widget.helper.ItemTouchHelper.RIGHT;
+import static androidx.recyclerview.widget.ItemTouchHelper.LEFT;
+import static androidx.recyclerview.widget.ItemTouchHelper.RIGHT;
 
 public class ConversationsOverviewFragment extends XmppFragment {
 
@@ -80,9 +89,9 @@ public class ConversationsOverviewFragment extends XmppFragment {
 	private ConversationAdapter conversationsAdapter;
 	private XmppActivity activity;
 	private float mSwipeEscapeVelocity = 0f;
-	private PendingActionHelper pendingActionHelper = new PendingActionHelper();
+	private final PendingActionHelper pendingActionHelper = new PendingActionHelper();
 
-	private ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(0,LEFT|RIGHT) {
+	private final ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(0,LEFT|RIGHT) {
 		@Override
 		public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
 			//todo maybe we can manually changing the position of the conversation
@@ -191,7 +200,7 @@ public class ConversationsOverviewFragment extends XmppFragment {
 		}
 	};
 
-	private ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+	private ItemTouchHelper touchHelper;
 
 	public static Conversation getSuggestion(Activity activity) {
 		final Conversation exception;
@@ -241,7 +250,20 @@ public class ConversationsOverviewFragment extends XmppFragment {
 			throw new IllegalStateException("Trying to attach fragment to activity that is not an XmppActivity");
 		}
 	}
+	@Override
+	public void onDestroyView() {
+		Log.d(Config.LOGTAG,"ConversationsOverviewFragment.onDestroyView()");
+		super.onDestroyView();
+		this.binding = null;
+		this.conversationsAdapter = null;
+		this.touchHelper = null;
+	}
+	@Override
+	public void onDestroy() {
+		Log.d(Config.LOGTAG,"ConversationsOverviewFragment.onDestroy()");
+		super.onDestroy();
 
+	}
 	@Override
 	public void onPause() {
 		Log.d(Config.LOGTAG,"ConversationsOverviewFragment.onPause()");
@@ -277,6 +299,7 @@ public class ConversationsOverviewFragment extends XmppFragment {
 		});
 		this.binding.list.setAdapter(this.conversationsAdapter);
 		this.binding.list.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
+		this.touchHelper = new ItemTouchHelper(this.callback);
 		this.touchHelper.attachToRecyclerView(this.binding.list);
 		return binding.getRoot();
 	}
@@ -284,6 +307,9 @@ public class ConversationsOverviewFragment extends XmppFragment {
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
 		menuInflater.inflate(R.menu.fragment_conversations_overview, menu);
+		AccountUtils.showHideMenuItems(menu);
+		final MenuItem easyOnboardInvite = menu.findItem(R.id.action_easy_invite);
+		easyOnboardInvite.setVisible(EasyOnboardingInvite.anyHasSupport(activity == null ? null : activity.xmppConnectionService));
 	}
 
 	@Override
@@ -338,8 +364,34 @@ public class ConversationsOverviewFragment extends XmppFragment {
 			case R.id.action_search:
 				startActivity(new Intent(getActivity(), SearchActivity.class));
 				return true;
+			case R.id.action_easy_invite:
+				selectAccountToStartEasyInvite();
+				return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void selectAccountToStartEasyInvite() {
+		final List<Account> accounts = EasyOnboardingInvite.getSupportingAccounts(activity.xmppConnectionService);
+		if (accounts.size() == 0) {
+			//This can technically happen if opening the menu item races with accounts reconnecting or something
+			Toast.makeText(getActivity(),R.string.no_active_accounts_support_this, Toast.LENGTH_LONG).show();
+		} else if (accounts.size() == 1) {
+			openEasyInviteScreen(accounts.get(0));
+		} else {
+			final AtomicReference<Account> selectedAccount = new AtomicReference<>(accounts.get(0));
+			final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
+			alertDialogBuilder.setTitle(R.string.choose_account);
+			final String[] asStrings = Collections2.transform(accounts, a -> a.getJid().asBareJid().toEscapedString()).toArray(new String[0]);
+			alertDialogBuilder.setSingleChoiceItems(asStrings, 0, (dialog, which) -> selectedAccount.set(accounts.get(which)));
+			alertDialogBuilder.setNegativeButton(R.string.cancel, null);
+			alertDialogBuilder.setPositiveButton(R.string.ok, (dialog, which) -> openEasyInviteScreen(selectedAccount.get()));
+			alertDialogBuilder.create().show();
+		}
+	}
+
+	private void openEasyInviteScreen(final Account account) {
+		EasyOnboardingInviteActivity.launch(account, activity);
 	}
 
 	@Override

@@ -29,8 +29,9 @@
 
 package eu.siacs.conversations.utils;
 
-import android.support.annotation.NonNull;
 import android.util.LruCache;
+
+import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;

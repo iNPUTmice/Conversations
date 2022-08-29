@@ -5,18 +5,14 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.util.List;
+import androidx.appcompat.app.ActionBar;
 
 import eu.siacs.conversations.R;
-import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.utils.XmppUri;
 
 public class TosActivity extends XmppActivity {
 
@@ -41,6 +37,7 @@ public class TosActivity extends XmppActivity {
 
     @Override
     public void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
         if (intent != null) {
             setIntent(intent);
         }

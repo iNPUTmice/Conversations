@@ -37,7 +37,7 @@ import eu.siacs.conversations.entities.Conversation;
 public class QuickLoader {
 
 	private static String CONVERSATION_UUID = null;
-	private static Object LOCK = new Object();
+	private static final Object LOCK = new Object();
 
 	public static void set(final String uuid) {
 		synchronized (LOCK) {

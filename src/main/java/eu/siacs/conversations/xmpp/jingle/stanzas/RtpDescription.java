@@ -6,11 +6,14 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Sets;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
@@ -530,11 +533,15 @@ public class RtpDescription extends GenericDescription {
         }
     }
 
-    public static RtpDescription of(final SessionDescription.Media media) {
+    public static RtpDescription of(final SessionDescription sessionDescription, final SessionDescription.Media media) {
         final RtpDescription rtpDescription = new RtpDescription(media.media);
         final Map<String, List<Parameter>> parameterMap = new HashMap<>();
         final ArrayListMultimap<String, Element> feedbackNegotiationMap = ArrayListMultimap.create();
         final ArrayListMultimap<String, Source.Parameter> sourceParameterMap = ArrayListMultimap.create();
+        final Set<String> attributes = Sets.newHashSet(Iterables.concat(
+                sessionDescription.attributes.keySet(),
+                media.attributes.keySet()
+        ));
         for (final String rtcpFb : media.attributes.get("rtcp-fb")) {
             final String[] parts = rtcpFb.split(" ");
             if (parts.length >= 2) {
@@ -580,6 +587,9 @@ public class RtpDescription extends GenericDescription {
             if (extension != null) {
                 rtpDescription.addChild(extension);
             }
+        }
+        if (attributes.contains("extmap-allow-mixed")) {
+            rtpDescription.addChild("extmap-allow-mixed", Namespace.JINGLE_RTP_HEADER_EXTENSIONS);
         }
         for (final String ssrcGroup : media.attributes.get("ssrc-group")) {
             final String[] parts = ssrcGroup.split(" ");

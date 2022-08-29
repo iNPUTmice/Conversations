@@ -80,6 +80,11 @@ public class RawBlockable implements ListItem, Blockable {
     }
 
     @Override
+    public String getAvatarName() {
+        return getDisplayName();
+    }
+
+    @Override
     public int compareTo(ListItem o) {
         return this.getDisplayName().compareToIgnoreCase(
 				o.getDisplayName());

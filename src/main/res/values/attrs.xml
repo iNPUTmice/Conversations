@@ -62,6 +62,7 @@
     <attr name="icon_alpha" format="float" />
     <attr name="delete_icon_alpha" format="float" />
 
+    <attr name="media_preview_image" format="reference" />
     <attr name="media_preview_document" format="reference" />
     <attr name="media_preview_recording" format="reference" />
     <attr name="media_preview_audio" format="reference" />

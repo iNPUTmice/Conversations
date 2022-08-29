@@ -1,15 +1,11 @@
 package eu.siacs.conversations.ui.widget;
 
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import android.support.v13.view.inputmethod.EditorInfoCompat;
-import android.support.v13.view.inputmethod.InputConnectionCompat;
-import android.support.v13.view.inputmethod.InputContentInfoCompat;
-
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -19,13 +15,19 @@ import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 
+import androidx.appcompat.widget.AppCompatEditText;
+import androidx.core.view.inputmethod.EditorInfoCompat;
+import androidx.core.view.inputmethod.InputConnectionCompat;
+import androidx.core.view.inputmethod.InputContentInfoCompat;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.ui.util.QuoteHelper;
 
-public class EditMessage extends EmojiWrapperEditText {
+public class EditMessage extends AppCompatEditText {
 
     private static final InputFilter SPAN_FILTER = (source, start, end, dest, dstart, dend) -> source instanceof Spanned ? source.toString() : source;
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -142,7 +144,8 @@ public class EditMessage extends EmojiWrapperEditText {
     }
 
     public void insertAsQuote(String text) {
-        text = text.replaceAll("(\n *){2,}", "\n").replaceAll("(^|\n)", "$1> ").replaceAll("\n$", "");
+        text = QuoteHelper.replaceAltQuoteCharsInText(text);
+        text = text.replaceAll("(\n *){2,}", "\n").replaceAll("(^|\n)(" + QuoteHelper.QUOTE_CHAR + ")", "$1$2$2").replaceAll("(^|\n)([^" + QuoteHelper.QUOTE_CHAR + "])", "$1> $2").replaceAll("\n$", "");
         Editable editable = getEditableText();
         int position = getSelectionEnd();
         if (position == -1) position = editable.length();

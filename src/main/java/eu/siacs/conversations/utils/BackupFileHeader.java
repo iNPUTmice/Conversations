@@ -10,11 +10,11 @@ public class BackupFileHeader {
 
     private static final int VERSION = 1;
 
-    private String app;
-    private Jid jid;
-    private long timestamp;
-    private byte[] iv;
-    private byte[] salt;
+    private final String app;
+    private final Jid jid;
+    private final long timestamp;
+    private final byte[] iv;
+    private final byte[] salt;
 
 
     @Override

@@ -1,5 +1,7 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="in_call_fab_margin">8dp</dimen>
+    <dimen name="in_call_fab_margin_center">12dp</dimen>
     <dimen name="activity_horizontal_margin">8dp</dimen>
     <dimen name="activity_vertical_margin">8dp</dimen>
     <dimen name="card_padding_regular">16dp</dimen>
@@ -41,4 +43,5 @@
 
     <dimen name="local_video_preview_height">128dp</dimen>
     <dimen name="local_video_preview_width">96dp</dimen>
+    <dimen name="rtp_session_duration_top_margin">24dp</dimen>
 </resources>

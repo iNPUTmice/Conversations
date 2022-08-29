@@ -2,22 +2,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/discover_public_channels"
-        android:title="@string/discover_channels"
-        android:icon="@drawable/ic_search_white_24dp"/>
+        android:icon="@drawable/ic_search_white_24dp"
+        android:title="@string/discover_channels" />
     <item
         android:id="@+id/join_public_channel"
-        android:title="@string/join_public_channel"
-        android:icon="@drawable/ic_input_white_24dp"/>
+        android:icon="@drawable/ic_input_white_24dp"
+        android:title="@string/join_public_channel" />
     <item
         android:id="@+id/create_public_channel"
-        android:title="@string/create_public_channel"
-        android:icon="@drawable/ic_public_white_24dp"/>
+        android:icon="@drawable/ic_public_white_24dp"
+        android:title="@string/create_public_channel" />
     <item
         android:id="@+id/create_private_group_chat"
-        android:title="@string/create_private_group_chat"
-        android:icon="@drawable/ic_group_white_24dp"/>
+        android:icon="@drawable/ic_group_white_24dp"
+        android:title="@string/create_private_group_chat" />
     <item
         android:id="@+id/create_contact"
-        android:title="@string/add_contact"
-        android:icon="@drawable/ic_person_white_48dp"/>
+        android:icon="@drawable/ic_person_white_48dp"
+        android:title="@string/add_contact" />
 </menu>

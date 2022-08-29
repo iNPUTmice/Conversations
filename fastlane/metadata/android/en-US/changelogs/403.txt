@@ -1,0 +1,3 @@
+* Fixed connectivity issues when different accounts used different SCRAM mechanisms
+* Add support for SCRAM-SHA-512
+* Allow P2P (Jingle) file transfer with self contact

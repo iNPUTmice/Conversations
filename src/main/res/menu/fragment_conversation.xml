@@ -28,7 +28,7 @@
         android:id="@+id/action_security"
         android:icon="?attr/icon_not_secure"
         android:orderInCategory="20"
-        android:title="@string/action_secure"
+        android:title="@string/encrypted_with_omemo"
         app:showAsAction="always">
         <menu>
             <group android:checkableBehavior="single">
@@ -100,6 +100,12 @@
         android:title="@string/invite_contact"
         app:showAsAction="never" />
     <item
+        android:id="@+id/action_search"
+        android:orderInCategory="48"
+        android:title="@string/search_messages"
+        android:visible="@bool/show_individual_search_options"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_clear_history"
         android:orderInCategory="50"
         android:title="@string/action_clear_history"
@@ -110,20 +116,27 @@
         android:title="@string/action_end_conversation"
         app:showAsAction="never" />
     <item
-        android:id="@+id/action_mute"
         android:orderInCategory="70"
-        android:title="@string/disable_notifications"
-        app:showAsAction="never" />
+        android:title="@string/more_options">
+        <menu>
+            <item
+                android:id="@+id/action_mute"
+                android:orderInCategory="71"
+                android:title="@string/disable_notifications"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/action_unmute"
+                android:orderInCategory="72"
+                android:title="@string/enable_notifications"
+                app:showAsAction="never" />
 
-    <item
-        android:id="@+id/action_unmute"
-        android:orderInCategory="71"
-        android:title="@string/enable_notifications"
-        app:showAsAction="never" />
+            <item
+                android:id="@+id/action_toggle_pinned"
+                android:orderInCategory="73"
+                android:title="@string/add_to_favorites"
+                app:showAsAction="never" />
+        </menu>
+    </item>
 
-    <item
-        android:id="@+id/action_toggle_pinned"
-        android:orderInCategory="72"
-        android:title="@string/add_to_favorites"
-        app:showAsAction="never"/>
+
 </menu>

@@ -64,9 +64,6 @@ public final class LocationHelper {
 			return true;
 		} else if (isNewer && !isLessAccurate) {
 			return true;
-		} else if (isNewer && !isSignificantlyLessAccurate && isFromSameProvider) {
-			return true;
-		}
-		return false;
-	}
+		} else return isNewer && !isSignificantlyLessAccurate && isFromSameProvider;
+    }
 }

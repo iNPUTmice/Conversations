@@ -7,9 +7,9 @@ import eu.siacs.conversations.xmpp.Jid;
 
 public class Avatar {
 
-	public enum Origin { PEP, VCARD };
+	public enum Origin { PEP, VCARD }
 
-	public String type;
+    public String type;
 	public String sha1sum;
 	public String image;
 	public int height;

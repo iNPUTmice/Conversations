@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="set_profile_picture">Quicksy 設定檔圖片</string>
+    <string name="not_available_in_your_country">Quicksy 在您的國家無法使用。</string>
+    <string name="unable_to_verify_server_identity">無法驗證伺服器身分。</string>
+    <string name="unknown_security_error">未知安全性錯誤。</string>
+    <string name="timeout_while_connecting_to_server">連線伺服器逾時。</string>
+</resources>

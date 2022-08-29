@@ -5,11 +5,14 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.SystemClock;
 import android.security.KeyChain;
-import android.support.annotation.NonNull;
 import android.util.Base64;
 import android.util.Log;
 import android.util.Pair;
 import android.util.SparseArray;
+
+import androidx.annotation.NonNull;
+
+import com.google.common.base.Strings;
 
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -20,9 +23,7 @@ import java.net.ConnectException;
 import java.net.IDN;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.net.MalformedURLException;
 import java.net.Socket;
-import java.net.URL;
 import java.net.UnknownHostException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
@@ -47,6 +48,7 @@ import java.util.regex.Matcher;
 
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLPeerUnverifiedException;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.X509KeyManager;
@@ -54,7 +56,6 @@ import javax.net.ssl.X509TrustManager;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
-import eu.siacs.conversations.crypto.DomainHostnameVerifier;
 import eu.siacs.conversations.crypto.XmppDomainVerifier;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.sasl.Anonymous;
@@ -64,10 +65,12 @@ import eu.siacs.conversations.crypto.sasl.Plain;
 import eu.siacs.conversations.crypto.sasl.SaslMechanism;
 import eu.siacs.conversations.crypto.sasl.ScramSha1;
 import eu.siacs.conversations.crypto.sasl.ScramSha256;
+import eu.siacs.conversations.crypto.sasl.ScramSha512;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.ServiceDiscoveryResult;
 import eu.siacs.conversations.generator.IqGenerator;
+import eu.siacs.conversations.http.HttpConnectionManager;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.MemorizingTrustManager;
 import eu.siacs.conversations.services.MessageArchiveService;
@@ -86,7 +89,6 @@ import eu.siacs.conversations.xml.Tag;
 import eu.siacs.conversations.xml.TagWriter;
 import eu.siacs.conversations.xml.XmlReader;
 import eu.siacs.conversations.xmpp.forms.Data;
-import eu.siacs.conversations.xmpp.forms.Field;
 import eu.siacs.conversations.xmpp.jingle.OnJinglePacketReceived;
 import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
 import eu.siacs.conversations.xmpp.stanzas.AbstractAcknowledgeableStanza;
@@ -100,43 +102,42 @@ import eu.siacs.conversations.xmpp.stanzas.streammgmt.AckPacket;
 import eu.siacs.conversations.xmpp.stanzas.streammgmt.EnablePacket;
 import eu.siacs.conversations.xmpp.stanzas.streammgmt.RequestPacket;
 import eu.siacs.conversations.xmpp.stanzas.streammgmt.ResumePacket;
+import okhttp3.HttpUrl;
 
 public class XmppConnection implements Runnable {
 
     private static final int PACKET_IQ = 0;
     private static final int PACKET_MESSAGE = 1;
     private static final int PACKET_PRESENCE = 2;
-    public final OnIqPacketReceived registrationResponseListener = new OnIqPacketReceived() {
-        @Override
-        public void onIqPacketReceived(Account account, IqPacket packet) {
-            if (packet.getType() == IqPacket.TYPE.RESULT) {
-                account.setOption(Account.OPTION_REGISTER, false);
-                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": successfully registered new account on server");
-                throw new StateChangingError(Account.State.REGISTRATION_SUCCESSFUL);
-            } else {
-                final List<String> PASSWORD_TOO_WEAK_MSGS = Arrays.asList(
-                        "The password is too weak",
-                        "Please use a longer password.");
-                Element error = packet.findChild("error");
-                Account.State state = Account.State.REGISTRATION_FAILED;
-                if (error != null) {
-                    if (error.hasChild("conflict")) {
-                        state = Account.State.REGISTRATION_CONFLICT;
-                    } else if (error.hasChild("resource-constraint")
-                            && "wait".equals(error.getAttribute("type"))) {
-                        state = Account.State.REGISTRATION_PLEASE_WAIT;
-                    } else if (error.hasChild("not-acceptable")
-                            && PASSWORD_TOO_WEAK_MSGS.contains(error.findChildContent("text"))) {
-                        state = Account.State.REGISTRATION_PASSWORD_TOO_WEAK;
-                    }
+    public final OnIqPacketReceived registrationResponseListener = (account, packet) -> {
+        if (packet.getType() == IqPacket.TYPE.RESULT) {
+            account.setOption(Account.OPTION_REGISTER, false);
+            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": successfully registered new account on server");
+            throw new StateChangingError(Account.State.REGISTRATION_SUCCESSFUL);
+        } else {
+            final List<String> PASSWORD_TOO_WEAK_MSGS = Arrays.asList(
+                    "The password is too weak",
+                    "Please use a longer password.");
+            Element error = packet.findChild("error");
+            Account.State state = Account.State.REGISTRATION_FAILED;
+            if (error != null) {
+                if (error.hasChild("conflict")) {
+                    state = Account.State.REGISTRATION_CONFLICT;
+                } else if (error.hasChild("resource-constraint")
+                        && "wait".equals(error.getAttribute("type"))) {
+                    state = Account.State.REGISTRATION_PLEASE_WAIT;
+                } else if (error.hasChild("not-acceptable")
+                        && PASSWORD_TOO_WEAK_MSGS.contains(error.findChildContent("text"))) {
+                    state = Account.State.REGISTRATION_PASSWORD_TOO_WEAK;
                 }
-                throw new StateChangingError(state);
             }
+            throw new StateChangingError(state);
         }
     };
     protected final Account account;
     private final Features features = new Features(this);
     private final HashMap<Jid, ServiceDiscoveryResult> disco = new HashMap<>();
+    private final HashMap<String, Jid> commands = new HashMap<>();
     private final SparseArray<AbstractAcknowledgeableStanza> mStanzaQueue = new SparseArray<>();
     private final Hashtable<String, Pair<IqPacket, OnIqPacketReceived>> packetCallbacks = new Hashtable<>();
     private final Set<OnAdvancedStreamFeaturesLoaded> advancedStreamFeaturesLoadedListeners = new HashSet<>();
@@ -158,10 +159,10 @@ public class XmppConnection implements Runnable {
     private long lastSessionStarted = 0;
     private long lastDiscoStarted = 0;
     private boolean isMamPreferenceAlways = false;
-    private AtomicInteger mPendingServiceDiscoveries = new AtomicInteger(0);
-    private AtomicBoolean mWaitForDisco = new AtomicBoolean(true);
-    private AtomicBoolean mWaitingForSmCatchup = new AtomicBoolean(false);
-    private AtomicInteger mSmCatchupMessageCounter = new AtomicInteger(0);
+    private final AtomicInteger mPendingServiceDiscoveries = new AtomicInteger(0);
+    private final AtomicBoolean mWaitForDisco = new AtomicBoolean(true);
+    private final AtomicBoolean mWaitingForSmCatchup = new AtomicBoolean(false);
+    private final AtomicInteger mSmCatchupMessageCounter = new AtomicInteger(0);
     private boolean mInteractive = false;
     private int attempt = 0;
     private OnPresencePacketReceived presenceListener = null;
@@ -172,7 +173,7 @@ public class XmppConnection implements Runnable {
     private OnBindListener bindListener = null;
     private OnMessageAcknowledged acknowledgedListener = null;
     private SaslMechanism saslMechanism;
-    private URL redirectionUrl = null;
+    private HttpUrl redirectionUrl = null;
     private String verifiedHostname = null;
     private volatile Thread mThread;
     private CountDownLatch mStreamCountDownLatch;
@@ -225,6 +226,12 @@ public class XmppConnection implements Runnable {
         }
         if (statusListener != null) {
             statusListener.onStatusChanged(account);
+        }
+    }
+
+    public Jid getJidForCommand(final String node) {
+        synchronized (this.commands) {
+            return this.commands.get(node);
         }
     }
 
@@ -377,9 +384,7 @@ public class XmppConnection implements Runnable {
             this.changeStatus(Account.State.MISSING_INTERNET_PERMISSION);
         } catch (final StateChangingException e) {
             this.changeStatus(e.state);
-        } catch (final UnknownHostException | ConnectException e) {
-            this.changeStatus(Account.State.SERVER_NOT_FOUND);
-        } catch (final SocksSocketFactory.HostNotFoundException e) {
+        } catch (final UnknownHostException | ConnectException | SocksSocketFactory.HostNotFoundException e) {
             this.changeStatus(Account.State.SERVER_NOT_FOUND);
         } catch (final SocksSocketFactory.SocksProxyNotFoundException e) {
             this.changeStatus(Account.State.TOR_NOT_AVAILABLE);
@@ -425,7 +430,7 @@ public class XmppConnection implements Runnable {
         return tag != null && tag.isStart("stream");
     }
 
-    private TlsFactoryVerifier getTlsFactoryVerifier() throws NoSuchAlgorithmException, KeyManagementException, IOException {
+    private SSLSocketFactory getSSLSocketFactory() throws NoSuchAlgorithmException, KeyManagementException {
         final SSLContext sc = SSLSocketHelper.getSSLContext();
         final MemorizingTrustManager trustManager = this.mXmppConnectionService.getMemorizingTrustManager();
         final KeyManager[] keyManager;
@@ -436,9 +441,7 @@ public class XmppConnection implements Runnable {
         }
         final String domain = account.getServer();
         sc.init(keyManager, new X509TrustManager[]{mInteractive ? trustManager.getInteractive(domain) : trustManager.getNonInteractive(domain)}, mXmppConnectionService.getRNG());
-        final SSLSocketFactory factory = sc.getSocketFactory();
-        final DomainHostnameVerifier verifier = trustManager.wrapHostnameVerifier(new XmppDomainVerifier(), mInteractive);
-        return new TlsFactoryVerifier(factory, verifier);
+        return sc.getSocketFactory();
     }
 
     @Override
@@ -488,18 +491,24 @@ public class XmppConnection implements Runnable {
             } else if (nextTag.isStart("failure")) {
                 final Element failure = tagReader.readElement(nextTag);
                 if (Namespace.SASL.equals(failure.getNamespace())) {
-                    final String text = failure.findChildContent("text");
-                    if (failure.hasChild("account-disabled") && text != null) {
-                        Matcher matcher = Patterns.AUTOLINK_WEB_URL.matcher(text);
+                    if (failure.hasChild("temporary-auth-failure")) {
+                        throw new StateChangingException(Account.State.TEMPORARY_AUTH_FAILURE);
+                    } else if (failure.hasChild("account-disabled")) {
+                        final String text = failure.findChildContent("text");
+                        if ( Strings.isNullOrEmpty(text)) {
+                            throw new StateChangingException(Account.State.UNAUTHORIZED);
+                        }
+                        final Matcher matcher = Patterns.AUTOLINK_WEB_URL.matcher(text);
                         if (matcher.find()) {
+                            final HttpUrl url;
                             try {
-                                URL url = new URL(text.substring(matcher.start(), matcher.end()));
-                                if (url.getProtocol().equals("https")) {
-                                    this.redirectionUrl = url;
-                                    throw new StateChangingException(Account.State.PAYMENT_REQUIRED);
-                                }
-                            } catch (MalformedURLException e) {
+                                url = HttpUrl.get(text.substring(matcher.start(), matcher.end()));
+                            } catch (final IllegalArgumentException e) {
                                 throw new StateChangingException(Account.State.UNAUTHORIZED);
+                            }
+                            if (url.isHttps()) {
+                                this.redirectionUrl = url;
+                                throw new StateChangingException(Account.State.PAYMENT_REQUIRED);
                             }
                         }
                     }
@@ -655,10 +664,14 @@ public class XmppConnection implements Runnable {
                 if (Config.EXTENDED_SM_LOGGING) {
                     Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": server acknowledged stanza #" + mStanzaQueue.keyAt(i));
                 }
-                AbstractAcknowledgeableStanza stanza = mStanzaQueue.valueAt(i);
+                final AbstractAcknowledgeableStanza stanza = mStanzaQueue.valueAt(i);
                 if (stanza instanceof MessagePacket && acknowledgedListener != null) {
-                    MessagePacket packet = (MessagePacket) stanza;
-                    acknowledgedMessages |= acknowledgedListener.onMessageAcknowledged(account, packet.getId());
+                    final MessagePacket packet = (MessagePacket) stanza;
+                    final String id = packet.getId();
+                    final Jid to = packet.getTo();
+                    if (id != null && to != null) {
+                        acknowledgedMessages |= acknowledgedListener.onMessageAcknowledged(account, to, id);
+                    }
                 }
                 mStanzaQueue.removeAt(i);
                 i--;
@@ -764,7 +777,7 @@ public class XmppConnection implements Runnable {
         }
     }
 
-    private void processMessage(final Tag currentTag) throws XmlPullParserException, IOException {
+    private void processMessage(final Tag currentTag) throws IOException {
         final MessagePacket packet = (MessagePacket) processPacket(currentTag, PACKET_MESSAGE);
         if (!packet.valid()) {
             Log.e(Config.LOGTAG, "encountered invalid message from='" + packet.getFrom() + "' to='" + packet.getTo() + "'");
@@ -773,7 +786,7 @@ public class XmppConnection implements Runnable {
         this.messageListener.onMessagePacketReceived(account, packet);
     }
 
-    private void processPresence(final Tag currentTag) throws XmlPullParserException, IOException {
+    private void processPresence(final Tag currentTag) throws IOException {
         PresencePacket packet = (PresencePacket) processPacket(currentTag, PACKET_PRESENCE);
         if (!packet.valid()) {
             Log.e(Config.LOGTAG, "encountered invalid presence from='" + packet.getFrom() + "' to='" + packet.getTo() + "'");
@@ -808,26 +821,32 @@ public class XmppConnection implements Runnable {
     }
 
     private SSLSocket upgradeSocketToTls(final Socket socket) throws IOException {
-        final TlsFactoryVerifier tlsFactoryVerifier;
+        final SSLSocketFactory sslSocketFactory;
         try {
-            tlsFactoryVerifier = getTlsFactoryVerifier();
+            sslSocketFactory = getSSLSocketFactory();
         } catch (final NoSuchAlgorithmException | KeyManagementException e) {
             throw new StateChangingException(Account.State.TLS_ERROR);
         }
         final InetAddress address = socket.getInetAddress();
-        final SSLSocket sslSocket = (SSLSocket) tlsFactoryVerifier.factory.createSocket(socket, address.getHostAddress(), socket.getPort(), true);
+        final SSLSocket sslSocket = (SSLSocket) sslSocketFactory.createSocket(socket, address.getHostAddress(), socket.getPort(), true);
         SSLSocketHelper.setSecurity(sslSocket);
-        SSLSocketHelper.setHostname(sslSocket, account.getServer());
+        SSLSocketHelper.setHostname(sslSocket, IDN.toASCII(account.getServer()));
         SSLSocketHelper.setApplicationProtocol(sslSocket, "xmpp-client");
-        if (!tlsFactoryVerifier.verifier.verify(account.getServer(), this.verifiedHostname, sslSocket.getSession())) {
-            Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": TLS certificate verification failed");
+        final XmppDomainVerifier xmppDomainVerifier = new XmppDomainVerifier();
+        try {
+            if (!xmppDomainVerifier.verify(account.getServer(), this.verifiedHostname, sslSocket.getSession())) {
+                Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": TLS certificate domain verification failed");
+                FileBackend.close(sslSocket);
+                throw new StateChangingException(Account.State.TLS_ERROR_DOMAIN);
+            }
+        } catch (final SSLPeerUnverifiedException e) {
             FileBackend.close(sslSocket);
             throw new StateChangingException(Account.State.TLS_ERROR);
         }
         return sslSocket;
     }
 
-    private void processStreamFeatures(final Tag currentTag) throws XmlPullParserException, IOException {
+    private void processStreamFeatures(final Tag currentTag) throws IOException {
         this.streamFeatures = tagReader.readElement(currentTag);
         final boolean isSecure = features.encryptionEnabled || Config.ALLOW_NON_TLS_CONNECTIONS || account.isOnion();
         final boolean needsBinding = !isBound && !account.isOptionSet(Account.OPTION_REGISTER);
@@ -863,20 +882,21 @@ public class XmppConnection implements Runnable {
     }
 
     private void authenticate() throws IOException {
-        final List<String> mechanisms = extractMechanisms(streamFeatures
-                .findChild("mechanisms"));
+        final List<String> mechanisms = extractMechanisms(streamFeatures.findChild("mechanisms"));
         final Element auth = new Element("auth", Namespace.SASL);
-        if (mechanisms.contains("EXTERNAL") && account.getPrivateKeyAlias() != null) {
+        if (mechanisms.contains(External.MECHANISM) && account.getPrivateKeyAlias() != null) {
             saslMechanism = new External(tagWriter, account, mXmppConnectionService.getRNG());
-        } else if (mechanisms.contains("SCRAM-SHA-256")) {
+        } else if (mechanisms.contains(ScramSha512.MECHANISM)) {
+            saslMechanism = new ScramSha512(tagWriter, account, mXmppConnectionService.getRNG());
+        } else if (mechanisms.contains(ScramSha256.MECHANISM)) {
             saslMechanism = new ScramSha256(tagWriter, account, mXmppConnectionService.getRNG());
-        } else if (mechanisms.contains("SCRAM-SHA-1")) {
+        } else if (mechanisms.contains(ScramSha1.MECHANISM)) {
             saslMechanism = new ScramSha1(tagWriter, account, mXmppConnectionService.getRNG());
-        } else if (mechanisms.contains("PLAIN") && !account.getJid().getDomain().toEscapedString().equals("nimbuzz.com")) {
+        } else if (mechanisms.contains(Plain.MECHANISM) && !account.getJid().getDomain().toEscapedString().equals("nimbuzz.com")) {
             saslMechanism = new Plain(tagWriter, account);
-        } else if (mechanisms.contains("DIGEST-MD5")) {
+        } else if (mechanisms.contains(DigestMd5.MECHANISM)) {
             saslMechanism = new DigestMd5(tagWriter, account, mXmppConnectionService.getRNG());
-        } else if (mechanisms.contains("ANONYMOUS")) {
+        } else if (mechanisms.contains(Anonymous.MECHANISM)) {
             saslMechanism = new Anonymous(tagWriter, account, mXmppConnectionService.getRNG());
         }
         if (saslMechanism != null) {
@@ -919,7 +939,7 @@ public class XmppConnection implements Runnable {
                 if (response.getType() == IqPacket.TYPE.RESULT) {
                     sendRegistryRequest();
                 } else {
-                    final Element error = response.getError();
+                    final String error = response.getErrorCondition();
                     Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": failed to pre auth. " + error);
                     throw new StateChangingError(Account.State.REGISTRATION_INVALID_TOKEN);
                 }
@@ -963,11 +983,19 @@ public class XmppConnection implements Runnable {
                         is = null;
                     }
                 } else {
+                    final boolean useTor = mXmppConnectionService.useTorToConnect() || account.isOnion();
                     try {
-                        Field field = data.getFieldByName("url");
-                        URL url = field != null && field.getValue() != null ? new URL(field.getValue()) : null;
-                        is = url != null ? url.openStream() : null;
-                    } catch (IOException e) {
+                        final String url = data.getValue("url");
+                        final String fallbackUrl = data.getValue("captcha-fallback-url");
+                        if (url != null) {
+                            is = HttpConnectionManager.open(url, useTor);
+                        } else if (fallbackUrl != null) {
+                            is = HttpConnectionManager.open(fallbackUrl, useTor);
+                        } else {
+                            is = null;
+                        }
+                    } catch (final IOException e) {
+                        Log.d(Config.LOGTAG,account.getJid().asBareJid()+": unable to fetch captcha", e);
                         is = null;
                     }
                 }
@@ -990,7 +1018,7 @@ public class XmppConnection implements Runnable {
                 if (url != null) {
                     setAccountCreationFailed(url);
                 } else if (instructions != null) {
-                    Matcher matcher = Patterns.AUTOLINK_WEB_URL.matcher(instructions);
+                    final Matcher matcher = Patterns.AUTOLINK_WEB_URL.matcher(instructions);
                     if (matcher.find()) {
                         setAccountCreationFailed(instructions.substring(matcher.start(), matcher.end()));
                     }
@@ -1000,21 +1028,16 @@ public class XmppConnection implements Runnable {
         }, true);
     }
 
-    private void setAccountCreationFailed(String url) {
-        if (url != null) {
-            try {
-                this.redirectionUrl = new URL(url);
-                if (this.redirectionUrl.getProtocol().equals("https")) {
-                    throw new StateChangingError(Account.State.REGISTRATION_WEB);
-                }
-            } catch (MalformedURLException e) {
-                //fall through
-            }
+    private void setAccountCreationFailed(final String url) {
+        final HttpUrl httpUrl = url == null ? null : HttpUrl.parse(url);
+        if (httpUrl != null && httpUrl.isHttps()) {
+            this.redirectionUrl = httpUrl;
+            throw new StateChangingError(Account.State.REGISTRATION_WEB);
         }
         throw new StateChangingError(Account.State.REGISTRATION_FAILED);
     }
 
-    public URL getRedirectionUrl() {
+    public HttpUrl getRedirectionUrl() {
         return this.redirectionUrl;
     }
 
@@ -1027,6 +1050,9 @@ public class XmppConnection implements Runnable {
         this.redirectionUrl = null;
         synchronized (this.disco) {
             disco.clear();
+        }
+        synchronized (this.commands) {
+            this.commands.clear();
         }
     }
 
@@ -1250,6 +1276,35 @@ public class XmppConnection implements Runnable {
         });
     }
 
+    private void discoverCommands() {
+        final IqPacket request = new IqPacket(IqPacket.TYPE.GET);
+        request.setTo(account.getDomain());
+        request.addChild("query", Namespace.DISCO_ITEMS).setAttribute("node", Namespace.COMMANDS);
+        sendIqPacket(request, (account, response) -> {
+            if (response.getType() == IqPacket.TYPE.RESULT) {
+                final Element query = response.findChild("query", Namespace.DISCO_ITEMS);
+                if (query == null) {
+                    return;
+                }
+                final HashMap<String, Jid> commands = new HashMap<>();
+                for (final Element child : query.getChildren()) {
+                    if ("item".equals(child.getName())) {
+                        final String node = child.getAttribute("node");
+                        final Jid jid = child.getAttributeAsJid("jid");
+                        if (node != null && jid != null) {
+                            commands.put(node, jid);
+                        }
+                    }
+                }
+                Log.d(Config.LOGTAG, commands.toString());
+                synchronized (this.commands) {
+                    this.commands.clear();
+                    this.commands.putAll(commands);
+                }
+            }
+        });
+    }
+
     public boolean isMamPreferenceAlways() {
         return isMamPreferenceAlways;
     }
@@ -1273,6 +1328,9 @@ public class XmppConnection implements Runnable {
         if (getFeatures().carbons() && !features.carbonsEnabled) {
             sendEnableCarbons();
         }
+        if (getFeatures().commands()) {
+            discoverCommands();
+        }
     }
 
     private void sendServiceDiscoveryItems(final Jid server) {
@@ -1282,7 +1340,7 @@ public class XmppConnection implements Runnable {
         iq.query("http://jabber.org/protocol/disco#items");
         this.sendIqPacket(iq, (account, packet) -> {
             if (packet.getType() == IqPacket.TYPE.RESULT) {
-                HashSet<Jid> items = new HashSet<Jid>();
+                final HashSet<Jid> items = new HashSet<>();
                 final List<Element> elements = packet.query().getChildren();
                 for (final Element element : elements) {
                     if (element.getName().equals("item")) {
@@ -1310,23 +1368,19 @@ public class XmppConnection implements Runnable {
     private void sendEnableCarbons() {
         final IqPacket iq = new IqPacket(IqPacket.TYPE.SET);
         iq.addChild("enable", "urn:xmpp:carbons:2");
-        this.sendIqPacket(iq, new OnIqPacketReceived() {
-
-            @Override
-            public void onIqPacketReceived(final Account account, final IqPacket packet) {
-                if (!packet.hasChild("error")) {
-                    Log.d(Config.LOGTAG, account.getJid().asBareJid()
-                            + ": successfully enabled carbons");
-                    features.carbonsEnabled = true;
-                } else {
-                    Log.d(Config.LOGTAG, account.getJid().asBareJid()
-                            + ": error enableing carbons " + packet.toString());
-                }
+        this.sendIqPacket(iq, (account, packet) -> {
+            if (!packet.hasChild("error")) {
+                Log.d(Config.LOGTAG, account.getJid().asBareJid()
+                        + ": successfully enabled carbons");
+                features.carbonsEnabled = true;
+            } else {
+                Log.d(Config.LOGTAG, account.getJid().asBareJid()
+                        + ": error enableing carbons " + packet.toString());
             }
         });
     }
 
-    private void processStreamError(final Tag currentTag) throws XmlPullParserException, IOException {
+    private void processStreamError(final Tag currentTag) throws IOException {
         final Element streamError = tagReader.readElement(currentTag);
         if (streamError == null) {
             return;
@@ -1579,8 +1633,8 @@ public class XmppConnection implements Runnable {
     }
 
     public List<String> getMucServersWithholdAccount() {
-        List<String> servers = getMucServers();
-        servers.remove(account.getDomain());
+        final List<String> servers = getMucServers();
+        servers.remove(account.getDomain().toEscapedString());
         return servers;
     }
 
@@ -1695,19 +1749,6 @@ public class XmppConnection implements Runnable {
         UNKNOWN
     }
 
-    private static class TlsFactoryVerifier {
-        private final SSLSocketFactory factory;
-        private final DomainHostnameVerifier verifier;
-
-        TlsFactoryVerifier(final SSLSocketFactory factory, final DomainHostnameVerifier verifier) throws IOException {
-            this.factory = factory;
-            this.verifier = verifier;
-            if (factory == null || verifier == null) {
-                throw new IOException("could not setup ssl");
-            }
-        }
-    }
-
     private class MyKeyManager implements X509KeyManager {
         @Override
         public String chooseClientAlias(String[] strings, Principal[] principals, Socket socket) {
@@ -1751,7 +1792,7 @@ public class XmppConnection implements Runnable {
         }
     }
 
-    private class StateChangingError extends Error {
+    private static class StateChangingError extends Error {
         private final Account.State state;
 
         public StateChangingError(Account.State state) {
@@ -1759,7 +1800,7 @@ public class XmppConnection implements Runnable {
         }
     }
 
-    private class StateChangingException extends IOException {
+    private static class StateChangingException extends IOException {
         private final Account.State state;
 
         public StateChangingException(Account.State state) {
@@ -1786,6 +1827,16 @@ public class XmppConnection implements Runnable {
 
         public boolean carbons() {
             return hasDiscoFeature(account.getDomain(), "urn:xmpp:carbons:2");
+        }
+
+        public boolean commands() {
+            return hasDiscoFeature(account.getDomain(), Namespace.COMMANDS);
+        }
+
+        public boolean easyOnboardingInvites() {
+            synchronized (commands) {
+                return commands.containsKey(Namespace.EASY_ONBOARDING_INVITE);
+            }
         }
 
         public boolean bookmarksConversion() {
@@ -1867,10 +1918,6 @@ public class XmppConnection implements Runnable {
 
         public void setBlockListRequested(boolean value) {
             this.blockListRequested = value;
-        }
-
-        public boolean p1S3FileTransfer() {
-            return hasDiscoFeature(account.getDomain(), Namespace.P1_S3_FILE_TRANSFER);
         }
 
         public boolean httpUpload(long filesize) {

@@ -22,7 +22,7 @@
                 android:divider="@android:color/transparent"
                 android:dividerHeight="0dp"/>
 
-            <android.support.design.widget.FloatingActionButton
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab"
                 android:visibility="gone"
                 app:backgroundTint="?colorPrimary"

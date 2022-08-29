@@ -14,10 +14,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-import android.support.annotation.BoolRes;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.MenuItem;
+
+import androidx.annotation.BoolRes;
+import androidx.annotation.NonNull;
 
 import org.osmdroid.api.IGeoPoint;
 import org.osmdroid.api.IMapController;
@@ -30,8 +31,6 @@ import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.CopyrightOverlay;
 import org.osmdroid.views.overlay.Overlay;
 
-import java.io.IOException;
-
 import eu.siacs.conversations.BuildConfig;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -40,6 +39,7 @@ import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.ui.util.LocationHelper;
 import eu.siacs.conversations.ui.widget.Marker;
 import eu.siacs.conversations.ui.widget.MyLocation;
+import eu.siacs.conversations.ui.util.SettingsUtils;
 import eu.siacs.conversations.utils.ThemeHelper;
 
 public abstract class LocationActivity extends ActionBarActivity implements LocationListener {
@@ -69,6 +69,7 @@ public abstract class LocationActivity extends ActionBarActivity implements Loca
 		}
 	}
 
+
 	protected void updateLocationMarkers() {
 		clearMarkers();
 	}
@@ -97,11 +98,7 @@ public abstract class LocationActivity extends ActionBarActivity implements Loca
 		config.load(ctx, getPreferences());
 		config.setUserAgentValue(BuildConfig.APPLICATION_ID + "/" + BuildConfig.VERSION_CODE);
 		if (QuickConversationsService.isConversations() && getBooleanPreference("use_tor", R.bool.use_tor)) {
-			try {
-				config.setHttpProxy(HttpConnectionManager.getProxy());
-			} catch (IOException e) {
-				throw new RuntimeException("Unable to configure proxy");
-			}
+			config.setHttpProxy(HttpConnectionManager.getProxy());
 		}
 	}
 
@@ -227,6 +224,7 @@ public abstract class LocationActivity extends ActionBarActivity implements Loca
 	@Override
 	protected void onResume() {
 		super.onResume();
+		SettingsUtils.applyScreenshotPreventionSetting(this);
 		Configuration.getInstance().load(this, getPreferences());
 		map.onResume();
 		this.setMyLoc(null);

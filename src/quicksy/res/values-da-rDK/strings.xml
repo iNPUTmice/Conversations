@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pref_notification_grace_period_summary">Hvor lang tid Quicksy er stille efter at have set aktivitet på en anden enhed</string>
+    <string name="pref_never_send_crash_summary">Ved at indsende \"stack traces\" hjælper du udviklingen af Quicksy</string>
+    <string name="pref_broadcast_last_activity_summary">Lad alle dine kontakter vide når du bruger Quicksy </string>
+    <string name="huawei_protected_apps_summary">For at modtage notifikationer, selv når skærmen er slukket, skal du tilføje Quicksy til listen over beskyttede apps.</string>
+    <string name="set_profile_picture">Quicksy profilbillede</string>
+    <string name="not_available_in_your_country">Quicksy er ikke tilgængelig i dit land.</string>
+    <string name="unable_to_verify_server_identity">Kan ikke bekræfte server identitet.</string>
+    <string name="unknown_security_error">Ukendt sikkerhedsfejl.</string>
+    <string name="timeout_while_connecting_to_server">Timeout under tilslutning til serveren.</string>
+</resources>

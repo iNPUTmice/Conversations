@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 
 public class PinEntryWrapper {
 
-    private static Pattern PIN_STRING_PATTERN = Pattern.compile("^[0-9]{6}$");
+    private static final Pattern PIN_STRING_PATTERN = Pattern.compile("^[0-9]{6}$");
 
     private final List<EditText> digits = new ArrayList<>();
 
@@ -151,5 +151,9 @@ public class PinEntryWrapper {
         for (int i = digits.size() - 1; i >= 0; --i) {
             digits.get(i).getText().clear();
         }
+    }
+
+    public void requestFocus() {
+        digits.get(0).requestFocus();
     }
 }

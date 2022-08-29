@@ -1,10 +1,11 @@
 package eu.siacs.conversations.ui;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import java.util.Collections;
 
@@ -14,8 +15,8 @@ import eu.siacs.conversations.entities.Blockable;
 import eu.siacs.conversations.entities.ListItem;
 import eu.siacs.conversations.entities.RawBlockable;
 import eu.siacs.conversations.ui.interfaces.OnBackendConnected;
-import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 import eu.siacs.conversations.xmpp.Jid;
+import eu.siacs.conversations.xmpp.OnUpdateBlocklist;
 
 public class BlocklistActivity extends AbstractSearchableListItemActivity implements OnUpdateBlocklist {
 

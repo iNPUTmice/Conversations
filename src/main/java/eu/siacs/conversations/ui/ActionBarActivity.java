@@ -1,8 +1,11 @@
 package eu.siacs.conversations.ui;
 
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 
 public abstract class ActionBarActivity extends AppCompatActivity {
@@ -15,6 +18,10 @@ public abstract class ActionBarActivity extends AppCompatActivity {
             actionBar.setHomeButtonEnabled(upNavigation);
             actionBar.setDisplayHomeAsUpEnabled(upNavigation);
         }
+    }
+
+    public void setSupportActionBar(View toolbar) {
+        super.setSupportActionBar((Toolbar) toolbar);
     }
 
     @Override

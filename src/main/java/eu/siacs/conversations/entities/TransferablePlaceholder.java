@@ -2,7 +2,7 @@ package eu.siacs.conversations.entities;
 
 public class TransferablePlaceholder implements Transferable {
 
-	private int status;
+	private final int status;
 
 	public TransferablePlaceholder(int status) {
 		this.status = status;
@@ -18,8 +18,8 @@ public class TransferablePlaceholder implements Transferable {
 	}
 
 	@Override
-	public long getFileSize() {
-		return 0;
+	public Long getFileSize() {
+		return null;
 	}
 
 	@Override

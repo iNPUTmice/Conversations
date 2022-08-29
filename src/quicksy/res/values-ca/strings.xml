@@ -1,20 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="crash_report_title">Quicksy s\'ha detingut</string>
-    <string name="crash_report_message">En enviar els traços de les piles, vostè està ajudant al desenvolupament continu de Quicksy\n <b>Advertiment:</b> Això usarà el seu compte XMPP per enviar la traça de la pila al desenvolupador.</string>
-    <string name="openkeychain_required_long">Quicksy utilitza una aplicació de tercers cridada <b>OpenKeychain</b> per xifrar i desxifrar missatges i per administrar les seves claus públiques.\n\nOpenKeychain està llicenciat sota GPLv3 i disponible en F-Droid i Google Play.\n\n<small>(Si us plau reiniciï Quicksy després.)</small></string>
-    <string name="contact_has_no_pgp_key">Quicksy no pot xifrar els seus missatges perquè el seu contacte no està anunciant la clau pública d\'ell o d\'ella.\n\n<small>Si us plau, demani al seu contacte que configuri OpenPGP.</small></string>
-    <string name="contacts_have_no_pgp_keys">Quicksy no pot encriptar els seus missatges perquè els seus contactes no estan anunciant la seva clau pública.\n\n<small>Si us plau, demani als seus contactes que configurin OpenPGP.</small></string>
     <string name="pref_notification_grace_period_summary">El temps que Quicksy roman en silenci després de veure activitat en un altre dispositiu.</string>
     <string name="pref_never_send_crash_summary">En enviar les traces de les piles, vostè està ajudant al desenvolupament continu de Quicksy</string>
-    <string name="no_storage_permission">Quicksy necessita accés a emmagatzematge extern</string>
-    <string name="no_camera_permission">Quicksy necessita accés a la càmera</string>
     <string name="pref_broadcast_last_activity_summary">Avisi a tots els seus contactes quan utilitzi Quicksy</string>
-    <string name="data_saver_enabled_explained">El seu sistema operatiu està restringint l\'accés a Internet a Quicksy quan està en segon pla. Per rebre notificacions de nous missatges, ha de permetre l\'accés sense restriccions de Quicksy quan el protector de dades està activat.\nQuicksy farà un esforç per guardar les dades quan sigui possible.</string>
-    <string name="device_does_not_support_data_saver">El seu dispositiu no és compatible amb la desactivació del protector de dades per Quicksy.</string>
     <string name="huawei_protected_apps_summary">Per seguir rebent notificacions, fins i tot quan la pantalla està desactivada, és necessari afegir Quicksy a la llista d\'aplicacions protegides.</string>
-    <string name="error_trustkey_general">Quicksy no pot enviar missatges xifrats a %1$s. Això pugues haver-se d\'al fet que el seu contacte utilitza un servidor o client antiquat que no pot manejar OMEMO.</string>
-    <string name="no_microphone_permission">Quicksy necessita accés al micròfon</string>
-    <string name="foreground_service_channel_description">Aquest tipus de notificació s\'utilitza per mostrar una notificació permanent que indica que Quicksy s\'està executant.</string>
     <string name="set_profile_picture">Imatge de perfil en Quicksy</string>
-    </resources>
+    <string name="not_available_in_your_country">Quicksy no està disponible al teu país.</string>
+    <string name="unable_to_verify_server_identity">No es pot verificar la identitat del servidor.</string>
+    <string name="unknown_security_error">Error de seguretat desconegut.</string>
+    <string name="timeout_while_connecting_to_server">Temps d\'espera mentre es connecta al servidor.</string>
+</resources>

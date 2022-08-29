@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pref_notification_grace_period_summary">Khoảng thời gian Quicksy giữ yên lặng sau khi xem hoạt động trên một thiết bị khác</string>
+    <string name="pref_never_send_crash_summary">Bằng việc gửi báo cáo hoạt động, bạn đang hỗ trợ sự phát triển liên tục của Quicksy</string>
+    <string name="pref_broadcast_last_activity_summary">Để cho tất cả liên hệ của bạn biết khi bạn sử dụng Quicksy</string>
+    <string name="huawei_protected_apps_summary">Để tiếp tục nhận các thông báo, kể cả khi màn hình đã tắt, bạn cần thêm Quicksy vào danh sách các ứng dụng được bảo vệ.</string>
+    <string name="set_profile_picture">Ảnh hồ sơ Quicksy</string>
+    <string name="not_available_in_your_country">Quicksy không có sẵn ở quốc gia của bạn.</string>
+    <string name="unable_to_verify_server_identity">Không thể xác minh danh tính máy chủ.</string>
+    <string name="unknown_security_error">Lỗi bảo mật không xác định.</string>
+    <string name="timeout_while_connecting_to_server">Hết thời gian chờ khi kết nối đến máy chủ.</string>
+</resources>

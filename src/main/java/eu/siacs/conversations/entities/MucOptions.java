@@ -1,8 +1,9 @@
 package eu.siacs.conversations.entities;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,11 +18,11 @@ import eu.siacs.conversations.services.AvatarService;
 import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.utils.JidHelper;
 import eu.siacs.conversations.utils.UIHelper;
+import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.forms.Field;
 import eu.siacs.conversations.xmpp.pep.Avatar;
-import eu.siacs.conversations.xmpp.Jid;
 
 public class MucOptions {
 
@@ -33,11 +34,12 @@ public class MucOptions {
     public static final String STATUS_CODE_AFFILIATION_CHANGE = "321";
     public static final String STATUS_CODE_LOST_MEMBERSHIP = "322";
     public static final String STATUS_CODE_SHUTDOWN = "332";
+    public static final String STATUS_CODE_TECHNICAL_REASONS = "333";
     private final Set<User> users = new HashSet<>();
     private final Conversation conversation;
     public OnRenameListener onRenameListener = null;
     private boolean mAutoPushConfiguration = true;
-    private Account account;
+    private final Account account;
     private ServiceDiscoveryResult serviceDiscoveryResult;
     private boolean isOnline = false;
     private Error error = Error.NONE;
@@ -209,6 +211,10 @@ public class MucOptions {
 
     public boolean moderated() {
         return conversation.getBooleanAttribute(Conversation.ATTRIBUTE_MODERATED, false);
+    }
+
+    public boolean stableId() {
+        return getFeatures().contains("http://jabber.org/protocol/muc#stable_id");
     }
 
     public User deleteUser(Jid jid) {
@@ -629,8 +635,8 @@ public class MucOptions {
         OUTCAST(0, R.string.outcast),
         NONE(1, R.string.no_affiliation);
 
-        private int resId;
-        private int rank;
+        private final int resId;
+        private final int rank;
 
         Affiliation(int rank, int resId) {
             this.resId = resId;
@@ -672,8 +678,8 @@ public class MucOptions {
         PARTICIPANT(R.string.participant, 2),
         NONE(R.string.no_role, 0);
 
-        private int resId;
-        private int rank;
+        private final int resId;
+        private final int rank;
 
         Role(int resId, int rank) {
             this.resId = resId;
@@ -719,6 +725,7 @@ public class MucOptions {
         SHUTDOWN,
         DESTROYED,
         INVALID_NICK,
+        TECHNICAL_PROBLEMS,
         UNKNOWN,
         NON_ANONYMOUS
     }
@@ -740,7 +747,7 @@ public class MucOptions {
         private Jid fullJid;
         private long pgpKeyId = 0;
         private Avatar avatar;
-        private MucOptions options;
+        private final MucOptions options;
         private ChatState chatState = Config.DEFAULT_CHAT_STATE;
 
         public User(MucOptions options, Jid fullJid) {
@@ -851,7 +858,7 @@ public class MucOptions {
 
         @Override
         public String toString() {
-            return "[fulljid:" + String.valueOf(fullJid) + ",realjid:" + String.valueOf(realJid) + ",affiliation" + affiliation.toString() + "]";
+            return "[fulljid:" + fullJid + ",realjid:" + realJid + ",affiliation" + affiliation.toString() + "]";
         }
 
         public boolean realJidMatchesAccount() {
@@ -899,6 +906,11 @@ public class MucOptions {
         public int getAvatarBackgroundColor() {
             final String seed = realJid != null ? realJid.asBareJid().toString() : null;
             return UIHelper.getColorForName(seed == null ? getName() : seed);
+        }
+
+        @Override
+        public String getAvatarName() {
+            return getConversation().getName().toString();
         }
     }
 }

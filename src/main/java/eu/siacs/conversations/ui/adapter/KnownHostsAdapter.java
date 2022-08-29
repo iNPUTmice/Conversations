@@ -1,9 +1,10 @@
 package eu.siacs.conversations.ui.adapter;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
+
+import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,10 +16,10 @@ import eu.siacs.conversations.Config;
 
 public class KnownHostsAdapter extends ArrayAdapter<String> {
 
-    private static Pattern E164_PATTERN = Pattern.compile("^\\+[1-9]\\d{1,14}$");
+    private static final Pattern E164_PATTERN = Pattern.compile("^\\+[1-9]\\d{1,14}$");
 
     private ArrayList<String> domains;
-    private Filter domainFilter = new Filter() {
+    private final Filter domainFilter = new Filter() {
 
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {

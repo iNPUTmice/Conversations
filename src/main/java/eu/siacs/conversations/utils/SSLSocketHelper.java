@@ -1,12 +1,14 @@
 package eu.siacs.conversations.utils;
 
 import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
 
 import org.conscrypt.Conscrypt;
 
 import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Collection;
@@ -29,7 +31,7 @@ public class SSLSocketHelper {
         final Collection<String> supportedProtocols = new LinkedList<>(
                 Arrays.asList(sslSocket.getSupportedProtocols()));
         supportedProtocols.remove("SSLv3");
-        supportProtocols = supportedProtocols.toArray(new String[supportedProtocols.size()]);
+        supportProtocols = supportedProtocols.toArray(new String[0]);
 
         sslSocket.setEnabledProtocols(supportProtocols);
 
@@ -70,7 +72,7 @@ public class SSLSocketHelper {
             final Method method = socket.getClass().getMethod("setAlpnProtocols", byte[].class);
             // the concatenation of 8-bit, length prefixed protocol names, just one in our case...
             // http://tools.ietf.org/html/draft-agl-tls-nextprotoneg-04#page-4
-            final byte[] protocolUTF8Bytes = protocol.getBytes("UTF-8");
+            final byte[] protocolUTF8Bytes = protocol.getBytes(StandardCharsets.UTF_8);
             final byte[] lengthPrefixedProtocols = new byte[protocolUTF8Bytes.length + 1];
             lengthPrefixedProtocols[0] = (byte) protocol.length(); // cannot be over 255 anyhow
             System.arraycopy(protocolUTF8Bytes, 0, lengthPrefixedProtocols, 1, protocolUTF8Bytes.length);

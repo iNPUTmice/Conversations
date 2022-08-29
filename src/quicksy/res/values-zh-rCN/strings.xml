@@ -1,23 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="crash_report_title">Quicksy已崩溃</string>
-    <string name="crash_report_message">通过发送堆栈跟踪，您可以帮助Quicksy持续发展\n<b>警告：</b>这将使用您的XMPP帐户将堆栈跟踪发送给开发人员。</string>
-    <string name="openkeychain_required_long">Quicksy使用了第三方app<b>OpenKeychain</b>来加密、解密信息并管理您的密钥。\n\nOpenKeychain 遵循 GPLv3 并且可以在 F-Droid 和 Google Play 上获取。\n\n<small>（之后请重启Quicksy）</small></string>
-    <string name="contact_has_no_pgp_key">Quicksy无法加密信息，因为联系人未提供他/她的公钥。\n\n<small>请通知联系人设置OpenPGP。</small></string>
-    <string name="contacts_have_no_pgp_keys">因您的联系人未公布其公钥，Quicksy无法加密您的信息。\n\n<small>请让您的联系人设置OpenPGP。</small></string>
     <string name="pref_notification_grace_period_summary">发现在其它设备上的活动后，Conversations保持安静的时间</string>
     <string name="pref_never_send_crash_summary">通过发送堆栈跟踪，您可以帮助Quicksy持续发展</string>
-    <string name="no_storage_permission">Quicksy需要外部存储权限</string>
-    <string name="no_camera_permission">Quicksy需要摄像头权限</string>
-    <string name="battery_optimizations_enabled_explained">你的设备正在为Quicksy进行电池优化，这可能导致通知的延迟甚至消息的丢失。\n建议禁用电池优化。</string>
-    <string name="battery_optimizations_enabled_dialog">你的设备正在为Quicksy进行电池优化，这可能导致通知的延迟甚至消息的丢失。\n建议禁用电池优化。</string>
     <string name="pref_broadcast_last_activity_summary">让你的所有联系人知道你使用Quicksy的时间</string>
-    <string name="data_saver_enabled_explained">您的操作系统限制Quicksy在后台访问网络。 要接收新消息的通知，您应该在启用节省流量模式时允许Quicksy不受限制的访问网络。\nQuicksy仍会尽可能地节省流量。</string>
-    <string name="device_does_not_support_data_saver">该设备不支持禁用省流量模式</string>
     <string name="huawei_protected_apps_summary">为了在屏幕关闭时也能收到消息提醒，您需要将Quicksy加入受保护的应用列表。</string>
-    <string name="error_trustkey_general">Quicksy无法向%1$s发送加密信息。这可能是由于您的联系人使用了无法处理OMEMO的过时的服务器或客户端。</string>
-    <string name="no_microphone_permission">Quicksy需要麦克风权限</string>
-    <string name="foreground_service_channel_description">此通知类别用于显示表明Quicksy正在运行的永久通知。</string>
     <string name="set_profile_picture">Quicksy个人资料图片</string>
     <string name="not_available_in_your_country">Quicksy在您的国家无服务。</string>
     <string name="unable_to_verify_server_identity">无法确认服务器身份</string>

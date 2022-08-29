@@ -17,12 +17,6 @@
 
 package eu.siacs.conversations.ui.widget;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
-import com.google.zxing.ResultPoint;
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
@@ -34,6 +28,12 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
+
+import com.google.zxing.ResultPoint;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import eu.siacs.conversations.R;
 

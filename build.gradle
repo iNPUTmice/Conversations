@@ -1,14 +1,12 @@
-import com.android.build.OutputFile
-
 // Top-level build file where you can add configuration options common to all
 // sub-projects/modules.
 buildscript {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.0.1'
+        classpath 'com.android.tools.build:gradle:7.2.2'
     }
 }
 
@@ -16,47 +14,43 @@ apply plugin: 'com.android.application'
 
 repositories {
     google()
-    jcenter()
     mavenCentral()
+    jcenter()
 }
 
 configurations {
     playstoreImplementation
-    compatImplementation
-    conversationsFreeCompatImplementation
-    conversationsPlaystoreCompatImplementation
-    conversationsPlaystoreSystemImplementation
-    quicksyFreeCompatImplementation
+    freeImplementation
+    conversationsFreeImplementation
+    conversationsPlaystorImplementation
+    conversationsPlaystoreImplementation
+    quicksyPlaystoreImplementation
+    quicksyPlaystoreImplementation
+    quicksyFreeImplementation
     quicksyImplementation
 }
 
-ext {
-    supportLibVersion = '28.0.0'
-}
-
 dependencies {
-    //should remain that low because later versions introduce dependency to androidx (not sure exactly from what version)
-    playstoreImplementation('com.google.firebase:firebase-messaging:17.3.4') {
+    implementation 'androidx.viewpager:viewpager:1.0.0'
+
+    playstoreImplementation('com.google.firebase:firebase-messaging:23.0.7') {
         exclude group: 'com.google.firebase', module: 'firebase-core'
         exclude group: 'com.google.firebase', module: 'firebase-analytics'
         exclude group: 'com.google.firebase', module: 'firebase-measurement-connector'
     }
-    conversationsPlaystoreCompatImplementation("com.android.installreferrer:installreferrer:1.1.2")
-    conversationsPlaystoreSystemImplementation("com.android.installreferrer:installreferrer:1.1.2")
+    conversationsPlaystoreImplementation("com.android.installreferrer:installreferrer:2.2")
+    quicksyPlaystoreImplementation 'com.google.android.gms:play-services-auth-api-phone:18.0.1'
     implementation 'org.sufficientlysecure:openpgp-api:10.0'
-    implementation('com.theartofdev.edmodo:android-image-cropper:2.7.+') {
-        exclude group: 'com.android.support', module: 'appcompat-v7'
-        exclude group: 'com.android.support', module: 'exifinterface'
-    }
-    implementation "com.android.support:support-v13:$supportLibVersion"
-    implementation "com.android.support:appcompat-v7:$supportLibVersion"
-    implementation "com.android.support:exifinterface:$supportLibVersion"
-    implementation "com.android.support:cardview-v7:$supportLibVersion"
-    implementation "com.android.support:support-emoji:$supportLibVersion"
-    implementation "com.android.support:design:$supportLibVersion"
-    compatImplementation "com.android.support:support-emoji-appcompat:$supportLibVersion"
-    conversationsFreeCompatImplementation "com.android.support:support-emoji-bundled:$supportLibVersion"
-    quicksyFreeCompatImplementation "com.android.support:support-emoji-bundled:$supportLibVersion"
+    implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
+    implementation 'androidx.appcompat:appcompat:1.5.0'
+    implementation 'androidx.exifinterface:exifinterface:1.3.3'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    implementation 'com.google.android.material:material:1.4.0'
+
+    implementation "androidx.emoji2:emoji2:1.2.0"
+    freeImplementation "androidx.emoji2:emoji2-bundled:1.2.0"
+
     implementation 'org.bouncycastle:bcmail-jdk15on:1.64'
     //zxing stopped supporting Java 7 so we have to stick with 3.3.3
     //https://github.com/zxing/zxing/issues/1170
@@ -66,21 +60,23 @@ dependencies {
     implementation 'org.whispersystems:signal-protocol-java:2.6.2'
     implementation 'com.makeramen:roundedimageview:2.3.0'
     implementation "com.wefika:flowlayout:0.4.1"
-    implementation 'net.ypresto.androidtranscoder:android-transcoder:0.3.0'
-    implementation 'org.jxmpp:jxmpp-jid:0.6.4'
-    implementation 'org.osmdroid:osmdroid-android:6.1.5'
+    implementation 'com.otaliastudios:transcoder:0.10.4'
+
+    implementation 'org.jxmpp:jxmpp-jid:1.0.3'
+    implementation 'org.osmdroid:osmdroid-android:6.1.11'
     implementation 'org.hsluv:hsluv:0.2'
-    implementation 'org.conscrypt:conscrypt-android:2.2.1'
+    implementation 'org.conscrypt:conscrypt-android:2.5.2'
     implementation 'me.drakeet.support:toastcompat:1.1.0'
-    implementation "com.leinardi.android:speed-dial:2.0.1"
-    //retrofit needs to stick with 2.6.x (https://github.com/square/retrofit/blob/master/CHANGELOG.md)
-    implementation "com.squareup.retrofit2:retrofit:2.6.4"
-    implementation "com.squareup.retrofit2:converter-gson:2.6.4"
-    //okhttp needs to stick with 3.12.x
-    implementation 'com.squareup.okhttp3:okhttp:3.12.12'
-    implementation 'com.google.guava:guava:27.1-android'
-    quicksyImplementation 'io.michaelrocks:libphonenumber-android:8.11.1'
-    implementation fileTree(include: ['libwebrtc-m84.aar'], dir: 'libs')
+    implementation "com.leinardi.android:speed-dial:3.2.0"
+
+    implementation "com.squareup.retrofit2:retrofit:2.9.0"
+    implementation "com.squareup.retrofit2:converter-gson:2.9.0"
+    implementation "com.squareup.okhttp3:okhttp:4.10.0"
+
+    implementation 'com.google.guava:guava:31.1-android'
+    quicksyImplementation 'io.michaelrocks:libphonenumber-android:8.12.49'
+    freeImplementation 'ch.threema:webrtc-android:100.0.0'
+    playstoreImplementation fileTree(include: ['libwebrtc-m104.aar'], dir: 'libs')
 }
 
 ext {
@@ -90,18 +86,20 @@ ext {
 }
 
 android {
-    compileSdkVersion 29
+    namespace 'eu.siacs.conversations'
+    compileSdkVersion 32
 
     defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 28
-        versionCode 397
-        versionName "2.8.10"
+        minSdkVersion 21
+        targetSdkVersion 32
+        versionCode 42038
+        versionName "2.10.10"
         archivesBaseName += "-$versionName"
         applicationId "eu.siacs.conversations"
         resValue "string", "applicationId", applicationId
-        resValue "string", "app_name", "Conversations"
-        buildConfigField "String", "LOGTAG", "\"conversations\""
+        def appName = "Conversations"
+        resValue "string", "app_name", appName
+        buildConfigField "String", "APP_NAME", "\"$appName\"";
     }
 
     splits {
@@ -111,14 +109,12 @@ android {
         }
     }
 
-    dataBinding {
-        enabled true
+    configurations {
+        implementation.exclude group: 'org.jetbrains' , module:'annotations'
     }
 
-    dexOptions {
-        // Skip pre-dexing when running on Travis CI or when disabled via -Dpre-dex=false.
-        preDexLibraries = preDexEnabled && !travisBuild
-        jumboMode true
+    dataBinding {
+        enabled true
     }
 
     compileOptions {
@@ -126,16 +122,18 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    flavorDimensions("mode", "distribution", "emoji")
+    flavorDimensions("mode", "distribution")
 
     productFlavors {
 
         quicksy {
             dimension "mode"
             applicationId = "im.quicksy.client"
-            resValue "string", "app_name", "Quicksy"
             resValue "string", "applicationId", applicationId
-            buildConfigField "String", "LOGTAG", "\"quicksy\""
+
+            def appName = "Quicksy"
+            resValue "string", "app_name", appName
+            buildConfigField "String", "APP_NAME", "\"$appName\"";
         }
 
         conversations {
@@ -144,64 +142,34 @@ android {
 
         playstore {
             dimension "distribution"
-            versionNameSuffix "+p"
+            versionNameSuffix "+playstore"
         }
         free {
             dimension "distribution"
-            versionNameSuffix "+f"
-        }
-        system {
-            dimension "emoji"
-            versionNameSuffix "s"
-        }
-        compat {
-            dimension "emoji"
-            versionNameSuffix "c"
+            versionNameSuffix "+free"
         }
     }
 
     sourceSets {
-        quicksyFreeCompat {
+        quicksyFree {
             java {
-                srcDir 'src/freeCompat/java'
+                srcDir 'src/quicksyFree/java'
             }
         }
-        quicksyPlaystoreCompat {
+        quicksyPlaystore {
             java {
-                srcDir 'src/playstoreCompat/java'
+                srcDir 'src/quicksyPlaystore/java'
             }
-            res {
-                srcDir 'src/playstoreCompat/res'
-                srcDir 'src/quicksyPlaystore/res'
-            }
-        }
-        quicksyPlaystoreSystem {
             res {
                 srcDir 'src/quicksyPlaystore/res'
             }
         }
-        conversationsFreeCompat {
-            java {
-                srcDir 'src/freeCompat/java'
-                srcDir 'src/conversationsFree/java'
-            }
-        }
-        conversationsFreeSystem {
+        conversationsFree {
             java {
                 srcDir 'src/conversationsFree/java'
             }
         }
-        conversationsPlaystoreCompat {
-            java {
-                srcDir 'src/playstoreCompat/java'
-                srcDir 'src/conversationsPlaystore/java'
-            }
-            res {
-                srcDir 'src/playstoreCompat/res'
-                srcDir 'src/conversationsPlaystore/res'
-            }
-        }
-        conversationsPlaystoreSystem {
+        conversationsPlaystore {
             java {
                 srcDir 'src/conversationsPlaystore/java'
             }
@@ -216,13 +184,11 @@ android {
             shrinkResources true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            versionNameSuffix "r"
         }
         debug {
             shrinkResources true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            versionNameSuffix "d"
         }
     }
 
@@ -242,9 +208,6 @@ android {
         buildTypes.release.signingConfig = signingConfigs.release
     }
 
-    lintOptions {
-        disable 'MissingTranslation', 'InvalidPackage','AppCompatResource'
-    }
 
     subprojects {
 
@@ -259,19 +222,22 @@ android {
 
         }
     }
-
     packagingOptions {
-        exclude 'META-INF/BCKEY.DSA'
-        exclude 'META-INF/BCKEY.SF'
+        resources {
+            excludes += ['META-INF/BCKEY.DSA', 'META-INF/BCKEY.SF']
+        }
+    }
+    lint {
+        disable 'MissingTranslation', 'InvalidPackage', 'AppCompatResource'
     }
 
     android.applicationVariants.all { variant ->
         variant.outputs.each { output ->
-            def baseAbiVersionCode = project.ext.abiCodes.get(output.getFilter(OutputFile.ABI))
+            def baseAbiVersionCode = project.ext.abiCodes.get(output.getFilter(com.android.build.OutputFile.ABI))
             if (baseAbiVersionCode != null) {
-                output.versionCodeOverride = (100 * variant.versionCode) + baseAbiVersionCode
+                output.versionCodeOverride = (100 * project.android.defaultConfig.versionCode) + baseAbiVersionCode
             } else {
-                output.versionCodeOverride = (100 * variant.versionCode)
+                output.versionCodeOverride = 100 * project.android.defaultConfig.versionCode
             }
         }
 

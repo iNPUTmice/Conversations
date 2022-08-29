@@ -107,7 +107,7 @@ public class GeoHelper {
 		intents.add(geoIntent(geoPoint, label));
 
 		Intent httpIntent = new Intent(Intent.ACTION_VIEW);
-		httpIntent.setData(Uri.parse("https://maps.google.com/maps?q=loc:"+String.valueOf(geoPoint.getLatitude()) + "," + String.valueOf(geoPoint.getLongitude()) +label));
+		httpIntent.setData(Uri.parse("https://maps.google.com/maps?q=loc:"+ geoPoint.getLatitude() + "," + geoPoint.getLongitude() +label));
 		intents.add(httpIntent);
 		return intents;
 	}
@@ -120,7 +120,7 @@ public class GeoHelper {
 
 	private static Intent geoIntent(GeoPoint geoPoint, String label) {
 		Intent geoIntent = new Intent(Intent.ACTION_VIEW);
-		geoIntent.setData(Uri.parse("geo:" + String.valueOf(geoPoint.getLatitude()) + "," + String.valueOf(geoPoint.getLongitude()) + "?q=" + String.valueOf(geoPoint.getLatitude()) + "," + String.valueOf(geoPoint.getLongitude()) + "("+ label+")"));
+		geoIntent.setData(Uri.parse("geo:" + geoPoint.getLatitude() + "," + geoPoint.getLongitude() + "?q=" + geoPoint.getLatitude() + "," + geoPoint.getLongitude() + "("+ label+")"));
 		return geoIntent;
 	}
 

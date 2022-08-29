@@ -1,5 +1,7 @@
 package eu.siacs.conversations.services;
 
+import static eu.siacs.conversations.utils.Compatibility.s;
+
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -12,9 +14,10 @@ import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
 import android.provider.OpenableColumns;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
+
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Stopwatch;
@@ -60,7 +63,7 @@ import eu.siacs.conversations.xmpp.Jid;
 public class ImportBackupService extends Service {
 
     private static final int NOTIFICATION_ID = 21;
-    private static AtomicBoolean running = new AtomicBoolean(false);
+    private static final AtomicBoolean running = new AtomicBoolean(false);
     private final ImportBackupServiceBinder binder = new ImportBackupServiceBinder();
     private final SerialSingleThreadExecutor executor = new SerialSingleThreadExecutor(getClass().getSimpleName());
     private final Set<OnBackupProcessed> mOnBackupProcessedListeners = Collections.newSetFromMap(new WeakHashMap<>());
@@ -127,16 +130,19 @@ public class ImportBackupService extends Service {
             final List<Jid> accounts = mDatabaseBackend.getAccountJids(false);
             final ArrayList<BackupFile> backupFiles = new ArrayList<>();
             final Set<String> apps = new HashSet<>(Arrays.asList("Conversations", "Quicksy", getString(R.string.app_name)));
-            for (String app : apps) {
-                final File directory = new File(FileBackend.getBackupDirectory(app));
+            final List<File> directories = new ArrayList<>();
+            for (final String app : apps) {
+                directories.add(FileBackend.getLegacyBackupDirectory(app));
+            }
+            directories.add(FileBackend.getBackupDirectory(this));
+            for (final File directory : directories) {
                 if (!directory.exists() || !directory.isDirectory()) {
                     Log.d(Config.LOGTAG, "directory not found: " + directory.getAbsolutePath());
                     continue;
                 }
                 final File[] files = directory.listFiles();
                 if (files == null) {
-                    onBackupFilesLoaded.onBackupFilesLoaded(backupFiles);
-                    return;
+                    continue;
                 }
                 for (final File file : files) {
                     if (file.isFile() && file.getName().endsWith(".ceb")) {
@@ -300,7 +306,9 @@ public class ImportBackupService extends Service {
         mBuilder.setContentTitle(getString(R.string.notification_restored_backup_title))
                 .setContentText(getString(R.string.notification_restored_backup_subtitle))
                 .setAutoCancel(true)
-                .setContentIntent(PendingIntent.getActivity(this, 145, new Intent(this, ManageAccountActivity.class), PendingIntent.FLAG_UPDATE_CURRENT))
+                .setContentIntent(PendingIntent.getActivity(this, 145, new Intent(this, ManageAccountActivity.class), s()
+                        ? PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+                        : PendingIntent.FLAG_UPDATE_CURRENT))
                 .setSmallIcon(R.drawable.ic_unarchive_white_24dp);
         notificationManager.notify(NOTIFICATION_ID, mBuilder.build());
     }

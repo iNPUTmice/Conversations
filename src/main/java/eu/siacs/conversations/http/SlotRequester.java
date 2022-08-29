@@ -29,162 +29,126 @@
 
 package eu.siacs.conversations.http;
 
-import android.util.Log;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.SettableFuture;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.HashMap;
+import java.util.Map;
 
-import eu.siacs.conversations.Config;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.DownloadableFile;
 import eu.siacs.conversations.parser.IqParser;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
-import eu.siacs.conversations.xmpp.stanzas.IqPacket;
+import eu.siacs.conversations.xmpp.IqResponseException;
 import eu.siacs.conversations.xmpp.Jid;
+import eu.siacs.conversations.xmpp.stanzas.IqPacket;
+import okhttp3.Headers;
+import okhttp3.HttpUrl;
 
 public class SlotRequester {
 
-	private XmppConnectionService service;
+    private final XmppConnectionService service;
 
-	public SlotRequester(XmppConnectionService service) {
-		this.service = service;
-	}
+    public SlotRequester(XmppConnectionService service) {
+        this.service = service;
+    }
 
-	public void request(Method method, Account account, DownloadableFile file, String mime, String md5, OnSlotRequested callback) {
-		if (method == Method.HTTP_UPLOAD) {
-			Jid host = account.getXmppConnection().findDiscoItemByFeature(Namespace.HTTP_UPLOAD);
-			requestHttpUpload(account, host, file, mime, callback);
-		} else if (method == Method.HTTP_UPLOAD_LEGACY) {
-			Jid host = account.getXmppConnection().findDiscoItemByFeature(Namespace.HTTP_UPLOAD_LEGACY);
-			requestHttpUploadLegacy(account, host, file, mime, callback);
-		} else {
-			requestP1S3(account, account.getDomain(), file.getName(), md5, callback);
-		}
-	}
+    public ListenableFuture<Slot> request(Method method, Account account, DownloadableFile file, String mime) {
+        if (method == Method.HTTP_UPLOAD_LEGACY) {
+            final Jid host = account.getXmppConnection().findDiscoItemByFeature(Namespace.HTTP_UPLOAD_LEGACY);
+            return requestHttpUploadLegacy(account, host, file, mime);
+        } else {
+            final Jid host = account.getXmppConnection().findDiscoItemByFeature(Namespace.HTTP_UPLOAD);
+            return requestHttpUpload(account, host, file, mime);
+        }
+    }
 
-	private void requestHttpUploadLegacy(Account account, Jid host, DownloadableFile file, String mime, OnSlotRequested callback) {
-		IqPacket request = service.getIqGenerator().requestHttpUploadLegacySlot(host, file, mime);
-		service.sendIqPacket(account, request, (a, packet) -> {
-			if (packet.getType() == IqPacket.TYPE.RESULT) {
-				Element slotElement = packet.findChild("slot", Namespace.HTTP_UPLOAD_LEGACY);
-				if (slotElement != null) {
-					try {
-						final String putUrl = slotElement.findChildContent("put");
-						final String getUrl = slotElement.findChildContent("get");
-						if (getUrl != null && putUrl != null) {
-							Slot slot = new Slot(new URL(putUrl));
-							slot.getUrl = new URL(getUrl);
-							slot.headers = new HashMap<>();
-							slot.headers.put("Content-Type", mime == null ? "application/octet-stream" : mime);
-							callback.success(slot);
-							return;
-						}
-					} catch (MalformedURLException e) {
-						//fall through
-					}
-				}
-			}
-			Log.d(Config.LOGTAG, account.getJid().toString() + ": invalid response to slot request " + packet);
-			callback.failure(IqParser.extractErrorMessage(packet));
-		});
+    private ListenableFuture<Slot> requestHttpUploadLegacy(Account account, Jid host, DownloadableFile file, String mime) {
+        final SettableFuture<Slot> future = SettableFuture.create();
+        final IqPacket request = service.getIqGenerator().requestHttpUploadLegacySlot(host, file, mime);
+        service.sendIqPacket(account, request, (a, packet) -> {
+            if (packet.getType() == IqPacket.TYPE.RESULT) {
+                final Element slotElement = packet.findChild("slot", Namespace.HTTP_UPLOAD_LEGACY);
+                if (slotElement != null) {
+                    try {
+                        final String putUrl = slotElement.findChildContent("put");
+                        final String getUrl = slotElement.findChildContent("get");
+                        if (getUrl != null && putUrl != null) {
+                            final Slot slot = new Slot(
+                                    HttpUrl.get(putUrl),
+                                    HttpUrl.get(getUrl),
+                                    Headers.of("Content-Type", mime == null ? "application/octet-stream" : mime)
+                            );
+                            future.set(slot);
+                            return;
+                        }
+                    } catch (final IllegalArgumentException e) {
+                        future.setException(e);
+                        return;
+                    }
+                }
+            }
+            future.setException(new IqResponseException(IqParser.extractErrorMessage(packet)));
+        });
+        return future;
+    }
 
-	}
+    private ListenableFuture<Slot> requestHttpUpload(Account account, Jid host, DownloadableFile file, String mime) {
+        final SettableFuture<Slot> future = SettableFuture.create();
+        final IqPacket request = service.getIqGenerator().requestHttpUploadSlot(host, file, mime);
+        service.sendIqPacket(account, request, (a, packet) -> {
+            if (packet.getType() == IqPacket.TYPE.RESULT) {
+                final Element slotElement = packet.findChild("slot", Namespace.HTTP_UPLOAD);
+                if (slotElement != null) {
+                    try {
+                        final Element put = slotElement.findChild("put");
+                        final Element get = slotElement.findChild("get");
+                        final String putUrl = put == null ? null : put.getAttribute("url");
+                        final String getUrl = get == null ? null : get.getAttribute("url");
+                        if (getUrl != null && putUrl != null) {
+                            final ImmutableMap.Builder<String, String> headers = new ImmutableMap.Builder<>();
+                            for (final Element child : put.getChildren()) {
+                                if ("header".equals(child.getName())) {
+                                    final String name = child.getAttribute("name");
+                                    final String value = child.getContent();
+                                    if (HttpUploadConnection.WHITE_LISTED_HEADERS.contains(name) && value != null && !value.trim().contains("\n")) {
+                                        headers.put(name, value.trim());
+                                    }
+                                }
+                            }
+                            headers.put("Content-Type", mime == null ? "application/octet-stream" : mime);
+                            final Slot slot = new Slot(HttpUrl.get(putUrl), HttpUrl.get(getUrl), headers.build());
+                            future.set(slot);
+                            return;
+                        }
+                    } catch (final IllegalArgumentException e) {
+                        future.setException(e);
+                        return;
+                    }
+                }
+            }
+            future.setException(new IqResponseException(IqParser.extractErrorMessage(packet)));
+        });
+        return future;
+    }
 
-	private void requestHttpUpload(Account account, Jid host, DownloadableFile file, String mime, OnSlotRequested callback) {
-		IqPacket request = service.getIqGenerator().requestHttpUploadSlot(host, file, mime);
-		service.sendIqPacket(account, request, (a, packet) -> {
-			if (packet.getType() == IqPacket.TYPE.RESULT) {
-				Element slotElement = packet.findChild("slot", Namespace.HTTP_UPLOAD);
-				if (slotElement != null) {
-					try {
-						final Element put = slotElement.findChild("put");
-						final Element get = slotElement.findChild("get");
-						final String putUrl = put == null ? null : put.getAttribute("url");
-						final String getUrl = get == null ? null : get.getAttribute("url");
-						if (getUrl != null && putUrl != null) {
-							Slot slot = new Slot(new URL(putUrl));
-							slot.getUrl = new URL(getUrl);
-							slot.headers = new HashMap<>();
-							for (Element child : put.getChildren()) {
-								if ("header".equals(child.getName())) {
-									final String name = child.getAttribute("name");
-									final String value = child.getContent();
-									if (HttpUploadConnection.WHITE_LISTED_HEADERS.contains(name) && value != null && !value.trim().contains("\n")) {
-										slot.headers.put(name, value.trim());
-									}
-								}
-							}
-							slot.headers.put("Content-Type", mime == null ? "application/octet-stream" : mime);
-							callback.success(slot);
-							return;
-						}
-					} catch (MalformedURLException e) {
-						//fall through
-					}
-				}
-			}
-			Log.d(Config.LOGTAG, account.getJid().toString() + ": invalid response to slot request " + packet);
-			callback.failure(IqParser.extractErrorMessage(packet));
-		});
+    public static class Slot {
+        public final HttpUrl put;
+        public final HttpUrl get;
+        public final Headers headers;
 
-	}
+        private Slot(HttpUrl put, HttpUrl get, Headers headers) {
+            this.put = put;
+            this.get = get;
+            this.headers = headers;
+        }
 
-	private void requestP1S3(final Account account, Jid host, String filename, String md5, OnSlotRequested callback) {
-		IqPacket request = service.getIqGenerator().requestP1S3Slot(host, md5);
-		service.sendIqPacket(account, request, (a, packet) -> {
-			if (packet.getType() == IqPacket.TYPE.RESULT) {
-				String putUrl = packet.query(Namespace.P1_S3_FILE_TRANSFER).getAttribute("upload");
-				String id = packet.query().getAttribute("fileid");
-				try {
-					if (putUrl != null && id != null) {
-						Slot slot = new Slot(new URL(putUrl));
-						slot.getUrl = P1S3UrlStreamHandler.of(id, filename);
-						slot.headers = new HashMap<>();
-						slot.headers.put("Content-MD5", md5);
-						slot.headers.put("Content-Type", " "); //required to force it to empty. otherwise library will set something
-						callback.success(slot);
-						return;
-					}
-				} catch (MalformedURLException e) {
-					//fall through;
-				}
-			}
-			callback.failure("unable to request slot");
-		});
-		Log.d(Config.LOGTAG, "requesting slot with p1. md5=" + md5);
-	}
-
-
-	public interface OnSlotRequested {
-
-		void success(Slot slot);
-
-		void failure(String message);
-
-	}
-
-	public static class Slot {
-		private final URL putUrl;
-		private URL getUrl;
-		private HashMap<String, String> headers;
-
-		private Slot(URL putUrl) {
-			this.putUrl = putUrl;
-		}
-
-		public URL getPutUrl() {
-			return putUrl;
-		}
-
-		public URL getGetUrl() {
-			return getUrl;
-		}
-
-		public HashMap<String, String> getHeaders() {
-			return headers;
-		}
-	}
+        private Slot(HttpUrl put, HttpUrl getUrl, Map<String, String> headers) {
+            this.put = put;
+            this.get = getUrl;
+            this.headers = Headers.of(headers);
+        }
+    }
 }

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pick_a_server">XMPP プロバイダーを選択してください</string>
+    <string name="use_conversations.im">conversations.im を利用する</string>
+    <string name="create_new_account">新規アカウントを作成</string>
+    <string name="do_you_have_an_account">XMPP アカウントをお持ちですか？既にほかの XMPP クライアントを利用しているか、 Conversations を利用したことがある場合はこちら。初めての方は、今すぐ新規 XMPP アカウントを作成できます。\nヒント: e メールのプロバイダーが XMPP アカウントも提供している場合があります。</string>
+    <string name="server_select_text">XMPP は、プロバイダーに依存しないインスタントメッセージのプロトコルです。 XMPP サーバーならどこでも、このクライアントを使用することができます。\nよろしければ、 Conversations に最適化されたプロバイダー conversations.im で簡単にアカウントを作成することもできます。</string>
+    <string name="magic_create_text_on_x">%1$s へ招待されました。アカウント作成手順をご案内します。 \n%1$s をプロバイダーに選択してほかのプロバイダーのユーザーと会話するには、 XMPP のフルアドレスを相手にお知らせください。</string>
+    <string name="magic_create_text_fixed">%1$s へ招待されました。ユーザー名は既に選択されています。アカウント作成手順をご案内します。 \nほかのプロバイダーのユーザーと会話するには、 XMPP のフルアドレスを相手にお知らせください。</string>
+    <string name="your_server_invitation">サーバーの招待</string>
+    <string name="improperly_formatted_provisioning">仮コードの書式が不正です</string>
+    <string name="tap_share_button_send_invite">共有ボタンを叩いて、連絡先の %1$s に招待を送信する。</string>
+    <string name="if_contact_is_nearby_use_qr">あなたの連絡先が近くにいる場合は、下のコードをスキャンして、あなたの招待を受け取ることもできます。</string>
+    <string name="easy_invite_share_text">%1$s に参加して私とお話しましょう: %2$s</string>
+    <string name="share_invite_with">…で招待を共有</string>
+</resources>

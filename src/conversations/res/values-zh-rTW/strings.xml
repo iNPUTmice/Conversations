@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pick_a_server">挑選您的 XMPP 提供者</string>
+    <string name="use_conversations.im">使用 conversations.im</string>
+    <string name="create_new_account">建立新帳戶</string>
+    <string name="your_server_invitation">您的伺服器邀請</string>
+    <string name="share_invite_with">分享邀請至…</string>
+</resources>

@@ -1,11 +1,14 @@
 package eu.siacs.conversations.utils;
 
 import android.content.Context;
-import android.support.annotation.ColorInt;
 import android.text.SpannableStringBuilder;
 import android.text.format.DateFormat;
 import android.text.format.DateUtils;
 import android.util.Pair;
+
+import androidx.annotation.ColorInt;
+
+import com.google.common.base.Strings;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -18,6 +21,7 @@ import java.util.Locale;
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
+import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Conversational;
@@ -28,11 +32,12 @@ import eu.siacs.conversations.entities.Presence;
 import eu.siacs.conversations.entities.RtpSessionStatus;
 import eu.siacs.conversations.entities.Transferable;
 import eu.siacs.conversations.services.ExportBackupService;
+import eu.siacs.conversations.ui.util.QuoteHelper;
 import eu.siacs.conversations.xmpp.Jid;
 
 public class UIHelper {
 
-    private static int[] UNSAFE_COLORS = {
+    private static final int[] UNSAFE_COLORS = {
             0xFFF44336, //red 500
             0xFFE53935, //red 600
             0xFFD32F2F, //red 700
@@ -45,7 +50,7 @@ public class UIHelper {
             0xFFD84315, //deep orange 800,
     };
 
-    private static int[] SAFE_COLORS = {
+    private static final int[] SAFE_COLORS = {
             0xFFE91E63, //pink 500
             0xFFD81B60, //pink 600
             0xFFC2185B, //pink 700
@@ -324,7 +329,7 @@ public class UIHelper {
                             continue;
                         }
                         char first = l.charAt(0);
-                        if ((first != '>' || !isPositionFollowedByQuoteableCharacter(l, 0)) && first != '\u00bb') {
+                        if ((!QuoteHelper.isPositionQuoteStart(l, 0))) {
                             CharSequence line = CharSequenceUtils.trim(l);
                             if (line.length() == 0) {
                                 continue;
@@ -368,6 +373,23 @@ public class UIHelper {
         return input.length() > 256 ? StylingHelper.subSequence(input, 0, 256) : input;
     }
 
+    public static boolean isPositionPrecededByBodyStart(CharSequence body, int pos){
+        // true if not a single linebreak before current position
+        for (int i = pos - 1; i >= 0; i--){
+            if (body.charAt(i) != ' '){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean isPositionPrecededByLineStart(CharSequence body, int pos){
+        if (isPositionPrecededByBodyStart(body, pos)){
+            return true;
+        }
+        return body.charAt(pos - 1) == '\n';
+    }
+
     public static boolean isPositionFollowedByQuoteableCharacter(CharSequence body, int pos) {
         return !isPositionFollowedByNumber(body, pos)
                 && !isPositionFollowedByEmoticon(body, pos)
@@ -400,6 +422,7 @@ public class UIHelper {
             final char first = body.charAt(pos + 1);
             return first == ';'
                     || first == ':'
+                    || first == '.' // do not quote >.< (but >>.<)
                     || closingBeforeWhitespace(body, pos + 1);
         }
     }
@@ -409,26 +432,8 @@ public class UIHelper {
             final char c = body.charAt(i);
             if (Character.isWhitespace(c)) {
                 return false;
-            } else if (c == '<' || c == '>') {
+            } else if (QuoteHelper.isPositionQuoteCharacter(body, pos) || QuoteHelper.isPositionQuoteEndCharacter(body, pos)) {
                 return body.length() == i + 1 || Character.isWhitespace(body.charAt(i + 1));
-            }
-        }
-        return false;
-    }
-
-    public static boolean isPositionFollowedByQuote(CharSequence body, int pos) {
-        if (body.length() <= pos + 1 || Character.isWhitespace(body.charAt(pos + 1))) {
-            return false;
-        }
-        boolean previousWasWhitespace = false;
-        for (int i = pos + 1; i < body.length(); i++) {
-            char c = body.charAt(i);
-            if (c == '\n' || c == '»') {
-                return false;
-            } else if (c == '«' && !previousWasWhitespace) {
-                return true;
-            } else {
-                previousWasWhitespace = Character.isWhitespace(c);
             }
         }
         return false;
@@ -471,19 +476,20 @@ public class UIHelper {
     }
 
     public static String getFileDescriptionString(final Context context, final Message message) {
-        if (message.getType() == Message.TYPE_IMAGE) {
-            return context.getString(R.string.image);
-        }
         final String mime = message.getMimeType();
-        if (mime == null) {
+        if (Strings.isNullOrEmpty(mime)) {
             return context.getString(R.string.file);
+        } else if (MimeUtils.AMBIGUOUS_CONTAINER_FORMATS.contains(mime)) {
+            return context.getString(R.string.multimedia_file);
         } else if (mime.startsWith("audio/")) {
             return context.getString(R.string.audio);
         } else if (mime.startsWith("video/")) {
             return context.getString(R.string.video);
         } else if (mime.equals("image/gif")) {
             return context.getString(R.string.gif);
-        } else if (mime.startsWith("image/")) {
+        } else if (mime.equals("image/svg+xml")) {
+            return context.getString(R.string.vector_graphic);
+        } else if (mime.startsWith("image/") || message.getType() == Message.TYPE_IMAGE) {
             return context.getString(R.string.image);
         } else if (mime.contains("pdf")) {
             return context.getString(R.string.pdf_document);
@@ -499,6 +505,8 @@ public class UIHelper {
             return context.getString(R.string.ebook);
         } else if (mime.equals("application/gpx+xml")) {
             return context.getString(R.string.gpx_track);
+        } else if (mime.equals("text/plain")) {
+            return context.getString(R.string.plain_text_document);
         } else {
             return mime;
         }
@@ -521,8 +529,15 @@ public class UIHelper {
             if (conversation instanceof Conversation && conversation.getMode() == Conversation.MODE_MULTI) {
                 return ((Conversation) conversation).getMucOptions().getSelf().getName();
             } else {
-                final Jid jid = conversation.getAccount().getJid();
-                return jid.getLocal() != null ? jid.getLocal() : jid.getDomain().toString();
+                final Account account = conversation.getAccount();
+                final Jid jid = account.getJid();
+                final String displayName = account.getDisplayName();
+                if (Strings.isNullOrEmpty(displayName)) {
+                    return jid.getLocal() != null ? jid.getLocal() : jid.getDomain().toString();
+                } else {
+                    return displayName;
+                }
+
             }
         }
     }
@@ -559,14 +574,16 @@ public class UIHelper {
         }
     }
 
-    public static boolean receivedLocationQuestion(Message message) {
+    public static boolean receivedLocationQuestion(final Message message) {
         if (message == null
                 || message.getStatus() != Message.STATUS_RECEIVED
                 || message.getType() != Message.TYPE_TEXT) {
             return false;
         }
-        String body = message.getBody() == null ? null : message.getBody().trim().toLowerCase(Locale.getDefault());
-        body = body.replace("?", "").replace("¿", "");
+        final String body = Strings.nullToEmpty(message.getBody())
+                .trim()
+                .toLowerCase(Locale.getDefault())
+                .replace("?", "").replace("¿", "");
         return LOCATION_QUESTIONS.contains(body);
     }
 

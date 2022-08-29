@@ -1,23 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="crash_report_title">Відмова застосунку</string>
-    <string name="crash_report_message">Надсилаючи траси стеків виклику, ви допомагаєте у розробці цього застосунку.\n<b>Увага:</b> Це використовуватиме ваш обліковий запис XMPP, щоб надсилати траси стеків виклику розробнику.</string>
-    <string name="openkeychain_required_long">Цей застосунок використовує сторонній застосунок, який називається <b>OpenKeychain</b>, для шифрування повідомлень і впорядкування ваших публічних ключів.\n\nOpenKeychain поширюється на умова ліцензії GPLv3 й доступна в F-Droid та Google Play.\n\n<small>(Будь ласка, перезапустіть цю програму після цього.)</small></string>
-    <string name="contact_has_no_pgp_key">Застосунок не зміг зашифрувати повідомлення, оскільки публічний ключ адресата не опубліковано.\n\n<small>Будь ласка, попросіть адресата налаштувати OpenPGP.</small></string>
-    <string name="contacts_have_no_pgp_keys">Застосунок не зміг зашифрувати повідомлення, оскільки публічні ключі адресатів не опубліковано.\n\n<small>Будь ласка, попросіть їх налаштувати OpenPGP.</small></string>
     <string name="pref_notification_grace_period_summary">Час, протягом якого застосунок дотримується тиші після активності на іншому пристрої.</string>
     <string name="pref_never_send_crash_summary">Надсилаючи траси стеків виклику, ви допомагаєте розробці цього застосунку.</string>
-    <string name="no_storage_permission">Цей застосунок потребує доступу до зовнішнього сховища</string>
-    <string name="no_camera_permission">Цей застосунок потребує доступу до камери</string>
-    <string name="battery_optimizations_enabled_explained">Ваш пристрій використовує посилену оптимізацію батареї для Quicksy, що може призвести до затримок у отриманні сповіщень або навіть втраті повідомлень.\nlt Рекомендується вимкнути цю функцію.</string>
-    <string name="battery_optimizations_enabled_dialog">Ваш пристрій використовує посилену оптимізацію батареї для Quicksy, що може призвести до затримок у отриманні сповіщень або навіть втраті повідомлень.\n\n Ми вас попросимо вимкнути цю функцію.</string>
     <string name="pref_broadcast_last_activity_summary">Дозволити всім вашим контактам знати, коли ви використовуєте цю програму.</string>
-    <string name="data_saver_enabled_explained">Операційна система обмежує цю програму в доступі до Інтернету, коли вона не на екрані. Щоб отримувати сповіщення про нові повідомлення, слід дозволити цій програмі доступ, коли ввімкнено заощадження трафіку.\nЦя програма все одно намагатиметься заощадити трафік, коли можливо.</string>
-    <string name="device_does_not_support_data_saver">Цей пристрій не надає можливості зробити виняток щодо заощадження трафіку для цієї програми.</string>
     <string name="huawei_protected_apps_summary">Щоб продовжувати отримувати сповіщення, навіть коли екран вимкнуто, потрібно додати цю програму до списку захищених.</string>
-    <string name="error_trustkey_general">Застосунок не може надіслати зашифроване повідомлення до %1$s. Можливо, це обумовлено тим, що адресат користується застарілим сервером або програмою, яка не підтримує OMEMO.</string>
-    <string name="no_microphone_permission">Цей застосунок потребує доступу до мікрофона</string>
-    <string name="foreground_service_channel_description">Цей вид сповіщень показує постійне сповіщення про те, що ця програма працює.</string>
     <string name="set_profile_picture">Зображення профілю для Quicksy</string>
     <string name="not_available_in_your_country">Цей застосунок не доступний у вашій країні.</string>
     <string name="unable_to_verify_server_identity">Автентичність сервера не підтверджено.</string>

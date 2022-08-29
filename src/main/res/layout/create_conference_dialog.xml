@@ -22,19 +22,19 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"/>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:errorTextAppearance="@style/TextAppearance.Conversations.Design.Error"
             app:hintTextAppearance="@style/TextAppearance.Conversations.Design.Hint">
 
-            <eu.siacs.conversations.ui.widget.EmojiWrapperEditText
+            <EditText
                 android:id="@+id/group_chat_name"
                 style="@style/Widget.Conversations.EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/create_dialog_group_chat_name"
                 android:imeOptions="actionNext|flagNoExtractUi"/>
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 </layout>

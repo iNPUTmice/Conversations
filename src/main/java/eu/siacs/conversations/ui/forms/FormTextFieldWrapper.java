@@ -19,7 +19,7 @@ public class FormTextFieldWrapper extends FormFieldWrapper {
 
 	protected FormTextFieldWrapper(Context context, Field field) {
 		super(context, field);
-		editText = (EditText) view.findViewById(R.id.field);
+		editText = view.findViewById(R.id.field);
 		editText.setSingleLine(!"text-multi".equals(field.getType()));
 		if ("text-private".equals(field.getType())) {
 			editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
@@ -43,7 +43,7 @@ public class FormTextFieldWrapper extends FormFieldWrapper {
 
 	@Override
 	protected void setLabel(String label, boolean required) {
-		TextView textView = (TextView) view.findViewById(R.id.label);
+		TextView textView = view.findViewById(R.id.label);
 		textView.setText(createSpannableLabelString(label, required));
 	}
 
@@ -64,7 +64,7 @@ public class FormTextFieldWrapper extends FormFieldWrapper {
 
 	@Override
 	protected void setValues(List<String> values) {
-		StringBuilder builder = new StringBuilder("");
+		StringBuilder builder = new StringBuilder();
 		for(int i = 0; i < values.size(); ++i) {
 			builder.append(values.get(i));
 			if (i < values.size() - 1 && "text-multi".equals(field.getType())) {

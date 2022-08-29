@@ -1,0 +1,4 @@
+* Search individual conversations
+* Notify user if message delivery fails
+* Remember display names (nicks) from Quicksy users across restarts
+* Add button to start Orbot (Tor) from notification if necessary

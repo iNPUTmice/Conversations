@@ -16,6 +16,10 @@ public class DownloadableFile extends File {
 	private byte[] aeskey;
 	private byte[] iv;
 
+	public DownloadableFile(final File parent, final String file) {
+		super(parent, file);
+	}
+
 	public DownloadableFile(String path) {
 		super(path);
 	}

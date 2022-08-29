@@ -1,11 +1,10 @@
 package eu.siacs.conversations.xmpp;
 
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import org.jxmpp.jid.Jid;
 import org.jxmpp.jid.impl.JidCreate;
-import org.jxmpp.jid.parts.Domainpart;
 import org.jxmpp.jid.parts.Localpart;
 import org.jxmpp.jid.parts.Resourcepart;
 import org.jxmpp.stringprep.XmppStringprepException;

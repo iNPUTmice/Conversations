@@ -2,9 +2,7 @@ package eu.siacs.conversations.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -14,6 +12,8 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.databinding.DataBindingUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -90,7 +90,7 @@ public class MucUsersActivity extends XmppActivity implements XmppConnectionServ
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityMucUsersBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_muc_users);
-        setSupportActionBar((Toolbar) binding.toolbar);
+        setSupportActionBar(binding.toolbar);
         configureActionBar(getSupportActionBar(), true);
         this.userAdapter = new UserAdapter(getPreferences().getBoolean("advanced_muc_mode", false));
         binding.list.setAdapter(this.userAdapter);

@@ -1,6 +1,10 @@
 <resources>
     <!-- 384dp is the screen width of the Nexus 4. Something like a Moto G is smaller but a Nexus 5X is larger -->
     <!-- https://material.io/devices/ -->
+
+    <dimen name="in_call_fab_margin">12dp</dimen>
+    <dimen name="in_call_fab_margin_center">16dp</dimen>
+
     <dimen name="fineprint_size">12sp</dimen>
     <dimen name="audio_player_width">288dp</dimen>
     <dimen name="image_preview_width">288dp</dimen>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pick_a_server">Chọn nhà cung cấp XMPP của bạn</string>
+    <string name="use_conversations.im">Sử dụng conversations.im</string>
+    <string name="create_new_account">Tạo tài khoản mới</string>
+    <string name="do_you_have_an_account">Bạn đã có tài khoản XMPP chưa? Điều này có thể đúng nếu bạn đang dùng một ứng dụng khách cho XMPP khác hoặc đã sử dụng Conversations trước đó. Nếu không, bạn có thể tạo tài khoản XMPP mới ngay bây giờ.\nGợi ý: Một số nhà cung cấp email cũng cung cấp tài khoản XMPP.</string>
+    <string name="server_select_text">XMPP là một mạng nhắn tin ngay lập tức không phụ thuộc vào nhà cung cấp. Bạn có thể sử dụng ứng dụng khách này với bất kỳ máy chủ XMPP nào mà bạn chọn.\nTuy nhiên, vì sự thuận tiện của bạn, chúng tôi đã làm cho việc tạo tài khoản trên conversations.im được dễ dàng; một nhà cung cấp đặc biệt phù hợp với việc sử dụng Conversations.</string>
+    <string name="magic_create_text_on_x">Bạn đã được mời vào %1$s. Chúng tôi sẽ hướng dẫn bạn trong quá trình tạo tài khoản.\nKhi chọn %1$s là nhà cung cấp, bạn sẽ có thể giao tiếp với những người dùng của các nhà cung cấp khác bằng cách đưa cho họ địa chỉ XMPP đầy đủ của bạn.</string>
+    <string name="magic_create_text_fixed">Bạn đã được mời vào %1$s. Một tên người dùng đã được chọn sẵn cho bạn. Chúng tôi sẽ hướng dẫn bạn trong quá trình tạo tài khoản.\nBạn sẽ có thể giao tiếp với những người dùng của các nhà cung cấp khác bằng cách đưa cho họ địa chỉ XMPP đầy đủ của bạn.</string>
+    <string name="your_server_invitation">Lời mời vào máy chủ của bạn</string>
+    <string name="improperly_formatted_provisioning">Mã cung cấp không được định dạng đúng</string>
+    <string name="tap_share_button_send_invite">Nhấn nút chia sẻ để gửi lời mời vào %1$s đến liên hệ của bạn.</string>
+    <string name="if_contact_is_nearby_use_qr">Nếu liên hệ của bạn ở gần đây, họ cũng có thể quét mã ở dưới để chấp nhận lời mời của bạn.</string>
+    <string name="easy_invite_share_text">Hãy tham gia vào %1$s và trò chuyện với tôi: %2$s</string>
+    <string name="share_invite_with">Chia sẻ lời mời với...</string>
+</resources>

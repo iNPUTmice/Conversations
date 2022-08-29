@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="pick_a_server">Scegli il tuo provider XMPP</string>
+    <string name="pick_a_server">Scegli il tuo fornitore XMPP</string>
     <string name="use_conversations.im">Usa conversations.im</string>
-    <string name="create_new_account">Crea un nuovo account</string>
-    <string name="do_you_have_an_account">Possiedi già un account XMPP? Questo succede se stai già usando un diverso client XMPP o hai già usato prima Conversations. In caso negativo puoi creare un account XMPP adesso.
+    <string name="create_new_account">Crea un nuovo profilo</string>
+    <string name="do_you_have_an_account">Possiedi già un profilo XMPP? Questo succede se stai già usando un diverso client XMPP o hai già usato prima Conversations. In caso negativo puoi creare un profilo XMPP adesso.
 Suggerimento: alcuni provider di email forniscono anche un account XMPP.</string>
-    <string name="server_select_text">XMPP è una rete di instant messaging indipendente dal provider. Puoi usare questo client con qualsiasi server XMPP.
-In ogni caso per facilitare puoi creare facilmente un account su conversations.im, un provider pensato apposta per essere usato con Conversations.</string>
-    <string name="magic_create_text_on_x">Sei stato invitato su %1$s. Ti guideremo nel procedimento per creare un account.\nQuando scegli %1$s come fornitore sarai in grado di comunicare con utenti di altri fornitori dando loro l\'indirizzo XMPP completo.</string>
-    <string name="magic_create_text_fixed">Sei stato invitato su %1$s. È già stato scelto un nome utente per te. Ti guideremo nel procedimento per creare un account.\nSarai in grado di comunicare con utenti di altri fornitori dando loro l\'indirizzo XMPP completo.</string>
+    <string name="server_select_text">XMPP è una rete di messaggistica istantanea indipendente dal fornitore. Puoi usare questo client con qualsiasi server XMPP.
+In ogni caso per facilitare puoi creare facilmente un account su conversations.im, un fornitore pensato apposta per essere usato con Conversations.</string>
+    <string name="magic_create_text_on_x">Hai ricevuto un invito per %1$s. Ti guideremo nel procedimento per creare un profilo.\nQuando scegli %1$s come fornitore sarai in grado di comunicare con utenti di altri fornitori dando loro l\'indirizzo XMPP completo.</string>
+    <string name="magic_create_text_fixed">Hai ricevuto un invito per %1$s. È già stato scelto un nome utente per te. Ti guideremo nel procedimento per creare un profilo.\nSarai in grado di comunicare con utenti di altri fornitori dando loro l\'indirizzo XMPP completo.</string>
     <string name="your_server_invitation">Il tuo invito al server</string>
     <string name="improperly_formatted_provisioning">Codice di approvvigionamento formattato male</string>
+    <string name="tap_share_button_send_invite">Tocca il pulsante condividi per inviare al contatto un invito per %1$s.</string>
+    <string name="if_contact_is_nearby_use_qr">Se il contatto è vicino, può anche scansionare il codice sottostante per accettare il tuo invito.</string>
+    <string name="easy_invite_share_text">Unisciti a %1$s e chatta con me: %2$s</string>
+    <string name="share_invite_with">Condividi invito con...</string>
 </resources>

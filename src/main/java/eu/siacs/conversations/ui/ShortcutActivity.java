@@ -4,16 +4,14 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.util.Log;
-import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+
+import androidx.appcompat.app.ActionBar;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;

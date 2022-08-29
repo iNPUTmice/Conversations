@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pref_notification_grace_period_summary">Kuinka kauan Quicksy pysyy hiljaa nähtyään toisella laitteellasi toimintaa</string>
+    <string name="pref_never_send_crash_summary">Lähettämällä virheenkorjaustietoja autat Quicksyn kehittäjiä</string>
+    <string name="pref_broadcast_last_activity_summary">Kerro kaikille yhteystiedoillesi kun käytät Quicksya</string>
+    <string name="huawei_protected_apps_summary">Saadaksesi ilmoituksia silloinkin kun näyttö on sammutettu, Quicksy pitää lisätä suojattujen sovellusten luetteloon.</string>
+    <string name="set_profile_picture">Quicksy-profiilikuva</string>
+    <string name="not_available_in_your_country">Quicksy ei ole saatavilla maassasi.</string>
+    <string name="unable_to_verify_server_identity">Palvelimen identiteetin varmennus epäonnistui.</string>
+    <string name="unknown_security_error">Tuntematon turvallisuusvirhe.</string>
+    <string name="timeout_while_connecting_to_server">Palvelimeen yhdistäminen aikakatkaistiin.</string>
+</resources>

@@ -1,15 +1,22 @@
 package eu.siacs.conversations.ui;
 
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import eu.siacs.conversations.R;
+import eu.siacs.conversations.ui.util.SettingsUtils;
 import eu.siacs.conversations.utils.ThemeHelper;
 
 import static eu.siacs.conversations.ui.XmppActivity.configureActionBar;
 
 public class AboutActivity extends AppCompatActivity {
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        SettingsUtils.applyScreenshotPreventionSetting(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

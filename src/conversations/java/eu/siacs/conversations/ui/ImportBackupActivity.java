@@ -5,20 +5,20 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.databinding.DataBindingUtil;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
+import androidx.databinding.DataBindingUtil;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.IOException;
 import java.util.List;
@@ -29,6 +29,7 @@ import eu.siacs.conversations.databinding.ActivityImportBackupBinding;
 import eu.siacs.conversations.databinding.DialogEnterPasswordBinding;
 import eu.siacs.conversations.services.ImportBackupService;
 import eu.siacs.conversations.ui.adapter.BackupFileAdapter;
+import eu.siacs.conversations.ui.util.SettingsUtils;
 import eu.siacs.conversations.utils.ThemeHelper;
 
 public class ImportBackupActivity extends ActionBarActivity implements ServiceConnection, ImportBackupService.OnBackupFilesLoaded, BackupFileAdapter.OnItemClickedListener, ImportBackupService.OnBackupProcessed {
@@ -48,11 +49,17 @@ public class ImportBackupActivity extends ActionBarActivity implements ServiceCo
         setTheme(this.mTheme);
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_import_backup);
-        setSupportActionBar((Toolbar) binding.toolbar);
+        setSupportActionBar(binding.toolbar);
         setLoadingState(savedInstanceState != null && savedInstanceState.getBoolean("loading_state", false));
         this.backupFileAdapter = new BackupFileAdapter();
         this.binding.list.setAdapter(this.backupFileAdapter);
         this.backupFileAdapter.setOnItemClickedListener(this);
+    }
+    
+    @Override
+    protected void onResume(){
+        super.onResume();
+        SettingsUtils.applyScreenshotPreventionSetting(this);
     }
 
     @Override
@@ -124,8 +131,11 @@ public class ImportBackupActivity extends ActionBarActivity implements ServiceCo
         try {
             final ImportBackupService.BackupFile backupFile = ImportBackupService.BackupFile.read(this, uri);
             showEnterPasswordDialog(backupFile, finishOnCancel);
-        } catch (IOException | IllegalArgumentException e) {
+        } catch (final IOException | IllegalArgumentException e) {
+            Log.d(Config.LOGTAG, "unable to open backup file " + uri, e);
             Snackbar.make(binding.coordinator, R.string.not_a_backup_file, Snackbar.LENGTH_LONG).show();
+        } catch (final SecurityException e) {
+            Snackbar.make(binding.coordinator, R.string.sharing_application_not_grant_permission, Snackbar.LENGTH_LONG).show();
         }
     }
 
@@ -180,6 +190,7 @@ public class ImportBackupActivity extends ActionBarActivity implements ServiceCo
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
         if (resultCode == RESULT_OK) {
             if (requestCode == 0xbac) {
                 openBackupFileFromUri(intent.getData(), false);
@@ -224,15 +235,17 @@ public class ImportBackupActivity extends ActionBarActivity implements ServiceCo
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_open_backup_file) {
-            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setType("*/*");
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false);
-            }
-            intent.addCategory(Intent.CATEGORY_OPENABLE);
-            startActivityForResult(Intent.createChooser(intent, getString(R.string.open_backup)), 0xbac);
+            openBackupFile();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void openBackupFile() {
+        final Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        startActivityForResult(Intent.createChooser(intent, getString(R.string.open_backup)), 0xbac);
     }
 }

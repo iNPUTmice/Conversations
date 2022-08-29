@@ -2,26 +2,23 @@ package eu.siacs.conversations.entities;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.support.annotation.NonNull;
 import android.util.Base64;
-import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import com.google.common.base.Strings;
-
-import java.io.UnsupportedEncodingException;
-import java.lang.Comparable;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import eu.siacs.conversations.Config;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.forms.Data;
@@ -242,12 +239,8 @@ public class ServiceDiscoveryResult {
 			return null;
 		}
 
-		try {
-			return md.digest(s.toString().getBytes("UTF-8"));
-		} catch (UnsupportedEncodingException e) {
-			return null;
-		}
-	}
+        return md.digest(s.toString().getBytes(StandardCharsets.UTF_8));
+    }
 
 	private JSONObject toJSON() {
 		try {

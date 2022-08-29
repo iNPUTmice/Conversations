@@ -2,10 +2,7 @@ package eu.siacs.conversations.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
@@ -14,6 +11,10 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,6 +26,7 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.ActivityChooseCountryBinding;
 import eu.siacs.conversations.ui.adapter.CountryAdapter;
 import eu.siacs.conversations.utils.PhoneNumberUtilWrapper;
+import eu.siacs.conversations.utils.ThemeHelper;
 
 public class ChooseCountryActivity extends ActionBarActivity implements CountryAdapter.OnCountryClicked {
 
@@ -70,16 +72,17 @@ public class ChooseCountryActivity extends ActionBarActivity implements CountryA
             return true;
         }
     };
-     private TextView.OnEditorActionListener mSearchDone = (v, actionId, event) -> {
-         if (countries.size() == 1) {
-             onCountryClicked(countries.get(0));
-         }
-         return true;
-     };
+    private TextView.OnEditorActionListener mSearchDone = (v, actionId, event) -> {
+        if (countries.size() == 1) {
+            onCountryClicked(countries.get(0));
+        }
+        return true;
+    };
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(ThemeHelper.find(this));
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_choose_country);
         setSupportActionBar((Toolbar) this.binding.toolbar);
         configureActionBar(getSupportActionBar());
@@ -115,9 +118,9 @@ public class ChooseCountryActivity extends ActionBarActivity implements CountryA
     private void filterCountries(String needle) {
         List<PhoneNumberUtilWrapper.Country> countries = PhoneNumberUtilWrapper.getCountries(this);
         Iterator<PhoneNumberUtilWrapper.Country> iterator = countries.iterator();
-        while(iterator.hasNext()) {
+        while (iterator.hasNext()) {
             final PhoneNumberUtilWrapper.Country country = iterator.next();
-            if(needle != null && !country.getName().toLowerCase(Locale.getDefault()).contains(needle.toLowerCase(Locale.getDefault()))) {
+            if (needle != null && !country.getName().toLowerCase(Locale.getDefault()).contains(needle.toLowerCase(Locale.getDefault()))) {
                 iterator.remove();
             }
         }

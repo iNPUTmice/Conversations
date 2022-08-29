@@ -4,9 +4,13 @@
     <string name="use_conversations.im">Utiliser conversations.im</string>
     <string name="create_new_account">Créer un nouveau compte</string>
     <string name="do_you_have_an_account">Avez-vous déjà un compte XMPP ? Cela peut être le cas si vous utilisez déjà un autre client XMPP ou si vous avez déjà utilisé Conversations auparavant. Sinon, vous pouvez créer un nouveau compte XMPP dès maintenant.\nRemarque : Certains fournisseurs de messagerie proposent également des comptes XMPP.</string>
-    <string name="server_select_text">XMPP est un réseau de messagerie instantanée indépendant du fournisseur. Vous pouvez utiliser ce client avec n’importe quel serveur XMPP de votre choix.\nToutefois, pour votre commodité, nous avons facilité la création d’un compte sur conversations.im¹ ; un fournisseur spécialement conçu pour Conversations.</string>
+    <string name="server_select_text">XMPP est un réseau de messagerie instantanée indépendant du fournisseur. Vous pouvez utiliser ce client avec n’importe quel serveur XMPP de votre choix.\nToutefois, pour votre commodité, nous avons facilité la création d’un compte sur conversations.im ; un fournisseur spécialement conçu pour Conversations.</string>
     <string name="magic_create_text_on_x">Vous avez été invité à %1$s. Nous allons vous guider à travers le processus de création d’un compte.\nEn choisissant %1$s comme fournisseur, vous pourrez communiquer avec les utilisateurs des autres fournisseurs en leur donnant votre adresse XMPP complète.</string>
     <string name="magic_create_text_fixed">Vous avez été invité à %1$s. Un nom d’utilisateur a déjà été choisi pour vous. Nous allons vous guider à travers le processus de création d’un compte.\nVous pourrez communiquer avec les utilisateurs des autres fournisseurs en leur donnant votre adresse XMPP complète.</string>
     <string name="your_server_invitation">Votre invitation au serveur</string>
     <string name="improperly_formatted_provisioning">Code de provisionnement mal formaté</string>
+    <string name="tap_share_button_send_invite">Appuyez sur le bouton partager pour envoyer à votre contact une invitation pour %1$s</string>
+    <string name="if_contact_is_nearby_use_qr">Si vos contacts sont à votre côté, ils peuvent aussi scanner le code ci dessous pour accepter votre invitation</string>
+    <string name="easy_invite_share_text">Rejoignez %1$set discutez avec moi : %2$s</string>
+    <string name="share_invite_with">Partager une invitation avec ...</string>
 </resources>

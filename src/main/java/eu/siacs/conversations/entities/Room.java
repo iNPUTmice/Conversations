@@ -56,6 +56,11 @@ public class Room implements AvatarService.Avatarable, Comparable<Room> {
     }
 
     @Override
+    public String getAvatarName() {
+        return name;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

@@ -30,17 +30,15 @@
 package eu.siacs.conversations.ui.util;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.OmemoSetting;
-import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Conversational;
 import eu.siacs.conversations.entities.Message;
@@ -112,16 +110,16 @@ public class ConversationMenuConfigurator {
 		none.setVisible(Config.supportUnencrypted() || conversation.getMode() == Conversation.MODE_MULTI);
 		axolotl.setVisible(Config.supportOmemo());
 		switch (conversation.getNextEncryption()) {
-			case Message.ENCRYPTION_NONE:
-				none.setChecked(true);
-				break;
 			case Message.ENCRYPTION_PGP:
+				menuSecure.setTitle(R.string.encrypted_with_openpgp);
 				pgp.setChecked(true);
 				break;
 			case Message.ENCRYPTION_AXOLOTL:
+				menuSecure.setTitle(R.string.encrypted_with_omemo);
 				axolotl.setChecked(true);
 				break;
 			default:
+				menuSecure.setTitle(R.string.not_encrypted);
 				none.setChecked(true);
 				break;
 		}

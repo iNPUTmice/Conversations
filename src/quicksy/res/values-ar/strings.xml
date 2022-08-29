@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="crash_report_title">كويكسي توقّف عن العمل</string>
-    <string name="no_storage_permission">كويكسي يحتاج الإتصال بالذاكرة الخارجيّة</string>
-    <string name="no_camera_permission">كويكسي يحتاج الإتصال بالكاميرا</string>
+    <string name="pref_notification_grace_period_summary">طول الوقت الذي يبقى فيه كويكسي صامتا بعد رؤية النشاط في جهاز آخر</string>
+    <string name="pref_never_send_crash_summary">عبر إرسال أثار الأخطاء تقوم بالمساعدة في تطوير برمجة كويكسي</string>
     <string name="pref_broadcast_last_activity_summary">إجعل كلّ جهات إتصالك تعلم أنك تستعمل كويكسي</string>
-    <string name="no_microphone_permission">كويكسي يحتاج الإتصال بالمايكروفون</string>
+    <string name="huawei_protected_apps_summary">للمواصلة في إستقبال التنبيهات، حتى والشاشة مغلقة، يجب عليك أن تضيف كويكسي إلى قائمة التطبيقات المحميّة.</string>
     <string name="set_profile_picture">صورة حساب كويكسي</string>
     <string name="not_available_in_your_country">إن كويكسي Quicksy غير متوفر في بلدكم.</string>
-    </resources>
+    <string name="unable_to_verify_server_identity">لا  يمكن التأكد من خادم الهويّة.</string>
+    <string name="unknown_security_error">خطأ أمني مجهول.</string>
+    <string name="timeout_while_connecting_to_server">تجاوز الوقت أثناء الإتصال بالخادم.</string>
+</resources>

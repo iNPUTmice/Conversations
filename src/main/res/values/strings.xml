@@ -4,11 +4,10 @@
     <string name="action_add">New conversation</string>
     <string name="action_accounts">Manage accounts</string>
     <string name="action_account">Manage account</string>
-    <string name="action_end_conversation">Close this conversation</string>
+    <string name="action_end_conversation">Close conversation</string>
     <string name="action_contact_details">Contact details</string>
     <string name="action_muc_details">Group chat details</string>
     <string name="channel_details">Channel details</string>
-    <string name="action_secure">Secure conversation</string>
     <string name="action_add_account">Add account</string>
     <string name="action_edit_contact">Edit name</string>
     <string name="action_add_phone_book">Add to address book</string>
@@ -30,7 +29,11 @@
     <string name="just_now">just now</string>
     <string name="minute_ago">1 min ago</string>
     <string name="minutes_ago">%d mins ago</string>
-    <string name="x_unread_conversations">%d unread conversations</string>
+    <plurals name="x_unread_conversations">
+        <item quantity="one">%d unread conversation</item>
+        <item quantity="other">%d unread conversations</item>
+
+    </plurals>
     <string name="sending">sending…</string>
     <string name="message_decrypting">Decrypting message. Please wait…</string>
     <string name="pgp_message">OpenPGP encrypted message</string>
@@ -66,8 +69,8 @@
     <string name="unblock">Unblock</string>
     <string name="save">Save</string>
     <string name="ok">OK</string>
-    <string name="crash_report_title">Conversations has crashed</string>
-    <string name="crash_report_message">Using your XMPP account to send in stack traces helps the ongoing development of Conversations.</string>
+    <string name="crash_report_title">%1$s has crashed</string>
+    <string name="crash_report_message">Using your XMPP account to send in stack traces helps the ongoing development of %1$s.</string>
     <string name="send_now">Send now</string>
     <string name="send_never">Never ask again</string>
     <string name="problem_connecting_to_account">Could not connect to account</string>
@@ -97,7 +100,7 @@
     <string name="send_unencrypted">Send unencrypted</string>
     <string name="decryption_failed">Decryption failed. Maybe you don’t have the proper private key.</string>
     <string name="openkeychain_required">OpenKeychain</string>
-    <string name="openkeychain_required_long">Conversations uses <b>OpenKeychain</b> to encrypt and decrypt messages and manage your public keys.\n\nIt is licensed under GPLv3+ and available on F-Droid and Google Play.\n\n<small>(Please restart Conversations afterwards.)</small></string>
+    <string name="openkeychain_required_long"><![CDATA[%1$s uses <b>OpenKeychain</b> to encrypt and decrypt messages and manage your public keys.<br><br>It is licensed under GPLv3+ and available on F-Droid and Google Play.<br><br><small>(Please restart %1$s afterwards.)</small>]]></string>
     <string name="restart">Restart</string>
     <string name="install">Install</string>
     <string name="openkeychain_not_installed">Please install OpenKeychain</string>
@@ -119,7 +122,7 @@
     <string name="pref_ringtone">Ringtone</string>
     <string name="pref_notification_sound">Notification sound</string>
     <string name="pref_notification_sound_summary">Notification sound for new messages</string>
-    <string name="pref_call_ringtone_summary">Ringtone for incoming call</string>
+    <string name="pref_call_ringtone_summary">Ringtone for incoming calls</string>
     <string name="pref_notification_grace_period">Grace Period</string>
     <string name="pref_notification_grace_period_summary">The length of time notifications are silenced after detecting activity on one of your other devices.</string>
     <string name="pref_advanced_options">Advanced</string>
@@ -127,6 +130,8 @@
     <string name="pref_never_send_crash_summary">By sending in stack traces you are helping the development</string>
     <string name="pref_confirm_messages">Confirm Messages</string>
     <string name="pref_confirm_messages_summary">Let your contacts know when you have received and read their messages</string>
+    <string name="pref_prevent_screenshots">Prevent Screenshots</string>
+    <string name="pref_prevent_screenshots_summary">Hide app contents in the app switcher and block screenshots</string>
     <string name="pref_ui_options">UI</string>
     <string name="openpgp_error">OpenKeychain produced an error.</string>
     <string name="bad_key_for_encryption">Bad key for encryption.</string>
@@ -145,6 +150,7 @@
     <string name="error_file_not_found">File not found</string>
     <string name="error_io_exception">General I/O error. Maybe you ran out of storage space?</string>
     <string name="error_security_exception_during_image_copy">The app you used to select this image did not provide enough permissions to read the file.\n\n<small>Use a different file manager to choose an image</small>.</string>
+    <string name="error_security_exception">The app you used to share this file did not provide enough permissions.</string>
     <string name="account_status_unknown">Unknown</string>
     <string name="account_status_disabled">Temporarily disabled</string>
     <string name="account_status_online">Online</string>
@@ -159,6 +165,7 @@
     <string name="account_status_regis_not_sup">Registration not supported by server</string>
     <string name="account_status_regis_invalid_token">Invalid registration token</string>
     <string name="account_status_tls_error">TLS negotiation failed</string>
+    <string name="account_status_tls_error_domain">Domain not verifiable</string>
     <string name="account_status_policy_violation">Policy violation</string>
     <string name="account_status_incompatible_server">Incompatible server</string>
     <string name="account_status_stream_error">Stream error</string>
@@ -211,8 +218,8 @@
     <string name="openpgp_key_id">OpenPGP Key ID</string>
     <string name="omemo_fingerprint">OMEMO fingerprint</string>
     <string name="omemo_fingerprint_x509">v\\OMEMO fingerprint</string>
-    <string name="omemo_fingerprint_selected_message">OMEMO fingerprint of message</string>
-    <string name="omemo_fingerprint_x509_selected_message">v\\OMEMO fingerprint of message</string>
+    <string name="omemo_fingerprint_selected_message">OMEMO fingerprint (message origin)</string>
+    <string name="omemo_fingerprint_x509_selected_message">v\\OMEMO fingerprint (message origin)</string>
     <string name="other_devices">Other devices</string>
     <string name="trust_omemo_fingerprints">Trust OMEMO Fingerprints</string>
     <string name="fetching_keys">Fetching keys…</string>
@@ -285,8 +292,8 @@
     <string name="title_pref_enable_quiet_hours">Enable quiet hours</string>
     <string name="pref_quiet_hours_summary">Notifications will be silenced during quiet hours</string>
     <string name="pref_expert_options_other">Other</string>
-    <string name="pref_autojoin">Synchronize with bookmarks</string>
-    <string name="pref_autojoin_summary">Join group chats automatically if the bookmark says so</string>
+    <string name="pref_autojoin">Synchronize bookmarks</string>
+    <string name="pref_autojoin_summary">Set “autojoin” flag when entering or leaving a MUC and react to modifications made by other clients.</string>
     <string name="toast_message_omemo_fingerprint">OMEMO fingerprint copied to clipboard</string>
     <string name="conference_banned">You are banned from this group chat</string>
     <string name="conference_members_only">This group chat is members only</string>
@@ -294,6 +301,7 @@
     <string name="conference_kicked">You have been kicked from this group chat</string>
     <string name="conference_shutdown">The group chat was shut down</string>
     <string name="conference_unknown_error">You are no longer in this group chat</string>
+    <string name="conference_technical_problems">You left this group chat due to technical reasons</string>
     <string name="using_account">using account %s</string>
     <string name="hosted_on">hosted on %s</string>
     <string name="checking_x">Checking %s on HTTP host</string>
@@ -407,6 +415,8 @@
     <string name="audio">audio</string>
     <string name="video">video</string>
     <string name="image">image</string>
+    <string name="vector_graphic">vector graphic</string>
+    <string name="multimedia_file">multimedia file</string>
     <string name="pdf_document">PDF document</string>
     <string name="apk">Android App</string>
     <string name="vcard">Contact</string>
@@ -455,13 +465,14 @@
     <string name="download_failed_file_not_found">Download failed: File not found</string>
     <string name="download_failed_could_not_connect">Download failed: Could not connect to host</string>
     <string name="download_failed_could_not_write_file">Download failed: Could not write file</string>
+    <string name="download_failed_invalid_file">Download failed: Invalid file</string>
     <string name="account_status_tor_unavailable">Tor network unavailable</string>
     <string name="account_status_bind_failure">Bind failure</string>
     <string name="account_status_host_unknown">The server is not responsible for this domain</string>
     <string name="server_info_broken">Broken</string>
     <string name="pref_presence_settings">Availability</string>
-    <string name="pref_away_when_screen_off">Away when screen is off</string>
-    <string name="pref_away_when_screen_off_summary">Show as Away when the screen is turned off</string>
+    <string name="pref_away_when_screen_off">Away when device is locked</string>
+    <string name="pref_away_when_screen_off_summary">Show as Away when the device is locked</string>
     <string name="pref_dnd_on_silent_mode">Busy in silent mode</string>
     <string name="pref_dnd_on_silent_mode_summary">Show as Busy when device is in silent mode</string>
     <string name="pref_treat_vibrate_as_silent">Treat vibrate as silent mode</string>
@@ -501,10 +512,10 @@
     <string name="shared_image_with_x">Image shared with %s</string>
     <string name="shared_images_with_x">Images shared with %s</string>
     <string name="shared_text_with_x">Text shared with %s</string>
-    <string name="no_storage_permission">Grant Conversations access to external storage</string>
-    <string name="no_camera_permission">Grant Conversations access to the camera</string>
+    <string name="no_storage_permission">Grant %1$s access to external storage</string>
+    <string name="no_camera_permission">Grant %1$s access to the camera</string>
     <string name="sync_with_contacts">Synchronize with contacts</string>
-    <string name="sync_with_contacts_long">Conversations wants permission to access your contacts to match your XMPP contact list with your contacts to show their full names and avatars.\n\nIt will only read your contacts and match them locally without uploading them to your server.</string>
+    <string name="sync_with_contacts_long">%1$s wants permission to access your address book to match it with your XMPP contact list.\nThis will display your contacts’ full names and avatars.\n\n%1$s will only read your address book and match it locally without uploading anything to your server.</string>
     <string name="sync_with_contacts_quicksy"><![CDATA[Quicksy needs access to your contacts’ phone numbers to make suggestions about possible contacts who are already on Quicksy.<br><br>We will not store a copy of those phone numbers.\n\nFor more information read our <a href="https://quicksy.im/#privacy">privacy policy</a>.<br><br>You will now be asked to grant permission to access your contacts.]]></string>
     <string name="notify_on_all_messages">Notify on all messages</string>
     <string name="notify_only_when_highlighted">Notify only when mentioned</string>
@@ -515,8 +526,8 @@
     <string name="always">Always</string>
     <string name="large_images_only">Large images only</string>
     <string name="battery_optimizations_enabled">Battery optimizations enabled</string>
-    <string name="battery_optimizations_enabled_explained">Your device is employing heavy battery optimizations for Conversations which may lead to delayed notifications or even message loss.\nIt is recommended to disable them.</string>
-    <string name="battery_optimizations_enabled_dialog">Your device is employing heavy battery optimizations for Conversations which may lead to delayed notifications or even message loss.\n\nYou will now be asked to disable them.</string>
+    <string name="battery_optimizations_enabled_explained">Your device is employing heavy battery optimizations for %1$s which may lead to delayed notifications or even message loss.\nIt is recommended to disable them.</string>
+    <string name="battery_optimizations_enabled_dialog">Your device is employing heavy battery optimizations for %1$s which may lead to delayed notifications or even message loss.\n\nYou will now be asked to disable them.</string>
     <string name="disable">Disable</string>
     <string name="selection_too_large">The selected area is too large</string>
     <string name="no_accounts">(No activated accounts)</string>
@@ -590,12 +601,12 @@
     <string name="show_error_message">Show error message</string>
     <string name="error_message">Error Message</string>
     <string name="data_saver_enabled">Data saver enabled</string>
-    <string name="data_saver_enabled_explained">Your operating system is restricting Conversations from accessing the Internet when in background. To receive notifications of new messages you should allow Conversations unrestricted access when “Data saver” is on.\nConversations will still make an effort to save data when possible.</string>
-    <string name="device_does_not_support_data_saver">Your device does not support disabling Data saver for Conversations.</string>
+    <string name="data_saver_enabled_explained">Your operating system is restricting %1$s from accessing the Internet when in background. To receive notifications of new messages you should allow %1$s unrestricted access when “Data saver” is on.\n%1$s will still make an effort to save data when possible.</string>
+    <string name="device_does_not_support_data_saver">Your device does not support disabling Data saver for %1$s.</string>
     <string name="error_unable_to_create_temporary_file">Could not create temporary file</string>
     <string name="this_device_has_been_verified">This device has been verified</string>
     <string name="copy_fingerprint">Copy fingerprint</string>
-    <string name="all_omemo_keys_have_been_verified">You have verified all the OMEMO keys in your posession</string>
+    <string name="all_omemo_keys_have_been_verified">You have verified all the OMEMO keys in your possession</string>
     <string name="barcode_does_not_contain_fingerprints_for_this_conversation">The barcode does not contain fingerprints for this conversation.</string>
     <string name="verified_fingerprints">Verified fingerprints</string>
     <string name="use_camera_icon_to_scan_barcode">Use the camera to scan a contact’s barcode</string>
@@ -614,6 +625,8 @@
     <string name="pref_clean_private_storage_summary">Clean private storage where files are kept (They can be re-downloaded from the server)</string>
     <string name="i_followed_this_link_from_a_trusted_source">I followed this link from a trusted source</string>
     <string name="verifying_omemo_keys_trusted_source">You are about to verify the OMEMO keys of %1$s after clicking a link. This is only secure if you followed this link from a trusted source where only %2$s could have published this link.</string>
+    <string name="verifying_omemo_keys_trusted_source_account">You are about to verify the OMEMO keys of your own account. This is only secure if you followed this link from a trusted source where only you could have published this link.</string>
+    <string name="continue_btn">Continue</string>
     <string name="verify_omemo_keys">Verify OMEMO keys</string>
     <string name="show_inactive_devices">Show inactive</string>
     <string name="hide_inactive_devices">Hide inactive</string>
@@ -690,7 +703,7 @@
     <string name="edit_status_message_title">Edit Status Message</string>
     <string name="edit_status_message">Edit status message</string>
     <string name="disable_encryption">Disable encryption</string>
-    <string name="error_trustkey_general">Conversations is unable to send encrypted messages to %1$s. This may be due to your contact using an outdated server or client that can not handle OMEMO.</string>
+    <string name="error_trustkey_general">%1$s is unable to send encrypted messages to %2$s. This may be due to your contact using an outdated server or client that can not handle OMEMO.</string>
     <string name="error_trustkey_device_list">Could not fetch device list</string>
     <string name="error_trustkey_bundle">Could not fetch encryption keys</string>
     <string name="error_trustkey_hint_mutual">Hint: In some cases this can be fixed by adding each other your contact lists.</string>
@@ -723,7 +736,7 @@
     <string name="share">Share</string>
     <string name="unable_to_start_recording">Could not start recording</string>
     <string name="please_wait">Please wait…</string>
-    <string name="no_microphone_permission">Grant Conversations access to the microphone</string>
+    <string name="no_microphone_permission">Grant %1$s access to the microphone</string>
     <string name="search_messages">Search messages</string>
     <string name="gif">GIF</string>
     <string name="view_conversation">View conversation</string>
@@ -745,7 +758,7 @@
     <string name="conference_destroyed">This group chat has been destroyed</string>
     <string name="unable_to_save_recording">Could not save recording</string>
     <string name="foreground_service_channel_name">Foreground service</string>
-    <string name="foreground_service_channel_description">This notification category is used to display a permanent notification indicating that Conversations is running.</string>
+    <string name="foreground_service_channel_description">This notification category is used to display a permanent notification indicating that %1$s is running.</string>
     <string name="notification_group_status_information">Status Information</string>
     <string name="error_channel_name">Connectivity Problems</string>
     <string name="error_channel_description">This notification category is used to display a notification in case there is a problem connecting to an account.</string>
@@ -757,6 +770,7 @@
     <string name="missed_calls_channel_name">Missed calls</string>
     <string name="silent_messages_channel_name">Silent messages</string>
     <string name="silent_messages_channel_description">This notification group is used to display notifications that should not trigger any sound. For example when being active on another device (Grace Period).</string>
+    <string name="delivery_failed_channel_name">Failed deliveries</string>
     <string name="pref_message_notification_settings">Message notification settings</string>
     <string name="pref_incoming_call_notification_settings">Incoming calls notification settings</string>
     <string name="pref_more_notification_settings_summary">Importance, Sound, Vibrate</string>
@@ -896,6 +910,7 @@
     <string name="rtp_state_incoming_video_call">Incoming video call</string>
     <string name="rtp_state_connecting">Connecting</string>
     <string name="rtp_state_connected">Connected</string>
+    <string name="rtp_state_reconnecting">Reconnecting</string>
     <string name="rtp_state_accepting_call">Accepting call</string>
     <string name="rtp_state_ending_call">Ending call</string>
     <string name="answer_call">Answer</string>
@@ -907,12 +922,16 @@
     <string name="rtp_state_connectivity_lost_error">Connection lost</string>
     <string name="rtp_state_retracted">Retracted call</string>
     <string name="rtp_state_application_failure">App failure</string>
+    <string name="rtp_state_security_error">Verification problem</string>
     <string name="hang_up">Hang up</string>
     <string name="ongoing_call">Ongoing call</string>
     <string name="ongoing_video_call">Ongoing video call</string>
+    <string name="reconnecting_call">Reconnecting call</string>
+    <string name="reconnecting_video_call">Reconnecting video call</string>
     <string name="disable_tor_to_make_call">Disable Tor to make calls</string>
     <string name="incoming_call">Incoming call</string>
     <string name="incoming_call_duration">Incoming call · %s</string>
+    <string name="missed_call_timestamp">Missed call · %s</string>
     <string name="outgoing_call">Outgoing call</string>
     <string name="outgoing_call_duration">Outgoing call · %s</string>
     <string name="missed_call">Missed call</string>
@@ -928,12 +947,43 @@
     <string name="only_one_call_at_a_time">You can only have one call at a time.</string>
     <string name="return_to_ongoing_call">Return to ongoing call</string>
     <string name="could_not_switch_camera">Could not switch camera</string>
-    <string name="add_to_favorites">Add to favorites</string>
-    <string name="remove_from_favorites">Remove from favorites</string>
+    <string name="add_to_favorites">Pin to top</string>
+    <string name="remove_from_favorites">Unpin from top</string>
     <string name="gpx_track">GPX track</string>
     <string name="could_not_correct_message">Could not correct message</string>
+    <string name="search_all_conversations">All conversations</string>
+    <string name="search_this_conversation">This conversation</string>
+    <string name="your_avatar">Your avatar</string>
+    <string name="avatar_for_x">Avatar for %s</string>
+    <string name="encrypted_with_omemo">Encrypted with OMEMO</string>
+    <string name="encrypted_with_openpgp">Encrypted with OpenPGP</string>
+    <string name="not_encrypted">Not encrypted</string>
+    <string name="exit">Exit</string>
+    <string name="record_voice_mail">Record voice mail</string>
+    <string name="play_audio">Play audio</string>
+    <string name="pause_audio">Pause audio</string>
+    <string name="add_contact_or_create_or_join_group_chat">Add contact, create or join group chat, or discover channels</string>
     <plurals name="view_users">
         <item quantity="one">View %1$d Participant</item>
         <item quantity="other">View %1$d Participants</item>
     </plurals>
+    <plurals name="some_messages_could_not_be_delivered">
+        <item quantity="one">A message could not be delivered</item>
+        <item quantity="other">Some messages could not be delivered</item>
+    </plurals>
+    <string name="failed_deliveries">Failed deliveries</string>
+    <string name="more_options">More options</string>
+    <string name="no_application_found">No application found</string>
+    <string name="invite_to_app">Invite to Conversations</string>
+    <string name="unable_to_parse_invite">Unable to parse invite</string>
+    <string name="server_does_not_support_easy_onboarding_invites">Server does not support generating invites</string>
+    <string name="no_active_accounts_support_this">No active accounts support this feature</string>
+    <string name="backup_started_message">The backup has been started. You’ll get a notification once it has been completed.</string>
+    <string name="unable_to_enable_video">Unable to enable video.</string>
+    <string name="plain_text_document">Plain text document</string>
+    <string name="account_registrations_are_not_supported">Account registrations are not supported</string>
+    <string name="no_xmpp_adddress_found">No XMPP address found</string>
+    <string name="account_status_temporary_auth_failure">Temporary authentication failure</string>
+    <string name="delete_avatar">Delete avatar</string>
+
 </resources>

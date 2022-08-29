@@ -22,7 +22,7 @@ public interface Transferable {
 
 	int getStatus();
 
-	long getFileSize();
+	Long getFileSize();
 
 	int getProgress();
 

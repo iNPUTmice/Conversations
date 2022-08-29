@@ -1,21 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="crash_report_title">Quicksy се срина</string>
-    <string name="crash_report_message">Изпращайки ни проследявания на стека, Вие помагате за непрекъснатото развитие на Quicksy\n<b>Внимание:</b> Това ще използва Вашия XMPP профил, за да изпраща проследяването на стека до разработчика.</string>
-    <string name="openkeychain_required_long">Quicksy използва външно приложение с име <b>OpenKeychain</b>, за да шифрова и дешифрова съобщенията и да управлява публичните Ви ключове.\n\nOpenKeychain е лицензирано под условията на GPLv3 и е налично в F-Droid и Google Play.\n\n<small>(Моля, рестартирайте Quicksy след това.)</small></string>
-    <string name="contact_has_no_pgp_key">Quicksy не може да шифрова съобщенията Ви, тъй като Вашият контакт не обявява публичния си ключ.\n\n<small>Моля, помолете го/я да инсталира и настрои OpenPGP.</small></string>
-    <string name="contacts_have_no_pgp_keys">Quicksy не може да шифрова съобщенията Ви, тъй като Вашите контакти не обявяват публичните си ключове.\n\n<small>Моля, помолете го да инсталират и настроят OpenPGP.</small></string>
     <string name="pref_notification_grace_period_summary">Времето, през което Quicksy няма да прави нищо, след като забележи дейност на друго устройство</string>
     <string name="pref_never_send_crash_summary">Изпращайки проследявания на стека, Вие помагате за непрекъснатото развитие на Quicksy</string>
-    <string name="no_storage_permission">Quicksy се нуждае от достъп до външно място за съхранение</string>
-    <string name="no_camera_permission">Quicksy се нуждае от достъп до камерата</string>
     <string name="pref_broadcast_last_activity_summary">Така всичките Ви контакти ще знаят кога използвате Quicksy</string>
-    <string name="data_saver_enabled_explained">Операционната Ви система не позволява на Quicksy да се свързва с Интернет когато работи на заден фон. За да получавате известия за новите съобщения, трябва да дадете на Quicksy неограничен достъп когато съхранението на данни е включено.\nQuicksy ще продължи да се опитва да записва данните когато е възможно.</string>
-    <string name="device_does_not_support_data_saver">Устройството Ви не поддържа изключването на съхранението на данни за Quicksy.</string>
-    <string name="huawei_protected_apps_summary">Ако искате да продължите да получавате известия дори когато екранът е заключен, трябва да добавите „Quicksy“ към списъка от защитени приложения.</string>
-    <string name="error_trustkey_general">Quicksy не може да изпраща шифровани съобщения до %1$s. Възможно е Вашият контакт да използва остарял сървър или клиент, който не може да работи с OMEMO.</string>
-    <string name="no_microphone_permission">Quicksy се нуждае от достъп до микрофона</string>
-    <string name="foreground_service_channel_description">Тази категория известия се използва за показване на постоянно известие, което показва, че Quicksy работи.</string>
+    <string name="huawei_protected_apps_summary">Ако искате да продължите да получавате известия дори когато екранът е заключен, трябва да добавите Quicksy към списъка със защитени приложения.</string>
     <string name="set_profile_picture">Профилна снимка за Quicksy</string>
     <string name="not_available_in_your_country">Quicksy не може да се използва във Вашата страна.</string>
-    </resources>
+    <string name="unable_to_verify_server_identity">Идентичността на сървъра не може да бъде потвърдена.</string>
+    <string name="unknown_security_error">Неизвестна грешка в сигурността.</string>
+    <string name="timeout_while_connecting_to_server">Времето за изчакване на сървъра изтече.</string>
+</resources>

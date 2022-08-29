@@ -37,7 +37,7 @@ public class PhoneNumberUtilWrapper {
     public static String normalize(Context context, String input) throws IllegalArgumentException, NumberParseException {
         final Phonenumber.PhoneNumber number = getInstance(context).parse(input, LocationProvider.getUserCountry(context));
         if (!getInstance(context).isValidNumber(number)) {
-            throw new IllegalArgumentException("Not a valid phone number");
+            throw new IllegalArgumentException(String.format("%s is not a valid phone number", input));
         }
         return normalize(context, number);
     }

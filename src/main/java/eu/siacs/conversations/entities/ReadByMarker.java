@@ -5,8 +5,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 import eu.siacs.conversations.xmpp.Jid;
 
@@ -66,8 +66,8 @@ public class ReadByMarker {
 		return jsonObject;
 	}
 
-	public static Set<ReadByMarker> fromJson(JSONArray jsonArray) {
-		HashSet<ReadByMarker> readByMarkers = new HashSet<>();
+	public static Set<ReadByMarker> fromJson(final JSONArray jsonArray) {
+		final Set<ReadByMarker> readByMarkers = new CopyOnWriteArraySet<>();
 		for(int i = 0; i < jsonArray.length(); ++i) {
 			try {
 				readByMarkers.add(fromJson(jsonArray.getJSONObject(i)));
@@ -100,7 +100,7 @@ public class ReadByMarker {
 	}
 
 	public static Set<ReadByMarker> from(Collection<MucOptions.User> users) {
-		final HashSet<ReadByMarker> markers = new HashSet<>();
+		final Set<ReadByMarker> markers = new CopyOnWriteArraySet<>();
 		for(MucOptions.User user : users) {
 			markers.add(from(user));
 		}
@@ -125,21 +125,21 @@ public class ReadByMarker {
 	public static Set<ReadByMarker> fromJsonString(String json) {
 		try {
 			return fromJson(new JSONArray(json));
-		} catch (JSONException | NullPointerException e) {
-			return new HashSet<>();
+		} catch (final JSONException | NullPointerException e) {
+			return new CopyOnWriteArraySet<>();
 		}
 	}
 
-	public static JSONArray toJson(Set<ReadByMarker> readByMarkers) {
-		JSONArray jsonArray = new JSONArray();
-		for(ReadByMarker marker : readByMarkers) {
+	public static JSONArray toJson(final Set<ReadByMarker> readByMarkers) {
+		final JSONArray jsonArray = new JSONArray();
+		for(final ReadByMarker marker : readByMarkers) {
 			jsonArray.put(marker.toJson());
 		}
 		return jsonArray;
 	}
 
-	public static boolean contains(ReadByMarker needle, Set<ReadByMarker> readByMarkers) {
-		for(ReadByMarker marker : readByMarkers) {
+	public static boolean contains(ReadByMarker needle, final Set<ReadByMarker> readByMarkers) {
+		for(final ReadByMarker marker : readByMarkers) {
 			if (marker.realJid != null && needle.realJid != null) {
 				if (marker.realJid.asBareJid().equals(needle.realJid.asBareJid())) {
 					return true;
@@ -163,7 +163,7 @@ public class ReadByMarker {
 	}
 
 	public static boolean allUsersRepresented(Collection<MucOptions.User> users, Set<ReadByMarker> markers, ReadByMarker marker) {
-		HashSet<ReadByMarker> markersCopy = new HashSet<>(markers);
+		final Set<ReadByMarker> markersCopy = new CopyOnWriteArraySet<>(markers);
 		markersCopy.add(marker);
 		return allUsersRepresented(users, markersCopy);
 	}

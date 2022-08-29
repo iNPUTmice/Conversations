@@ -30,9 +30,10 @@
 package eu.siacs.conversations.ui.adapter;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
+
+import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;

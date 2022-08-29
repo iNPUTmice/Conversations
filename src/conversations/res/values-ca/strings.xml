@@ -2,4 +2,16 @@
 <resources>
     <string name="pick_a_server">Triï el seu proveïdor de XMPP
 </string>
-    </resources>
+    <string name="use_conversations.im">Fer servir conversations.im</string>
+    <string name="create_new_account">Crear un compte nou</string>
+    <string name="do_you_have_an_account">Ja tens un compte XMPP? Aquest podria ser el cas si ja estàs usant un client XMPP diferent o has usat Converses abans. Si no, pots crear un nou compte XMPP ara mateix.\nPista: Alguns proveïdors de correu electrònic també proporcionen comptes XMPP.</string>
+    <string name="server_select_text">XMPP és una xarxa de missatgeria instantània independent del proveïdor. Pots usar aquest client amb qualsevol servidor XMPP que triïs. No obstant això, per a la teva conveniència, hem fet fàcil la creació d\'un compte en Conversaciones.im; un proveïdor especialment adequat per a l\'ús amb Conversations.</string>
+    <string name="magic_create_text_on_x">Has estat convidat a %1$s. Et guiarem a través del procés de creació d\'un compte.\nEn triar%1$s com a proveïdor podràs comunicar-se amb els usuaris d\'altres proveïdors donant-los la seva adreça XMPP completa.</string>
+    <string name="magic_create_text_fixed">Has estat convidat a %1$s . Ja s\'ha triat un nom d\'usuari per a tu. Et guiarem en el procés de creació d\'un compte. Podràs comunicar-te amb usuaris d\'altres proveïdors donant-los la teva adreça XMPP completa.</string>
+    <string name="your_server_invitation">La teva invitació al servidor</string>
+    <string name="improperly_formatted_provisioning">Codi d\'aprovisionament mal formatat</string>
+    <string name="tap_share_button_send_invite">Toca el botó de compartir per a enviar al teu contacte una invitació a %1$s .</string>
+    <string name="if_contact_is_nearby_use_qr">Si el teu contacte està a prop, també pot escanejar el codi de baix per a acceptar la teva invitació.</string>
+    <string name="easy_invite_share_text">Uneix-te %1$s i xerra amb mi: %2$s</string>
+    <string name="share_invite_with">Comparteix la invitació amb...</string>
+</resources>

@@ -1,23 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="crash_report_title">Το Quicksy έκλεισε απροσδόκητα</string>
-    <string name="crash_report_message">Στέλνοντας ίχνη στοίβας προωθείτε την συνεχή ανάπτυξη του Quicksy\n<b>Προειδοποίηση:</b> Για την αποστολή του ίχνους στοίβας θα χρησιμοποιηθεί ο XMPP λογαριασμός σας.</string>
-    <string name="openkeychain_required_long">Το Quicksy χρησιμοποιεί μια τρίτη εφαρμογή που ονομάζεται <b>OpenKeychain</b> για να κρυπτογραφεί και να αποκρυπτογραφεί μηνύματα και να διαχειρίζεται τα δημόσια κλειδιά σας.\n\nΤο OpenKeychain δημοσιεύεται με την άδεια GPLv3 και είναι διαθέσιμο στο F-Droid και το Google Play.\n\n<small>(Παρακαλώ επανεκκινήστε το Quicksy αμέσως μετά.)</small></string>
-    <string name="contact_has_no_pgp_key">Το Quicksy αδυνατεί να κρυπτογραφήσει τα μηνύματά σας γιατί η επαφή σας δεν ανακοινώνει το δημόσιο κλειδί της.\n\n<small>Παρακαλώ ζητήστε από την επαφή σας να εγκαταστήσει το OpenPGP.</small></string>
-    <string name="contacts_have_no_pgp_keys">Το Quicksy αδυνατεί να κρυπτογραφήσει τα μηνύματά σας γιατί οι επαφές σας δεν ανακοινώνουν το δημόσιο κλειδί τους.\n\n<small>Παρακαλώ ζητήστε από τις επαφές σας να εγκαταστήσουν το OpenPGP.</small></string>
-    <string name="pref_notification_grace_period_summary">Η διάρκεια του χρόνου που το Quicksy σταματάει τη λειτουργία του καθώς ανιχνεύθηκε δραστηριόητα σε άλλη συσκευή</string>
-    <string name="pref_never_send_crash_summary">Στέλνοντας ίχνη στοίβας βοηθάτε την συνεχόμενη ανάπτυξη του Quicksy</string>
-    <string name="no_storage_permission">Το Quicksy χρειάζεται πρόσβαση στον εξωτερικό αποθηκευτικό χώρο</string>
-    <string name="no_camera_permission">Το Quicksy χρειάζεται πρόσβαση στην φωτογραφική μηχανή</string>
+    <string name="pref_notification_grace_period_summary">Ο χρόνος σίγασης ειδοποιήσεων του Quicksy αφότου ανιχνευθεί δραστηριότητα σε μια από τις άλλες συσκευές σας.</string>
+    <string name="pref_never_send_crash_summary">Στέλνοντας ίχνη στοίβας προωθείτε την συνεχόμενη ανάπτυξη του Quicksy</string>
     <string name="pref_broadcast_last_activity_summary">Επιτρέψτε στις επαφές σας να γνωρίζουν πότε χρησιμοποιείτε το Quicksy</string>
-    <string name="data_saver_enabled_explained">Το λειτουργικό σας σύστημα περιορίζει το Quicksy από το να συνδέεται στο Internet όταν βρίσκεται στο παρασκήνιο. Για να λαμβάνετε ειδοποιήσεις νέων μηνυμάτων πρέπει να επιτρέψετε στο Quicksy να έχει απεριόριστη πρόσβαση όταν ενεργοποιείται η μείωση χρήσης δεδομένων κινητής.\nΤο Quicksy θα προσπαθεί να περιορίσει τη χρήση δεδομένων όταν είναι δυνατό.</string>
-    <string name="device_does_not_support_data_saver">Η συσκευή σας δεν υποστηρίζει την απενεργοποίηση μείωσης χρήσης δεδομένων κινητής για το Quicksy.</string>
     <string name="huawei_protected_apps_summary">Για να συνεχίσετε να λαμβάνετε ειδοποιήσεις, ακόμα κι όταν η οθόνη είναι σβηστή, χρειάζεται να προσθέσετε το Quicksy στον κατάλογο με τις προστατευμένες εφαρμογές.</string>
-    <string name="error_trustkey_general">Το Quicksy αδυνατεί να στείλει κρυπτογραφημένα μηνύματα στην επαφή %1$s. Αυτό μπορεί να συμβαίνει γιατί η επαφή σας χρησιμοποιεί παλιότερο διακομιστή ή πρόγραμμα που δε μπορεί να χειριστεί κρυπτογράφηση OMEMO.</string>
-    <string name="no_microphone_permission">Το Quicksy χρειάζεται πρόσβαση στο μικρόφωνο</string>
-    <string name="foreground_service_channel_description">Αυτή η κατηγορία ειδοποιήσεων χρησιμοποιείται για την εμφάνιση μιας μόνιμης ειδοποίησης που δείχνει πως εκτελείται το Quicksy.</string>
-    <string name="set_profile_picture">Φωτογραφία προφίλ του quicksy</string>
-    <string name="not_available_in_your_country">Το quicksy δεν είναι διαθέσιμο στην χώρα σας.</string>
+    <string name="set_profile_picture">Φωτογραφία προφίλ του Quicksy</string>
+    <string name="not_available_in_your_country">Το Quicksy δεν είναι διαθέσιμο στην χώρα σας.</string>
     <string name="unable_to_verify_server_identity">Αδυναμία επαλήθευσης της ταυτότητας του διακομιστή.</string>
     <string name="unknown_security_error">Άγνωστο σφάλμα ασφάλειας.</string>
     <string name="timeout_while_connecting_to_server">Λήξη χρονικού ορίου κατά τη σύνδεση στον διακομιστή.</string>

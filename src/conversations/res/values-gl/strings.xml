@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="pick_a_server">Escolle o teu provedor XMPP</string>
+    <string name="pick_a_server">Elixe o teu provedor XMPP</string>
     <string name="use_conversations.im">Utilizar conversations.im</string>
     <string name="create_new_account">Crear nova conta</string>
     <string name="do_you_have_an_account">Xa posúes unha conta XMPP? Este pode ser o caso se xa estás a utilizar outro cliente XMPP ou utilizaches Conversations previamente. Se non é así podes crear unha nova conta agora mesmo.\nTruco: Algúns provedores de correo tamén proporcionan contas XMPP.</string>
-    <string name="server_select_text">XMPP é unha rede de mensaxería independente do provedor. Podes utilizar este cliente con calquera provedor XMPP da túa elección.\nMais para a tua conveniencia fixemos que fose doado crear unha conta en conversations.im¹; un provedor especialmente axeitado para utilizar con Conversations.</string>
-    <string name="magic_create_text_on_x">Convidáronte a %1$s. Guiarémoste no proceso para crear unha conta.\nAo escoller %1$s como provedor poderás comunicarte con usuarias de outros provedores cando lles deas o teu enderezo XMPP completo.</string>
-    <string name="magic_create_text_fixed">Convidáronte a %1$s. Escollemos un nome de usuaria por ti. Guiarémoste no proceso de crear unha conta.\nPoderás comunicarte con usuarias de outros provedores cando lles digas o teu enderezo XMPP completo.</string>
+    <string name="server_select_text">XMPP é unha rede de mensaxería independente do provedor. Podes utilizar este cliente con calquera provedor XMPP da túa elección.\nMais para a tua conveniencia fixemos que fose doado crear unha conta en conversations.im; un provedor especialmente axeitado para utilizar con Conversations.</string>
+    <string name="magic_create_text_on_x">Convidáronte a %1$s. Guiarémoste no proceso para crear unha conta.\nAo elexir %1$s como provedor poderás comunicarte con usuarias doutros provedores cando lles deas o teu enderezo XMPP completo.</string>
+    <string name="magic_create_text_fixed">Convidáronte a %1$s. Xa eleximos un nome de usuaria para ti. Guiarémoste no proceso de crear unha conta.\nPoderás comunicarte con usuarias doutros provedores cando lles digas o teu enderezo XMPP completo.</string>
     <string name="your_server_invitation">O convite do teu servidor</string>
     <string name="improperly_formatted_provisioning">Código de aprovisionamento con formato non válido</string>
+    <string name="tap_share_button_send_invite">Toca no botón compartir para convidar ao teu contacto a %1$s.</string>
+    <string name="if_contact_is_nearby_use_qr">Se o contacto está preto de ti, pode escanear o código inferior para aceptar o teu convite.</string>
+    <string name="easy_invite_share_text">Únete a %1$s e conversa conmigo: %2$s</string>
+    <string name="share_invite_with">Enviar convite a...</string>
 </resources>

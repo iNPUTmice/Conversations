@@ -2,19 +2,20 @@ package eu.siacs.conversations.ui.adapter;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.support.annotation.AttrRes;
-import android.support.annotation.DimenRes;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import androidx.annotation.AttrRes;
+import androidx.annotation.DimenRes;
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ import eu.siacs.conversations.ui.util.ViewUtil;
 
 public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHolder> {
 
-    private static final List<String> DOCUMENT_MIMES = Arrays.asList(
+    public static final List<String> DOCUMENT_MIMES = Arrays.asList(
             "application/pdf",
             "application/vnd.oasis.opendocument.text",
             "application/msword",
@@ -91,6 +92,8 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
                 attr = R.attr.media_preview_document;
             } else if (mime.equals("application/gpx+xml")) {
                 attr = R.attr.media_preview_tour;
+            } else if (mime.startsWith("image/")) {
+                attr = R.attr.media_preview_image;
             } else {
                 attr = R.attr.media_preview_unknown;
             }

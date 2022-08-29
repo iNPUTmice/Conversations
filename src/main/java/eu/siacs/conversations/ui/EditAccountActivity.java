@@ -6,20 +6,15 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
-import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.security.KeyChain;
 import android.security.KeyChainAliasCallback;
-import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AlertDialog.Builder;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -28,20 +23,27 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.CheckBox;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog.Builder;
+import androidx.databinding.DataBindingUtil;
+
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.common.base.CharMatcher;
 
 import org.openintents.openpgp.util.OpenPgpUtils;
 
-import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import eu.siacs.conversations.Config;
@@ -78,6 +80,7 @@ import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.XmppConnection.Features;
 import eu.siacs.conversations.xmpp.forms.Data;
 import eu.siacs.conversations.xmpp.pep.Avatar;
+import okhttp3.HttpUrl;
 
 public class EditAccountActivity extends OmemoActivity implements OnAccountUpdate, OnUpdateBlocklist,
         OnKeyStatusUpdated, OnCaptchaRequested, KeyChainAliasCallback, XmppConnectionService.OnShowErrorToast, XmppConnectionService.OnMamPreferencesFetched {
@@ -89,7 +92,6 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
     private static final int REQUEST_CHANGE_STATUS = 0xee11;
     private static final int REQUEST_ORBOT = 0xff22;
     private final PendingItem<PresenceTemplate> mPendingPresenceTemplate = new PendingItem<>();
-    private final AtomicBoolean mPendingReconnect = new AtomicBoolean(false);
     private AlertDialog mCaptchaDialog = null;
     private Jid jidToEdit;
     private boolean mInitMode = false;
@@ -189,7 +191,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             final boolean openRegistrationUrl = registerNewAccount && !accountInfoEdited && mAccount != null && mAccount.getStatus() == Account.State.REGISTRATION_WEB;
             final boolean openPaymentUrl = mAccount != null && mAccount.getStatus() == Account.State.PAYMENT_REQUIRED;
             final boolean redirectionWorthyStatus = openPaymentUrl || openRegistrationUrl;
-            URL url = connection != null && redirectionWorthyStatus ? connection.getRedirectionUrl() : null;
+            final HttpUrl url = connection != null && redirectionWorthyStatus ? connection.getRedirectionUrl() : null;
             if (url != null && !wasDisabled) {
                 try {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url.toString())));
@@ -206,6 +208,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                     jid = Jid.ofEscaped(binding.accountJid.getText().toString(), getUserModeDomain(), null);
                 } else {
                     jid = Jid.ofEscaped(binding.accountJid.getText().toString());
+                    Resolver.checkDomain(jid);
                 }
             } catch (final NullPointerException | IllegalArgumentException e) {
                 if (mUsernameMode) {
@@ -318,7 +321,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 
         }
     };
-    private View.OnFocusChangeListener mEditTextFocusListener = new View.OnFocusChangeListener() {
+    private final View.OnFocusChangeListener mEditTextFocusListener = new View.OnFocusChangeListener() {
         @Override
         public void onFocusChange(View view, boolean b) {
             EditText et = (EditText) view;
@@ -475,13 +478,6 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                 Log.d(Config.LOGTAG, "pgp result not ok");
             }
         }
-        if (requestCode == REQUEST_ORBOT) {
-            if (xmppConnectionService != null && mAccount != null) {
-                xmppConnectionService.reconnectAccountInBackground(mAccount);
-            } else {
-                mPendingReconnect.set(true);
-            }
-        }
     }
 
     @Override
@@ -539,7 +535,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                     }
                 } else {
                     XmppConnection connection = mAccount == null ? null : mAccount.getXmppConnection();
-                    URL url = connection != null && mAccount.getStatus() == Account.State.PAYMENT_REQUIRED ? connection.getRedirectionUrl() : null;
+                    HttpUrl url = connection != null && mAccount.getStatus() == Account.State.PAYMENT_REQUIRED ? connection.getRedirectionUrl() : null;
                     if (url != null) {
                         this.binding.saveButton.setText(R.string.open_website);
                     } else if (inNeedOfSaslAccept()) {
@@ -550,7 +546,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                 }
             } else {
                 XmppConnection connection = mAccount == null ? null : mAccount.getXmppConnection();
-                URL url = connection != null && mAccount.getStatus() == Account.State.REGISTRATION_WEB ? connection.getRedirectionUrl() : null;
+                HttpUrl url = connection != null && mAccount.getStatus() == Account.State.REGISTRATION_WEB ? connection.getRedirectionUrl() : null;
                 if (url != null && this.binding.accountRegisterNew.isChecked() && !accountInfoEdited) {
                     this.binding.saveButton.setText(R.string.open_website);
                 } else {
@@ -605,7 +601,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             this.mSavedInstanceInit = savedInstanceState.getBoolean("initMode", false);
         }
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_edit_account);
-        setSupportActionBar((Toolbar) binding.toolbar);
+        setSupportActionBar(binding.toolbar);
         binding.accountJid.addTextChangedListener(this.mTextWatcher);
         binding.accountJid.setOnFocusChangeListener(this.mEditTextFocusListener);
         this.binding.accountPassword.addTextChangedListener(this.mTextWatcher);
@@ -701,12 +697,18 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
             } catch (final IllegalArgumentException | NullPointerException ignored) {
                 this.jidToEdit = null;
             }
-            if (jidToEdit != null && intent.getData() != null && intent.getBooleanExtra("scanned", false)) {
-                final XmppUri uri = new XmppUri(intent.getData());
-                if (xmppConnectionServiceBound) {
-                    processFingerprintVerification(uri, false);
+            final Uri data = intent.getData();
+            final XmppUri xmppUri = data == null ? null : new XmppUri(data);
+            final boolean scanned = intent.getBooleanExtra("scanned", false);
+            if (jidToEdit != null && xmppUri != null && xmppUri.hasFingerprints()) {
+                if (scanned) {
+                    if (xmppConnectionServiceBound) {
+                        processFingerprintVerification(xmppUri, false);
+                    } else {
+                        this.pendingUri = xmppUri;
+                    }
                 } else {
-                    this.pendingUri = uri;
+                    displayVerificationWarningDialog(xmppUri);
                 }
             }
             boolean init = intent.getBooleanExtra("init", false);
@@ -743,8 +745,31 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         }
     }
 
+    private void displayVerificationWarningDialog(final XmppUri xmppUri) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.verify_omemo_keys);
+        View view = getLayoutInflater().inflate(R.layout.dialog_verify_fingerprints, null);
+        final CheckBox isTrustedSource = view.findViewById(R.id.trusted_source);
+        TextView warning = view.findViewById(R.id.warning);
+        warning.setText(R.string.verifying_omemo_keys_trusted_source_account);
+        builder.setView(view);
+        builder.setPositiveButton(R.string.continue_btn, (dialog, which) -> {
+            if (isTrustedSource.isChecked()) {
+                processFingerprintVerification(xmppUri, false);
+            } else {
+                finish();
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, (dialog, which) -> finish());
+        AlertDialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setOnCancelListener(d -> finish());
+        dialog.show();
+    }
+
     @Override
-    public void onNewIntent(Intent intent) {
+    public void onNewIntent(final Intent intent) {
+        super.onNewIntent(intent);
         if (intent != null && intent.getData() != null) {
             final XmppUri uri = new XmppUri(intent.getData());
             if (xmppConnectionServiceBound) {
@@ -756,7 +781,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
     }
 
     @Override
-    public void onSaveInstanceState(final Bundle savedInstanceState) {
+    public void onSaveInstanceState(@NonNull final Bundle savedInstanceState) {
         if (mAccount != null) {
             savedInstanceState.putString("account", mAccount.getJid().asBareJid().toEscapedString());
             savedInstanceState.putBoolean("initMode", mInitMode);
@@ -781,11 +806,6 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         }
 
         if (mAccount != null) {
-
-            if (mPendingReconnect.compareAndSet(true, false)) {
-                xmppConnectionService.reconnectAccountInBackground(mAccount);
-            }
-
             this.mInitMode |= this.mAccount.isOptionSet(Account.OPTION_REGISTER);
             this.mUsernameMode |= mAccount.isOptionSet(Account.OPTION_MAGIC_CREATE) && mAccount.isOptionSet(Account.OPTION_REGISTER);
             if (mPendingFingerprintVerificationUri != null) {
@@ -977,6 +997,10 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 
         }
 
+        if (!mInitMode && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            this.binding.accountPassword.setImportantForAutofill(View.IMPORTANT_FOR_AUTOFILL_NO);
+        }
+
         final boolean editable = !mAccount.isOptionSet(Account.OPTION_LOGGED_IN_SUCCESSFULLY) && !mAccount.isOptionSet(Account.OPTION_FIXED_USERNAME) && QuickConversationsService.isConversations();
         this.binding.accountJid.setEnabled(editable);
         this.binding.accountJid.setFocusable(editable);
@@ -988,10 +1012,10 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         updateDisplayName(displayName);
 
 
-        final boolean tooglePassword = mAccount.isOptionSet(Account.OPTION_MAGIC_CREATE) || !mAccount.isOptionSet(Account.OPTION_LOGGED_IN_SUCCESSFULLY);
+        final boolean togglePassword = mAccount.isOptionSet(Account.OPTION_MAGIC_CREATE) || !mAccount.isOptionSet(Account.OPTION_LOGGED_IN_SUCCESSFULLY);
         final boolean editPassword = !mAccount.isOptionSet(Account.OPTION_MAGIC_CREATE) || (!mAccount.isOptionSet(Account.OPTION_LOGGED_IN_SUCCESSFULLY) && QuickConversationsService.isConversations()) || mAccount.getLastErrorStatus() == Account.State.UNAUTHORIZED;
 
-        this.binding.accountPasswordLayout.setPasswordVisibilityToggleEnabled(tooglePassword);
+        this.binding.accountPasswordLayout.setPasswordVisibilityToggleEnabled(togglePassword);
 
         this.binding.accountPassword.setFocusable(editPassword);
         this.binding.accountPassword.setFocusableInTouchMode(editPassword);
@@ -1021,7 +1045,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         if (this.mAccount.isOnlineAndConnected() && !this.mFetchingAvatar) {
             Features features = this.mAccount.getXmppConnection().getFeatures();
             this.binding.stats.setVisibility(View.VISIBLE);
-            boolean showBatteryWarning = !xmppConnectionService.getPushManagementService().available(mAccount) && isOptimizingBattery();
+            boolean showBatteryWarning = isOptimizingBattery();
             boolean showDataSaverWarning = isAffectedByDataSaver();
             showOsOptimizationWarning(showBatteryWarning, showDataSaverWarning);
             this.binding.sessionEst.setText(UIHelper.readableTimeDifferenceFull(this, this.mAccount.getXmppConnection()
@@ -1080,9 +1104,6 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                 } else {
                     this.binding.serverInfoHttpUpload.setText(R.string.server_info_available);
                 }
-            } else if (features.p1S3FileTransfer()) {
-                this.binding.serverInfoHttpUploadDescription.setText(R.string.p1_s3_filetransfer);
-                this.binding.serverInfoHttpUpload.setText(R.string.server_info_available);
             } else {
                 this.binding.serverInfoHttpUpload.setText(R.string.server_info_unavailable);
             }
@@ -1218,7 +1239,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
         this.binding.osOptimization.setVisibility(showBatteryWarning || showDataSaverWarning ? View.VISIBLE : View.GONE);
         if (showDataSaverWarning && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             this.binding.osOptimizationHeadline.setText(R.string.data_saver_enabled);
-            this.binding.osOptimizationBody.setText(R.string.data_saver_enabled_explained);
+            this.binding.osOptimizationBody.setText(getString(R.string.data_saver_enabled_explained, getString(R.string.app_name)));
             this.binding.osOptimizationDisable.setText(R.string.allow);
             this.binding.osOptimizationDisable.setOnClickListener(v -> {
                 Intent intent = new Intent(Settings.ACTION_IGNORE_BACKGROUND_DATA_RESTRICTIONS_SETTINGS);
@@ -1227,13 +1248,13 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
                 try {
                     startActivityForResult(intent, REQUEST_DATA_SAVER);
                 } catch (ActivityNotFoundException e) {
-                    Toast.makeText(EditAccountActivity.this, R.string.device_does_not_support_data_saver, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditAccountActivity.this, getString(R.string.device_does_not_support_data_saver, getString(R.string.app_name)), Toast.LENGTH_SHORT).show();
                 }
             });
         } else if (showBatteryWarning && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             this.binding.osOptimizationDisable.setText(R.string.disable);
             this.binding.osOptimizationHeadline.setText(R.string.battery_optimizations_enabled);
-            this.binding.osOptimizationBody.setText(R.string.battery_optimizations_enabled_explained);
+            this.binding.osOptimizationBody.setText(getString(R.string.battery_optimizations_enabled_explained, getString(R.string.app_name)));
             this.binding.osOptimizationDisable.setOnClickListener(v -> {
                 Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
                 Uri uri = Uri.parse("package:" + getPackageName());

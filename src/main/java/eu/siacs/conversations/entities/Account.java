@@ -4,7 +4,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.SystemClock;
 import android.util.Log;
-import android.util.Pair;
+
+import com.google.common.base.Strings;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,9 +28,9 @@ import eu.siacs.conversations.services.AvatarService;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.XmppUri;
+import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.jingle.RtpCapability;
-import eu.siacs.conversations.xmpp.Jid;
 
 public class Account extends AbstractEntity implements AvatarService.Avatarable {
 
@@ -64,7 +65,6 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     public static final int OPTION_FIXED_USERNAME = 9;
     private static final String KEY_PGP_SIGNATURE = "pgp_signature";
     private static final String KEY_PGP_ID = "pgp_id";
-    public final HashSet<Pair<String, String>> inProgressDiscoFetches = new HashSet<>();
     protected final JSONObject keys;
     private final Roster roster = new Roster(this);
     private final Collection<Jid> blocklist = new CopyOnWriteArraySet<>();
@@ -148,7 +148,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     }
 
     public boolean httpUploadAvailable(long filesize) {
-        return xmppConnection != null && (xmppConnection.getFeatures().httpUpload(filesize) || xmppConnection.getFeatures().p1S3FileTransfer());
+        return xmppConnection != null && xmppConnection.getFeatures().httpUpload(filesize);
     }
 
     public boolean httpUploadAvailable() {
@@ -249,7 +249,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     }
 
     public String getHostname() {
-        return this.hostname == null ? "" : this.hostname;
+        return Strings.nullToEmpty(this.hostname);
     }
 
     public void setHostname(String hostname) {
@@ -615,6 +615,11 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
         return UIHelper.getColorForName(jid.asBareJid().toString());
     }
 
+    @Override
+    public String getAvatarName() {
+        throw new IllegalStateException("This method should not be called");
+    }
+
     public enum State {
         DISABLED(false, false),
         OFFLINE(false),
@@ -622,6 +627,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
         ONLINE(false),
         NO_INTERNET(false),
         UNAUTHORIZED,
+        TEMPORARY_AUTH_FAILURE,
         SERVER_NOT_FOUND,
         REGISTRATION_SUCCESSFUL(false),
         REGISTRATION_FAILED(true, false),
@@ -632,6 +638,7 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
         REGISTRATION_INVALID_TOKEN(true,false),
         REGISTRATION_PASSWORD_TOO_WEAK(true, false),
         TLS_ERROR,
+        TLS_ERROR_DOMAIN,
         INCOMPATIBLE_SERVER,
         TOR_NOT_AVAILABLE,
         DOWNGRADE_ATTACK,
@@ -698,6 +705,8 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
                     return R.string.account_status_regis_invalid_token;
                 case TLS_ERROR:
                     return R.string.account_status_tls_error;
+                case TLS_ERROR_DOMAIN:
+                    return R.string.account_status_tls_error_domain;
                 case INCOMPATIBLE_SERVER:
                     return R.string.account_status_incompatible_server;
                 case TOR_NOT_AVAILABLE:
@@ -724,6 +733,8 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
                     return R.string.payment_required;
                 case MISSING_INTERNET_PERMISSION:
                     return R.string.missing_internet_permission;
+                case TEMPORARY_AUTH_FAILURE:
+                    return R.string.account_status_temporary_auth_failure;
                 default:
                     return R.string.account_status_unknown;
             }

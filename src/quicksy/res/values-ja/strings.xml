@@ -1,20 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="crash_report_title">Quicksy がクラッシュしました</string>
-    <string name="crash_report_message">Quicksy の継続的な開発を支援するために、スタックトレースをお送りください。\n<b>警告:</b> あなたの XMPP アカウントを使用して、開発者にスタックトレースを送信します。</string>
-    <string name="openkeychain_required_long">Quicksy は <b>OpenKeychain</b> と呼ばれるサードパーティのアプリを利用して、メッセージの暗号化および復号化、そしてあなたの公開鍵を管理します。\n\nOpenKeychain は GPLv3 ライセンスの下で、F-Droid および Google Play から利用可能です。\n\n<small>(後で Quicksy を再起動してください。)</small></string>
-    <string name="contact_has_no_pgp_key">連絡先が公開鍵を通知しないため、Quicksy はあなたのメッセージを暗号化することができません。\n\n<small>連絡先に OpenPGP をセットアップするように依頼してください。</small></string>
-    <string name="contacts_have_no_pgp_keys">連絡先が公開鍵を通知しないため、Quicksy はあなたのメッセージを暗号化することができません。\n\n<small>連絡先に OpenPGP をセットアップするように依頼してください。</small></string>
     <string name="pref_notification_grace_period_summary">別のデバイスで活動を見た後、Quicksy を静かにする時間の長さ</string>
     <string name="pref_never_send_crash_summary">スタックトレースを送信することで、あなたは Quicksy の継続的な開発を支援しています</string>
-    <string name="no_storage_permission">Quicksy は外部ストレージにアクセスが必要です</string>
-    <string name="no_camera_permission">Quicksy はカメラにアクセスが必要です</string>
     <string name="pref_broadcast_last_activity_summary">Quicksy を使用するときに、すべての連絡先に知らせましょう</string>
-    <string name="data_saver_enabled_explained">お使いのオペレーティングシステムは、Quicksy がバックグラウンドのときにインターネットにアクセスすることを制限しています。新しいメッセージの通知を受信するには、データセーバーがオンになっているとき、Quicksy に無制限のアクセスを許可する必要があります。\Quicksy は可能なときにデータを保存するための努力をします。</string>
-    <string name="device_does_not_support_data_saver">お使いのデバイスは、Quicksy のデータセーバーを無効にできません。</string>
     <string name="huawei_protected_apps_summary">画面がオフになっている場合でも通知を受信し続けるには、保護されたアプリのリストに Quicksy を追加する必要があります。</string>
-    <string name="error_trustkey_general">Quicksy は %1$s に暗号化メッセージを送れません。連絡先が利用しているサーバーが古すぎるか、クライアントが OMEMO を扱えません。</string>
-    <string name="no_microphone_permission">Quicksy はマイクにアクセスが必要です</string>
-    <string name="foreground_service_channel_description">この通知カテゴリーは Quicksy が実行されていることを表示する、永続的な通知を表示するために使用されます。</string>
     <string name="set_profile_picture">Quicksy プロフィール写真</string>
-    </resources>
+    <string name="not_available_in_your_country">Quicksy はあなたの国で利用不可です。</string>
+    <string name="unable_to_verify_server_identity">サーバーの同一性を確認できません。</string>
+    <string name="unknown_security_error">未知のセキュリティエラー。</string>
+    <string name="timeout_while_connecting_to_server">サーバーへの接続中にタイムアウトが発生しました。</string>
+</resources>

@@ -34,13 +34,13 @@
                 android:visibility="gone" />
         </LinearLayout>
 
-        <android.support.design.widget.AppBarLayout
+        <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/app_bar_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="visible">
 
-            <android.support.v7.widget.Toolbar
+            <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
@@ -53,14 +53,29 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/status"
                 android:layout_marginLeft="16dp"
-                android:layout_marginTop="0dp"
                 android:layout_marginRight="16dp"
-                android:layout_marginBottom="32dp"
                 android:textAppearance="@style/TextAppearance.Conversations.Display2"
                 android:textColor="@color/white"
                 tools:text="Juliet Capulet" />
+            <TextView
+                android:visibility="visible"
+                android:id="@+id/with_jid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/status"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:textAppearance="@style/TextAppearance.Conversations.Body1"
+                android:textColor="@color/white"
+                tools:text="jcapulet@example.com" />
 
-        </android.support.design.widget.AppBarLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="32dp"/>
+
+
+        </com.google.android.material.appbar.AppBarLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -73,7 +88,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_margin="24dp"
+                android:layout_marginTop="@dimen/rtp_session_duration_top_margin"
                 android:textAppearance="@style/TextAppearance.Conversations.Title.Monospace"
                 tools:text="01:23" />
 
@@ -87,41 +102,56 @@
         </RelativeLayout>
 
 
-        <org.webrtc.SurfaceViewRenderer
+        <LinearLayout
+            android:id="@+id/remote_video_wrapper"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/app_bar_layout"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:background="@color/black"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <eu.siacs.conversations.ui.widget.SurfaceViewRenderer
+                android:id="@+id/remote_video"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <eu.siacs.conversations.ui.widget.SurfaceViewRenderer
             android:id="@+id/local_video"
             android:layout_width="@dimen/local_video_preview_width"
             android:layout_height="@dimen/local_video_preview_height"
             android:layout_below="@+id/app_bar_layout"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="24dp"
-            android:layout_marginRight="24dp"
             android:visibility="gone"
             app:elevation="4dp" />
 
-        <org.webrtc.SurfaceViewRenderer
-            android:id="@+id/remote_video"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+        <ImageView
+            android:id="@+id/verified"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/app_bar_layout"
             android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentBottom="true"
-            android:visibility="gone" />
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="@dimen/rtp_session_duration_top_margin"
+            android:alpha="0.7"
+            android:src="@drawable/ic_verified_fingerprint" />
 
         <ImageView
             android:id="@+id/pip_local_mic_off_indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
             android:layout_margin="8dp"
             android:alpha="0.7"
             android:src="@drawable/ic_mic_off_black_24dp"
-            android:tint="@color/white"
-            android:visibility="gone" />
+            android:visibility="gone"
+            app:tint="@color/white" />
 
         <RelativeLayout
             android:id="@+id/button_row"
@@ -136,12 +166,11 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true">
 
-                <android.support.design.widget.FloatingActionButton
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/reject_call"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
-                    android:layout_alignParentLeft="true"
                     android:layout_margin="16dp"
                     android:src="@drawable/ic_call_end_white_48dp"
                     android:visibility="gone"
@@ -151,12 +180,11 @@
                     app:maxImageSize="36dp"
                     tools:visibility="visible" />
 
-                <android.support.design.widget.FloatingActionButton
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/accept_call"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_margin="16dp"
                     android:src="@drawable/ic_call_white_48dp"
@@ -169,26 +197,25 @@
 
             </RelativeLayout>
 
-            <android.support.design.widget.FloatingActionButton
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/in_call_action_left"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_margin="12dp"
+                android:layout_margin="@dimen/in_call_fab_margin"
                 android:layout_toStartOf="@+id/end_call"
-                android:layout_toLeftOf="@+id/end_call"
                 android:visibility="gone"
                 app:backgroundTint="?color_background_primary"
                 app:elevation="4dp"
                 app:fabSize="mini"
                 app:tint="?attr/icon_tint" />
 
-            <android.support.design.widget.FloatingActionButton
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/end_call"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:layout_margin="16dp"
+                android:layout_margin="@dimen/in_call_fab_margin_center"
                 android:src="@drawable/ic_call_end_white_48dp"
                 android:visibility="visible"
                 app:backgroundTint="@color/red700"
@@ -196,34 +223,42 @@
                 app:fabCustomSize="72dp"
                 app:maxImageSize="36dp" />
 
-            <android.support.design.widget.FloatingActionButton
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/in_call_action_right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_margin="12dp"
+                android:layout_margin="@dimen/in_call_fab_margin"
                 android:layout_toEndOf="@+id/end_call"
-                android:layout_toRightOf="@+id/end_call"
                 android:visibility="gone"
                 app:backgroundTint="?color_background_primary"
                 app:elevation="4dp"
                 app:fabSize="mini"
                 app:tint="?attr/icon_tint" />
 
-            <android.support.design.widget.FloatingActionButton
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/in_call_action_far_right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_margin="12dp"
+                android:layout_margin="@dimen/in_call_fab_margin"
                 android:layout_toEndOf="@+id/in_call_action_right"
-                android:layout_toRightOf="@+id/in_call_action_right"
                 android:visibility="gone"
                 app:backgroundTint="?color_background_primary"
                 app:elevation="4dp"
                 app:fabSize="mini"
                 app:tint="?attr/icon_tint" />
         </RelativeLayout>
+
+        <TextView
+            android:id="@+id/using_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="8dp"
+            android:text="@string/using_account"
+            android:textAppearance="@style/TextAppearance.Conversations.Caption"/>
 
     </RelativeLayout>
 </layout>

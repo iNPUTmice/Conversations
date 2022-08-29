@@ -2,9 +2,10 @@ package eu.siacs.conversations.entities;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.Lists;
@@ -27,10 +28,11 @@ import eu.siacs.conversations.persistance.DatabaseBackend;
 import eu.siacs.conversations.services.AvatarService;
 import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.utils.JidHelper;
+import eu.siacs.conversations.utils.MessageUtils;
 import eu.siacs.conversations.utils.UIHelper;
+import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.chatstate.ChatState;
 import eu.siacs.conversations.xmpp.mam.MamReference;
-import eu.siacs.conversations.xmpp.Jid;
 
 import static eu.siacs.conversations.entities.Bookmark.printableValue;
 
@@ -68,12 +70,12 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
     public AtomicBoolean messagesLoaded = new AtomicBoolean(true);
     protected Account account = null;
     private String draftMessage;
-    private String name;
-    private String contactUuid;
-    private String accountUuid;
+    private final String name;
+    private final String contactUuid;
+    private final String accountUuid;
     private Jid contactJid;
     private int status;
-    private long created;
+    private final long created;
     private int mode;
     private JSONObject attributes;
     private Jid nextCounterpart;
@@ -142,7 +144,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
         }
         final String contact = conversation.getJid().getDomain().toEscapedString();
         final String account = conversation.getAccount().getServer();
-        if (Config.OMEMO_EXCEPTIONS.CONTACT_DOMAINS.contains(contact) || Config.OMEMO_EXCEPTIONS.ACCOUNT_DOMAINS.contains(account)) {
+        if (Config.OMEMO_EXCEPTIONS.matchesContactDomain(contact) || Config.OMEMO_EXCEPTIONS.ACCOUNT_DOMAINS.contains(account)) {
             return false;
         }
         return conversation.isSingleOrPrivateAndNonAnonymous() || conversation.getBooleanAttribute(ATTRIBUTE_FORMERLY_PRIVATE_NON_ANONYMOUS, false);
@@ -184,6 +186,18 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
             }
         }
         return null;
+    }
+
+    public int countFailedDeliveries() {
+        int count = 0;
+        synchronized (this.messages) {
+            for(final Message message : this.messages) {
+                if (message.getStatus() == Message.STATUS_SEND_FAILED) {
+                    ++count;
+                }
+            }
+        }
+        return count;
     }
 
     public Message getLastEditableMessage() {
@@ -245,9 +259,22 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
     public Message findMessageWithFileAndUuid(final String uuid) {
         synchronized (this.messages) {
             for (final Message message : this.messages) {
+                final Transferable transferable = message.getTransferable();
+                final boolean unInitiatedButKnownSize = MessageUtils.unInitiatedButKnownSize(message);
                 if (message.getUuid().equals(uuid)
                         && message.getEncryption() != Message.ENCRYPTION_PGP
-                        && (message.isFileOrImage() || message.treatAsDownloadable())) {
+                        && (message.isFileOrImage() || message.treatAsDownloadable() || unInitiatedButKnownSize || (transferable != null && transferable.getStatus() != Transferable.STATUS_UPLOADING))) {
+                    return message;
+                }
+            }
+        }
+        return null;
+    }
+
+    public Message findMessageWithUuid(final String uuid) {
+        synchronized (this.messages) {
+            for (final Message message : this.messages) {
+                if (message.getUuid().equals(uuid)) {
                     return message;
                 }
             }
@@ -475,7 +502,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 
     public void setLastClearHistory(long time, String reference) {
         if (reference != null) {
-            setAttribute(ATTRIBUTE_LAST_CLEAR_HISTORY, String.valueOf(time) + ":" + reference);
+            setAttribute(ATTRIBUTE_LAST_CLEAR_HISTORY, time + ":" + reference);
         } else {
             setAttribute(ATTRIBUTE_LAST_CLEAR_HISTORY, time);
         }
@@ -538,7 +565,15 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
     }
 
     public boolean isRead() {
-        return (this.messages.size() == 0) || this.messages.get(this.messages.size() - 1).isRead();
+        synchronized (this.messages) {
+            for(final Message message : Lists.reverse(this.messages)) {
+                if (message.isRead() && message.getType() == Message.TYPE_RTP_SESSION) {
+                    continue;
+                }
+                return message.isRead();
+            }
+            return true;
+        }
     }
 
     public List<Message> markRead(String upToUuid) {
@@ -767,7 +802,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                 if (message.getStatus() == Message.STATUS_UNSEND || message.getStatus() == Message.STATUS_SEND) {
                     String otherBody;
                     if (message.hasFileOnRemoteHost()) {
-                        otherBody = message.getFileParams().url.toString();
+                        otherBody = message.getFileParams().url;
                     } else {
                         otherBody = message.body;
                     }
@@ -998,8 +1033,11 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
     public int unreadCount() {
         synchronized (this.messages) {
             int count = 0;
-            for (int i = this.messages.size() - 1; i >= 0; --i) {
-                if (this.messages.get(i).isRead()) {
+            for(final Message message : Lists.reverse(this.messages)) {
+                if (message.isRead()) {
+                    if (message.getType() == Message.TYPE_RTP_SESSION) {
+                        continue;
+                    }
                     return count;
                 }
                 ++count;
@@ -1038,7 +1076,7 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
                 && !contact.isOwnServer()
                 && !contact.showInContactList()
                 && !contact.isSelf()
-                && !JidHelper.isQuicksyDomain(contact.getJid())
+                && !(contact.getJid().isDomainJid() && JidHelper.isQuicksyDomain(contact.getJid()))
                 && sentMessagesCount() == 0;
     }
 
@@ -1064,6 +1102,11 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
     @Override
     public int getAvatarBackgroundColor() {
         return UIHelper.getColorForName(getName().toString());
+    }
+
+    @Override
+    public String getAvatarName() {
+        return getName().toString();
     }
 
     public interface OnMessageFound {

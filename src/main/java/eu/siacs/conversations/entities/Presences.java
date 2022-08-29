@@ -136,6 +136,9 @@ public class Presences {
 
     public boolean anySupport(final String namespace) {
         synchronized (this.presences) {
+            if (this.presences.size() == 0) {
+                return true;
+            }
             for (Presence presence : this.presences.values()) {
                 ServiceDiscoveryResult disco = presence.getServiceDiscoveryResult();
                 if (disco != null && disco.getFeatures().contains(namespace)) {

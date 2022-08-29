@@ -1,16 +1,17 @@
 package eu.siacs.conversations.ui.util;
 
 import android.content.Context;
-import android.support.annotation.StringRes;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.TypefaceSpan;
+
+import androidx.annotation.StringRes;
 
 
 public class JidDialog {
 
     public static SpannableString style(Context context, @StringRes int res, String... args) {
-        SpannableString spannable = new SpannableString(context.getString(res, (Object[]) args));
+        final SpannableString spannable = new SpannableString(context.getString(res, (Object[]) args));
         if (args.length >= 1) {
             final String value = args[0];
             int start = spannable.toString().indexOf(value);

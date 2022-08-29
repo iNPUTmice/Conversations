@@ -31,7 +31,8 @@ package eu.siacs.conversations.utils;
 
 import android.content.Context;
 import android.os.SystemClock;
-import android.support.annotation.PluralsRes;
+
+import androidx.annotation.PluralsRes;
 
 import java.util.Locale;
 
@@ -70,10 +71,14 @@ public class TimeFrameUtils {
 
     public static String formatTimePassed(final long since, final long to, final boolean withMilliseconds) {
         final long passed = (since < 0) ? 0 : (to - since);
-        final int hours = (int) (passed / 3600000);
-        final int minutes = (int) (passed / 60000) % 60;
-        final int seconds = (int) (passed / 1000) % 60;
-        final int milliseconds = (int) (passed / 100) % 10;
+        return formatElapsedTime(passed, withMilliseconds);
+    }
+
+    public static String formatElapsedTime(final long elapsed, final boolean withMilliseconds) {
+        final int hours = (int) (elapsed / 3600000);
+        final int minutes = (int) (elapsed / 60000) % 60;
+        final int seconds = (int) (elapsed / 1000) % 60;
+        final int milliseconds = (int) (elapsed / 100) % 10;
         if (hours > 0) {
             return String.format(Locale.ENGLISH, "%d:%02d:%02d", hours, minutes, seconds);
         } else if (withMilliseconds) {

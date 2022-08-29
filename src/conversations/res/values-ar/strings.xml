@@ -3,4 +3,18 @@
     <string name="pick_a_server">اختر مزود خدمة XMPP الخاص بك</string>
     <string name="use_conversations.im">استخدِم conversations.im</string>
     <string name="create_new_account">أنشئ حسابًا جديدًا</string>
-    </resources>
+    <string name="do_you_have_an_account">هل تملك حساب XMPP؟؟ قد يكون ذلك ممكنا لو كنت تستعمل خدمة XMPP أخرى أو إستعملت تطبيق كونفرسايشنز سابقا. أو يمكنك صنع حساب XMPP جديد الآن.
+ملاحظة: بعض خدمات البريد الإلكتروني تقدم حسابات XMPP.</string>
+    <string name="server_select_text">XMPP هي خدمة مستقلة للتواصل بشبكة الرسائل المباشرة. يمكنك إستعمال هذه الخدمة مع أي خادم XMPP تختاره.
+سعيا لراحتك جعلنا خلق حساب في كونفيرسايشنز سهلا مع مقدم خدمة خاص بالإستعمال مع كونفيرسايشنز.</string>
+    <string name="magic_create_text_on_x">لقد تمت دعوتك لـ %1$s. سيتم دلّك على طريقة صنع حساب.
+عندما تختار %1$sكمقدّم خدمة سيصبح من الممكن لك التواصل مع مستعملين من أي خادم آخر عن طريق إعطائهم عنوانك الكامل على XMPP.</string>
+    <string name="magic_create_text_fixed">تمّت دعوتك إلى %1$s. تم إختيار إسم مستخدم خاص بك. سيتم قيادتك عبر طريقة صنع حساب.
+سيمكنك التواصل مع مستخدمين من مزودين آخرين عبر إعطائهم كامل عنوانك XMPP.</string>
+    <string name="your_server_invitation">سيرفر دعوتك</string>
+    <string name="improperly_formatted_provisioning">لم يتم التقاط الكود بطريقة جيّدة</string>
+    <string name="tap_share_button_send_invite">إضغط على زر مشاركة لترسل إلى المتصل بك دعوة إلى %1$s.</string>
+    <string name="if_contact_is_nearby_use_qr">إذا كان المتصل بك قريبا منك، يمكنه فحص الكود بالأسفل ليقبل دعوتك.</string>
+    <string name="easy_invite_share_text">إنظم %1$s وتحدّث معي: %2$s</string>
+    <string name="share_invite_with">شارك إستدعاء مع...</string>
+</resources>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pick_a_server">Valitse XMPP-palveluntarjoaja</string>
+    <string name="use_conversations.im">Käytä conversations.im:ää</string>
+    <string name="create_new_account">Luo uusi tili</string>
+    <string name="do_you_have_an_account">Onko sinulla jo XMPP-tunnus? Jos käytät jo toista XMPP-sovellusta tai olet käyttänyt Conversationsia aiemmin, niin voi olla. Jos ei, voit tehdä uuden XMPP-tilin saman tien.\nVinkki: Jotkin sähköpostipalvelut tarjoavat myös XMPP-tilin.</string>
+    <string name="server_select_text">XMPP on tietystä palveluntarjoasta riippumaton pikaviestiverkosto. Voit käyttää tätä asiakasohjelmaa minkä tahansa haluamasi XMPP-palvelimen kanssa.\nHelppouden nimissä olemme kuitenkin helpottaneet tilin luomista conversations.im:iin.</string>
+    <string name="magic_create_text_on_x">Sinut on kutsuttu %1$s:iin. Opastamme sinua tilin luomisen kanssa.\nValitessasi palvelimen %1$s palveluntarjoajaksesi voit jutella muiden palveluntajoajien käyttäjien kanssa kertomalla heille koko XMPP-osoitteesi.</string>
+    <string name="magic_create_text_fixed">Sinut on kutsuttu palvelimelle %1$s. Käyttäjänimesi on valittu valmiiksi puolestasi. Opastamme sinua tilin luomisen kanssa.\nVoit jutella muiden palveluntarjoajien käyttäjien kanssa kertomalle heille koko XMPP-osoitteesi.</string>
+    <string name="your_server_invitation">Kutsusi palvelimelle</string>
+    <string name="improperly_formatted_provisioning">Virheellisesti muotoiltu koodi</string>
+    <string name="if_contact_is_nearby_use_qr">Jos henkilö on lähellä, hän voi myös hyväksyä kutsun lukemalla allaolevan koodin.</string>
+    <string name="share_invite_with">Jaa kutsu sovelluksella...</string>
+</resources>

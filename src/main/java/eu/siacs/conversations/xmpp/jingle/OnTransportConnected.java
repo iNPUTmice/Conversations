@@ -1,7 +1,7 @@
 package eu.siacs.conversations.xmpp.jingle;
 
 public interface OnTransportConnected {
-	public void failed();
+	void failed();
 
-	public void established();
+	void established();
 }

@@ -28,10 +28,30 @@
   -->
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_search"
+        android:orderInCategory="10"
         android:title="@string/search_messages"
-        android:orderInCategory="50"
-        app:showAsAction="never"/>
+        android:visible="@bool/show_individual_search_options"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_easy_invite"
+        android:orderInCategory="89"
+        android:title="@string/invite_to_app" />
+    <item
+        android:id="@+id/action_accounts"
+        android:orderInCategory="90"
+        android:title="@string/action_accounts"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_account"
+        android:orderInCategory="90"
+        android:title="@string/action_account"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/action_settings"
+        app:showAsAction="never" />
 </menu>

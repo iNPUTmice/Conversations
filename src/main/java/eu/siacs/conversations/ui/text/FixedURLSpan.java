@@ -38,16 +38,13 @@ import android.os.Build;
 import android.text.Editable;
 import android.text.Spanned;
 import android.text.style.URLSpan;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import java.util.Arrays;
 
-import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.ui.ConversationsActivity;
-import eu.siacs.conversations.utils.XmppUri;
 
 
 @SuppressLint("ParcelCreator")

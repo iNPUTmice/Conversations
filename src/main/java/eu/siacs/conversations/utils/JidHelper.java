@@ -40,7 +40,7 @@ import eu.siacs.conversations.xmpp.Jid;
 
 public class JidHelper {
 
-    private static List<String> LOCAL_PART_BLACKLIST = Arrays.asList("xmpp", "jabber", "me");
+    private static final List<String> LOCAL_PART_BLACKLIST = Arrays.asList("xmpp", "jabber", "me");
 
     public static String localPartOrFallback(Jid jid) {
         if (LOCAL_PART_BLACKLIST.contains(jid.getLocal().toLowerCase(Locale.ENGLISH))) {

@@ -1,7 +1,8 @@
 package eu.siacs.conversations.services;
 
-import android.support.annotation.NonNull;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -22,6 +23,7 @@ import eu.siacs.conversations.entities.Room;
 import eu.siacs.conversations.http.HttpConnectionManager;
 import eu.siacs.conversations.http.services.MuclumbusService;
 import eu.siacs.conversations.parser.IqParser;
+import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
@@ -32,7 +34,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import eu.siacs.conversations.xmpp.Jid;
 
 public class ChannelDiscoveryService {
 
@@ -49,14 +50,9 @@ public class ChannelDiscoveryService {
     }
 
     void initializeMuclumbusService() {
-        final OkHttpClient.Builder builder = new OkHttpClient.Builder();
-
+        final OkHttpClient.Builder builder = HttpConnectionManager.OK_HTTP_CLIENT.newBuilder();
         if (service.useTorToConnect()) {
-            try {
-                builder.proxy(HttpConnectionManager.getProxy());
-            } catch (IOException e) {
-                throw new RuntimeException("Unable to use Tor proxy", e);
-            }
+            builder.proxy(HttpConnectionManager.getProxy());
         }
         Retrofit retrofit = new Retrofit.Builder()
                 .client(builder.build())
@@ -72,7 +68,7 @@ public class ChannelDiscoveryService {
     }
 
     void discover(@NonNull final String query, Method method, OnChannelSearchResultsFound onChannelSearchResultsFound) {
-        List<Room> result = cache.getIfPresent(key(method, query));
+        final List<Room> result = cache.getIfPresent(key(method, query));
         if (result != null) {
             onChannelSearchResultsFound.onChannelSearchResultsFound(result);
             return;

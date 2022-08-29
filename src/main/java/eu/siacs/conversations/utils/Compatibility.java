@@ -1,5 +1,7 @@
 package eu.siacs.conversations.utils;
 
+import static eu.siacs.conversations.services.EventReceiver.EXTRA_NEEDS_FOREGROUND_SERVICE;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -10,9 +12,10 @@ import android.os.Build;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
-import android.support.annotation.BoolRes;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
+
+import androidx.annotation.BoolRes;
+import androidx.core.content.ContextCompat;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -23,29 +26,26 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.ui.SettingsActivity;
 import eu.siacs.conversations.ui.SettingsFragment;
 
-import static eu.siacs.conversations.services.EventReceiver.EXTRA_NEEDS_FOREGROUND_SERVICE;
-
 public class Compatibility {
 
-    private static final List<String> UNUSED_SETTINGS_POST_TWENTYSIX = Arrays.asList(
-            "led",
-            "notification_ringtone",
-            "notification_headsup",
-            "vibrate_on_notification",
-            "call_ringtone"
-    );
-    private static final List<String> UNUESD_SETTINGS_PRE_TWENTYSIX = Arrays.asList(
-            "message_notification_settings",
-            "call_notification_settings"
-    );
-
+    private static final List<String> UNUSED_SETTINGS_POST_TWENTYSIX =
+            Arrays.asList(
+                    "led",
+                    "notification_ringtone",
+                    "notification_headsup",
+                    "vibrate_on_notification");
+    private static final List<String> UNUSED_SETTINGS_PRE_TWENTYSIX =
+            Collections.singletonList("message_notification_settings");
 
     public static boolean hasStoragePermission(Context context) {
-        return Build.VERSION.SDK_INT < Build.VERSION_CODES.M || ContextCompat.checkSelfPermission(context, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+        return Build.VERSION.SDK_INT < Build.VERSION_CODES.M
+                || ContextCompat.checkSelfPermission(
+                                context, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_GRANTED;
     }
 
-    public static boolean runsTwentyOne() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
+    public static boolean s() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.S;
     }
 
     private static boolean runsTwentyFour() {
@@ -71,20 +71,22 @@ public class Compatibility {
     private static boolean targetsTwentySix(Context context) {
         try {
             final PackageManager packageManager = context.getPackageManager();
-            final ApplicationInfo applicationInfo = packageManager.getApplicationInfo(context.getPackageName(), 0);
+            final ApplicationInfo applicationInfo =
+                    packageManager.getApplicationInfo(context.getPackageName(), 0);
             return applicationInfo == null || applicationInfo.targetSdkVersion >= 26;
         } catch (PackageManager.NameNotFoundException | RuntimeException e) {
-            return true; //when in doubt…
+            return true; // when in doubt…
         }
     }
 
     private static boolean targetsTwentyFour(Context context) {
         try {
             final PackageManager packageManager = context.getPackageManager();
-            final ApplicationInfo applicationInfo = packageManager.getApplicationInfo(context.getPackageName(), 0);
+            final ApplicationInfo applicationInfo =
+                    packageManager.getApplicationInfo(context.getPackageName(), 0);
             return applicationInfo == null || applicationInfo.targetSdkVersion >= 24;
         } catch (PackageManager.NameNotFoundException | RuntimeException e) {
-            return true; //when in doubt…
+            return true; // when in doubt…
         }
     }
 
@@ -97,14 +99,23 @@ public class Compatibility {
     }
 
     public static boolean keepForegroundService(Context context) {
-        return runsAndTargetsTwentySix(context) || getBooleanPreference(context, SettingsActivity.KEEP_FOREGROUND_SERVICE, R.bool.enable_foreground_service);
+        return runsAndTargetsTwentySix(context)
+                || getBooleanPreference(
+                        context,
+                        SettingsActivity.KEEP_FOREGROUND_SERVICE,
+                        R.bool.enable_foreground_service);
     }
 
     public static void removeUnusedPreferences(SettingsFragment settingsFragment) {
-        List<PreferenceCategory> categories = Arrays.asList(
-                (PreferenceCategory) settingsFragment.findPreference("notification_category"),
-                (PreferenceCategory) settingsFragment.findPreference("advanced"));
-        for (String key : (runsTwentySix() ? UNUSED_SETTINGS_POST_TWENTYSIX : UNUESD_SETTINGS_PRE_TWENTYSIX)) {
+        List<PreferenceCategory> categories =
+                Arrays.asList(
+                        (PreferenceCategory)
+                                settingsFragment.findPreference("notification_category"),
+                        (PreferenceCategory) settingsFragment.findPreference("advanced"));
+        for (String key :
+                (runsTwentySix()
+                        ? UNUSED_SETTINGS_POST_TWENTYSIX
+                        : UNUSED_SETTINGS_PRE_TWENTYSIX)) {
             Preference preference = settingsFragment.findPreference(key);
             if (preference != null) {
                 for (PreferenceCategory category : categories) {
@@ -116,7 +127,8 @@ public class Compatibility {
         }
         if (Compatibility.runsTwentySix()) {
             if (targetsTwentySix(settingsFragment.getContext())) {
-                Preference preference = settingsFragment.findPreference(SettingsActivity.KEEP_FOREGROUND_SERVICE);
+                Preference preference =
+                        settingsFragment.findPreference(SettingsActivity.KEEP_FOREGROUND_SERVICE);
                 if (preference != null) {
                     for (PreferenceCategory category : categories) {
                         if (category != null) {
@@ -137,10 +149,11 @@ public class Compatibility {
                 context.startService(intent);
             }
         } catch (RuntimeException e) {
-            Log.d(Config.LOGTAG, context.getClass().getSimpleName() + " was unable to start service");
+            Log.d(
+                    Config.LOGTAG,
+                    context.getClass().getSimpleName() + " was unable to start service");
         }
     }
-
 
     @SuppressLint("UnsupportedChromeOsCameraSystemFeature")
     public static boolean hasFeatureCamera(final Context context) {

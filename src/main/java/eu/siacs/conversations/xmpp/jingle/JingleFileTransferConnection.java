@@ -41,6 +41,7 @@ import eu.siacs.conversations.services.AbstractConnectionManager;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
+import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnIqPacketReceived;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Content;
 import eu.siacs.conversations.xmpp.jingle.stanzas.FileTransferDescription;
@@ -50,7 +51,6 @@ import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
 import eu.siacs.conversations.xmpp.jingle.stanzas.Reason;
 import eu.siacs.conversations.xmpp.jingle.stanzas.S5BTransportInfo;
 import eu.siacs.conversations.xmpp.stanzas.IqPacket;
-import eu.siacs.conversations.xmpp.Jid;
 
 public class JingleFileTransferConnection extends AbstractJingleConnection implements Transferable {
 
@@ -70,8 +70,8 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
     private int mStatus = Transferable.STATUS_UNKNOWN;
     private Message message;
     private Jid responder;
-    private List<JingleCandidate> candidates = new ArrayList<>();
-    private ConcurrentHashMap<String, JingleSocks5Transport> connections = new ConcurrentHashMap<>();
+    private final List<JingleCandidate> candidates = new ArrayList<>();
+    private final ConcurrentHashMap<String, JingleSocks5Transport> connections = new ConcurrentHashMap<>();
 
     private String transportId;
     private FileTransferDescription description;
@@ -100,7 +100,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
     private OutputStream mFileOutputStream;
     private InputStream mFileInputStream;
 
-    private OnIqPacketReceived responseListener = (account, packet) -> {
+    private final OnIqPacketReceived responseListener = (account, packet) -> {
         if (packet.getType() != IqPacket.TYPE.RESULT) {
             if (mJingleStatus != JINGLE_STATUS_FAILED && mJingleStatus != JINGLE_STATUS_FINISHED) {
                 fail(IqParser.extractErrorMessage(packet));
@@ -164,7 +164,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
             JingleFileTransferConnection.this.fail();
         }
     };
-    private OnTransportConnected onIbbTransportConnected = new OnTransportConnected() {
+    private final OnTransportConnected onIbbTransportConnected = new OnTransportConnected() {
         @Override
         public void failed() {
             Log.d(Config.LOGTAG, "ibb open failed");
@@ -177,7 +177,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
             JingleFileTransferConnection.this.transport.send(file, onFileTransmissionStatusChanged);
         }
     };
-    private OnProxyActivated onProxyActivated = new OnProxyActivated() {
+    private final OnProxyActivated onProxyActivated = new OnProxyActivated() {
 
         @Override
         public void success() {
@@ -492,19 +492,19 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
                 AbstractConnectionManager.Extension extension = AbstractConnectionManager.Extension.of(path);
                 if (VALID_IMAGE_EXTENSIONS.contains(extension.main)) {
                     message.setType(Message.TYPE_IMAGE);
-                    message.setRelativeFilePath(message.getUuid() + "." + extension.main);
+                    xmppConnectionService.getFileBackend().setupRelativeFilePath(message, message.getUuid() + "." + extension.main);
                 } else if (VALID_CRYPTO_EXTENSIONS.contains(extension.main)) {
                     if (VALID_IMAGE_EXTENSIONS.contains(extension.secondary)) {
                         message.setType(Message.TYPE_IMAGE);
-                        message.setRelativeFilePath(message.getUuid() + "." + extension.secondary);
+                        xmppConnectionService.getFileBackend().setupRelativeFilePath(message,message.getUuid() + "." + extension.secondary);
                     } else {
                         message.setType(Message.TYPE_FILE);
-                        message.setRelativeFilePath(message.getUuid() + (extension.secondary != null ? ("." + extension.secondary) : ""));
+                        xmppConnectionService.getFileBackend().setupRelativeFilePath(message,message.getUuid() + (extension.secondary != null ? ("." + extension.secondary) : ""));
                     }
                     message.setEncryption(Message.ENCRYPTION_PGP);
                 } else {
                     message.setType(Message.TYPE_FILE);
-                    message.setRelativeFilePath(message.getUuid() + (extension.main != null ? ("." + extension.main) : ""));
+                    xmppConnectionService.getFileBackend().setupRelativeFilePath(message,message.getUuid() + (extension.main != null ? ("." + extension.main) : ""));
                 }
                 long size = parseLong(fileSize, 0);
                 message.setBody(Long.toString(size));
@@ -1239,11 +1239,11 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
     }
 
     @Override
-    public long getFileSize() {
+    public Long getFileSize() {
         if (this.file != null) {
             return this.file.getExpectedSize();
         } else {
-            return 0;
+            return null;
         }
     }
 

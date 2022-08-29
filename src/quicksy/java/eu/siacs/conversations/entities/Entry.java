@@ -2,6 +2,9 @@ package eu.siacs.conversations.entities;
 
 import android.util.Base64;
 
+import com.google.common.base.Charsets;
+import com.google.common.hash.Hashing;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -63,20 +66,15 @@ public class Entry implements Comparable<Entry> {
                 builder.append(jid.asBareJid().toEscapedString());
             }
         }
-        MessageDigest md;
-        try {
-            md = MessageDigest.getInstance("SHA-1");
-        } catch (NoSuchAlgorithmException e) {
-            return "";
-        }
-        byte[] sha1 = md.digest(builder.toString().getBytes());
+        @SuppressWarnings("deprecation")
+        final byte[] sha1 = Hashing.sha1().hashString(builder.toString(), Charsets.UTF_8).asBytes();
         return new String(Base64.encode(sha1, Base64.DEFAULT)).trim();
     }
 
     private static List<Entry> ofPhoneNumberContactsAndContacts(final Collection<PhoneNumberContact> phoneNumberContacts, Collection<Contact> systemContacts) {
-        ArrayList<Entry> entries = new ArrayList<>();
+        final ArrayList<Entry> entries = new ArrayList<>();
         for(Contact contact : systemContacts) {
-            PhoneNumberContact phoneNumberContact = PhoneNumberContact.findByUri(phoneNumberContacts, contact.getSystemAccount());
+            final PhoneNumberContact phoneNumberContact = PhoneNumberContact.findByUri(phoneNumberContacts, contact.getSystemAccount());
             if (phoneNumberContact != null && phoneNumberContact.getPhoneNumber() != null) {
                 Entry entry = findOrCreateByPhoneNumber(entries, phoneNumberContact.getPhoneNumber());
                 entry.jids.add(contact.getJid().asBareJid());

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pick_a_server">Vælg din XMPP-udbyder</string>
+    <string name="use_conversations.im">Brug conversations.im</string>
+    <string name="create_new_account">Opret ny konto</string>
+    <string name="do_you_have_an_account">Har du allerede en XMPP-konto? Dette kan være tilfældet, hvis du allerede bruger en anden XMPP-klient eller har brugt Conversations før. Hvis ikke, kan du lige nu oprette en ny XMPP-konto.\nTip: Nogle e-mail-udbydere leverer også XMPP-konti.</string>
+    <string name="server_select_text">XMPP er et udbyderuafhængigt onlinemeddelelsesnetværk. Du kan bruge denne klient med hvilken XMPP-server du end vælger.\nMen for din nemhedsskyld har vi gjort vi det let at oprette en konto på conversations.im; en udbyder, der er specielt velegnet til brug med Conversations.</string>
+    <string name="magic_create_text_on_x">Du er blevet inviteret til %1$s. Vi guider dig gennem processen med at oprette en konto.\nNår du vælger %1$s som udbyder, kan du kommunikere med brugere fra andre udbydere ved at give dem din fulde XMPP-adresse.</string>
+    <string name="magic_create_text_fixed">Du er blevet inviteret til %1$s. Der er allerede valgt et brugernavn til dig. Vi guider dig gennem processen med at oprette en konto.\nDu vil være i stand til at kommunikere med brugere fra andre udbydere ved at give dem din fulde XMPP-adresse.</string>
+    <string name="your_server_invitation">Din server invitation</string>
+    <string name="improperly_formatted_provisioning">Forkert formateret klargøringskode</string>
+    <string name="tap_share_button_send_invite">Tryk på deleknappen for at sende din kontakt en invitation til %1$s.</string>
+    <string name="if_contact_is_nearby_use_qr">Hvis din kontakt er i nærheden, kan de også skanne koden nedenfor for at acceptere din invitation.</string>
+    <string name="easy_invite_share_text">Deltag med %1$s og chat med mig: %2$s</string>
+    <string name="share_invite_with">Del invitation med...</string>
+</resources>

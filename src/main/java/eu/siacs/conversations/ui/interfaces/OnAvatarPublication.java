@@ -29,7 +29,7 @@
 
 package eu.siacs.conversations.ui.interfaces;
 
-import android.support.annotation.StringRes;
+import androidx.annotation.StringRes;
 
 public interface OnAvatarPublication {
 

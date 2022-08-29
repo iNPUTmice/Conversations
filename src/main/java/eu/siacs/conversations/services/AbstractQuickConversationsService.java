@@ -1,8 +1,13 @@
 package eu.siacs.conversations.services;
 
+import android.content.Intent;
+
 import eu.siacs.conversations.BuildConfig;
 
 public abstract class AbstractQuickConversationsService {
+
+
+    public static final String SMS_RETRIEVED_ACTION = "com.google.android.gms.auth.api.phone.SMS_RETRIEVED";
 
     protected final XmppConnectionService service;
 
@@ -25,4 +30,6 @@ public abstract class AbstractQuickConversationsService {
     public abstract boolean isSynchronizing();
 
     public abstract void considerSyncBackground(boolean force);
+
+    public abstract void handleSmsReceived(Intent intent);
 }

@@ -1,17 +1,17 @@
 package eu.siacs.conversations.ui;
 
-import android.databinding.DataBindingUtil;
-import android.support.annotation.StringRes;
-import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.AlertDialog;
+import androidx.databinding.DataBindingUtil;
 
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.databinding.DialogBlockContactBinding;
 import eu.siacs.conversations.entities.Blockable;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.ui.util.JidDialog;
-import eu.siacs.conversations.xmpp.Jid;
 
 public final class BlockContactDialog {
 	public static void show(final XmppActivity xmppActivity, final Blockable blockable) {

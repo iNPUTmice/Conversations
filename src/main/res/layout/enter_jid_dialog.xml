@@ -22,7 +22,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"/>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/jid_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -37,6 +37,6 @@
                 android:layout_height="wrap_content"
                 android:imeOptions="actionDone|flagNoExtractUi"
                 android:inputType="textEmailAddress" />
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 </layout>

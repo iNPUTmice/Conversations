@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pref_notification_grace_period_summary">Durasi Quicksy tetap diam setelah melihat aktivitas di perangkat lain</string>
+    <string name="pref_never_send_crash_summary">Dengan mengirimkan data log, Anda sedang membantu pengembangan Quicksy</string>
+    <string name="pref_broadcast_last_activity_summary">Ijinkan kontak anda mengetahui kapan anda menggunakan Quicksy</string>
+    <string name="huawei_protected_apps_summary">Untuk tetap menerima notifikasi, bahkan saat layar mati, Anda perlu menambahkan Quicksy ke daftar aplikasi yang dilindungi.</string>
+    <string name="set_profile_picture">Gambar profil Quicksy</string>
+    <string name="not_available_in_your_country">Quicksy tidak tersedia di negara anda.</string>
+    <string name="unable_to_verify_server_identity">Gagal memverifikasi identitas server</string>
+    <string name="unknown_security_error">Error keamanan tidak dikenal.</string>
+    <string name="timeout_while_connecting_to_server">Waktu habis saat menghubungi server.</string>
+</resources>

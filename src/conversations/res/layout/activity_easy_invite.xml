@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="?attr/color_background_primary"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
+
+        <LinearLayout
+            android:id="@+id/in_progress"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/invite"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/tap_to_share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tap_share_button_send_invite"
+                android:textAppearance="@style/TextAppearance.Conversations.Body1" />
+
+            <TextView
+                android:id="@+id/scan_the_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tap_to_share"
+                android:layout_marginTop="24sp"
+                android:text="@string/if_contact_is_nearby_use_qr"
+                android:textAppearance="@style/TextAppearance.Conversations.Body1" />
+
+            <ImageView
+                android:id="@+id/qr_code"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_above="@+id/share_button"
+                android:layout_below="@id/scan_the_code"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="24sp"
+                android:scaleType="fitCenter" />
+
+            <Button
+                android:id="@+id/share_button"
+                style="@style/Widget.Conversations.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:minWidth="0dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:text="@string/share"
+                android:layout_centerHorizontal="true"
+                android:textColor="?attr/colorAccent" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+</layout>

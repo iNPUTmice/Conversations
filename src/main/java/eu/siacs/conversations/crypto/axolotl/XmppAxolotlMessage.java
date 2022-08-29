@@ -59,7 +59,7 @@ public class XmppAxolotlMessage {
             switch (keyElement.getName()) {
                 case KEYTAG:
                     try {
-                        Integer recipientId = Integer.parseInt(keyElement.getAttribute(REMOTEID));
+                        int recipientId = Integer.parseInt(keyElement.getAttribute(REMOTEID));
                         byte[] key = Base64.decode(keyElement.getContent().trim(), Base64.DEFAULT);
                         boolean isPreKey = keyElement.getAttributeAsBoolean("prekey");
                         this.keys.add(new XmppAxolotlSession.AxolotlKey(recipientId, key, isPreKey));
@@ -145,7 +145,7 @@ public class XmppAxolotlMessage {
         return ciphertext != null;
     }
 
-    void encrypt(String plaintext) throws CryptoFailedException {
+    void encrypt(final String plaintext) throws CryptoFailedException {
         try {
             SecretKey secretKey = new SecretKeySpec(innerKey, KEYTYPE);
             IvParameterSpec ivSpec = new IvParameterSpec(iv);

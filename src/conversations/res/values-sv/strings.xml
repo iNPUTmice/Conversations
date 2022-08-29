@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="pick_a_server">Välj din XMPP-leverantör</string>
     <string name="use_conversations.im">Använd conversations.im</string>
-    <string name="create_new_account">Skapa nytt konto</string>
-    </resources>
+    <string name="create_new_account">Skapa ett nytt konto</string>
+    <string name="do_you_have_an_account">Har du redan ett XMPP-konto? Detta kan vara fallet om du redan använder en annan XMPP-klient eller om du har använt Conversations tidigare. Om inte, kan du skapa ett nytt XMPP-konto på en gång.\nTips: Vissa e-postleverantörer tillhandahåller även XMPP-konton.</string>
+    <string name="your_server_invitation">Din serverinbjudan</string>
+    <string name="improperly_formatted_provisioning">Felaktigt formaterad provisioneringskod</string>
+    <string name="tap_share_button_send_invite">Tryck på dela-knappen för att skicka en inbjudan till din kontakt till %1$s.</string>
+    <string name="if_contact_is_nearby_use_qr">Om din kontakt är i närheten, kan de också skanna koden nedan för att acceptera din inbjudan.</string>
+    <string name="easy_invite_share_text">Gå med %1$s och chatta med mig: %2$s</string>
+    <string name="share_invite_with">Dela inbjudan med...</string>
+</resources>

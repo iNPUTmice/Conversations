@@ -35,6 +35,8 @@
     <bool name="never_send">false</bool>
     <bool name="validate_hostname">false</bool>
     <bool name="show_qr_code_scan">true</bool>
+    <bool name="show_individual_search_options">true</bool>
+    <bool name="show_combined_search_options">false</bool>
     <bool name="scroll_to_bottom">true</bool>
     <string name="omemo_setting_default">default_on</string>
     <string name="default_font_size">small</string>
@@ -42,4 +44,5 @@
     <bool name="start_searching">false</bool>
     <string name="video_compression">360</string>
     <string name="default_channel_discovery">JABBER_NETWORK</string>
+    <bool name="prevent_screenshots">false</bool>
 </resources>

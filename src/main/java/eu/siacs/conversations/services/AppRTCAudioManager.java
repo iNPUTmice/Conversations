@@ -20,8 +20,9 @@ import android.media.AudioManager;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.os.Build;
-import android.support.annotation.Nullable;
 import android.util.Log;
+
+import androidx.annotation.Nullable;
 
 import org.webrtc.ThreadUtils;
 
@@ -47,7 +48,7 @@ public class AppRTCAudioManager {
     // Handles all tasks related to Bluetooth headset devices.
     private final AppRTCBluetoothManager bluetoothManager;
     @Nullable
-    private AudioManager audioManager;
+    private final AudioManager audioManager;
     @Nullable
     private AudioManagerEvents audioManagerEvents;
     private AudioManagerState amState;
@@ -78,7 +79,7 @@ public class AppRTCAudioManager {
     // avoid duplicate elements.
     private Set<AudioDevice> audioDevices = new HashSet<>();
     // Broadcast receiver for wired headset intent broadcasts.
-    private BroadcastReceiver wiredHeadsetReceiver;
+    private final BroadcastReceiver wiredHeadsetReceiver;
     // Callback method for changes in audio focus.
     @Nullable
     private AudioManager.OnAudioFocusChangeListener audioFocusChangeListener;

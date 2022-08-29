@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:id="@+id/foreign_keys_card"
 
         android:layout_width="fill_parent"
@@ -39,5 +39,5 @@
                 android:textAppearance="@style/TextAppearance.Conversations.Body1"
                 android:layout_margin="@dimen/list_padding"/>
         </LinearLayout>
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 </layout>

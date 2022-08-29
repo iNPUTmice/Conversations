@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="eu.siacs.conversations">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <application
         android:icon="@mipmap/new_launcher"
@@ -31,6 +30,15 @@
             android:name=".ui.EnterNameActivity"
             android:label="@string/enter_your_name"
             android:launchMode="singleTask" />
+
+        <receiver
+            android:name=".services.SMSReceiver"
+            android:exported="true"
+            android:permission="com.google.android.gms.auth.api.phone.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.gms.auth.api.phone.SMS_RETRIEVED" />
+            </intent-filter>
+        </receiver>
 
     </application>
 </manifest>

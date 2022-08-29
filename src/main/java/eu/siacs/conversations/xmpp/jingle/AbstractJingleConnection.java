@@ -1,5 +1,7 @@
 package eu.siacs.conversations.xmpp.jingle;
 
+import androidx.annotation.NonNull;
+
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
@@ -8,8 +10,8 @@ import eu.siacs.conversations.entities.Account;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.services.XmppConnectionService;
-import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
 import eu.siacs.conversations.xmpp.Jid;
+import eu.siacs.conversations.xmpp.jingle.stanzas.JinglePacket;
 
 public abstract class AbstractJingleConnection {
 
@@ -110,6 +112,7 @@ public abstract class AbstractJingleConnection {
         }
 
         @Override
+        @NonNull
         public String toString() {
             return MoreObjects.toStringHelper(this)
                     .add("account", account.getJid())
@@ -126,6 +129,7 @@ public abstract class AbstractJingleConnection {
         ACCEPTED,
         PROCEED,
         REJECTED,
+        REJECTED_RACED, //used when we want to reject but haven’t received session init yet
         RETRACTED,
         RETRACTED_RACED, //used when receiving a retract after we already asked to proceed
         SESSION_INITIALIZED, //equal to 'PENDING'
@@ -135,6 +139,7 @@ public abstract class AbstractJingleConnection {
         TERMINATED_DECLINED_OR_BUSY, //equal to 'ENDED' (after other party declined the call)
         TERMINATED_CONNECTIVITY_ERROR, //equal to 'ENDED' (but after network failures; ui will display retry button)
         TERMINATED_CANCEL_OR_TIMEOUT, //more or less the same as retracted; caller pressed end call before session was accepted
-        TERMINATED_APPLICATION_FAILURE
+        TERMINATED_APPLICATION_FAILURE,
+        TERMINATED_SECURITY_ERROR
     }
 }

@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="pick_a_server">Изберете вашият XMPP доставчик</string>
+    <string name="pick_a_server">Изберете своя XMPP доставчик</string>
     <string name="use_conversations.im">Използвайте conversations.im</string>
     <string name="create_new_account">Създаване не нов профил</string>
-    <string name="do_you_have_an_account">Имате ли вече XMPP профил? Това може да се случи, ако вече използвате друг клиент на XMPP или сте използвали преди това Conversations. Ако не, можете да създадете нов XMPP профил в момента.\nСъвет: Някои доставчици на имейл също предоставят XMPP профили.
+    <string name="do_you_have_an_account">Имате ли вече XMPP профил? Може да имате, ако вече използвате друг клиент на XMPP или сте използвали Conversations и преди. Ако не, можете да създадете нов XMPP профил сега.\nСъвет: някои доставчици на е-поща също предоставят XMPP профили.
  </string>
-    </resources>
+    <string name="server_select_text">XMPP е мрежа за общуване чрез мигновени съобщения, която не е обвързана с конкретен доставчик. Можете да използвате клиента с всеки сървър, който работи с XMPP.\nЗа Ваше удобство, обаче, ние предоставяме лесен начин да си създадете профил в conversations.im — сървър, пригоден да работи най-добре с Conversations.</string>
+    <string name="magic_create_text_on_x">Получихте покана за %1$s. Ще Ви преведем през процеса на създаване на профил.\nИзбирайки %1$s за доставчик, Вие ще можете да общувате и с потребители на други доставчици, като им предоставите своя пълен XMPP адрес.</string>
+    <string name="magic_create_text_fixed">Получихте покана за %1$s. Вече Ви избрахме потребителско име. Ще Ви преведем през процеса на създаване на профил.\nЩе можете да общувате и с потребители на други доставчици, като им предоставите своя пълен XMPP адрес.</string>
+    <string name="your_server_invitation">Вашата покана за сървъра</string>
+    <string name="improperly_formatted_provisioning">Неправилно форматиран код за достъп</string>
+    <string name="tap_share_button_send_invite">Докоснете бутона за споделяне, за да изпратите на контакта си покана за %1$s.</string>
+    <string name="if_contact_is_nearby_use_qr">Ако контактът Ви е наблизо, може да сканира кода по-долу, за да приеме поканата Ви.</string>
+    <string name="easy_invite_share_text">Присъедини се в %1$s и си пиши с мен: %2$s</string>
+    <string name="share_invite_with">Споделяне на поканата чрез…</string>
+</resources>

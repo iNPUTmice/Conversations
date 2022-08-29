@@ -32,6 +32,13 @@
             android:key="last_activity"
             android:summary="@string/pref_broadcast_last_activity_summary"
             android:title="@string/pref_broadcast_last_activity" />
+
+        <CheckBoxPreference
+            android:defaultValue="@bool/prevent_screenshots"
+            android:key="prevent_screenshots"
+            android:summary="@string/pref_prevent_screenshots_summary"
+            android:title="@string/pref_prevent_screenshots" />
+
         <ListPreference
             android:defaultValue="@string/omemo_setting_default"
             android:entries="@array/omemo_setting_entries"
@@ -113,19 +120,6 @@
                     android:value="messages" />
             </intent>
         </PreferenceScreen>
-        <PreferenceScreen
-            android:key="call_notification_settings"
-            android:summary="@string/pref_more_notification_settings_summary"
-            android:title="@string/pref_incoming_call_notification_settings">
-            <intent android:action="android.settings.CHANNEL_NOTIFICATION_SETTINGS">
-                <extra
-                    android:name="android.provider.extra.APP_PACKAGE"
-                    android:value="@string/applicationId" />
-                <extra
-                    android:name="android.provider.extra.CHANNEL_ID"
-                    android:value="incoming_calls" />
-            </intent>
-        </PreferenceScreen>
         <RingtonePreference
             android:defaultValue="@string/notification_ringtone"
             android:key="notification_ringtone"
@@ -133,7 +127,7 @@
             android:summary="@string/pref_notification_sound_summary"
             android:title="@string/pref_notification_sound" />
         <RingtonePreference
-            android:defaultValue="@string/notification_ringtone"
+            android:defaultValue="@string/incoming_call_ringtone"
             android:key="call_ringtone"
             android:ringtoneType="ringtone"
             android:summary="@string/pref_call_ringtone_summary"

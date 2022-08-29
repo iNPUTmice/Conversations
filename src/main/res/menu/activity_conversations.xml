@@ -1,26 +1,25 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:icon="?attr/icon_search"
+        android:orderInCategory="5"
+        android:title="@string/search_messages"
+        android:visible="@bool/show_combined_search_options"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/action_search_all_conversations"
+                android:title="@string/search_all_conversations" />
+            <item
+                android:id="@+id/action_search_this_conversation"
+                android:title="@string/search_this_conversation" />
+        </menu>
+    </item>
     <item
         android:id="@+id/action_scan_qr_code"
-        android:title="@string/scan_qr_code"
-        app:showAsAction="always"
+        android:icon="?attr/icon_scan_qr_code"
         android:orderInCategory="10"
+        android:title="@string/scan_qr_code"
         android:visible="@bool/show_qr_code_scan"
-        android:icon="?attr/icon_scan_qr_code"/>
-    <item
-        android:id="@+id/action_accounts"
-        android:orderInCategory="90"
-        android:title="@string/action_accounts"
-        app:showAsAction="never"/>
-    <item
-        android:id="@+id/action_account"
-        android:orderInCategory="90"
-        android:title="@string/action_account"
-        app:showAsAction="never"/>
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never"/>
-
+        app:showAsAction="always" />
 </menu>

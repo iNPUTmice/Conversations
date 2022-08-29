@@ -32,12 +32,13 @@ package eu.siacs.conversations.utils;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
-import android.support.annotation.ColorInt;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.util.LruCache;
+
+import androidx.annotation.ColorInt;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -229,8 +230,7 @@ public class IrregularUnicodeDetector {
 			if (pattern != null) {
 				return pattern;
 			}
-			;
-			pattern = PatternTuple.of(jid);
+            pattern = PatternTuple.of(jid);
 			CACHE.put(jid, pattern);
 			return pattern;
 		}

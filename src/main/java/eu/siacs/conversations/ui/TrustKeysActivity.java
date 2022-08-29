@@ -2,10 +2,7 @@ package eu.siacs.conversations.ui;
 
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -13,6 +10,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.databinding.DataBindingUtil;
 
 import org.whispersystems.libsignal.IdentityKey;
 
@@ -37,8 +37,8 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.IrregularUnicodeDetector;
 import eu.siacs.conversations.utils.XmppUri;
-import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 import eu.siacs.conversations.xmpp.Jid;
+import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
 
 
 public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdated {
@@ -55,7 +55,7 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
 		commitTrusts();
 		finishOk(false);
 	};
-	private AtomicBoolean mUseCameraHintShown = new AtomicBoolean(false);
+	private final AtomicBoolean mUseCameraHintShown = new AtomicBoolean(false);
 	private AxolotlService.FetchStatus lastFetchReport = AxolotlService.FetchStatus.SUCCESS;
 	private Toast mUseCameraHintToast = null;
 	private ActivityTrustKeysBinding binding;
@@ -82,7 +82,7 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
 		binding.cancelButton.setOnClickListener(mCancelButtonListener);
 		binding.saveButton.setOnClickListener(mSaveButtonListener);
 
-		setSupportActionBar((Toolbar) binding.toolbar);
+		setSupportActionBar(binding.toolbar);
 		configureActionBar(getSupportActionBar());
 
 		if (savedInstanceState != null) {
@@ -151,7 +151,7 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
 			}
 		} else {
 			reloadFingerprints();
-			Log.d(Config.LOGTAG, "xmpp uri was: " + uri.getJid() + " has Fingerprints: " + Boolean.toString(uri.hasFingerprints()));
+			Log.d(Config.LOGTAG, "xmpp uri was: " + uri.getJid() + " has Fingerprints: " + uri.hasFingerprints());
 			Toast.makeText(this, R.string.barcode_does_not_contain_fingerprints_for_this_conversation, Toast.LENGTH_SHORT).show();
 		}
 		populateView();
@@ -237,7 +237,7 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
 				}
 				this.binding.keyErrorHintMutual.setVisibility(anyWithoutMutualPresenceSubscription ? View.VISIBLE : View.GONE);
 				Contact contact = mAccount.getRoster().getContact(contactJids.get(0));
-				binding.keyErrorGeneral.setText(getString(R.string.error_trustkey_general, contact.getDisplayName()));
+				binding.keyErrorGeneral.setText(getString(R.string.error_trustkey_general, getString(R.string.app_name), contact.getDisplayName()));
 				binding.ownKeysDetails.removeAllViews();
 				if (OmemoSetting.isAlways()) {
 					binding.disableButton.setVisibility(View.GONE);
@@ -437,7 +437,7 @@ public class TrustKeysActivity extends OmemoActivity implements OnKeyStatusUpdat
 		synchronized (this.foreignKeysToTrust) {
 			for (Jid jid : contactJids) {
 				Map<String, Boolean> fingerprints = foreignKeysToTrust.get(jid);
-				if (hasNoOtherTrustedKeys(jid) && (fingerprints == null || !fingerprints.values().contains(true))) {
+				if (hasNoOtherTrustedKeys(jid) && (fingerprints == null || !fingerprints.containsValue(true))) {
 					lock();
 					return;
 				}

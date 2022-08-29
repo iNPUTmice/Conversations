@@ -29,7 +29,7 @@
 
 package eu.siacs.conversations.xmpp;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import eu.siacs.conversations.xmpp.stanzas.AbstractStanza;
 

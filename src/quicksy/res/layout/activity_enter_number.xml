@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -10,7 +11,7 @@
             android:id="@+id/toolbar"
             layout="@layout/toolbar" />
 
-        <android.support.design.widget.CoordinatorLayout
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/coordinator"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -49,7 +50,7 @@
                             android:layout_height="wrap_content"
                             android:cursorVisible="false"
                             android:drawableEnd="@drawable/ic_arrow_drop_down_black_18dp"
-                            android:drawableRight="@drawable/ic_arrow_drop_down_black_18dp"
+                            app:drawableTint="?android:attr/textColorPrimary"
                             android:focusable="false"
                             android:gravity="bottom|center_horizontal"
                             android:imeOptions="flagNoExtractUi"
@@ -108,6 +109,6 @@
                         android:textColor="?colorAccent" />
                 </RelativeLayout>
             </ScrollView>
-        </android.support.design.widget.CoordinatorLayout>
+	</androidx.coordinatorlayout.widget.CoordinatorLayout>
     </LinearLayout>
 </layout>

@@ -17,15 +17,6 @@
 
 package eu.siacs.conversations.ui.service;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-import com.google.zxing.PlanarYUVLuminanceSource;
-
 import android.annotation.SuppressLint;
 import android.graphics.Rect;
 import android.graphics.RectF;
@@ -34,6 +25,15 @@ import android.hardware.Camera.CameraInfo;
 import android.hardware.Camera.PreviewCallback;
 import android.util.Log;
 import android.view.TextureView;
+
+import com.google.zxing.PlanarYUVLuminanceSource;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import eu.siacs.conversations.Config;
 
@@ -48,7 +48,7 @@ public final class CameraManager {
     private static final int MAX_PREVIEW_PIXELS = 1280 * 720;
 
     private Camera camera;
-    private CameraInfo cameraInfo = new CameraInfo();
+    private final CameraInfo cameraInfo = new CameraInfo();
     private Camera.Size cameraResolution;
     private Rect frame;
     private RectF framePreview;

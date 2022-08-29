@@ -4,7 +4,7 @@
     <style name="ConversationsTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/green600</item>
         <item name="colorPrimaryDark">@color/green800</item>
-        <item name="colorAccent">@color/blue_a200</item>
+        <item name="colorAccent">@color/blue_a400</item>
         <item name="popupOverlayStyle">@style/ThemeOverlay.AppCompat.Light</item>
 
         <item name="color_background_primary">@color/grey50</item>
@@ -80,8 +80,8 @@
         <item name="dialog_horizontal_padding">24dp</item>
         <item name="dialog_vertical_padding">16dp</item>
 
-        <item name="media_preview_document" type="reference">@drawable/ic_description_black_48dp
-        </item>
+        <item name="media_preview_image" type="reference">@drawable/ic_image_black_48dp</item>
+        <item name="media_preview_document" type="reference">@drawable/ic_description_black_48dp</item>
         <item name="media_preview_recording" type="reference">@drawable/ic_mic_black_48dp</item>
         <item name="media_preview_audio" type="reference">@drawable/ic_headset_black_48dp</item>
         <item name="media_preview_location" type="reference">@drawable/ic_room_black_48dp</item>
@@ -236,8 +236,8 @@
         <item name="dialog_horizontal_padding">24dp</item>
         <item name="dialog_vertical_padding">16dp</item>
 
-        <item name="media_preview_document" type="reference">@drawable/ic_description_white_48dp
-        </item>
+        <item name="media_preview_image" type="reference">@drawable/ic_image_white_48dp</item>
+        <item name="media_preview_document" type="reference">@drawable/ic_description_white_48dp</item>
         <item name="media_preview_recording" type="reference">@drawable/ic_mic_white_48dp</item>
         <item name="media_preview_audio" type="reference">@drawable/ic_headset_white_48dp</item>
         <item name="media_preview_location" type="reference">@drawable/ic_room_white_48dp</item>
@@ -363,15 +363,15 @@
         <item name="android:navigationBarColor" tools:targetApi="21">@color/black</item>
     </style>
 
-    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
-        <item name="colorPrimaryDark">@color/grey300</item>
+    <style name="SplashTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="colorPrimaryDark">@color/splash_screen_status_bar</item>
         <item name="android:windowBackground">@drawable/background</item>
     </style>
 
     <style name="ConversationsTheme.Dialog" parent="@style/Theme.AppCompat.Light.Dialog">
         <item name="colorPrimary">@color/green600</item>
         <item name="colorPrimaryDark">@color/green700</item>
-        <item name="colorAccent">@color/blue_a200</item>
+        <item name="colorAccent">@color/blue_a400</item>
         <item name="color_background_primary">@color/grey50</item>
         <item name="divider">@color/black12</item>
         <item name="TextSizeTitle">18sp</item>

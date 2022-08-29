@@ -4,9 +4,13 @@
     <string name="use_conversations.im">Benutze conversations.im</string>
     <string name="create_new_account">Neues Konto erstellen</string>
     <string name="do_you_have_an_account">Hast du bereits ein XMPP-Konto? Dies kann der Fall sein, wenn du bereits einen anderen XMPP-Client verwendest oder bereits Conversations verwendet hast. Wenn nicht, kannst du jetzt ein neues XMPP-Konto erstellen.\nTipp: Einige E-Mail-Anbieter bieten auch XMPP-Konten an.</string>
-    <string name="server_select_text">XMPP ist ein anbieterunabhängiges Instant Messaging Netzwerk. Du kannst diesen Client mit jedem beliebigen XMPP-Server nutzen.\nUm es dir leicht zu machen, haben wir die Möglichkeit geschaffen, ein Konto auf conversations.im¹ anzulegen; ein Anbieter, der speziell für die Verwendung mit Conversations geeignet ist.</string>
+    <string name="server_select_text">XMPP ist ein anbieterunabhängiges Instant Messaging Netzwerk. Du kannst diesen Client mit jedem beliebigen XMPP-Server nutzen.\nUm es dir leicht zu machen, haben wir die Möglichkeit geschaffen, ein Konto auf conversations.im anzulegen; ein Anbieter, der speziell für die Verwendung mit Conversations geeignet ist.</string>
     <string name="magic_create_text_on_x">Du wurdest zu %1$s eingeladen. Wir führen dich durch den Prozess der Kontoerstellung.\nWenn du %1$s als Provider wählst, kannst du mit Nutzern anderer Anbieter kommunizieren, indem du ihnen deine vollständige XMPP-Adresse gibst.</string>
     <string name="magic_create_text_fixed">Du wurdest zu %1$seingeladen. Ein Benutzername ist bereits für dich ausgewählt worden. Wir führen dich durch den Prozess der Kontoerstellung.\nDu kannst mit Nutzern anderer Anbieter kommunizieren, indem du ihnen deine vollständige XMPP-Adresse gibst.</string>
     <string name="your_server_invitation">Deine Einladung für den Server</string>
     <string name="improperly_formatted_provisioning">Falsch formatierter Provisionierungscode</string>
+    <string name="tap_share_button_send_invite">Tippe auf die \"Teilen\"-Schaltfläche, um deinem Kontakt eine Einladung an %1$s zu senden.</string>
+    <string name="if_contact_is_nearby_use_qr">Wenn dein Kontakt in der Nähe ist, kann er auch den untenstehenden Code einscannen, um deine Einladung anzunehmen.</string>
+    <string name="easy_invite_share_text">Komme zu %1$s und chatte mit mir: %2$s</string>
+    <string name="share_invite_with">Einladung teilen mit…</string>
 </resources>

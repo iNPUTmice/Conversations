@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pref_notification_grace_period_summary">Doba, počas ktorej bude Quicksy stíšený po detekcii aktivity na inom zariadení.</string>
+    <string name="pref_never_send_crash_summary">Zaslaním detailov o dôvode zlyhania pomáhate ďalšiemu vývoju aplikácie Quicksy</string>
+    <string name="pref_broadcast_last_activity_summary">Dajte svojim kontaktom vedieť, keď používate Quicksy</string>
+    <string name="huawei_protected_apps_summary">Aby ste dostávali oznámenia aj pri vypnutej obrazovke, pridajte Quicksy medzi chránené aplikácie.</string>
+    <string name="set_profile_picture">Quicksy profilový obrázok</string>
+    <string name="not_available_in_your_country">Quicksy nie je dostupné vo vašej krajine.</string>
+    <string name="unable_to_verify_server_identity">Nemôžem overiť identitu servera.</string>
+    <string name="unknown_security_error">Neznáma bezpečnostná chyba.</string>
+    <string name="timeout_while_connecting_to_server">Vypršal časový limit pri pripájaní k serveru.</string>
+</resources>

@@ -30,8 +30,9 @@
 package eu.siacs.conversations.ui.util;
 
 import android.os.Handler;
-import android.support.annotation.StringRes;
 import android.widget.EditText;
+
+import androidx.annotation.StringRes;
 
 public class DelayedHintHelper {
 

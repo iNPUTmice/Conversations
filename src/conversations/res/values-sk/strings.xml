@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pick_a_server">Vyberte si svojho XMPP poskytovateľa</string>
+    <string name="use_conversations.im">Použiť conversations.im</string>
+    <string name="create_new_account">Vytvoriť nové konto</string>
+    <string name="do_you_have_an_account">Máte už svoje XMPP konto? Môže to tak byť v prípade, že už používate iného klienta XMPP alebo ste predtým používali Conversations. Ak nie, môžete si vytvoriť nové XMPP konto práve teraz.\nHint: Niektorí poskytovatelia emailu zároveň poskytujú aj XMPP kontá.</string>
+    <string name="server_select_text">XMPP je sieť pre okamžité správy nezávislá od poskytovateľa. Tohto klienta môžete používať s akýmkoľvek XMPP serverom, ktorý si vyberiete..\nAvšak pre vaše pohodlie sme zjednodušili vytvorenie konta na conversations.im; poskytovateľ špeciálne vhodný na používanie s Conversations.</string>
+    <string name="magic_create_text_on_x">Boli ste pozvaný do %1$s. Prevedieme vás procesom vytvorenia konta..\nPo výbere %1$s ako poskytovateľa, budete môcť komunikovať s užívateľmi iných poskytovateľov tak, že im dáte vašu úplnú XMPP adresu.</string>
+    <string name="magic_create_text_fixed">Boli ste pozvaný do %1$s . Užívateľské meno vám už bolo vopred vybrané. Prevedieme vás procesom vytvorenia konta..\nBudete môcť komunikovať s užívateľmi iných poskytovateľov tak, že im dáte vašu úplnú XMPP adresu.</string>
+    <string name="tap_share_button_send_invite">Ťuknite na tlačidlo zdieľať na odoslanie pozvánky do %1$s vášmu kontaktu.</string>
+    <string name="if_contact_is_nearby_use_qr">Ak je váš kontakt blízko, na prijatie vašej pozvánky si môže nasnímať kód nižšie.</string>
+    <string name="easy_invite_share_text">Pripojte sa k %1$sa rozprávajte sa so mnou: %2$s</string>
+    <string name="share_invite_with">Zdieľať pozvánku s...</string>
+</resources>

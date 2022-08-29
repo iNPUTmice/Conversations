@@ -4,8 +4,11 @@
     <string name="use_conversations.im">Conversations.im gebruiken</string>
     <string name="create_new_account">Nieuwe account registreren</string>
     <string name="do_you_have_an_account">Heb je al een XMPP-account? Als je al een andere XMPP-cliënt gebruikt, of Conversations vroeger al eens hebt gebruikt, is dit waarschijnlijk het geval. Zo niet, kan je nu een nieuwe XMPP-account aanmaken.\nTip: sommige e-mailproviders bieden ook XMPP-accounts aan.</string>
-    <string name="server_select_text">XMPP is een provider-onafhankelijk berichtennetwerk. Je kan deze cliënt gebruiken met eender welke XMPP-server.\nOm het je gemakkelijker te maken kun je simpelweg een account aanmaken op conversations.im¹; een provider speciaal geschikt voor Conversations.</string>
+    <string name="server_select_text">XMPP is een provider-onafhankelijk berichtennetwerk. Je kan deze cliënt gebruiken met eender welke XMPP-server.\nOm het je gemakkelijker te maken kun je simpelweg een account aanmaken op conversations.im; een provider speciaal geschikt voor Conversations.</string>
     <string name="magic_create_text_on_x">Je ontving een uitnodiging voor %1$s. We zullen je helpen een account aan te maken.\nWanneer je %1$s als je provider kiest kan je met gebruikers van andere providers communiceren door hen je volledige XMPP-adres te geven.</string>
     <string name="magic_create_text_fixed">Je ontving een uitnodiging voor %1$s. Er werd reeds een gebruikersnaam voor jou gekozen. We zullen je helpen een account aan te maken.\nJe zal met gebruikers van andere providers communiceren door hen je volledige XMPP-adres te geven.</string>
     <string name="your_server_invitation">Je server uitnodiging</string>
-    </resources>
+    <string name="tap_share_button_send_invite">Tik op de delen knop om een uitnodiging te versturen naar %1$s</string>
+    <string name="if_contact_is_nearby_use_qr">Als je contactpersoon in de buurt is, kan deze ook onderstaande code scannen om de uitnodiging te aanvaarden.</string>
+    <string name="share_invite_with">Deel de uitnodiging met ...</string>
+</resources>

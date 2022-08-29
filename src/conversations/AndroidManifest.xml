@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="eu.siacs.conversations">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <application tools:ignore="GoogleAppIndexingWarning">
+    <application android:icon="@mipmap/new_launcher">
         <activity
             android:name=".ui.ManageAccountActivity"
             android:label="@string/title_activity_manage_accounts"
@@ -21,7 +19,12 @@
             android:label="@string/create_new_account"
             android:launchMode="singleTask" />
         <activity
+            android:name=".ui.EasyOnboardingInviteActivity"
+            android:label="@string/invite_to_app"
+            android:launchMode="singleTask" />
+        <activity
             android:name=".ui.ImportBackupActivity"
+            android:exported="true"
             android:label="@string/restore_backup"
             android:launchMode="singleTask">
             <intent-filter>

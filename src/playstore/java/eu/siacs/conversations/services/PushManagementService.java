@@ -3,9 +3,8 @@ package eu.siacs.conversations.services;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
+import com.google.android.gms.common.GoogleApiAvailabilityLight;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -55,7 +54,7 @@ public class PushManagementService {
                         e.printStackTrace();
                     }
                 } else {
-                    Log.d(Config.LOGTAG, a.getJid().asBareJid() + ": invalid response from app server");
+                    Log.d(Config.LOGTAG, a.getJid().asBareJid() + ": failed to enable push. invalid response from app server " + response);
                 }
             });
         });
@@ -73,18 +72,18 @@ public class PushManagementService {
     }
 
     private void retrieveFcmInstanceToken(final OnGcmInstanceTokenRetrieved instanceTokenRetrieved) {
-        final FirebaseInstanceId firebaseInstanceId;
+        final FirebaseMessaging firebaseMessaging;
         try {
-            firebaseInstanceId = FirebaseInstanceId.getInstance();
+            firebaseMessaging = FirebaseMessaging.getInstance();
         } catch (IllegalStateException e) {
-            Log.d(Config.LOGTAG, "unable to get firebase instance token ",e);
+            Log.d(Config.LOGTAG, "unable to get firebase instance token ", e);
             return;
         }
-        firebaseInstanceId.getInstanceId().addOnCompleteListener(task -> {
+        firebaseMessaging.getToken().addOnCompleteListener(task -> {
             if (!task.isSuccessful()) {
                 Log.d(Config.LOGTAG, "unable to get Firebase instance token", task.getException());
             }
-            final InstanceIdResult result;
+            final String result;
             try {
                 result = task.getResult();
             } catch (Exception e) {
@@ -92,7 +91,7 @@ public class PushManagementService {
                 return;
             }
             if (result != null) {
-                instanceTokenRetrieved.onGcmInstanceTokenRetrieved(result.getToken());
+                instanceTokenRetrieved.onGcmInstanceTokenRetrieved(result);
             }
         });
 
@@ -108,7 +107,7 @@ public class PushManagementService {
     }
 
     private boolean playServicesAvailable() {
-        return GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(mXmppConnectionService) == ConnectionResult.SUCCESS;
+        return GoogleApiAvailabilityLight.getInstance().isGooglePlayServicesAvailable(mXmppConnectionService) == ConnectionResult.SUCCESS;
     }
 
     public boolean isStub() {

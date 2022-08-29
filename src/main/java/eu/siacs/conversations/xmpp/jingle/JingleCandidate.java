@@ -13,9 +13,9 @@ public class JingleCandidate {
 	public static int TYPE_DIRECT = 0;
 	public static int TYPE_PROXY = 1;
 
-	private boolean ours;
+	private final boolean ours;
 	private boolean usedByCounterpart = false;
-	private String cid;
+	private final String cid;
 	private String host;
 	private int port;
 	private int type;

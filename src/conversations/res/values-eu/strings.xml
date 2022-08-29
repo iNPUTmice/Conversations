@@ -4,5 +4,5 @@
     <string name="use_conversations.im">Erabili conversations.im</string>
     <string name="create_new_account">Kontu berria sortu</string>
     <string name="do_you_have_an_account">XMPP kontu bat badaukazu dagoeneko? Horrela izan daiteke beste XMPP aplikazio bat erabiltzen baduzu edo Conversations lehenago erabili baduzu. Bestela XMPP kontu berri bat sortu dezakezu oraintxe bertan.\nIradokizuna: email hornitzaile batzuek XMPP kontuak hornitzen dituzte ere.</string>
-    <string name="server_select_text">XMPP hornitzailez independientea den bat-bateko mezularitza sare bat da. Aplikazio hau nahi duzun XMPP zerbitzariarekin erabili dezakezu.\nHala ere zure erosotasunerako conversations.im¹-en, Conversationsekin bereziki erabiltzeko egokia den hornitzaile batean, kontu bat sortzea erraz egin dugu.</string>
+    <string name="server_select_text">XMPP hornitzailez independientea den bat-bateko mezularitza sare bat da. Aplikazio hau nahi duzun XMPP zerbitzariarekin erabili dezakezu.\nHala ere zure erosotasunerako conversations.im-en, Conversationsekin bereziki erabiltzeko egokia den hornitzaile batean, kontu bat sortzea erraz egin dugu.</string>
     </resources>

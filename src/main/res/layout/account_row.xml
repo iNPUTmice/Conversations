@@ -44,7 +44,7 @@
                 android:textAppearance="@style/TextAppearance.Conversations.Body2" />
         </LinearLayout>
 
-        <android.support.v7.widget.SwitchCompat
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/tgl_account_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

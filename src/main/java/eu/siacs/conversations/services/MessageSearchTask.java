@@ -56,18 +56,20 @@ public class MessageSearchTask implements Runnable, Cancellable {
 
 	private final XmppConnectionService xmppConnectionService;
 	private final List<String> term;
+	private final String uuid;
 	private final OnSearchResultsAvailable onSearchResultsAvailable;
 
 	private boolean isCancelled = false;
 
-	private MessageSearchTask(XmppConnectionService xmppConnectionService, List<String> term, OnSearchResultsAvailable onSearchResultsAvailable) {
+	private MessageSearchTask(XmppConnectionService xmppConnectionService, List<String> term, final String uuid, OnSearchResultsAvailable onSearchResultsAvailable) {
 		this.xmppConnectionService = xmppConnectionService;
 		this.term = term;
+		this.uuid = uuid;
 		this.onSearchResultsAvailable = onSearchResultsAvailable;
 	}
 
-	public static void search(XmppConnectionService xmppConnectionService, List<String> term, OnSearchResultsAvailable onSearchResultsAvailable) {
-		new MessageSearchTask(xmppConnectionService, term, onSearchResultsAvailable).executeInBackground();
+	public static void search(XmppConnectionService xmppConnectionService, List<String> term, final String uuid, OnSearchResultsAvailable onSearchResultsAvailable) {
+		new MessageSearchTask(xmppConnectionService, term, uuid, onSearchResultsAvailable).executeInBackground();
 	}
 
 	public static void cancelRunningTasks() {
@@ -86,7 +88,7 @@ public class MessageSearchTask implements Runnable, Cancellable {
 		try {
 			final HashMap<String, Conversational> conversationCache = new HashMap<>();
 			final List<Message> result = new ArrayList<>();
-			cursor = xmppConnectionService.databaseBackend.getMessageSearchCursor(term);
+			cursor = xmppConnectionService.databaseBackend.getMessageSearchCursor(term, uuid);
 			long dbTimer = SystemClock.elapsedRealtime();
 			if (isCancelled) {
 				Log.d(Config.LOGTAG, "canceled search task");

@@ -32,8 +32,6 @@ package eu.siacs.conversations.utils;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.support.annotation.ColorInt;
-import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.ParcelableSpan;
 import android.text.Spannable;
@@ -48,6 +46,9 @@ import android.text.style.TypefaceSpan;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.ColorInt;
+import androidx.core.content.ContextCompat;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -58,7 +59,7 @@ import eu.siacs.conversations.ui.text.QuoteSpan;
 
 public class StylingHelper {
 
-	private static List<? extends Class<? extends ParcelableSpan>> SPAN_CLASSES = Arrays.asList(
+	private static final List<? extends Class<? extends ParcelableSpan>> SPAN_CLASSES = Arrays.asList(
 			StyleSpan.class,
 			StrikethroughSpan.class,
 			TypefaceSpan.class,
@@ -129,7 +130,7 @@ public class StylingHelper {
 		int start = indexOfIgnoreCase(string, needle, 0);
 		while (start != -1) {
 			int end = start + length;
-			editable.setSpan(new BackgroundColorSpan(ContextCompat.getColor(context, dark ? R.color.blue_a100 : R.color.blue_a200)), start, end, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
+			editable.setSpan(new BackgroundColorSpan(ContextCompat.getColor(context, dark ? R.color.blue_a100 : R.color.blue_a400)), start, end, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
 			editable.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context, dark ? R.color.black87 : R.color.white)), start, end, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
 			start = indexOfIgnoreCase(string, needle, start + length);
 		}

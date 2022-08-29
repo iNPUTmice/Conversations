@@ -6,12 +6,12 @@ import android.content.ClipDescription;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
-import android.support.design.widget.Snackbar;
-import android.support.v7.widget.Toolbar;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.appcompat.widget.Toolbar;
 import android.text.Html;
 import android.view.View;
 
@@ -246,6 +246,8 @@ public class VerifyActivity extends XmppActivity implements ClipboardManager.OnP
     public void onResume() {
         super.onResume();
         if (pinEntryWrapper.isEmpty()) {
+            //starting with Android P we need input focus
+            pinEntryWrapper.requestFocus();
             pastePinFromClipboard();
         }
     }
@@ -314,6 +316,12 @@ public class VerifyActivity extends XmppActivity implements ClipboardManager.OnP
         runOnUiThread(VERIFICATION_TIMEOUT_UPDATER);
     }
 
+    @Override
+    public void startBackgroundVerification(String pin) {
+        pinEntryWrapper.setPin(pin);
+        setVerifyingState(true);
+    }
+
     //send sms again button callback
     @Override
     public void onVerificationRequestFailed(int code) {
@@ -327,6 +335,7 @@ public class VerifyActivity extends XmppActivity implements ClipboardManager.OnP
     @Override
     public void onVerificationRequested() {
         runOnUiThread(() -> {
+            pinEntryWrapper.clear();
             setRequestingVerificationState(false);
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage(R.string.we_have_sent_you_another_sms);

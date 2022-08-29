@@ -38,6 +38,8 @@ import android.os.Parcelable;
 
 import com.google.common.base.MoreObjects;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -89,6 +91,7 @@ public class Attachment implements Parcelable {
         return type;
     }
 
+    @NotNull
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
@@ -136,10 +139,13 @@ public class Attachment implements Parcelable {
         return Collections.singletonList(new Attachment(uri, type, mime));
     }
 
-    public static List<Attachment> of(final Context context, List<Uri> uris) {
-        List<Attachment> attachments = new ArrayList<>();
-        for (Uri uri : uris) {
-            final String mime = MimeUtils.guessMimeTypeFromUri(context, uri);
+    public static List<Attachment> of(final Context context, List<Uri> uris, final String type) {
+        final List<Attachment> attachments = new ArrayList<>();
+        for (final Uri uri : uris) {
+            if (uri == null) {
+                continue;
+            }
+            final String mime = MimeUtils.guessMimeTypeFromUriAndMime(context, uri, type);
             attachments.add(new Attachment(uri, mime != null && isImage(mime) ? Type.IMAGE : Type.FILE, mime));
         }
         return attachments;
@@ -179,7 +185,7 @@ public class Attachment implements Parcelable {
     private static boolean renderFileThumbnail(final String mime) {
         return mime.startsWith("video/")
                 || isImage(mime)
-                || (Compatibility.runsTwentyOne() && "application/pdf".equals(mime));
+                || "application/pdf".equals(mime);
     }
 
     public Uri getUri() {

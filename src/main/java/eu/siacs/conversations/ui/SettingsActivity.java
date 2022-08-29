@@ -1,19 +1,15 @@
 package eu.siacs.conversations.ui;
 
-import android.preference.CheckBoxPreference;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.pm.PackageManager;
-
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
@@ -22,6 +18,10 @@ import android.preference.PreferenceScreen;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 
 import java.io.File;
 import java.security.KeyStoreException;
@@ -40,6 +40,7 @@ import eu.siacs.conversations.services.MemorizingTrustManager;
 import eu.siacs.conversations.services.QuickConversationsService;
 import eu.siacs.conversations.ui.util.StyledAttributes;
 import eu.siacs.conversations.utils.GeoHelper;
+import eu.siacs.conversations.ui.util.SettingsUtils;
 import eu.siacs.conversations.utils.TimeFrameUtils;
 import eu.siacs.conversations.xmpp.Jid;
 
@@ -57,8 +58,10 @@ public class SettingsActivity extends XmppActivity implements
 	public static final String THEME = "theme";
 	public static final String SHOW_DYNAMIC_TAGS = "show_dynamic_tags";
 	public static final String OMEMO_SETTING = "omemo";
+	public static final String PREVENT_SCREENSHOTS = "prevent_screenshots";
 
 	public static final int REQUEST_CREATE_BACKUP = 0xbf8701;
+
 	private SettingsFragment mSettingsFragment;
 
 	@Override
@@ -188,11 +191,7 @@ public class SettingsActivity extends XmppActivity implements
 							} else if (selectedItems.contains(indexSelected)) {
 								selectedItems.remove(Integer.valueOf(indexSelected));
 							}
-							if (selectedItems.size() > 0)
-								((AlertDialog) dialog).getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(true);
-							else {
-								((AlertDialog) dialog).getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(false);
-							}
+                            ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(selectedItems.size() > 0);
 						});
 
 				dialogBuilder.setPositiveButton(
@@ -225,7 +224,7 @@ public class SettingsActivity extends XmppActivity implements
 
 		final Preference createBackupPreference = mSettingsFragment.findPreference("create_backup");
 		if (createBackupPreference != null) {
-			createBackupPreference.setSummary(getString(R.string.pref_create_backup_summary, FileBackend.getBackupDirectory(this)));
+			createBackupPreference.setSummary(getString(R.string.pref_create_backup_summary, FileBackend.getBackupDirectory(this).getAbsolutePath()));
 			createBackupPreference.setOnPreferenceClickListener(preference -> {
 				if (hasStoragePermission(REQUEST_CREATE_BACKUP)) {
 					createBackup();
@@ -397,8 +396,15 @@ public class SettingsActivity extends XmppActivity implements
 			if (this.mTheme != theme) {
 				recreate();
 			}
+		} else if(name.equals(PREVENT_SCREENSHOTS)){
+			SettingsUtils.applyScreenshotPreventionSetting(this);
 		}
+	}
 
+	@Override
+	public void onResume(){
+		super.onResume();
+		SettingsUtils.applyScreenshotPreventionSetting(this);
 	}
 
 	@Override
@@ -409,12 +415,16 @@ public class SettingsActivity extends XmppActivity implements
 					createBackup();
 				}
 			} else {
-				Toast.makeText(this, R.string.no_storage_permission, Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, getString(R.string.no_storage_permission, getString(R.string.app_name)), Toast.LENGTH_SHORT).show();
 			}
 	}
 
 	private void createBackup() {
 		ContextCompat.startForegroundService(this, new Intent(this, ExportBackupService.class));
+		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage(R.string.backup_started_message);
+		builder.setPositiveButton(R.string.ok, null);
+		builder.create().show();
 	}
 
 	private void displayToast(final String msg) {

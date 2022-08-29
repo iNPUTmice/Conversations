@@ -26,20 +26,20 @@
 
 
 
-        <android.support.design.widget.CoordinatorLayout
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/coordinator"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="?attr/color_background_primary">
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="?attr/color_background_primary"
                 android:orientation="vertical"
-                app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
-        </android.support.design.widget.CoordinatorLayout>
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     </LinearLayout>
 </layout>

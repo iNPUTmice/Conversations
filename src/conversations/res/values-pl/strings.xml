@@ -4,8 +4,13 @@
     <string name="use_conversations.im">Użyj conversations.im</string>
     <string name="create_new_account">Stwórz nowe konto</string>
     <string name="do_you_have_an_account">Czy masz już konto XMPP? Tak może być jeśli używasz już innego klienta XMPP lub używałeś już Conversations. Jeśli nie możesz stworzyć nowe konto XMPP teraz.\nPodpowiedź: Niektórzy dostawcy poczty oferują również konta XMPP.</string>
-    <string name="server_select_text">XMPP to niezależna od dostawcy sieć komunikacji błyskawicznej. Możesz użyć tego klienta z dowolnym serwerem XMPP.\nDla twojej wygody jednak ułatwiliśmy stworzenie konta na conversations.im¹; dostawcy specjalnie dostosowanego do pracy z Conversations.</string>
+    <string name="server_select_text">XMPP to niezależna od dostawcy sieć komunikacji błyskawicznej. Możesz użyć tego klienta z dowolnym serwerem XMPP.\nDla twojej wygody jednak ułatwiliśmy stworzenie konta na conversations.im; dostawcy specjalnie dostosowanego do pracy z Conversations.</string>
     <string name="magic_create_text_on_x">Zostałeś zaproszony do %1$s. Poprowadzimy ciebie przez proces tworzenia konta.\nWybierając %1$s jako dostawcę będziesz mógł komunikować się z innymi użytkownikami podając swój pełny adres XMPP.</string>
     <string name="magic_create_text_fixed">Zostałeś zaproszony do %1$s. Nazwa użytkownika została już dla ciebie wybrana. Poprowadzimy ciebie przez proces tworzenia konta.\nBęziesz mógł komunikować się z innymi użytkownikami podając swój adres XMPP.</string>
     <string name="your_server_invitation">Zaproszenie twojego serwera</string>
-    </resources>
+    <string name="improperly_formatted_provisioning">Niepoprawnie sformatowany kod zaopatrywania</string>
+    <string name="tap_share_button_send_invite">Użyj przycisku udostępniania aby wysłać swojemu kontaktowi zaproszenie do %1$s.</string>
+    <string name="if_contact_is_nearby_use_qr">Jeśli twój kontakt jest blisko może przeskanować kod poniżej aby zaakceptować twoje zaproszenie.</string>
+    <string name="easy_invite_share_text">Dołącz do %1$s aby porozmawiać ze mną: %2$s</string>
+    <string name="share_invite_with">Udostępnij zaproszenie...</string>
+</resources>

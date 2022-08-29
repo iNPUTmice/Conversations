@@ -7,20 +7,14 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.preference.PreferenceManager;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
-import android.text.Spanned;
 import android.text.format.DateUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.util.DisplayMetrics;
-import android.view.ActionMode;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -32,9 +26,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import com.google.common.base.Strings;
 
-import java.net.URL;
+import java.net.URI;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
@@ -51,7 +48,6 @@ import eu.siacs.conversations.entities.Message;
 import eu.siacs.conversations.entities.Message.FileParams;
 import eu.siacs.conversations.entities.RtpSessionStatus;
 import eu.siacs.conversations.entities.Transferable;
-import eu.siacs.conversations.http.P1S3UrlStreamHandler;
 import eu.siacs.conversations.persistance.FileBackend;
 import eu.siacs.conversations.services.MessageArchiveService;
 import eu.siacs.conversations.services.NotificationService;
@@ -63,12 +59,10 @@ import eu.siacs.conversations.ui.text.DividerSpan;
 import eu.siacs.conversations.ui.text.QuoteSpan;
 import eu.siacs.conversations.ui.util.AvatarWorkerTask;
 import eu.siacs.conversations.ui.util.MyLinkify;
+import eu.siacs.conversations.ui.util.QuoteHelper;
 import eu.siacs.conversations.ui.util.ViewUtil;
 import eu.siacs.conversations.ui.widget.ClickableMovementMethod;
-import eu.siacs.conversations.ui.widget.CopyTextView;
-import eu.siacs.conversations.ui.widget.ListSelectionManager;
 import eu.siacs.conversations.utils.CryptoHelper;
-import eu.siacs.conversations.utils.EmojiWrapper;
 import eu.siacs.conversations.utils.Emoticons;
 import eu.siacs.conversations.utils.GeoHelper;
 import eu.siacs.conversations.utils.MessageUtils;
@@ -78,7 +72,7 @@ import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.mam.MamReference;
 
-public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextView.CopyHandler {
+public class MessageAdapter extends ArrayAdapter<Message> {
 
     public static final String DATE_SEPARATOR_BODY = "DATE_SEPARATOR";
     private static final int SENT = 0;
@@ -87,14 +81,12 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
     private static final int DATE_SEPARATOR = 3;
     private static final int RTP_SESSION = 4;
     private final XmppActivity activity;
-    private final ListSelectionManager listSelectionManager = new ListSelectionManager();
     private final AudioPlayer audioPlayer;
     private List<String> highlightedTerm = null;
-    private DisplayMetrics metrics;
+    private final DisplayMetrics metrics;
     private OnContactPictureClicked mOnContactPictureClickedListener;
     private OnContactPictureLongClicked mOnContactPictureLongClickedListener;
     private boolean mUseGreenBackground = false;
-    private OnQuoteListener onQuoteListener;
 
     public MessageAdapter(XmppActivity activity, List<Message> messages) {
         super(activity, 0, messages);
@@ -134,10 +126,6 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
     public void setOnContactPictureLongClicked(
             OnContactPictureLongClicked listener) {
         this.mOnContactPictureLongClickedListener = listener;
-    }
-
-    public void setOnQuoteListener(OnQuoteListener listener) {
-        this.onQuoteListener = listener;
     }
 
     @Override
@@ -196,7 +184,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
                 && message.getMergedStatus() <= Message.STATUS_RECEIVED;
         if (message.isFileOrImage() || transferable != null || MessageUtils.unInitiatedButKnownSize(message)) {
             FileParams params = message.getFileParams();
-            filesize = params.size > 0 ? UIHelper.filesizeToString(params.size) : null;
+            filesize = params.size != null ? UIHelper.filesizeToString(params.size) : null;
             if (transferable != null && (transferable.getStatus() == Transferable.STATUS_FAILED || transferable.getStatus() == Transferable.STATUS_CANCELLED)) {
                 error = true;
             }
@@ -346,7 +334,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
         Spannable span = new SpannableString(body);
         float size = Emoticons.isEmoji(body) ? 3.0f : 2.0f;
         span.setSpan(new RelativeSizeSpan(size), 0, body.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        viewHolder.messageBody.setText(EmojiWrapper.transform(span));
+        viewHolder.messageBody.setText(span);
     }
 
     private void applyQuoteSpan(SpannableStringBuilder body, int start, int end, boolean darkBackground) {
@@ -371,48 +359,51 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
      */
     private boolean handleTextQuotes(SpannableStringBuilder body, boolean darkBackground) {
         boolean startsWithQuote = false;
-        char previous = '\n';
-        int lineStart = -1;
-        int lineTextStart = -1;
-        int quoteStart = -1;
-        for (int i = 0; i <= body.length(); i++) {
-            char current = body.length() > i ? body.charAt(i) : '\n';
-            if (lineStart == -1) {
-                if (previous == '\n') {
-                    if ((current == '>' && UIHelper.isPositionFollowedByQuoteableCharacter(body, i))
-                            || current == '\u00bb' && !UIHelper.isPositionFollowedByQuote(body, i)) {
-                        // Line start with quote
-                        lineStart = i;
-                        if (quoteStart == -1) quoteStart = i;
-                        if (i == 0) startsWithQuote = true;
-                    } else if (quoteStart >= 0) {
-                        // Line start without quote, apply spans there
-                        applyQuoteSpan(body, quoteStart, i - 1, darkBackground);
-                        quoteStart = -1;
+        int quoteDepth = 1;
+        while (QuoteHelper.bodyContainsQuoteStart(body) && quoteDepth <= Config.QUOTE_MAX_DEPTH) {
+            char previous = '\n';
+            int lineStart = -1;
+            int lineTextStart = -1;
+            int quoteStart = -1;
+            for (int i = 0; i <= body.length(); i++) {
+                char current = body.length() > i ? body.charAt(i) : '\n';
+                if (lineStart == -1) {
+                    if (previous == '\n') {
+                        if (i < body.length() && QuoteHelper.isPositionQuoteStart(body, i)) {
+                            // Line start with quote
+                            lineStart = i;
+                            if (quoteStart == -1) quoteStart = i;
+                            if (i == 0) startsWithQuote = true;
+                        } else if (quoteStart >= 0) {
+                            // Line start without quote, apply spans there
+                            applyQuoteSpan(body, quoteStart, i - 1, darkBackground);
+                            quoteStart = -1;
+                        }
+                    }
+                } else {
+                    // Remove extra spaces between > and first character in the line
+                    // > character will be removed too
+                    if (current != ' ' && lineTextStart == -1) {
+                        lineTextStart = i;
+                    }
+                    if (current == '\n') {
+                        body.delete(lineStart, lineTextStart);
+                        i -= lineTextStart - lineStart;
+                        if (i == lineStart) {
+                            // Avoid empty lines because span over empty line can be hidden
+                            body.insert(i++, " ");
+                        }
+                        lineStart = -1;
+                        lineTextStart = -1;
                     }
                 }
-            } else {
-                // Remove extra spaces between > and first character in the line
-                // > character will be removed too
-                if (current != ' ' && lineTextStart == -1) {
-                    lineTextStart = i;
-                }
-                if (current == '\n') {
-                    body.delete(lineStart, lineTextStart);
-                    i -= lineTextStart - lineStart;
-                    if (i == lineStart) {
-                        // Avoid empty lines because span over empty line can be hidden
-                        body.insert(i++, " ");
-                    }
-                    lineStart = -1;
-                    lineTextStart = -1;
-                }
+                previous = current;
             }
-            previous = current;
-        }
-        if (quoteStart >= 0) {
-            // Apply spans to finishing open quote
-            applyQuoteSpan(body, quoteStart, body.length(), darkBackground);
+            if (quoteStart >= 0) {
+                // Apply spans to finishing open quote
+                applyQuoteSpan(body, quoteStart, body.length(), darkBackground);
+            }
+            quoteDepth++;
         }
         return startsWithQuote;
     }
@@ -502,10 +493,8 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
             }
             MyLinkify.addLinks(body, true);
             viewHolder.messageBody.setAutoLinkMask(0);
-            viewHolder.messageBody.setText(EmojiWrapper.transform(body));
-            viewHolder.messageBody.setTextIsSelectable(true);
+            viewHolder.messageBody.setText(body);
             viewHolder.messageBody.setMovementMethod(ClickableMovementMethod.getInstance());
-            listSelectionManager.onUpdate(viewHolder.messageBody, message);
         } else {
             viewHolder.messageBody.setText("");
             viewHolder.messageBody.setTextIsSelectable(false);
@@ -675,11 +664,6 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
                 default:
                     throw new AssertionError("Unknown view type");
             }
-            if (viewHolder.messageBody != null) {
-                listSelectionManager.onCreate(viewHolder.messageBody,
-                        new MessageBodyActionModeCallback(viewHolder.messageBody));
-                viewHolder.messageBody.setCopyHandler(this);
-            }
             view.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) view.getTag();
@@ -711,7 +695,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
                 } else if (rtpSessionStatus.successful) {
                     viewHolder.status_message.setText(R.string.incoming_call);
                 } else {
-                    viewHolder.status_message.setText(activity.getString(R.string.incoming_call_duration, UIHelper.readableTimeDifferenceFull(activity, message.getTimeSent())));
+                    viewHolder.status_message.setText(activity.getString(R.string.missed_call_timestamp, UIHelper.readableTimeDifferenceFull(activity, message.getTimeSent())));
                 }
             } else {
                 if (duration > 0) {
@@ -818,21 +802,13 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
                 displayEmojiMessage(viewHolder, message.getBody().trim(), darkBackground);
             } else if (message.treatAsDownloadable()) {
                 try {
-                    URL url = new URL(message.getBody());
-                    if (P1S3UrlStreamHandler.PROTOCOL_NAME.equalsIgnoreCase(url.getProtocol())) {
-                        displayDownloadableMessage(viewHolder,
-                                message,
-                                activity.getString(R.string.check_x_filesize,
-                                        UIHelper.getFileDescriptionString(activity, message)),
-                                darkBackground);
-                    } else {
-                        displayDownloadableMessage(viewHolder,
-                                message,
-                                activity.getString(R.string.check_x_filesize_on_host,
-                                        UIHelper.getFileDescriptionString(activity, message),
-                                        url.getHost()),
-                                darkBackground);
-                    }
+                    final URI uri = new URI(message.getBody());
+                    displayDownloadableMessage(viewHolder,
+                            message,
+                            activity.getString(R.string.check_x_filesize_on_host,
+                                    UIHelper.getFileDescriptionString(activity, message),
+                                    uri.getHost()),
+                            darkBackground);
                 } catch (Exception e) {
                     displayDownloadableMessage(viewHolder,
                             message,
@@ -873,44 +849,6 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 
     private void promptOpenKeychainInstall(View view) {
         activity.showInstallPgpDialog();
-    }
-
-    @Override
-    public void notifyDataSetChanged() {
-        listSelectionManager.onBeforeNotifyDataSetChanged();
-        super.notifyDataSetChanged();
-        listSelectionManager.onAfterNotifyDataSetChanged();
-    }
-
-    private String transformText(CharSequence text, int start, int end, boolean forCopy) {
-        SpannableStringBuilder builder = new SpannableStringBuilder(text);
-        Object copySpan = new Object();
-        builder.setSpan(copySpan, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        DividerSpan[] dividerSpans = builder.getSpans(0, builder.length(), DividerSpan.class);
-        for (DividerSpan dividerSpan : dividerSpans) {
-            builder.replace(builder.getSpanStart(dividerSpan), builder.getSpanEnd(dividerSpan),
-                    dividerSpan.isLarge() ? "\n\n" : "\n");
-        }
-        start = builder.getSpanStart(copySpan);
-        end = builder.getSpanEnd(copySpan);
-        if (start == -1 || end == -1) return "";
-        builder = new SpannableStringBuilder(builder, start, end);
-        if (forCopy) {
-            QuoteSpan[] quoteSpans = builder.getSpans(0, builder.length(), QuoteSpan.class);
-            for (QuoteSpan quoteSpan : quoteSpans) {
-                builder.insert(builder.getSpanStart(quoteSpan), "> ");
-            }
-        }
-        return builder.toString();
-    }
-
-    @Override
-    public String transformTextForCopy(CharSequence text, int start, int end) {
-        if (text instanceof Spanned) {
-            return transformText(text, start, end, true);
-        } else {
-            return text.toString().substring(start, end);
-        }
     }
 
     public FileBackend getFileBackend() {
@@ -959,10 +897,6 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
         this.highlightedTerm = terms == null ? null : StylingHelper.filterHighlightedWords(terms);
     }
 
-    public interface OnQuoteListener {
-        void onQuote(String text);
-    }
-
     public interface OnContactPictureClicked {
         void onContactPictureClicked(Message message);
     }
@@ -982,56 +916,9 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
         protected ImageView indicator;
         protected ImageView indicatorReceived;
         protected TextView time;
-        protected CopyTextView messageBody;
+        protected TextView messageBody;
         protected ImageView contact_picture;
         protected TextView status_message;
         protected TextView encryption;
-    }
-
-
-    private class MessageBodyActionModeCallback implements ActionMode.Callback {
-
-        private final TextView textView;
-
-        public MessageBodyActionModeCallback(TextView textView) {
-            this.textView = textView;
-        }
-
-        @Override
-        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-            if (onQuoteListener != null) {
-                int quoteResId = activity.getThemeResource(R.attr.icon_quote, R.drawable.ic_action_reply);
-                // 3rd item is placed after "copy" item
-                menu.add(0, android.R.id.button1, 3, R.string.quote).setIcon(quoteResId)
-                        .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
-            }
-            return false;
-        }
-
-        @Override
-        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-            return false;
-        }
-
-        @Override
-        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            if (item.getItemId() == android.R.id.button1) {
-                int start = textView.getSelectionStart();
-                int end = textView.getSelectionEnd();
-                if (end > start) {
-                    String text = transformText(textView.getText(), start, end, false);
-                    if (onQuoteListener != null) {
-                        onQuoteListener.onQuote(text);
-                    }
-                    mode.finish();
-                }
-                return true;
-            }
-            return false;
-        }
-
-        @Override
-        public void onDestroyActionMode(ActionMode mode) {
-        }
     }
 }

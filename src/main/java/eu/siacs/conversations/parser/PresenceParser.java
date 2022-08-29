@@ -2,9 +2,10 @@ package eu.siacs.conversations.parser;
 
 import android.util.Log;
 
+import org.openintents.openpgp.util.OpenPgpUtils;
+
 import java.util.ArrayList;
 import java.util.List;
-
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.PgpEngine;
@@ -22,10 +23,10 @@ import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xml.Element;
 import eu.siacs.conversations.xml.Namespace;
 import eu.siacs.conversations.xmpp.InvalidJid;
+import eu.siacs.conversations.xmpp.Jid;
 import eu.siacs.conversations.xmpp.OnPresencePacketReceived;
 import eu.siacs.conversations.xmpp.pep.Avatar;
 import eu.siacs.conversations.xmpp.stanzas.PresencePacket;
-import eu.siacs.conversations.xmpp.Jid;
 
 public class PresenceParser extends AbstractParser implements
 		OnPresencePacketReceived {
@@ -55,7 +56,8 @@ public class PresenceParser extends AbstractParser implements
 	}
 
 	private void processConferencePresence(PresencePacket packet, Conversation conversation) {
-		MucOptions mucOptions = conversation.getMucOptions();
+		final Account account = conversation.getAccount();
+		final MucOptions mucOptions = conversation.getMucOptions();
 		final Jid jid = conversation.getAccount().getJid();
 		final Jid from = packet.getFrom();
 		if (!from.isBareJid()) {
@@ -92,7 +94,7 @@ public class PresenceParser extends AbstractParser implements
 							axolotlService.fetchDeviceIds(user.getRealJid());
 						}
 						if (codes.contains(MucOptions.STATUS_CODE_ROOM_CREATED) && mucOptions.autoPushConfiguration()) {
-							Log.d(Config.LOGTAG,mucOptions.getAccount().getJid().asBareJid()
+							Log.d(Config.LOGTAG,account.getJid().asBareJid()
 									+": room '"
 									+mucOptions.getConversation().getJid().asBareJid()
 									+"' created. pushing default configuration");
@@ -118,12 +120,11 @@ public class PresenceParser extends AbstractParser implements
 									mXmppConnectionService.getAvatarService().clear(user);
 								}
 								if (user.getRealJid() != null) {
-									Contact c = conversation.getAccount().getRoster().getContact(user.getRealJid());
-									if (c.setAvatar(avatar)) {
-										mXmppConnectionService.syncRoster(conversation.getAccount());
-										mXmppConnectionService.getAvatarService().clear(c);
-										mXmppConnectionService.updateRosterUi();
-									}
+									final Contact c = conversation.getAccount().getRoster().getContact(user.getRealJid());
+									c.setAvatar(avatar);
+									mXmppConnectionService.syncRoster(conversation.getAccount());
+									mXmppConnectionService.getAvatarService().clear(c);
+									mXmppConnectionService.updateRosterUi();
 								}
 							} else if (mXmppConnectionService.isDataSaverDisabled()) {
 								mXmppConnectionService.fetchAvatar(mucOptions.getAccount(), avatar);
@@ -138,12 +139,25 @@ public class PresenceParser extends AbstractParser implements
 					final Jid alternate = destroy == null ? null : InvalidJid.getNullForInvalid(destroy.getAttributeAsJid("jid"));
 					mucOptions.setError(MucOptions.Error.DESTROYED);
 					if (alternate != null) {
-						Log.d(Config.LOGTAG, conversation.getAccount().getJid().asBareJid() + ": muc destroyed. alternate location " + alternate);
+						Log.d(Config.LOGTAG, account.getJid().asBareJid() + ": muc destroyed. alternate location " + alternate);
 					}
 				} else if (codes.contains(MucOptions.STATUS_CODE_SHUTDOWN) && fullJidMatches) {
 					mucOptions.setError(MucOptions.Error.SHUTDOWN);
 				} else if (codes.contains(MucOptions.STATUS_CODE_SELF_PRESENCE)) {
-					if (codes.contains(MucOptions.STATUS_CODE_KICKED)) {
+					if (codes.contains(MucOptions.STATUS_CODE_TECHNICAL_REASONS)) {
+                        final boolean wasOnline = mucOptions.online();
+                        mucOptions.setError(MucOptions.Error.TECHNICAL_PROBLEMS);
+                        Log.d(
+                                Config.LOGTAG,
+                                account.getJid().asBareJid()
+                                        + ": received status code 333 in room "
+                                        + mucOptions.getConversation().getJid().asBareJid()
+                                        + " online="
+                                        + wasOnline);
+                        if (wasOnline) {
+                            mXmppConnectionService.mucSelfPingAndRejoin(conversation);
+                        }
+					} else if (codes.contains(MucOptions.STATUS_CODE_KICKED)) {
 						mucOptions.setError(MucOptions.Error.KICKED);
 					} else if (codes.contains(MucOptions.STATUS_CODE_BANNED)) {
 						mucOptions.setError(MucOptions.Error.BANNED);
@@ -268,7 +282,8 @@ public class PresenceParser extends AbstractParser implements
 						mXmppConnectionService.getAvatarService().clear(account);
 						mXmppConnectionService.updateConversationUi();
 						mXmppConnectionService.updateAccountUi();
-					} else if (contact.setAvatar(avatar)) {
+					} else {
+						contact.setAvatar(avatar);
 						mXmppConnectionService.syncRoster(account);
 						mXmppConnectionService.getAvatarService().clear(contact);
 						mXmppConnectionService.updateConversationUi();
@@ -314,9 +329,10 @@ public class PresenceParser extends AbstractParser implements
 			PgpEngine pgp = mXmppConnectionService.getPgpEngine();
 			Element x = packet.findChild("x", "jabber:x:signed");
 			if (pgp != null && x != null) {
-				Element status = packet.findChild("status");
-				String msg = status != null ? status.getContent() : "";
-				if (contact.setPgpKeyId(pgp.fetchKeyId(account, msg, x.getContent()))) {
+				final String status = packet.findChildContent("status");
+				final long keyId = pgp.fetchKeyId(account, status, x.getContent());
+				if (keyId != 0 && contact.setPgpKeyId(keyId)) {
+					Log.d(Config.LOGTAG,account.getJid().asBareJid()+": found OpenPGP key id for "+contact.getJid()+" "+OpenPgpUtils.convertKeyIdToHex(keyId));
 					mXmppConnectionService.syncRoster(account);
 				}
 			}
@@ -337,6 +353,7 @@ public class PresenceParser extends AbstractParser implements
 			mXmppConnectionService.onContactStatusChanged.onContactStatusChanged(contact, false);
 		} else if (type.equals("subscribe")) {
 			if (contact.setPresenceName(packet.findChildContent("nick", Namespace.NICK))) {
+				mXmppConnectionService.syncRoster(account);
 				mXmppConnectionService.getAvatarService().clear(contact);
 			}
 			if (contact.getOption(Contact.Options.PREEMPTIVE_GRANT)) {
