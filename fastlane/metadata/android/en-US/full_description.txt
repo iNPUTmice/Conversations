@@ -20,7 +20,7 @@ Features:
 * Multiple accounts / unified inbox
 * Very low impact on battery life
 
-Conversations makes it very easy to create an account on the conversations.im server. Using that server comes with an annual fee of 8 Euro after a 6 month trial period. However Conversations will work with any other XMPP server as well. A lot of XMPP servers are run by volunteers and are free of charge.
+Conversations makes it very easy to create an account on the free conversations.im server. However Conversations will work with any other XMPP server as well. A lot of XMPP servers are run by volunteers and are free of charge.
 
 XMPP Features:
 
