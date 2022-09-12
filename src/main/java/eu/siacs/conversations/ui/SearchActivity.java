@@ -97,7 +97,7 @@ public class SearchActivity extends XmppActivity implements TextWatcher, OnSearc
 		this.binding = DataBindingUtil.setContentView(this, R.layout.activity_search);
 		setSupportActionBar(this.binding.toolbar);
 		configureActionBar(getSupportActionBar());
-		this.messageListAdapter = new MessageAdapter(this, this.messages);
+		this.messageListAdapter = new MessageAdapter(this, this.messages, uuid == null);
 		this.messageListAdapter.setOnContactPictureClicked(this);
 		this.binding.searchResults.setAdapter(messageListAdapter);
 		registerForContextMenu(this.binding.searchResults);
