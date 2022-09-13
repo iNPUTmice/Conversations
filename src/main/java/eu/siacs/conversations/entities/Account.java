@@ -488,7 +488,9 @@ public class Account extends AbstractEntity implements AvatarService.Avatarable 
     }
 
     public Collection<Bookmark> getBookmarks() {
-        return this.bookmarks.values();
+        synchronized (this.bookmarks) {
+            return new HashSet<>(this.bookmarks.values());
+        }
     }
 
     public void setBookmarks(Map<Jid, Bookmark> bookmarks) {
