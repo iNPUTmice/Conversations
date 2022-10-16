@@ -252,7 +252,7 @@ public class JingleConnectionManager extends AbstractConnectionManager {
         if (sessionId == null) {
             return;
         }
-        if ("accept".equals(message.getName())) {
+        if ("accept".equals(message.getName()) || "reject".equals(message.getName())) {
             for (AbstractJingleConnection connection : connections.values()) {
                 if (connection instanceof JingleRtpConnection) {
                     final JingleRtpConnection rtpConnection = (JingleRtpConnection) connection;
