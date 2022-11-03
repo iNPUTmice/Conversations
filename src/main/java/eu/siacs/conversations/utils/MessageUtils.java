@@ -50,6 +50,7 @@ public class MessageUtils {
     public static String prepareQuote(Message message) {
         final StringBuilder builder = new StringBuilder();
         final String body;
+        final String quotee = UIHelper.getMessageDisplayName(message);
         if (message.hasMeCommand()) {
             final String nick;
             if (message.getStatus() == Message.STATUS_RECEIVED) {
@@ -61,9 +62,9 @@ public class MessageUtils {
             } else {
                 nick = UIHelper.getMessageDisplayName(message);
             }
-            body = nick + " " + message.getBody().substring(Message.ME_COMMAND.length());
+            body = "*" + nick + " " + message.getBody().substring(Message.ME_COMMAND.length()) +"*";
         } else {
-            body = message.getMergedBody().toString();
+            body = quotee + " wrote:\n" + message.getMergedBody().toString();
         }
         for (String line : body.split("\n")) {
             if (!(line.length() <= 0) && QuoteHelper.isNestedTooDeeply(line)) {
