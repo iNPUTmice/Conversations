@@ -20,6 +20,7 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
 
+import org.webrtc.DtmfSender;
 import org.webrtc.EglBase;
 import org.webrtc.IceCandidate;
 import org.webrtc.PeerConnection;
@@ -247,6 +248,10 @@ public class JingleRtpConnection extends AbstractJingleConnection
             transitionOrThrow(State.TERMINATED_CONNECTIVITY_ERROR);
             finish();
         }
+    }
+
+    public boolean applyDtmfTone(String tone) {
+        return webRTCWrapper.applyDtmfTone(tone);
     }
 
     private void receiveSessionTerminate(final JinglePacket jinglePacket) {
