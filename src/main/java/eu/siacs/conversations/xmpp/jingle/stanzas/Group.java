@@ -29,7 +29,7 @@ public class Group extends Element {
 
     public List<String> getIdentificationTags() {
         final ImmutableList.Builder<String> builder = new ImmutableList.Builder<>();
-        for (final Element child : this.children) {
+        for (final Element child : getChildren()) {
             if ("content".equals(child.getName())) {
                 final String name = child.getAttribute("name");
                 if (name != null) {

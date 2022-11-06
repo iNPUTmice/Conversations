@@ -2,8 +2,8 @@ package eu.siacs.conversations.xmpp.forms;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import eu.siacs.conversations.xml.Element;
 
@@ -23,24 +23,15 @@ public class Field extends Element {
 	}
 
 	public void setValue(String value) {
-		this.children.clear();
-		this.addChild("value").setContent(value);
+		setChildren(List.of(new Element("value").setContent(value)));
 	}
 
 	public void setValues(Collection<String> values) {
-		this.children.clear();
-		for(String value : values) {
-			this.addChild("value").setContent(value);
-		}
+		setChildren(values.stream().map(val -> new Element("value").setContent(val)).collect(Collectors.toList()));
 	}
 
 	public void removeNonValueChildren() {
-		for(Iterator<Element> iterator = this.children.iterator(); iterator.hasNext();) {
-			Element element = iterator.next();
-			if (!element.getName().equals("value")) {
-				iterator.remove();
-			}
-		}
+		setChildren(getChildren().stream().filter(element -> element.getName().equals("value")).collect(Collectors.toList()));
 	}
 
 	public static Field parse(Element element) {
