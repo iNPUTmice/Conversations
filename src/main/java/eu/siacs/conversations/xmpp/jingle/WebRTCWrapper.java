@@ -182,6 +182,7 @@ public class WebRTCWrapper {
                                     + ")");
                     if (track instanceof VideoTrack) {
                         remoteVideoTrack = (VideoTrack) track;
+                        eventCallback.onTrackModification();
                     }
                 }
 
@@ -330,6 +331,12 @@ public class WebRTCWrapper {
         throw new IllegalStateException(String.format("Could not add track for %s", media));
     }
 
+    public synchronized void removeTrack(final Media media) {
+        if (media == Media.VIDEO) {
+            removeVideoTrack(requirePeerConnection());
+        }
+    }
+
     private boolean addAudioTrack(final PeerConnection peerConnection) {
         final AudioSource audioSource =
                 requirePeerConnectionFactory().createAudioSource(new MediaConstraints());
@@ -352,8 +359,37 @@ public class WebRTCWrapper {
         final VideoTrack videoTrack =
                 requirePeerConnectionFactory()
                         .createVideoTrack("my-video-track", videoSourceWrapper.getVideoSource());
+        // TODO do we want to create Transceiver manually and be able to set direction and keep a
+        // reference to it for later removal
         this.localVideoTrack = TrackWrapper.addTrack(peerConnection, videoTrack);
+        this.eventCallback.onTrackModification();
         return true;
+    }
+
+    private void removeVideoTrack(final PeerConnection peerConnection) {
+        final TrackWrapper<VideoTrack> localVideoTrack = this.localVideoTrack;
+        if (localVideoTrack != null) {
+            final boolean success = peerConnection.removeTrack(localVideoTrack.rtpSender);
+            Log.d(Config.LOGTAG, "removeVideoTrack. success=" + success);
+            for (final RtpTransceiver transceiver : peerConnection.getTransceivers()) {
+                if (transceiver.getMediaType() == MediaStreamTrack.MediaType.MEDIA_TYPE_VIDEO) {
+                    final RtpTransceiver.RtpTransceiverDirection direction =
+                            transceiver.getDirection();
+                    transceiver.stop();
+                    Log.d(Config.LOGTAG, "stopped video transceiver for direction " + direction);
+                }
+            }
+        }
+        this.localVideoTrack = null;
+        this.eventCallback.onTrackModification();
+        final VideoSourceWrapper videoSourceWrapper = this.videoSourceWrapper;
+        if (videoSourceWrapper != null) {
+            try {
+                videoSourceWrapper.stopCapture();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private static PeerConnection.RTCConfiguration buildConfiguration(
@@ -528,6 +564,38 @@ public class WebRTCWrapper {
                 MoreExecutors.directExecutor());
     }
 
+    synchronized ListenableFuture<SessionDescription> rollback() {
+        return Futures.transformAsync(
+                getPeerConnectionFuture(),
+                peerConnection -> {
+                    final SettableFuture<SessionDescription> future = SettableFuture.create();
+                    if (peerConnection == null) {
+                        return Futures.immediateFailedFuture(
+                                new IllegalStateException("PeerConnection was null"));
+                    }
+                    peerConnection.setLocalDescription(
+                            new SetSdpObserver() {
+                                @Override
+                                public void onSetSuccess() {
+                                    final SessionDescription description =
+                                            peerConnection.getLocalDescription();
+                                    Log.d(EXTENDED_LOGGING_TAG, "rollback to local description:");
+                                    logDescription(description);
+                                    future.set(description);
+                                }
+
+                                @Override
+                                public void onSetFailure(final String message) {
+                                    future.setException(
+                                            new FailureToSetDescriptionException(message));
+                                }
+                            },
+                            new SessionDescription(SessionDescription.Type.ROLLBACK, ""));
+                    return future;
+                },
+                MoreExecutors.directExecutor());
+    }
+
     private static void logDescription(final SessionDescription sessionDescription) {
         for (final String line :
                 sessionDescription.description.split(
@@ -645,6 +713,8 @@ public class WebRTCWrapper {
                 Set<AppRTCAudioManager.AudioDevice> availableAudioDevices);
 
         void onRenegotiationNeeded();
+
+        void onTrackModification();
     }
 
     private abstract static class SetSdpObserver implements SdpObserver {

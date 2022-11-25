@@ -32,6 +32,10 @@ public class RtpDescription extends GenericDescription {
         super("description", Namespace.JINGLE_APPS_RTP);
     }
 
+    public static RtpDescription stub(final Media media) {
+        return new RtpDescription(media.toString());
+    }
+
     public Media getMedia() {
         return Media.of(this.getAttribute("media"));
     }

@@ -5,6 +5,7 @@ public enum RtpEndUserState {
     CONNECTING, //session-initiate or session-accepted but no webrtc peer connection yet
     CONNECTED, //session-accepted and webrtc peer connection is connected
     RECONNECTING, //session-accepted and webrtc peer connection was connected once but is currently disconnected or failed
+    INCOMING_CONTENT_ADD, //session-accepted with a pending, incoming content-add
     FINDING_DEVICE, //'propose' has been sent out; no 184 ack yet
     RINGING, //'propose' has been sent out and it has been 184 acked
     ACCEPTING_CALL, //'proceed' message has been sent; but no session-initiate has been received

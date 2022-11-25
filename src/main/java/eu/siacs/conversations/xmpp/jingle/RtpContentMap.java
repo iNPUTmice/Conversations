@@ -291,6 +291,18 @@ public class RtpContentMap {
                                         dt.senders, dt.description, IceUdpTransportInfo.STUB)));
     }
 
+    public RtpContentMap toStub() {
+        return new RtpContentMap(
+                null,
+                Maps.transformValues(
+                        this.contents,
+                        dt ->
+                                new DescriptionTransport(
+                                        dt.senders,
+                                        RtpDescription.stub(dt.description.getMedia()),
+                                        IceUdpTransportInfo.STUB)));
+    }
+
     public Diff diff(final RtpContentMap rtpContentMap) {
         final Set<String> existingContentIds = this.contents.keySet();
         final Set<String> newContentIds = rtpContentMap.contents.keySet();
@@ -307,24 +319,24 @@ public class RtpContentMap {
         }
     }
 
-    public RtpContentMap addContent(final RtpContentMap modification) {
+    public RtpContentMap addContent(
+            final RtpContentMap modification, final IceUdpTransportInfo.Setup setup) {
         final IceUdpTransportInfo.Credentials credentials = getDistinctCredentials();
         final DTLS dtls = getDistinctDtls();
         final IceUdpTransportInfo iceUdpTransportInfo =
-                IceUdpTransportInfo.of(credentials, dtls.setup, dtls.hash, dtls.fingerprint);
+                IceUdpTransportInfo.of(credentials, setup, dtls.hash, dtls.fingerprint);
         final Map<String, DescriptionTransport> combined =
                 new ImmutableMap.Builder<String, DescriptionTransport>()
                         .putAll(contents)
-                        .putAll(
-                                Maps.transformValues(
-                                        modification.contents,
-                                        dt ->
-                                                new DescriptionTransport(
-                                                        dt.senders,
-                                                        dt.description,
-                                                        iceUdpTransportInfo)))
+                        .putAll(modification.contents)
                         .build();
-        return new RtpContentMap(modification.group, combined);
+        final Map<String, DescriptionTransport> combinedFixedTransport =
+                Maps.transformValues(
+                        combined,
+                        dt ->
+                                new DescriptionTransport(
+                                        dt.senders, dt.description, iceUdpTransportInfo));
+        return new RtpContentMap(modification.group, combinedFixedTransport);
     }
 
     public static class DescriptionTransport {

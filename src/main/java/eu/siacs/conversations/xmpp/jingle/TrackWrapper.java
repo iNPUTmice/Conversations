@@ -8,8 +8,8 @@ import org.webrtc.PeerConnection;
 import org.webrtc.RtpSender;
 
 class TrackWrapper<T extends MediaStreamTrack> {
-    private final T track;
-    private final RtpSender rtpSender;
+    public final T track;
+    public final RtpSender rtpSender;
 
     private TrackWrapper(final T track, final RtpSender rtpSender) {
         Preconditions.checkNotNull(track);
