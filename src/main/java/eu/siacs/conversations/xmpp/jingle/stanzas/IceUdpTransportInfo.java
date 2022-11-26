@@ -12,8 +12,6 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.LinkedHashMap;
@@ -28,23 +26,29 @@ import eu.siacs.conversations.xmpp.jingle.SessionDescription;
 
 public class IceUdpTransportInfo extends GenericTransportInfo {
 
+    public static final IceUdpTransportInfo STUB = new IceUdpTransportInfo();
+
     public IceUdpTransportInfo() {
         super("transport", Namespace.JINGLE_TRANSPORT_ICE_UDP);
     }
 
     public static IceUdpTransportInfo upgrade(final Element element) {
-        Preconditions.checkArgument("transport".equals(element.getName()), "Name of provided element is not transport");
-        Preconditions.checkArgument(Namespace.JINGLE_TRANSPORT_ICE_UDP.equals(element.getNamespace()), "Element does not match ice-udp transport namespace");
+        Preconditions.checkArgument(
+                "transport".equals(element.getName()), "Name of provided element is not transport");
+        Preconditions.checkArgument(
+                Namespace.JINGLE_TRANSPORT_ICE_UDP.equals(element.getNamespace()),
+                "Element does not match ice-udp transport namespace");
         final IceUdpTransportInfo transportInfo = new IceUdpTransportInfo();
         transportInfo.setAttributes(element.getAttributes());
         transportInfo.setChildren(element.getChildren());
         return transportInfo;
     }
 
-    public static IceUdpTransportInfo of(SessionDescription sessionDescription, SessionDescription.Media media) {
+    public static IceUdpTransportInfo of(
+            SessionDescription sessionDescription, SessionDescription.Media media) {
         final String ufrag = Iterables.getFirst(media.attributes.get("ice-ufrag"), null);
         final String pwd = Iterables.getFirst(media.attributes.get("ice-pwd"), null);
-        IceUdpTransportInfo iceUdpTransportInfo = new IceUdpTransportInfo();
+        final IceUdpTransportInfo iceUdpTransportInfo = new IceUdpTransportInfo();
         if (ufrag != null) {
             iceUdpTransportInfo.setAttribute("ufrag", ufrag);
         }
@@ -56,7 +60,15 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
             iceUdpTransportInfo.addChild(fingerprint);
         }
         return iceUdpTransportInfo;
+    }
 
+    public static IceUdpTransportInfo of(
+            final Credentials credentials,  final Setup setup, final String hash, final String fingerprint) {
+        final IceUdpTransportInfo iceUdpTransportInfo = new IceUdpTransportInfo();
+        iceUdpTransportInfo.addChild(Fingerprint.of(setup, hash, fingerprint));
+        iceUdpTransportInfo.setAttribute("ufrag", credentials.ufrag);
+        iceUdpTransportInfo.setAttribute("pwd", credentials.password);
+        return iceUdpTransportInfo;
     }
 
     public Fingerprint getFingerprint() {
@@ -91,7 +103,8 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
         transportInfo.setAttribute("ufrag", credentials.ufrag);
         transportInfo.setAttribute("pwd", credentials.password);
         for (final Element child : getChildren()) {
-            if (child.getName().equals("fingerprint") && Namespace.JINGLE_APPS_DTLS.equals(child.getNamespace())) {
+            if (child.getName().equals("fingerprint")
+                    && Namespace.JINGLE_APPS_DTLS.equals(child.getNamespace())) {
                 final Fingerprint fingerprint = new Fingerprint();
                 fingerprint.setAttributes(new Hashtable<>(child.getAttributes()));
                 fingerprint.setContent(child.getContent());
@@ -231,7 +244,7 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
             return getAttributeAsInt("rel-port");
         }
 
-        public String getType() { //TODO might be converted to enum
+        public String getType() { // TODO might be converted to enum
             return getAttribute("type");
         }
 
@@ -256,7 +269,8 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
             checkNotNullNoWhitespace(protocol, "protocol");
             final String transport = protocol.toLowerCase(Locale.ROOT);
             if (!"udp".equals(transport)) {
-                throw new IllegalArgumentException(String.format("'%s' is not a supported protocol", transport));
+                throw new IllegalArgumentException(
+                        String.format("'%s' is not a supported protocol", transport));
             }
             final String priority = this.getAttribute("priority");
             checkNotNullNoWhitespace(priority, "priority");
@@ -284,7 +298,15 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
             if (ufrag != null) {
                 additionalParameter.put("ufrag", ufrag);
             }
-            final String parametersString = Joiner.on(' ').join(Collections2.transform(additionalParameter.entrySet(), input -> String.format("%s %s", input.getKey(), input.getValue())));
+            final String parametersString =
+                    Joiner.on(' ')
+                            .join(
+                                    Collections2.transform(
+                                            additionalParameter.entrySet(),
+                                            input ->
+                                                    String.format(
+                                                            "%s %s",
+                                                            input.getKey(), input.getValue())));
             return String.format(
                     "candidate:%s %s %s %s %s %s %s",
                     foundation,
@@ -293,19 +315,18 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
                     priority,
                     connectionAddress,
                     port,
-                    parametersString
-
-            );
+                    parametersString);
         }
     }
 
     private static void checkNotNullNoWhitespace(final String value, final String name) {
         if (Strings.isNullOrEmpty(value)) {
-            throw new IllegalArgumentException(String.format("Parameter %s is missing or empty", name));
+            throw new IllegalArgumentException(
+                    String.format("Parameter %s is missing or empty", name));
         }
-        SessionDescription.checkNoWhitespace(value, String.format("Parameter %s contains white spaces", name));
+        SessionDescription.checkNoWhitespace(
+                value, String.format("Parameter %s contains white spaces", name));
     }
-
 
     public static class Fingerprint extends Element {
 
@@ -340,9 +361,18 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
             return null;
         }
 
-        public static Fingerprint of(final SessionDescription sessionDescription, final SessionDescription.Media media) {
+        public static Fingerprint of(
+                final SessionDescription sessionDescription, final SessionDescription.Media media) {
             final Fingerprint fingerprint = of(media.attributes);
             return fingerprint == null ? of(sessionDescription.attributes) : fingerprint;
+        }
+
+        private static Fingerprint of(final Setup setup, final String hash, final String content) {
+            final Fingerprint fingerprint = new Fingerprint();
+            fingerprint.setContent(content);
+            fingerprint.setAttribute("hash", hash);
+            fingerprint.setAttribute("setup", setup.toString().toLowerCase(Locale.ROOT));
+            return fingerprint;
         }
 
         public String getHash() {
@@ -356,7 +386,9 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
     }
 
     public enum Setup {
-        ACTPASS, PASSIVE, ACTIVE;
+        ACTPASS,
+        PASSIVE,
+        ACTIVE;
 
         public static Setup of(String setup) {
             try {
@@ -373,7 +405,7 @@ public class IceUdpTransportInfo extends GenericTransportInfo {
             if (this == ACTIVE) {
                 return PASSIVE;
             }
-            throw new IllegalStateException(this.name()+" can not be flipped");
+            throw new IllegalStateException(this.name() + " can not be flipped");
         }
     }
 }

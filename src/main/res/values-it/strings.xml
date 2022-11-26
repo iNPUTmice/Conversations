@@ -297,6 +297,8 @@
     <string name="title_pref_enable_quiet_hours">Attiva ore di quiete</string>
     <string name="pref_quiet_hours_summary">Le notifiche verranno silenziate durante le ore di quiete</string>
     <string name="pref_expert_options_other">Altro</string>
+    <string name="pref_autojoin">Sincronizza i segnalibri</string>
+    <string name="pref_autojoin_summary">Imposta il flag \"auto-entrata\" quando entri o esci da un MUC e reagisci alle modifiche fatte dagli altri client.</string>
     <string name="toast_message_omemo_fingerprint">Impronta OMEMO copiata negli appunti</string>
     <string name="conference_banned">Sei stato bandito da questa chat di gruppo</string>
     <string name="conference_members_only">Questa chat di gruppo è solo per membri</string>
@@ -304,6 +306,7 @@
     <string name="conference_kicked">Sei stato buttato fuori da questa chat di gruppo</string>
     <string name="conference_shutdown">La chat di gruppo è stata chiusa</string>
     <string name="conference_unknown_error">Non sei più in questa chat di gruppo</string>
+    <string name="conference_technical_problems">Hai lasciato questa chat di gruppo per motivi tecnici</string>
     <string name="using_account">usando il profilo %s</string>
     <string name="hosted_on">ospitato su %s</string>
     <string name="checking_x">Controllo %s su host HTTP</string>
@@ -418,6 +421,7 @@
     <string name="video">video</string>
     <string name="image">immagine</string>
     <string name="vector_graphic">grafica vettoriale</string>
+    <string name="multimedia_file">file multimediale</string>
     <string name="pdf_document">Documento PDF</string>
     <string name="apk">Applicazione Android</string>
     <string name="vcard">Contatto</string>
@@ -988,4 +992,5 @@
     <string name="account_registrations_are_not_supported">Le registrazioni di profili non sono supportate</string>
     <string name="no_xmpp_adddress_found">Nessun indirizzo XMPP trovato</string>
     <string name="account_status_temporary_auth_failure">Errore di autenticazione temporaneo</string>
+    <string name="delete_avatar">Elimina avatar</string>
     </resources>

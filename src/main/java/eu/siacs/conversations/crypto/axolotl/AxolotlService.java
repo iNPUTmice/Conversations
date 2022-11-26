@@ -1272,7 +1272,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
             }
             descriptionTransportBuilder.put(
                     content.getKey(),
-                    new RtpContentMap.DescriptionTransport(descriptionTransport.description, encryptedTransportInfo)
+                    new RtpContentMap.DescriptionTransport(descriptionTransport.senders, descriptionTransport.description, encryptedTransportInfo)
             );
         }
         return Futures.immediateFuture(
@@ -1306,7 +1306,7 @@ public class AxolotlService implements OnAdvancedStreamFeaturesLoaded {
             omemoVerification.setOrEnsureEqual(decryptedTransport);
             descriptionTransportBuilder.put(
                     content.getKey(),
-                    new RtpContentMap.DescriptionTransport(descriptionTransport.description, decryptedTransport.payload)
+                    new RtpContentMap.DescriptionTransport(descriptionTransport.senders, descriptionTransport.description, decryptedTransport.payload)
             );
         }
         processPostponed();

@@ -1054,7 +1054,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
         if (account == null) {
             return;
         }
-        final String input = jid.getText().toString();
+        final String input = jid.getText().toString().trim();
         Jid conferenceJid;
         try {
             conferenceJid = Jid.ofEscaped(input);

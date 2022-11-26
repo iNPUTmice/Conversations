@@ -294,6 +294,8 @@
     <string name="title_pref_enable_quiet_hours">Establecer horario sen notificacións</string>
     <string name="pref_quiet_hours_summary">As notificacións serán silenciadas durante estas horas</string>
     <string name="pref_expert_options_other">Outro</string>
+    <string name="pref_autojoin">Sincronizar marcadores</string>
+    <string name="pref_autojoin_summary">Poñer marca de \"autojoin\" ao entrar ou deixar unha MUC e reaccionar ás modificacións feitas desde outros clientes.</string>
     <string name="toast_message_omemo_fingerprint">Copiouse a impresión dixital OMEMO ao portapapeis</string>
     <string name="conference_banned">Non podes acceder a esta conversa en grupo</string>
     <string name="conference_members_only">Esta conversa en grupo é so para membros</string>
@@ -301,6 +303,7 @@
     <string name="conference_kicked">Xa foi expulsado de esta conversa en grupo</string>
     <string name="conference_shutdown">A conversa en grupo foi apagada</string>
     <string name="conference_unknown_error">Xa non estás nesta conversa en grupo</string>
+    <string name="conference_technical_problems">Deixaches esta conversa en grupo por razóns técnicas</string>
     <string name="using_account">utilizando a conta %s</string>
     <string name="hosted_on">hospedado en %s</string>
     <string name="checking_x">Comprobando %s no servidor HTTP</string>
@@ -976,4 +979,5 @@
     <string name="account_registrations_are_not_supported">Non está permitido o rexistro de novas contas</string>
     <string name="no_xmpp_adddress_found">Non se atopa un enderezo XMPP</string>
     <string name="account_status_temporary_auth_failure">Fallo temporal da autenticación</string>
+    <string name="delete_avatar">Eliminar avatar</string>
     </resources>

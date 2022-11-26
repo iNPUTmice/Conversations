@@ -292,8 +292,10 @@
     <string name="title_pref_quiet_hours_start_time">Beginn</string>
     <string name="title_pref_quiet_hours_end_time">Ende</string>
     <string name="title_pref_enable_quiet_hours">Ruhige Stunden aktivieren</string>
-    <string name="pref_quiet_hours_summary">Benachrichtigungen sind während der ruhigen Stunden stumm.</string>
+    <string name="pref_quiet_hours_summary">Benachrichtigungen sind während der ruhigen Stunden stumm</string>
     <string name="pref_expert_options_other">Sonstiges</string>
+    <string name="pref_autojoin">Lesezeichen synchronisieren</string>
+    <string name="pref_autojoin_summary">Setzt das \"Autojoin\"-Kennzeichen beim Betreten oder Verlassen eines Gruppenchats/Channels und reagiert auf Änderungen durch andere Clients.</string>
     <string name="toast_message_omemo_fingerprint">OMEMO-Fingerabdruck in die Zwischenablage kopiert</string>
     <string name="conference_banned">Du wurdest aus diesem Gruppenchat ausgeschlossen</string>
     <string name="conference_members_only">Dieser Gruppenchat ist nur für Mitglieder</string>
@@ -301,6 +303,7 @@
     <string name="conference_kicked">Du wurdest aus diesem Gruppchat geworfen</string>
     <string name="conference_shutdown">Gruppenchat wurde geschlossen</string>
     <string name="conference_unknown_error">Du bist nicht länger in diesem Gruppenchat</string>
+    <string name="conference_technical_problems">Du hast diesen Gruppenchat aus technischen Gründen verlassen</string>
     <string name="using_account">verwende Konto %s</string>
     <string name="hosted_on">gehostet bei %s</string>
     <string name="checking_x">%s auf HTTP-Host wird überprüft</string>
@@ -471,7 +474,7 @@
     <string name="server_info_broken">Fehlerhaft</string>
     <string name="pref_presence_settings">Status</string>
     <string name="pref_away_when_screen_off">Abwesend bei gesperrtem Gerät</string>
-    <string name="pref_away_when_screen_off_summary">Als abwesend anzeigen, wenn das Gerät gesperrt ist.</string>
+    <string name="pref_away_when_screen_off_summary">Als abwesend anzeigen, wenn das Gerät gesperrt ist</string>
     <string name="pref_dnd_on_silent_mode">Beschäftigt im lautlosen Modus</string>
     <string name="pref_dnd_on_silent_mode_summary">Als Beschäftigt anzeigen, wenn sich das Gerät im lautlosen Modus befindet</string>
     <string name="pref_treat_vibrate_as_silent">Vibration als Lautlos behandeln</string>
@@ -554,7 +557,7 @@
     <string name="presence_xa">Nicht verfügbar</string>
     <string name="presence_dnd">Beschäftigt</string>
     <string name="secure_password_generated">Ein sicheres Passwort wurde erstellt</string>
-    <string name="device_does_not_support_battery_op">Dein Gerät unterstützt kein Ausschalten der Akkuoptimierung</string>
+    <string name="device_does_not_support_battery_op">Dein Gerät unterstützt nicht das Ausschalten der Akkuoptimierung</string>
     <string name="registration_please_wait">Registrierung fehlgeschlagen: Bitte später versuchen</string>
     <string name="registration_password_too_weak">Registrierung fehlgeschlagen: Passwort zu schwach</string>
     <string name="choose_participants">Teilnehmer wählen</string>
@@ -976,4 +979,5 @@
     <string name="account_registrations_are_not_supported">Kontoregistrierungen werden nicht unterstützt</string>
     <string name="no_xmpp_adddress_found">Keine XMPP-Adresse gefunden</string>
     <string name="account_status_temporary_auth_failure">Temporärer Authentifizierungsfehler</string>
+    <string name="delete_avatar">Profilbild löschen</string>
     </resources>

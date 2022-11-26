@@ -291,6 +291,8 @@
     <string name="title_pref_enable_quiet_hours">启用静默时间段</string>
     <string name="pref_quiet_hours_summary">在静默时间段内通知将保持静音</string>
     <string name="pref_expert_options_other">其他</string>
+    <string name="pref_autojoin">同步书签</string>
+    <string name="pref_autojoin_summary">加入或离开多用户聊天时设置 “autojoin\" 标志，并回应其他客户端所做更改。</string>
     <string name="toast_message_omemo_fingerprint">OMEMO指纹已拷贝到剪贴板</string>
     <string name="conference_banned">您被封禁了</string>
     <string name="conference_members_only">这个群聊只允许成员聊天</string>
@@ -298,6 +300,7 @@
     <string name="conference_kicked">您被从此群聊踢出</string>
     <string name="conference_shutdown">这个群聊已被关闭</string>
     <string name="conference_unknown_error">您已不在该群组</string>
+    <string name="conference_technical_problems">你出于技术原因离开了群聊</string>
     <string name="using_account">使用帐户%s</string>
     <string name="hosted_on">托管于%s</string>
     <string name="checking_x">正在HTTP服务器中检查%s</string>
@@ -963,4 +966,5 @@
     <string name="account_registrations_are_not_supported">不支持注册账户</string>
     <string name="no_xmpp_adddress_found">未找到 XMPP 地址</string>
     <string name="account_status_temporary_auth_failure">临时认证失败</string>
+    <string name="delete_avatar">删除群聊</string>
     </resources>

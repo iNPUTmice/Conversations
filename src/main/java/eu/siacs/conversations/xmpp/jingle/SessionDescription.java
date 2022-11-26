@@ -3,6 +3,8 @@ package eu.siacs.conversations.xmpp.jingle;
 import android.util.Log;
 import android.util.Pair;
 
+import androidx.annotation.NonNull;
+
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
@@ -21,11 +23,12 @@ import eu.siacs.conversations.xmpp.jingle.stanzas.RtpDescription;
 
 public class SessionDescription {
 
-    public final static String LINE_DIVIDER = "\r\n";
-    private final static String HARDCODED_MEDIA_PROTOCOL = "UDP/TLS/RTP/SAVPF"; //probably only true for DTLS-SRTP aka when we have a fingerprint
-    private final static int HARDCODED_MEDIA_PORT = 9;
-    private final static String HARDCODED_ICE_OPTIONS = "trickle";
-    private final static String HARDCODED_CONNECTION = "IN IP4 0.0.0.0";
+    public static final String LINE_DIVIDER = "\r\n";
+    private static final String HARDCODED_MEDIA_PROTOCOL =
+            "UDP/TLS/RTP/SAVPF"; // probably only true for DTLS-SRTP aka when we have a fingerprint
+    private static final int HARDCODED_MEDIA_PORT = 9;
+    private static final String HARDCODED_ICE_OPTIONS = "trickle";
+    private static final String HARDCODED_CONNECTION = "IN IP4 0.0.0.0";
 
     public final int version;
     public final String name;
@@ -33,8 +36,12 @@ public class SessionDescription {
     public final ArrayListMultimap<String, String> attributes;
     public final List<Media> media;
 
-
-    public SessionDescription(int version, String name, String connectionData, ArrayListMultimap<String, String> attributes, List<Media> media) {
+    public SessionDescription(
+            int version,
+            String name,
+            String connectionData,
+            ArrayListMultimap<String, String> attributes,
+            List<Media> media) {
         this.version = version;
         this.name = name;
         this.connectionData = connectionData;
@@ -42,7 +49,8 @@ public class SessionDescription {
         this.media = media;
     }
 
-    private static void appendAttributes(StringBuilder s, ArrayListMultimap<String, String> attributes) {
+    private static void appendAttributes(
+            StringBuilder s, ArrayListMultimap<String, String> attributes) {
         for (Map.Entry<String, String> attribute : attributes.entries()) {
             final String key = attribute.getKey();
             final String value = attribute.getValue();
@@ -109,7 +117,6 @@ public class SessionDescription {
                     }
                     break;
             }
-
         }
         if (currentMediaBuilder != null) {
             currentMediaBuilder.setAttributes(attributeMap);
@@ -121,7 +128,7 @@ public class SessionDescription {
         return sessionDescriptionBuilder.createSessionDescription();
     }
 
-    public static SessionDescription of(final RtpContentMap contentMap) {
+    public static SessionDescription of(final RtpContentMap contentMap, final boolean isInitiatorContentMap) {
         final SessionDescriptionBuilder sessionDescriptionBuilder = new SessionDescriptionBuilder();
         final ArrayListMultimap<String, String> attributeMap = ArrayListMultimap.create();
         final ImmutableList.Builder<Media> mediaListBuilder = new ImmutableList.Builder<>();
@@ -129,12 +136,17 @@ public class SessionDescription {
         if (group != null) {
             final String semantics = group.getSemantics();
             checkNoWhitespace(semantics, "group semantics value must not contain any whitespace");
-            attributeMap.put("group", group.getSemantics() + " " + Joiner.on(' ').join(group.getIdentificationTags()));
+            attributeMap.put(
+                    "group",
+                    group.getSemantics()
+                            + " "
+                            + Joiner.on(' ').join(group.getIdentificationTags()));
         }
 
         attributeMap.put("msid-semantic", " WMS my-media-stream");
 
-        for (final Map.Entry<String, RtpContentMap.DescriptionTransport> entry : contentMap.contents.entrySet()) {
+        for (final Map.Entry<String, RtpContentMap.DescriptionTransport> entry :
+                contentMap.contents.entrySet()) {
             final String name = entry.getKey();
             RtpContentMap.DescriptionTransport descriptionTransport = entry.getValue();
             RtpDescription description = descriptionTransport.description;
@@ -143,19 +155,22 @@ public class SessionDescription {
             final String ufrag = transport.getAttribute("ufrag");
             final String pwd = transport.getAttribute("pwd");
             if (Strings.isNullOrEmpty(ufrag)) {
-                throw new IllegalArgumentException("Transport element is missing required ufrag attribute");
+                throw new IllegalArgumentException(
+                        "Transport element is missing required ufrag attribute");
             }
             checkNoWhitespace(ufrag, "ufrag value must not contain any whitespaces");
             mediaAttributes.put("ice-ufrag", ufrag);
             if (Strings.isNullOrEmpty(pwd)) {
-                throw new IllegalArgumentException("Transport element is missing required pwd attribute");
+                throw new IllegalArgumentException(
+                        "Transport element is missing required pwd attribute");
             }
             checkNoWhitespace(pwd, "pwd value must not contain any whitespaces");
             mediaAttributes.put("ice-pwd", pwd);
             mediaAttributes.put("ice-options", HARDCODED_ICE_OPTIONS);
             final IceUdpTransportInfo.Fingerprint fingerprint = transport.getFingerprint();
             if (fingerprint != null) {
-                mediaAttributes.put("fingerprint", fingerprint.getHash() + " " + fingerprint.getContent());
+                mediaAttributes.put(
+                        "fingerprint", fingerprint.getHash() + " " + fingerprint.getContent());
                 final IceUdpTransportInfo.Setup setup = fingerprint.getSetup();
                 if (setup != null) {
                     mediaAttributes.put("setup", setup.toString().toLowerCase(Locale.ROOT));
@@ -174,37 +189,56 @@ public class SessionDescription {
                 mediaAttributes.put("rtpmap", payloadType.toSdpAttribute());
                 final List<RtpDescription.Parameter> parameters = payloadType.getParameters();
                 if (parameters.size() == 1) {
-                    mediaAttributes.put("fmtp", RtpDescription.Parameter.toSdpString(id, parameters.get(0)));
+                    mediaAttributes.put(
+                            "fmtp", RtpDescription.Parameter.toSdpString(id, parameters.get(0)));
                 } else if (parameters.size() > 0) {
-                    mediaAttributes.put("fmtp", RtpDescription.Parameter.toSdpString(id, parameters));
+                    mediaAttributes.put(
+                            "fmtp", RtpDescription.Parameter.toSdpString(id, parameters));
                 }
-                for (RtpDescription.FeedbackNegotiation feedbackNegotiation : payloadType.getFeedbackNegotiations()) {
+                for (RtpDescription.FeedbackNegotiation feedbackNegotiation :
+                        payloadType.getFeedbackNegotiations()) {
                     final String type = feedbackNegotiation.getType();
                     final String subtype = feedbackNegotiation.getSubType();
                     if (Strings.isNullOrEmpty(type)) {
-                        throw new IllegalArgumentException("a feedback for payload-type " + id + " negotiation is missing type");
+                        throw new IllegalArgumentException(
+                                "a feedback for payload-type "
+                                        + id
+                                        + " negotiation is missing type");
                     }
-                    checkNoWhitespace(type, "feedback negotiation type must not contain whitespace");
-                    mediaAttributes.put("rtcp-fb", id + " " + type + (Strings.isNullOrEmpty(subtype) ? "" : " " + subtype));
+                    checkNoWhitespace(
+                            type, "feedback negotiation type must not contain whitespace");
+                    mediaAttributes.put(
+                            "rtcp-fb",
+                            id
+                                    + " "
+                                    + type
+                                    + (Strings.isNullOrEmpty(subtype) ? "" : " " + subtype));
                 }
-                for (RtpDescription.FeedbackNegotiationTrrInt feedbackNegotiationTrrInt : payloadType.feedbackNegotiationTrrInts()) {
-                    mediaAttributes.put("rtcp-fb", id + " trr-int " + feedbackNegotiationTrrInt.getValue());
+                for (RtpDescription.FeedbackNegotiationTrrInt feedbackNegotiationTrrInt :
+                        payloadType.feedbackNegotiationTrrInts()) {
+                    mediaAttributes.put(
+                            "rtcp-fb", id + " trr-int " + feedbackNegotiationTrrInt.getValue());
                 }
             }
 
-            for (RtpDescription.FeedbackNegotiation feedbackNegotiation : description.getFeedbackNegotiations()) {
+            for (RtpDescription.FeedbackNegotiation feedbackNegotiation :
+                    description.getFeedbackNegotiations()) {
                 final String type = feedbackNegotiation.getType();
                 final String subtype = feedbackNegotiation.getSubType();
                 if (Strings.isNullOrEmpty(type)) {
                     throw new IllegalArgumentException("a feedback negotiation is missing type");
                 }
                 checkNoWhitespace(type, "feedback negotiation type must not contain whitespace");
-                mediaAttributes.put("rtcp-fb", "* " + type + (Strings.isNullOrEmpty(subtype) ? "" : " " + subtype));
+                mediaAttributes.put(
+                        "rtcp-fb",
+                        "* " + type + (Strings.isNullOrEmpty(subtype) ? "" : " " + subtype));
             }
-            for (final RtpDescription.FeedbackNegotiationTrrInt feedbackNegotiationTrrInt : description.feedbackNegotiationTrrInts()) {
+            for (final RtpDescription.FeedbackNegotiationTrrInt feedbackNegotiationTrrInt :
+                    description.feedbackNegotiationTrrInts()) {
                 mediaAttributes.put("rtcp-fb", "* trr-int " + feedbackNegotiationTrrInt.getValue());
             }
-            for (final RtpDescription.RtpHeaderExtension extension : description.getHeaderExtensions()) {
+            for (final RtpDescription.RtpHeaderExtension extension :
+                    description.getHeaderExtensions()) {
                 final String id = extension.getId();
                 final String uri = extension.getUri();
                 if (Strings.isNullOrEmpty(id)) {
@@ -218,7 +252,8 @@ public class SessionDescription {
                 mediaAttributes.put("extmap", id + " " + uri);
             }
 
-            if (description.hasChild("extmap-allow-mixed", Namespace.JINGLE_RTP_HEADER_EXTENSIONS)) {
+            if (description.hasChild(
+                    "extmap-allow-mixed", Namespace.JINGLE_RTP_HEADER_EXTENSIONS)) {
                 mediaAttributes.put("extmap-allow-mixed", "");
             }
 
@@ -226,13 +261,16 @@ public class SessionDescription {
                 final String semantics = sourceGroup.getSemantics();
                 final List<String> groups = sourceGroup.getSsrcs();
                 if (Strings.isNullOrEmpty(semantics)) {
-                    throw new IllegalArgumentException("A SSRC group is missing semantics attribute");
+                    throw new IllegalArgumentException(
+                            "A SSRC group is missing semantics attribute");
                 }
                 checkNoWhitespace(semantics, "source group semantics must not contain whitespace");
                 if (groups.size() == 0) {
                     throw new IllegalArgumentException("A SSRC group is missing SSRC ids");
                 }
-                mediaAttributes.put("ssrc-group", String.format("%s %s", semantics, Joiner.on(' ').join(groups)));
+                mediaAttributes.put(
+                        "ssrc-group",
+                        String.format("%s %s", semantics, Joiner.on(' ').join(groups)));
             }
             for (final RtpDescription.Source source : description.getSources()) {
                 for (final RtpDescription.Source.Parameter parameter : source.getParameters()) {
@@ -240,14 +278,18 @@ public class SessionDescription {
                     final String parameterName = parameter.getParameterName();
                     final String parameterValue = parameter.getParameterValue();
                     if (Strings.isNullOrEmpty(id)) {
-                        throw new IllegalArgumentException("A source specific media attribute is missing the id");
+                        throw new IllegalArgumentException(
+                                "A source specific media attribute is missing the id");
                     }
-                    checkNoWhitespace(id, "A source specific media attributes must not contain whitespaces");
+                    checkNoWhitespace(
+                            id, "A source specific media attributes must not contain whitespaces");
                     if (Strings.isNullOrEmpty(parameterName)) {
-                        throw new IllegalArgumentException("A source specific media attribute is missing its name");
+                        throw new IllegalArgumentException(
+                                "A source specific media attribute is missing its name");
                     }
                     if (Strings.isNullOrEmpty(parameterValue)) {
-                        throw new IllegalArgumentException("A source specific media attribute is missing its value");
+                        throw new IllegalArgumentException(
+                                "A source specific media attribute is missing its value");
                     }
                     mediaAttributes.put("ssrc", id + " " + parameterName + ":" + parameterValue);
                 }
@@ -255,13 +297,13 @@ public class SessionDescription {
 
             mediaAttributes.put("mid", name);
 
-            //random additional attributes
-            mediaAttributes.put("rtcp", "9 IN IP4 0.0.0.0");
-            mediaAttributes.put("sendrecv", "");
-
+            mediaAttributes.put(descriptionTransport.senders.asMediaAttribute(isInitiatorContentMap), "");
             if (description.hasChild("rtcp-mux", Namespace.JINGLE_APPS_RTP)) {
                 mediaAttributes.put("rtcp-mux", "");
             }
+
+            // random additional attributes
+            mediaAttributes.put("rtcp", "9 IN IP4 0.0.0.0");
 
             final MediaBuilder mediaBuilder = new MediaBuilder();
             mediaBuilder.setMedia(description.getMedia().toString().toLowerCase(Locale.ROOT));
@@ -271,7 +313,6 @@ public class SessionDescription {
             mediaBuilder.setAttributes(mediaAttributes);
             mediaBuilder.setFormats(formatBuilder.build());
             mediaListBuilder.add(mediaBuilder.createMedia());
-
         }
         sessionDescriptionBuilder.setVersion(0);
         sessionDescriptionBuilder.setName("-");
@@ -317,17 +358,33 @@ public class SessionDescription {
         }
     }
 
+    @NonNull
     @Override
     public String toString() {
-        final StringBuilder s = new StringBuilder()
-                .append("v=").append(version).append(LINE_DIVIDER)
-                //TODO randomize or static
-                .append("o=- 8770656990916039506 2 IN IP4 127.0.0.1").append(LINE_DIVIDER) //what ever that means
-                .append("s=").append(name).append(LINE_DIVIDER)
-                .append("t=0 0").append(LINE_DIVIDER);
+        final StringBuilder s =
+                new StringBuilder()
+                        .append("v=")
+                        .append(version)
+                        .append(LINE_DIVIDER)
+                        // TODO randomize or static
+                        .append("o=- 8770656990916039506 2 IN IP4 127.0.0.1")
+                        .append(LINE_DIVIDER) // what ever that means
+                        .append("s=")
+                        .append(name)
+                        .append(LINE_DIVIDER)
+                        .append("t=0 0")
+                        .append(LINE_DIVIDER);
         appendAttributes(s, attributes);
         for (Media media : this.media) {
-            s.append("m=").append(media.media).append(' ').append(media.port).append(' ').append(media.protocol).append(' ').append(Joiner.on(' ').join(media.formats)).append(LINE_DIVIDER);
+            s.append("m=")
+                    .append(media.media)
+                    .append(' ')
+                    .append(media.port)
+                    .append(' ')
+                    .append(media.protocol)
+                    .append(' ')
+                    .append(Joiner.on(' ').join(media.formats))
+                    .append(LINE_DIVIDER);
             s.append("c=").append(media.connectionData).append(LINE_DIVIDER);
             appendAttributes(s, media.attributes);
         }
@@ -342,7 +399,13 @@ public class SessionDescription {
         public final String connectionData;
         public final ArrayListMultimap<String, String> attributes;
 
-        public Media(String media, int port, String protocol, List<Integer> formats, String connectionData, ArrayListMultimap<String, String> attributes) {
+        public Media(
+                String media,
+                int port,
+                String protocol,
+                List<Integer> formats,
+                String connectionData,
+                ArrayListMultimap<String, String> attributes) {
             this.media = media;
             this.port = port;
             this.protocol = protocol;
@@ -351,5 +414,4 @@ public class SessionDescription {
             this.attributes = attributes;
         }
     }
-
 }

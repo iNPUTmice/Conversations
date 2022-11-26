@@ -297,6 +297,8 @@
     <string name="title_pref_enable_quiet_hours">Habilitar horário de sossego</string>
     <string name="pref_quiet_hours_summary">As notificações serão silenciadas no horário de sossego.</string>
     <string name="pref_expert_options_other">Outras</string>
+    <string name="pref_autojoin">Sincronizar favoritos</string>
+    <string name="pref_autojoin_summary">Define a flag \"autojoin\" ao entrar ou sair de uma sala e reage a modificações feitas por outros clientes.</string>
     <string name="toast_message_omemo_fingerprint">Impressão digital OMEMO copiada para a área de transferência</string>
     <string name="conference_banned">Você foi banido desta conversa em grupo</string>
     <string name="conference_members_only">Somente membros podem entrar nessa conversa em grupo</string>
@@ -304,6 +306,7 @@
     <string name="conference_kicked">Você foi retirado desta conversa em grupo</string>
     <string name="conference_shutdown">A conversa em grupo foi encerrada</string>
     <string name="conference_unknown_error">Você não está mais nesta conversa em grupo</string>
+    <string name="conference_technical_problems">Você saiu desta conversa em grupo devido a razões técnicas</string>
     <string name="using_account">usando a conta %s</string>
     <string name="hosted_on">hospedado em %s</string>
     <string name="checking_x">Verificando %s no host HTTP</string>
@@ -989,4 +992,5 @@
     <string name="account_registrations_are_not_supported">O registro de contas não está ativo</string>
     <string name="no_xmpp_adddress_found">Não foi encontrado nenhum endereço XMPP</string>
     <string name="account_status_temporary_auth_failure">Falha temporária na autenticação</string>
+    <string name="delete_avatar">Excluir avatar</string>
     </resources>

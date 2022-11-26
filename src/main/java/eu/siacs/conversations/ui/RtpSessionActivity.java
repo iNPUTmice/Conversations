@@ -164,7 +164,7 @@ public class RtpSessionActivity extends XmppActivity
         getMenuInflater().inflate(R.menu.activity_rtp_session, menu);
         final MenuItem help = menu.findItem(R.id.action_help);
         final MenuItem gotoChat = menu.findItem(R.id.action_goto_chat);
-        help.setVisible(isHelpButtonVisible());
+        help.setVisible(Config.HELP != null && isHelpButtonVisible());
         gotoChat.setVisible(isSwitchToConversationVisible());
         return super.onCreateOptionsMenu(menu);
     }

@@ -577,8 +577,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
 
     private void sendInitRequest() {
         final JinglePacket packet = this.bootstrapPacket(JinglePacket.Action.SESSION_INITIATE);
-        final Content content = new Content(this.contentCreator, this.contentName);
-        content.setSenders(this.contentSenders);
+        final Content content = new Content(this.contentCreator, this.contentSenders, this.contentName);
         if (message.getEncryption() == Message.ENCRYPTION_AXOLOTL && remoteSupportsOmemoJet) {
             Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": remote announced support for JET");
             final Element security = new Element("security", Namespace.JINGLE_ENCRYPTED_TRANSPORT);
@@ -656,8 +655,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
         gatherAndConnectDirectCandidates();
         this.jingleConnectionManager.getPrimaryCandidate(this.id.account, isInitiator(), (success, candidate) -> {
             final JinglePacket packet = bootstrapPacket(JinglePacket.Action.SESSION_ACCEPT);
-            final Content content = new Content(contentCreator, contentName);
-            content.setSenders(this.contentSenders);
+            final Content content = new Content(contentCreator, contentSenders, contentName);
             content.setDescription(this.description);
             if (success && candidate != null && !equalCandidateExists(candidate)) {
                 final JingleSocks5Transport socksConnection = new JingleSocks5Transport(this, candidate);
@@ -696,8 +694,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
     private void sendAcceptIbb() {
         this.transport = new JingleInBandTransport(this, this.transportId, this.ibbBlockSize);
         final JinglePacket packet = bootstrapPacket(JinglePacket.Action.SESSION_ACCEPT);
-        final Content content = new Content(contentCreator, contentName);
-        content.setSenders(this.contentSenders);
+        final Content content = new Content(contentCreator, contentSenders, contentName);
         content.setDescription(this.description);
         content.setTransport(new IbbTransportInfo(this.transportId, this.ibbBlockSize));
         packet.addJingleContent(content);
@@ -910,8 +907,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
     private void sendFallbackToIbb() {
         Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": sending fallback to ibb");
         final JinglePacket packet = this.bootstrapPacket(JinglePacket.Action.TRANSPORT_REPLACE);
-        final Content content = new Content(this.contentCreator, this.contentName);
-        content.setSenders(this.contentSenders);
+        final Content content = new Content(this.contentCreator, this.contentSenders, this.contentName);
         this.transportId = JingleConnectionManager.nextRandomId();
         content.setTransport(new IbbTransportInfo(this.transportId, this.ibbBlockSize));
         packet.addJingleContent(content);
@@ -944,8 +940,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
 
         final JinglePacket answer = bootstrapPacket(JinglePacket.Action.TRANSPORT_ACCEPT);
 
-        final Content content = new Content(contentCreator, contentName);
-        content.setSenders(this.contentSenders);
+        final Content content = new Content(contentCreator, contentSenders, contentName);
         content.setTransport(new IbbTransportInfo(this.transportId, this.ibbBlockSize));
         answer.addJingleContent(content);
 
@@ -1124,8 +1119,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
 
     private void sendProxyActivated(String cid) {
         final JinglePacket packet = bootstrapPacket(JinglePacket.Action.TRANSPORT_INFO);
-        final Content content = new Content(this.contentCreator, this.contentName);
-        content.setSenders(this.contentSenders);
+        final Content content = new Content(this.contentCreator, this.contentSenders, this.contentName);
         content.setTransport(new S5BTransportInfo(this.transportId, new Element("activated").setAttribute("cid", cid)));
         packet.addJingleContent(content);
         this.sendJinglePacket(packet);
@@ -1133,8 +1127,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
 
     private void sendProxyError() {
         final JinglePacket packet = bootstrapPacket(JinglePacket.Action.TRANSPORT_INFO);
-        final Content content = new Content(this.contentCreator, this.contentName);
-        content.setSenders(this.contentSenders);
+        final Content content = new Content(this.contentCreator, this.contentSenders, this.contentName);
         content.setTransport(new S5BTransportInfo(this.transportId, new Element("proxy-error")));
         packet.addJingleContent(content);
         this.sendJinglePacket(packet);
@@ -1142,8 +1135,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
 
     private void sendCandidateUsed(final String cid) {
         JinglePacket packet = bootstrapPacket(JinglePacket.Action.TRANSPORT_INFO);
-        final Content content = new Content(this.contentCreator, this.contentName);
-        content.setSenders(this.contentSenders);
+        final Content content = new Content(this.contentCreator, this.contentSenders, this.contentName);
         content.setTransport(new S5BTransportInfo(this.transportId, new Element("candidate-used").setAttribute("cid", cid)));
         packet.addJingleContent(content);
         this.sentCandidate = true;
@@ -1156,8 +1148,7 @@ public class JingleFileTransferConnection extends AbstractJingleConnection imple
     private void sendCandidateError() {
         Log.d(Config.LOGTAG, id.account.getJid().asBareJid() + ": sending candidate error");
         JinglePacket packet = bootstrapPacket(JinglePacket.Action.TRANSPORT_INFO);
-        Content content = new Content(this.contentCreator, this.contentName);
-        content.setSenders(this.contentSenders);
+        Content content = new Content(this.contentCreator, this.contentSenders, this.contentName);
         content.setTransport(new S5BTransportInfo(this.transportId, new Element("candidate-error")));
         packet.addJingleContent(content);
         this.sentCandidate = true;

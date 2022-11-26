@@ -431,11 +431,11 @@ Then issue the following commands in order to build the apk.
 
     git clone https://github.com/inputmice/Conversations.git
     cd Conversations
-    ./gradlew assembleConversationsFreeSystemDebug
+    ./gradlew assembleConversationsFreeDebug
 
 There are two build flavors available. *free* and *playstore*. Unless you know what you are doing you only need *free*.
 
-You will find the apks in the `./build/outputs/apk/conversationsFreeSystem/debug/` directory.
+You will find the apks in the `./build/outputs/apk/conversationsFree/debug/` directory.
 
 Be careful, the resulting apks will not install unless you delete your existing Conversations installation (which will delete all the messages from your phone, and if you have used OMEMO, you will not be able to restore them from the server).
 Do it at your own risk.
@@ -446,8 +446,6 @@ In the file `build.gradle`, find the line `applicationId "eu.siacs.conversations
 Then the resulting APK can be installed ALONGSIDE normal Conversations. And have a different name so it's not confusing
 
 WARNING: DO NOT REPLACE ANYTHING ELSE ANYWHERE ELSE, DO NOT REPLACE THIS PROJECT WIDE. JUST 2 strings in THAT specific file!
-
-[![Build Status](https://travis-ci.org/inputmice/Conversations.svg?branch=development)](https://travis-ci.org/inputmice/Conversations)
 
 #### How do I debug Conversations
 

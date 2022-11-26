@@ -291,6 +291,7 @@
     <string name="title_pref_enable_quiet_hours">消音時間を有効化</string>
     <string name="pref_quiet_hours_summary">消音時間の間、通知は無音になります</string>
     <string name="pref_expert_options_other">その他</string>
+    <string name="pref_autojoin">ブックマーク同期</string>
     <string name="toast_message_omemo_fingerprint">OMEMO フィンガープリントをクリップボードにコピーしました</string>
     <string name="conference_banned">このグループチャットから出禁にされています</string>
     <string name="conference_members_only">このグループチャットはメンバー制です</string>
@@ -298,6 +299,7 @@
     <string name="conference_kicked">このグループチャットから蹴り出されています</string>
     <string name="conference_shutdown">このグループチャットは閉鎖されました</string>
     <string name="conference_unknown_error">あなたはもうこのグループチャットに参加していません</string>
+    <string name="conference_technical_problems">技術的理由の為、あなたはこのグループチャットを離れました</string>
     <string name="using_account">アカウント %s を使用</string>
     <string name="hosted_on">%s 上でホストされた</string>
     <string name="checking_x">HTTP ホスト上の %s を確認中</string>
@@ -412,6 +414,7 @@
     <string name="video">ビデオ</string>
     <string name="image">画像</string>
     <string name="vector_graphic">ベクター画像</string>
+    <string name="multimedia_file">マルチメディアファイル</string>
     <string name="pdf_document">PDF 文書</string>
     <string name="apk">Android アプリ</string>
     <string name="vcard">連絡先</string>
@@ -956,4 +959,5 @@
     <string name="account_registrations_are_not_supported">アカウント登録はサポートされていません</string>
     <string name="no_xmpp_adddress_found">XMPPアドレスがみつかりません</string>
     <string name="account_status_temporary_auth_failure">一時的な認証失敗</string>
+    <string name="delete_avatar">アバターを削除</string>
     </resources>

@@ -170,7 +170,7 @@ public class EnterJidDialog extends DialogFragment implements OnBackendConnected
         }
         final Jid contactJid;
         try {
-            contactJid = Jid.ofEscaped(binding.jid.getText().toString());
+            contactJid = Jid.ofEscaped(binding.jid.getText().toString().trim());
         } catch (final IllegalArgumentException e) {
             binding.jidLayout.setError(getActivity().getString(R.string.invalid_jid));
             return;

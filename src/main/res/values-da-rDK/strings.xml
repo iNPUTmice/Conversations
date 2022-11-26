@@ -294,6 +294,8 @@
     <string name="title_pref_enable_quiet_hours">Aktiver stilletid</string>
     <string name="pref_quiet_hours_summary">Notifikationer vil være lydløs under stilletid</string>
     <string name="pref_expert_options_other">Andre</string>
+    <string name="pref_autojoin">Synkroniser bogmærker</string>
+    <string name="pref_autojoin_summary">Indstil \"autojoin\"-flag, når du går ind i eller forlader en MUC, og reager på ændringer foretaget af andre klienter.</string>
     <string name="toast_message_omemo_fingerprint">OMEMO-fingeraftryk kopieret til udklipsholder</string>
     <string name="conference_banned">Du er udelukket fra denne gruppechat</string>
     <string name="conference_members_only">Denne gruppechat er kun for medlemmer</string>
@@ -301,6 +303,7 @@
     <string name="conference_kicked">Du er blevet smidt ud af denne gruppechat</string>
     <string name="conference_shutdown">Gruppechatten er lukket ned</string>
     <string name="conference_unknown_error">Du er ikke længere i denne gruppechat</string>
+    <string name="conference_technical_problems">Du forlod denne gruppechat af tekniske årsager</string>
     <string name="using_account">anvender konto %s</string>
     <string name="hosted_on">hostet på %s</string>
     <string name="checking_x">Tjekker %s på HTTP vært</string>
@@ -976,4 +979,5 @@
     <string name="account_registrations_are_not_supported">Kontoregistrering er ikke understøttet</string>
     <string name="no_xmpp_adddress_found">Ingen XMPP-adresse fundet</string>
     <string name="account_status_temporary_auth_failure">Midlertidig godkendelsesfejl</string>
+    <string name="delete_avatar">Slet avatar</string>
     </resources>

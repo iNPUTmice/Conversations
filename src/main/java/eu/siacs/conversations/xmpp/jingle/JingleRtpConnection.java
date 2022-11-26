@@ -7,12 +7,14 @@ import androidx.annotation.Nullable;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Predicates;
 import com.google.common.base.Stopwatch;
 import com.google.common.base.Strings;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.common.primitives.Ints;
 import com.google.common.util.concurrent.FutureCallback;
@@ -162,6 +164,8 @@ public class JingleRtpConnection extends AbstractJingleConnection
     private RtpContentMap initiatorRtpContentMap;
     private RtpContentMap responderRtpContentMap;
     private IceUdpTransportInfo.Setup peerDtlsSetup;
+    private RtpContentMap incomingContentAdd;
+    private RtpContentMap outgoingContentAdd;
     private final Stopwatch sessionDuration = Stopwatch.createUnstarted();
     private final Queue<PeerConnection.PeerConnectionState> stateHistory = new LinkedList<>();
     private ScheduledFuture<?> ringingTimeoutFuture;
@@ -215,6 +219,15 @@ public class JingleRtpConnection extends AbstractJingleConnection
                 break;
             case SESSION_TERMINATE:
                 receiveSessionTerminate(jinglePacket);
+                break;
+            case CONTENT_ADD:
+                receiveContentAdd(jinglePacket);
+                break;
+            case CONTENT_ACCEPT:
+                receiveContentAccept(jinglePacket);
+                break;
+            case CONTENT_REJECT:
+                receiveContentReject(jinglePacket);
                 break;
             default:
                 respondOk(jinglePacket);
@@ -344,6 +357,255 @@ public class JingleRtpConnection extends AbstractJingleConnection
         }
     }
 
+    private void receiveContentAdd(final JinglePacket jinglePacket) {
+        final RtpContentMap modification;
+        try {
+            modification = RtpContentMap.of(jinglePacket);
+        } catch (final RuntimeException e) {
+            Log.d(
+                    Config.LOGTAG,
+                    id.getAccount().getJid().asBareJid() + ": improperly formatted contents",
+                    Throwables.getRootCause(e));
+            respondOk(jinglePacket);
+            webRTCWrapper.close();
+            sendSessionTerminate(Reason.of(e), e.getMessage());
+            return;
+        }
+
+        // TODO check that it is not adding contents we already have
+        // reject with some reason
+
+        // TODO check for tie-break
+
+        // TODO reject if this takes us above one audio and one video track
+
+        respondOk(jinglePacket);
+
+        // once we can display multiple video tracks we can be more loose with this condition
+        // theoretically it should also be fine to automatically accept audio only contents
+        final ContentAddition contentAddition =
+                ContentAddition.of(ContentAddition.Direction.INCOMING, modification);
+        if (Media.audioOnly(getRemoteContentMap().getMedia())
+                && Media.videoOnly(contentAddition.media())) {
+            Log.d(
+                    Config.LOGTAG,
+                    id.getAccount().getJid().asBareJid() + ": received " + contentAddition);
+            this.incomingContentAdd = modification;
+            updateEndUserState();
+        } else {
+            rejectContentAdd();
+        }
+    }
+
+    private void receiveContentAccept(final JinglePacket jinglePacket) {
+        final RtpContentMap outgoingContentAdd = this.outgoingContentAdd;
+        final Set<Media> proposedMedia =
+                outgoingContentAdd == null ? Collections.emptySet() : outgoingContentAdd.getMedia();
+        final Set<String> proposedContentIds =
+                outgoingContentAdd == null
+                        ? Collections.emptySet()
+                        : outgoingContentAdd.contents.keySet();
+
+        final RtpContentMap receivedContentAccept;
+        try {
+            receivedContentAccept = RtpContentMap.of(jinglePacket);
+        } catch (final RuntimeException e) {
+            Log.d(
+                    Config.LOGTAG,
+                    id.getAccount().getJid().asBareJid() + ": improperly formatted contents",
+                    Throwables.getRootCause(e));
+            respondOk(jinglePacket);
+            sendSessionTerminate(Reason.of(e), e.getMessage());
+            return;
+        }
+
+        if (proposedMedia.containsAll(receivedContentAccept.getMedia())
+                && proposedContentIds.containsAll(receivedContentAccept.contents.keySet())) {
+            this.outgoingContentAdd = null;
+            respondOk(jinglePacket);
+            receiveContentAccept(receivedContentAccept);
+        } else {
+            Log.d(Config.LOGTAG, "received content-accept did not match our outgoing content-add");
+            terminateWithOutOfOrder(jinglePacket);
+        }
+    }
+
+    private void receiveContentAccept(final RtpContentMap receivedContentAccept) {
+        final IceUdpTransportInfo.Setup peerDtlsSetup = getPeerDtlsSetup();
+        final RtpContentMap modifiedContentMap =
+                getRemoteContentMap().addContent(receivedContentAccept, peerDtlsSetup);
+
+        setRemoteContentMap(modifiedContentMap);
+
+        final SessionDescription answer = SessionDescription.of(modifiedContentMap, !isInitiator());
+
+        final org.webrtc.SessionDescription sdp =
+                new org.webrtc.SessionDescription(
+                        org.webrtc.SessionDescription.Type.ANSWER, answer.toString());
+
+        try {
+            this.webRTCWrapper.setRemoteDescription(sdp).get();
+        } catch (final Exception e) {
+            final Throwable cause = Throwables.getRootCause(e);
+            Log.d(
+                    Config.LOGTAG,
+                    id.getAccount().getJid().asBareJid()
+                            + ": unable to set remote description after receiving content-accept",
+                    cause);
+            webRTCWrapper.close();
+            sendSessionTerminate(Reason.FAILED_APPLICATION, cause.getMessage());
+        }
+        Log.d(Config.LOGTAG, "received and processed content-accept");
+    }
+
+    private void receiveContentReject(final JinglePacket jinglePacket) {
+        final RtpContentMap receivedContentReject;
+        try {
+            receivedContentReject = RtpContentMap.of(jinglePacket);
+        } catch (final RuntimeException e) {
+            Log.d(
+                    Config.LOGTAG,
+                    id.getAccount().getJid().asBareJid() + ": improperly formatted contents",
+                    Throwables.getRootCause(e));
+            respondOk(jinglePacket);
+            sendSessionTerminate(Reason.of(e), e.getMessage());
+            return;
+        }
+
+        final RtpContentMap outgoingContentAdd = this.outgoingContentAdd;
+        if (outgoingContentAdd == null) {
+            Log.d(Config.LOGTAG, "received content-reject when we had no outgoing content add");
+            terminateWithOutOfOrder(jinglePacket);
+            return;
+        }
+        final Set<ContentAddition.Summary> ourSummary = ContentAddition.summary(outgoingContentAdd);
+        if (ourSummary.equals(ContentAddition.summary(receivedContentReject))) {
+            this.outgoingContentAdd = null;
+            respondOk(jinglePacket);
+            receiveContentReject(ourSummary);
+        } else {
+            Log.d(Config.LOGTAG, "received content-reject did not match our outgoing content-add");
+            terminateWithOutOfOrder(jinglePacket);
+        }
+    }
+
+    private void receiveContentReject(final Set<ContentAddition.Summary> contentAddition) {
+        Log.d(Config.LOGTAG,id.getAccount().getJid().asBareJid()+": received content-reject "+contentAddition);
+        try {
+            // TODO specify if we want to remove receivers as well; we can also remove transceivers
+            // by mid
+            this.webRTCWrapper.removeTrack(Media.VIDEO);
+            final SessionDescription sessionDescription = rollbackLocalSessionDescription();
+            setLocalContentMap(RtpContentMap.of(sessionDescription, isInitiator()));
+            Log.d(Config.LOGTAG, "rollback complete");
+        } catch (final Exception e) {
+            final Throwable cause = Throwables.getRootCause(e);
+            Log.d(
+                    Config.LOGTAG,
+                    id.getAccount().getJid().asBareJid()
+                            + ": unable to rollback local description after receiving content-reject",
+                    cause);
+            webRTCWrapper.close();
+            sendSessionTerminate(Reason.FAILED_APPLICATION, cause.getMessage());
+        }
+    }
+
+    public synchronized void acceptContentAdd(@NonNull final Set<ContentAddition.Summary> contentAddition) {
+        final RtpContentMap incomingContentAdd = this.incomingContentAdd;
+        if (incomingContentAdd == null) {
+            throw new IllegalStateException("No incoming content add");
+        }
+
+        if (contentAddition.equals(ContentAddition.summary(incomingContentAdd))) {
+            this.incomingContentAdd = null;
+            acceptContentAdd(contentAddition, incomingContentAdd);
+        } else {
+            throw new IllegalStateException("Accepted content add does not match pending content-add");
+        }
+    }
+
+    private void acceptContentAdd(@NonNull final Set<ContentAddition.Summary> contentAddition, final RtpContentMap incomingContentAdd) {
+        final IceUdpTransportInfo.Setup setup = getPeerDtlsSetup();
+        final RtpContentMap modifiedContentMap = getRemoteContentMap().addContent(incomingContentAdd, setup);
+        this.setRemoteContentMap(modifiedContentMap);
+
+        final SessionDescription offer;
+        try {
+            offer = SessionDescription.of(modifiedContentMap, !isInitiator());
+        } catch (final IllegalArgumentException | NullPointerException e) {
+            Log.d(Config.LOGTAG, id.getAccount().getJid().asBareJid() + ": unable convert offer from session-initiate to SDP", e);
+            webRTCWrapper.close();
+            sendSessionTerminate(Reason.FAILED_APPLICATION, e.getMessage());
+            return;
+        }
+        this.incomingContentAdd = null;
+        acceptContentAdd(contentAddition, offer);
+    }
+
+    private void acceptContentAdd(final Set<ContentAddition.Summary> contentAddition, final SessionDescription offer) {
+        final org.webrtc.SessionDescription sdp = new org.webrtc.SessionDescription(
+                org.webrtc.SessionDescription.Type.OFFER,
+                offer.toString()
+        );
+        try {
+            this.webRTCWrapper.setRemoteDescription(sdp).get();
+
+            // TODO add tracks for 'media' where contentAddition.senders matches
+
+            //TODO if senders.sending(isInitiator())
+
+            this.webRTCWrapper.addTrack(Media.VIDEO);
+
+            //TODO add additional transceivers for recv only cases
+
+            final SessionDescription answer = setLocalSessionDescription();
+            final RtpContentMap rtpContentMap = RtpContentMap.of(answer, isInitiator());
+            final RtpContentMap.Diff diff = getLocalContentMap().diff(rtpContentMap);
+            final RtpContentMap contentAcceptMap = rtpContentMap.toContentModification(diff.added);
+            setLocalContentMap(rtpContentMap);
+
+            // TODO is this a good time to update the UI? once we've fixed getMedia() this will trigger the buttons to be re-arranged
+            updateEndUserState();
+
+            Log.d(Config.LOGTAG,"accept content add with "+diff);
+            sendContentAccept(contentAcceptMap);
+        } catch (final Exception e) {
+            Log.d(Config.LOGTAG, "unable to accept content add", Throwables.getRootCause(e));
+            webRTCWrapper.close();
+            sendSessionTerminate(Reason.FAILED_APPLICATION);
+        }
+    }
+
+
+    private void sendContentAccept(final RtpContentMap contentAcceptMap) {
+        Log.d(Config.LOGTAG,"sending content-accept");
+        final JinglePacket jinglePacket = contentAcceptMap.toJinglePacket(JinglePacket.Action.CONTENT_ACCEPT, id.sessionId);
+        send(jinglePacket);
+    }
+
+    public synchronized void rejectContentAdd() {
+        final RtpContentMap incomingContentAdd = this.incomingContentAdd;
+        if (incomingContentAdd == null) {
+            throw new IllegalStateException("No incoming content add");
+        }
+        this.incomingContentAdd = null;
+        updateEndUserState();
+        rejectContent(incomingContentAdd);
+    }
+
+    private void rejectContent(final RtpContentMap contentMap) {
+        final JinglePacket jinglePacket =
+                contentMap
+                        .toStub()
+                        .toJinglePacket(JinglePacket.Action.CONTENT_REJECT, id.sessionId);
+        Log.d(
+                Config.LOGTAG,
+                id.getAccount().getJid().asBareJid()
+                        + ": rejecting content "
+                        + ContentAddition.summary(contentMap));
+        send(jinglePacket);
+    }
+
     private boolean checkForIceRestart(
             final JinglePacket jinglePacket, final RtpContentMap rtpContentMap) {
         final RtpContentMap existing = getRemoteContentMap();
@@ -425,7 +687,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
             final RtpContentMap restartContentMap,
             final boolean isOffer)
             throws ExecutionException, InterruptedException {
-        final SessionDescription sessionDescription = SessionDescription.of(restartContentMap);
+        final SessionDescription sessionDescription = SessionDescription.of(restartContentMap, !isInitiator());
         final org.webrtc.SessionDescription.Type type =
                 isOffer
                         ? org.webrtc.SessionDescription.Type.OFFER
@@ -444,7 +706,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
         if (isOffer) {
             webRTCWrapper.setIsReadyToReceiveIceCandidates(false);
             final SessionDescription localSessionDescription = setLocalSessionDescription();
-            setLocalContentMap(RtpContentMap.of(localSessionDescription));
+            setLocalContentMap(RtpContentMap.of(localSessionDescription, isInitiator()));
             // We need to respond OK before sending any candidates
             respondOk(jinglePacket);
             webRTCWrapper.setIsReadyToReceiveIceCandidates(true);
@@ -497,6 +759,10 @@ public class JingleRtpConnection extends AbstractJingleConnection
 
     private RtpContentMap getRemoteContentMap() {
         return isInitiator() ? this.responderRtpContentMap : this.initiatorRtpContentMap;
+    }
+
+    private RtpContentMap getLocalContentMap() {
+        return isInitiator() ? this.initiatorRtpContentMap : this.responderRtpContentMap;
     }
 
     private List<String> toIdentificationTags(final RtpContentMap rtpContentMap) {
@@ -726,7 +992,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
         this.storePeerDtlsSetup(contentMap.getDtlsSetup());
         final SessionDescription sessionDescription;
         try {
-            sessionDescription = SessionDescription.of(contentMap);
+            sessionDescription = SessionDescription.of(contentMap, false);
         } catch (final IllegalArgumentException | NullPointerException e) {
             Log.d(
                     Config.LOGTAG,
@@ -743,14 +1009,15 @@ public class JingleRtpConnection extends AbstractJingleConnection
         try {
             this.webRTCWrapper.setRemoteDescription(answer).get();
         } catch (final Exception e) {
+            final Throwable cause = Throwables.getRootCause(e);
             Log.d(
                     Config.LOGTAG,
                     id.account.getJid().asBareJid()
                             + ": unable to set remote description after receiving session-accept",
-                    Throwables.getRootCause(e));
+                    cause);
             webRTCWrapper.close();
             sendSessionTerminate(
-                    Reason.FAILED_APPLICATION, Throwables.getRootCause(e).getMessage());
+                    Reason.FAILED_APPLICATION, cause.getMessage());
             return;
         }
         processCandidates(contentMap.contents.entrySet());
@@ -763,7 +1030,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
         }
         final SessionDescription offer;
         try {
-            offer = SessionDescription.of(rtpContentMap);
+            offer = SessionDescription.of(rtpContentMap, true);
         } catch (final IllegalArgumentException | NullPointerException e) {
             Log.d(
                     Config.LOGTAG,
@@ -838,7 +1105,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
             final org.webrtc.SessionDescription webRTCSessionDescription) {
         final SessionDescription sessionDescription =
                 SessionDescription.parse(webRTCSessionDescription.description);
-        final RtpContentMap respondingRtpContentMap = RtpContentMap.of(sessionDescription);
+        final RtpContentMap respondingRtpContentMap = RtpContentMap.of(sessionDescription, false);
         this.responderRtpContentMap = respondingRtpContentMap;
         storePeerDtlsSetup(respondingRtpContentMap.getDtlsSetup().flip());
         webRTCWrapper.setIsReadyToReceiveIceCandidates(true);
@@ -946,16 +1213,7 @@ public class JingleRtpConnection extends AbstractJingleConnection
                 from.asBareJid().equals(id.account.getJid().asBareJid());
         if (originatedFromMyself) {
             if (transition(State.ACCEPTED)) {
-                if (serverMsgId != null) {
-                    this.message.setServerMsgId(serverMsgId);
-                }
-                this.message.setTime(timestamp);
-                this.message.setCarbon(true); // indicate that call was accepted on other device
-                this.writeLogMessageSuccess(0);
-                this.xmppConnectionService
-                        .getNotificationService()
-                        .cancelIncomingCallNotification();
-                this.finish();
+                acceptedOnOtherDevice(serverMsgId, timestamp);
             } else {
                 Log.d(
                         Config.LOGTAG,
@@ -968,6 +1226,19 @@ public class JingleRtpConnection extends AbstractJingleConnection
                     Config.LOGTAG,
                     id.account.getJid().asBareJid() + ": ignoring 'accept' from " + from);
         }
+    }
+
+    private void acceptedOnOtherDevice(final String serverMsgId, final long timestamp) {
+        if (serverMsgId != null) {
+            this.message.setServerMsgId(serverMsgId);
+        }
+        this.message.setTime(timestamp);
+        this.message.setCarbon(true); // indicate that call was accepted on other device
+        this.writeLogMessageSuccess(0);
+        this.xmppConnectionService
+                .getNotificationService()
+                .cancelIncomingCallNotification();
+        this.finish();
     }
 
     private void receiveReject(final Jid from, final String serverMsgId, final long timestamp) {
@@ -1167,11 +1438,8 @@ public class JingleRtpConnection extends AbstractJingleConnection
                         id.account.getJid().asBareJid()
                                 + ": moved session with "
                                 + id.with
-                                + " into state accepted after received carbon copied procced");
-                this.xmppConnectionService
-                        .getNotificationService()
-                        .cancelIncomingCallNotification();
-                this.finish();
+                                + " into state accepted after received carbon copied proceed");
+                acceptedOnOtherDevice(serverMsgId, timestamp);
             }
         } else {
             Log.d(
@@ -1289,8 +1557,9 @@ public class JingleRtpConnection extends AbstractJingleConnection
             final org.webrtc.SessionDescription webRTCSessionDescription, final State targetState) {
         final SessionDescription sessionDescription =
                 SessionDescription.parse(webRTCSessionDescription.description);
-        final RtpContentMap rtpContentMap = RtpContentMap.of(sessionDescription);
+        final RtpContentMap rtpContentMap = RtpContentMap.of(sessionDescription, true);
         this.initiatorRtpContentMap = rtpContentMap;
+        //TODO delay ready to receive ice until after session-init
         this.webRTCWrapper.setIsReadyToReceiveIceCandidates(true);
         final ListenableFuture<RtpContentMap> outgoingContentMapFuture =
                 encryptSessionInitiate(rtpContentMap);
@@ -1526,6 +1795,10 @@ public class JingleRtpConnection extends AbstractJingleConnection
                     return RtpEndUserState.CONNECTING;
                 }
             case SESSION_ACCEPTED:
+                final ContentAddition ca = getPendingContentAddition();
+                if (ca != null && ca.direction == ContentAddition.Direction.INCOMING) {
+                    return RtpEndUserState.INCOMING_CONTENT_ADD;
+                }
                 return getPeerConnectionStateAsEndUserState();
             case REJECTED:
             case REJECTED_RACED:
@@ -1583,6 +1856,18 @@ public class JingleRtpConnection extends AbstractJingleConnection
         }
     }
 
+    public ContentAddition getPendingContentAddition() {
+        final RtpContentMap in = this.incomingContentAdd;
+        final RtpContentMap out = this.outgoingContentAdd;
+        if (out != null) {
+            return ContentAddition.of(ContentAddition.Direction.OUTGOING, out);
+        } else if (in != null) {
+            return ContentAddition.of(ContentAddition.Direction.INCOMING, in);
+        } else {
+            return null;
+        }
+    }
+
     public Set<Media> getMedia() {
         final State current = getState();
         if (current == State.NULL) {
@@ -1615,6 +1900,16 @@ public class JingleRtpConnection extends AbstractJingleConnection
         final FingerprintStatus status =
                 id.account.getAxolotlService().getFingerprintTrust(fingerprint);
         return status != null && status.isVerified();
+    }
+
+    public boolean addMedia(final Media media) {
+        final Set<Media> currentMedia = getMedia();
+        if (currentMedia.contains(media)) {
+            throw new IllegalStateException(String.format("%s has already been proposed", media));
+        }
+        // TODO add state protection - can only add while ACCEPTED or so
+        Log.d(Config.LOGTAG,"adding media: "+media);
+        return webRTCWrapper.addTrack(media);
     }
 
     public synchronized void acceptCall() {
@@ -1905,11 +2200,17 @@ public class JingleRtpConnection extends AbstractJingleConnection
 
     @Override
     public void onRenegotiationNeeded() {
-        this.webRTCWrapper.execute(this::initiateIceRestart);
+        this.webRTCWrapper.execute(this::renegotiate);
     }
 
-    private void initiateIceRestart() {
-        // TODO discover new TURN/STUN credentials
+    @Override
+    public void onTrackModification() {
+        this.updateEndUserState();
+    }
+
+    private void renegotiate() {
+        Log.d(Config.LOGTAG,"method JingleRtpConnection.renegotiate()");
+        //TODO needs to be called only for ice restarts; maybe in the call to restartICe()
         this.stateHistory.clear();
         this.webRTCWrapper.setIsReadyToReceiveIceCandidates(false);
         final SessionDescription sessionDescription;
@@ -1921,7 +2222,36 @@ public class JingleRtpConnection extends AbstractJingleConnection
             sendSessionTerminate(Reason.FAILED_APPLICATION, cause.getMessage());
             return;
         }
-        final RtpContentMap rtpContentMap = RtpContentMap.of(sessionDescription);
+        final RtpContentMap rtpContentMap = RtpContentMap.of(sessionDescription, isInitiator());
+        final RtpContentMap currentContentMap = getLocalContentMap();
+        final boolean iceRestart = currentContentMap.iceRestart(rtpContentMap);
+        final RtpContentMap.Diff diff = currentContentMap.diff(rtpContentMap);
+
+        Log.d(
+                Config.LOGTAG,
+                id.getAccount().getJid().asBareJid()
+                        + ": renegotiate. iceRestart="
+                        + iceRestart
+                        + " content id diff="
+                        + diff);
+
+        if (diff.hasModifications() && iceRestart) {
+            sendSessionTerminate(Reason.FAILED_APPLICATION, "WebRTC unexpectedly tried to modify content and transport at once");
+            return;
+        }
+
+        if (iceRestart) {
+            initiateIceRestart(rtpContentMap);
+            return;
+        }
+
+        if (diff.added.size() > 0) {
+            sendContentAdd(rtpContentMap, diff.added);
+        }
+
+    }
+
+    private void initiateIceRestart(final RtpContentMap rtpContentMap) {
         final RtpContentMap transportInfo = rtpContentMap.transportInfo();
         final JinglePacket jinglePacket =
                 transportInfo.toJinglePacket(JinglePacket.Action.TRANSPORT_INFO, id.sessionId);
@@ -1951,6 +2281,17 @@ public class JingleRtpConnection extends AbstractJingleConnection
                 });
     }
 
+    private void sendContentAdd(final RtpContentMap rtpContentMap, final Collection<String> added) {
+        final RtpContentMap contentAdd = rtpContentMap.toContentModification(added);
+
+        // TODO setLocalContentMap and refresh UI?
+
+        this.outgoingContentAdd = contentAdd;
+        final JinglePacket jinglePacket = contentAdd.toJinglePacket(JinglePacket.Action.CONTENT_ADD, id.sessionId);
+        this.send(jinglePacket);
+    }
+
+
     private void setLocalContentMap(final RtpContentMap rtpContentMap) {
         if (isInitiator()) {
             this.initiatorRtpContentMap = rtpContentMap;
@@ -1971,6 +2312,12 @@ public class JingleRtpConnection extends AbstractJingleConnection
             throws ExecutionException, InterruptedException {
         final org.webrtc.SessionDescription sessionDescription =
                 this.webRTCWrapper.setLocalDescription().get();
+        return SessionDescription.parse(sessionDescription.description);
+    }
+
+    private SessionDescription rollbackLocalSessionDescription() throws ExecutionException, InterruptedException {
+        final org.webrtc.SessionDescription sessionDescription =
+                this.webRTCWrapper.rollback().get();
         return SessionDescription.parse(sessionDescription.description);
     }
 

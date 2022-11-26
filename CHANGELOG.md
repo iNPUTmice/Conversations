@@ -1,5 +1,12 @@
 # Changelog
 
+### Version 2.11.0
+
+* Implement Extensible SASL Profile, Bind 2.0 and Fast for faster reconnects
+* Implement Channel Binding
+* Add ability to delete own avatar
+* Add notification for missed calls
+
 ### Version 2.10.10
 
 * Minor bug fixes

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pick_a_server">Odaberite svog XMPP davatelja usluga.</string>
+    <string name="use_conversations.im">Koristite conversations.im</string>
+    <string name="create_new_account">Napravi novi račun</string>
+    <string name="do_you_have_an_account">Već imate XMPP račun? To može biti slučaj ako već koristite drugi XMPP klijent ili ste prije koristili Razgovore. Ako niste, možete odmah stvoriti novi XMPP račun.\nSavjet: Neki pružatelji usluga e-pošte također nude XMPP račune.</string>
+    <string name="server_select_text">XMPP je mreža za razmjenu izravnih poruka neovisna o pružatelju usluga. Možete koristiti ovaj klijent s bilo kojim XMPP poslužiteljem koji odaberete.\nMeđutim, radi vaše udobnosti olakšali smo kreiranje računa na conversations.im; pružatelj usluga posebno prilagođen za korištenje s Conversations.</string>
+    <string name="magic_create_text_on_x">Pozvani ste na %1$s. Vodit ćemo vas kroz postupak kreiranja računa.\nPrilikom odabira  %1$s pružatelja moći ćete komunicirati s korisnicima drugih pružatelja dajući im svoju punu XMPP adresu.</string>
+    <string name="magic_create_text_fixed">Pozvani ste na %1$s. Korisničko ime je već odabrano za vas. Vodit ćemo vas kroz postupak kreiranja računa.\nMoći ćete komunicirati s korisnicima drugih pružatelja tako da im date svoju punu XMPP adresu.</string>
+    <string name="your_server_invitation">Vaša pozivnica za poslužitelj</string>
+    <string name="improperly_formatted_provisioning">Neispravno formatiran kod za dodjelu</string>
+    <string name="tap_share_button_send_invite">Dodirnite gumb za dijeljenje kako biste svom kontaktu poslali pozivnicu na %1$s.</string>
+    <string name="if_contact_is_nearby_use_qr">Ako je vaš kontakt u blizini, također može skenirati kod u nastavku kako bi prihvatio vašu pozivnicu.</string>
+    <string name="easy_invite_share_text">Pridružite se %1$s i razgovarajte sa mnom: %2$s</string>
+    <string name="share_invite_with">Podijelite pozivnicu s...</string>
+</resources>

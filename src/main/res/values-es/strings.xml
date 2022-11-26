@@ -297,6 +297,8 @@
     <string name="title_pref_enable_quiet_hours">Habilitar horario de silencio</string>
     <string name="pref_quiet_hours_summary">Las notificaciones serán silenciadas durante el horario de silencio</string>
     <string name="pref_expert_options_other">Otros</string>
+    <string name="pref_autojoin">Sincronizar marcadores</string>
+    <string name="pref_autojoin_summary">Establecer la opción \"unirse automáticamente\" cuando entras o sales de un MUC y reaccionar a las modificaciones realizadas por otros clientes.</string>
     <string name="toast_message_omemo_fingerprint">Huella digital OMEMO copiada al portapapeles</string>
     <string name="conference_banned">Tu entrada a esta conversación en grupo ha sido prohibida</string>
     <string name="conference_members_only">Esta conversación en grupo es solo para miembros</string>
@@ -304,6 +306,7 @@
     <string name="conference_kicked">Has sido expulsado de esta conversación</string>
     <string name="conference_shutdown">La conversación en grupo ha sido cerrada</string>
     <string name="conference_unknown_error">Ya no estás dentro de esta conversación en grupo</string>
+    <string name="conference_technical_problems">Has dejado esta conversación en grupo debido a razones técnicas.</string>
     <string name="using_account">Usando cuenta %s</string>
     <string name="hosted_on">alojado en %s</string>
     <string name="checking_x">Comprobando %s en servidor HTTP</string>
@@ -418,6 +421,7 @@
     <string name="video">vídeo</string>
     <string name="image">imagen</string>
     <string name="vector_graphic">gráfico de vectores</string>
+    <string name="multimedia_file">archivo multimedia</string>
     <string name="pdf_document">documento PDF</string>
     <string name="apk">Android App</string>
     <string name="vcard">Contacto</string>
@@ -988,4 +992,5 @@
     <string name="account_registrations_are_not_supported">Los registros de cuenta no están soportados</string>
     <string name="no_xmpp_adddress_found">Dirección XMPP no encontrada</string>
     <string name="account_status_temporary_auth_failure">Fallo temporal de autenticación</string>
+    <string name="delete_avatar">Eliminar imagen de perfil</string>
     </resources>
