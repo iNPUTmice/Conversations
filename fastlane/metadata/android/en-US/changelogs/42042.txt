@@ -1,0 +1,2 @@
+* Fix resend loop on servers that support only sm:2
+* Show 'Switch to video' only if other party supports video
