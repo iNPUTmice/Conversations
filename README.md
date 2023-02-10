@@ -1,4 +1,4 @@
-<h1 align="center">Conversations</h1>
+# Conversations
 
 <p align="center">
   <a href="https://play.google.com/store/apps/details?id=eu.siacs.conversations&amp;referrer=utm_source%3Dcodeberg">
@@ -9,4 +9,17 @@
   </a>
 </p>
 
+### We've moved
+
 Conversations is now developed on [Codeberg](https://codeberg.org/iNPUTmice/Conversations).
+
+#### Clone repository
+
+```
+git clone https://codeberg.org/iNPUTmice/Conversations
+```
+
+
+#### Change remote on repositories cloned from GitHub
+```
+git remote set-url origin https://codeberg.org/iNPUTmice/Conversations
