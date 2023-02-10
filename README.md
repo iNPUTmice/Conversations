@@ -16,10 +16,10 @@ Conversations is now developed on [Codeberg](https://codeberg.org/iNPUTmice/Conv
 #### Clone repository
 
 ```
-git clone https://codeberg.org/iNPUTmice/Conversations
+git clone https://codeberg.org/iNPUTmice/Conversations.git
 ```
 
 
 #### Change remote on repositories cloned from GitHub
 ```
-git remote set-url origin https://codeberg.org/iNPUTmice/Conversations
+git remote set-url origin https://codeberg.org/iNPUTmice/Conversations.git
