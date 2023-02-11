@@ -12,7 +12,7 @@
 ### 🏠 A New Home
 We've moved. Conversations is now developed on [Codeberg](https://codeberg.org/iNPUTmice/Conversations).
 
-*Stable versions will still be pushed to the [master](https://github.com/iNPUTmice/Conversations/tree/master) branch on GitHub for backup purposes.*
+*Stable [releases](https://github.com/iNPUTmice/Conversations/releases) will be pushed to the [master](https://github.com/iNPUTmice/Conversations/tree/master) branch on GitHub for backup purposes.*
 
 #### Clone repository
 
