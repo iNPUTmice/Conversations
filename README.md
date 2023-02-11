@@ -26,10 +26,8 @@ git clone https://codeberg.org/iNPUTmice/Conversations.git
 git remote set-url origin https://codeberg.org/iNPUTmice/Conversations.git
 ```
 
-#### Community Group Chat
+#### 💬 Community Group Chat
 
 Hesitent to create an account on Codeberg?
 
-You don’t need to create an issue for everything. Use our community group chat instead: `xmpp:conversations@conference.siacs.eu?join`.
-
-Join with Conversations or any other XMPP client.
+You don’t need to create an issue for everything. Use our community group chat instead: `xmpp:conversations@conference.siacs.eu?join`. Join with Conversations or any other XMPP client.
