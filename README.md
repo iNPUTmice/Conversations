@@ -9,9 +9,10 @@
   </a>
 </p>
 
-### We've moved
+### 🏠 A New Home
+We've moved. Conversations is now developed on [Codeberg](https://codeberg.org/iNPUTmice/Conversations).
 
-Conversations is now developed on [Codeberg](https://codeberg.org/iNPUTmice/Conversations).
+*Stable versions will still be pushed to the [master](https://github.com/iNPUTmice/Conversations/tree/master) branch on GitHub for backup purposes.*
 
 #### Clone repository
 
@@ -23,3 +24,12 @@ git clone https://codeberg.org/iNPUTmice/Conversations.git
 #### Change remote on repositories cloned from GitHub
 ```
 git remote set-url origin https://codeberg.org/iNPUTmice/Conversations.git
+```
+
+#### Community Group Chat
+
+Hesitent to create an account on Codeberg?
+
+You don’t need to create an issue for everything. Use our community group chat instead: `xmpp:conversations@conference.siacs.eu?join`.
+
+Join with Conversations or any other XMPP client.
