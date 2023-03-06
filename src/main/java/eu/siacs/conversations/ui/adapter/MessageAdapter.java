@@ -694,19 +694,20 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             final boolean received = message.getStatus() <= Message.STATUS_RECEIVED;
             final RtpSessionStatus rtpSessionStatus = RtpSessionStatus.of(message.getBody());
             final long duration = rtpSessionStatus.duration;
+            final String callTime = UIHelper.readableTimeDifferenceFull(activity, message.getTimeSent());
             if (received) {
                 if (duration > 0) {
-                    viewHolder.status_message.setText(activity.getString(R.string.incoming_call_duration, TimeFrameUtils.resolve(activity, duration)));
+                    viewHolder.status_message.setText(activity.getString(R.string.incoming_call_duration_timestamp, TimeFrameUtils.resolve(activity, duration), callTime));
                 } else if (rtpSessionStatus.successful) {
-                    viewHolder.status_message.setText(R.string.incoming_call);
+                    viewHolder.status_message.setText(activity.getString(R.string.incoming_call_timestamp, callTime));
                 } else {
-                    viewHolder.status_message.setText(activity.getString(R.string.missed_call_timestamp, UIHelper.readableTimeDifferenceFull(activity, message.getTimeSent())));
+                    viewHolder.status_message.setText(activity.getString(R.string.missed_call_timestamp, callTime));
                 }
             } else {
                 if (duration > 0) {
-                    viewHolder.status_message.setText(activity.getString(R.string.outgoing_call_duration, TimeFrameUtils.resolve(activity, duration)));
+                    viewHolder.status_message.setText(activity.getString(R.string.outgoing_call_duration_timestamp, TimeFrameUtils.resolve(activity, duration), callTime));
                 } else {
-                    viewHolder.status_message.setText(R.string.outgoing_call);
+                    viewHolder.status_message.setText(activity.getString(R.string.outgoing_call_timestamp, callTime));
                 }
             }
             viewHolder.indicatorReceived.setImageResource(RtpSessionStatus.getDrawable(received, rtpSessionStatus.successful, isDarkTheme));

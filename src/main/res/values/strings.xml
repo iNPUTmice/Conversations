@@ -933,10 +933,14 @@
     <string name="reconnecting_video_call">Reconnecting video call</string>
     <string name="disable_tor_to_make_call">Disable Tor to make calls</string>
     <string name="incoming_call">Incoming call</string>
-    <string name="incoming_call_duration">Incoming call · %s</string>
-    <string name="missed_call_timestamp">Missed call · %s</string>
+    <string name="incoming_call_timestamp">Incoming call . %s</string>
+    <string name="incoming_call_duration">Incoming call (%s)</string>
+    <string name="incoming_call_duration_timestamp">Incoming call (%s) . %s</string>
+    <string name="missed_call_timestamp">Missed call . %s</string>
     <string name="outgoing_call">Outgoing call</string>
-    <string name="outgoing_call_duration">Outgoing call · %s</string>
+    <string name="outgoing_call_timestamp">Outgoing call . %s</string>
+    <string name="outgoing_call_duration">Outgoing call (%s)</string>
+    <string name="outgoing_call_duration_timestamp">Outgoing call (%s) . %s</string>
     <string name="missed_call">Missed call</string>
     <plurals name="n_missed_calls_from_x">
         <item quantity="one">%1$d missed call from %2$s</item>
