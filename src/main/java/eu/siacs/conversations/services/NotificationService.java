@@ -1303,7 +1303,7 @@ public class NotificationService {
             final Bitmap bitmap =
                     mXmppConnectionService
                             .getFileBackend()
-                            .getThumbnail(message, getPixel(288), false);
+                            .getThumbnailBitmap(message, mXmppConnectionService.getResources(), getPixel(288));
             final ArrayList<Message> tmp = new ArrayList<>();
             for (final Message msg : messages) {
                 if (msg.getType() == Message.TYPE_TEXT && msg.getTransferable() == null) {

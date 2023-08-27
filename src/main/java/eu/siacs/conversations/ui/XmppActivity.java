@@ -22,6 +22,7 @@ import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.drawable.AnimatedImageDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
@@ -942,16 +943,19 @@ public abstract class XmppActivity extends ActionBarActivity {
     }
 
     public void loadBitmap(Message message, ImageView imageView) {
-        Bitmap bm;
+        Drawable bm;
         try {
-            bm = xmppConnectionService.getFileBackend().getThumbnail(message, (int) (metrics.density * 288), true);
+            bm = xmppConnectionService.getFileBackend().getThumbnail(message, getResources(), (int) (metrics.density * 288), true);
         } catch (IOException e) {
             bm = null;
         }
         if (bm != null) {
             cancelPotentialWork(message, imageView);
-            imageView.setImageBitmap(bm);
+            imageView.setImageDrawable(bm);
             imageView.setBackgroundColor(0x00000000);
+            if (Build.VERSION.SDK_INT >= 28 && bm instanceof AnimatedImageDrawable) {
+                ((AnimatedImageDrawable) bm).start();
+            }
         } else {
             if (cancelPotentialWork(message, imageView)) {
                 imageView.setBackgroundColor(0xff333333);
@@ -1005,7 +1009,7 @@ public abstract class XmppActivity extends ActionBarActivity {
         }
     }
 
-    static class BitmapWorkerTask extends AsyncTask<Message, Void, Bitmap> {
+    static class BitmapWorkerTask extends AsyncTask<Message, Void, Drawable> {
         private final WeakReference<ImageView> imageViewReference;
         private Message message = null;
 
@@ -1014,7 +1018,7 @@ public abstract class XmppActivity extends ActionBarActivity {
         }
 
         @Override
-        protected Bitmap doInBackground(Message... params) {
+        protected Drawable doInBackground(Message... params) {
             if (isCancelled()) {
                 return null;
             }
@@ -1022,7 +1026,7 @@ public abstract class XmppActivity extends ActionBarActivity {
             try {
                 final XmppActivity activity = find(imageViewReference);
                 if (activity != null && activity.xmppConnectionService != null) {
-                    return activity.xmppConnectionService.getFileBackend().getThumbnail(message, (int) (activity.metrics.density * 288), false);
+                    return activity.xmppConnectionService.getFileBackend().getThumbnail(message, imageViewReference.get().getContext().getResources(), (int) (activity.metrics.density * 288), false);
                 } else {
                     return null;
                 }
@@ -1032,12 +1036,15 @@ public abstract class XmppActivity extends ActionBarActivity {
         }
 
         @Override
-        protected void onPostExecute(final Bitmap bitmap) {
+        protected void onPostExecute(final Drawable drawable) {
             if (!isCancelled()) {
                 final ImageView imageView = imageViewReference.get();
                 if (imageView != null) {
-                    imageView.setImageBitmap(bitmap);
-                    imageView.setBackgroundColor(bitmap == null ? 0xff333333 : 0x00000000);
+                    imageView.setImageDrawable(drawable);
+                    imageView.setBackgroundColor(drawable == null ? 0xff333333 : 0x00000000);
+                    if (Build.VERSION.SDK_INT >= 28 && drawable instanceof AnimatedImageDrawable) {
+                        ((AnimatedImageDrawable) drawable).start();
+                    }
                 }
             }
         }
