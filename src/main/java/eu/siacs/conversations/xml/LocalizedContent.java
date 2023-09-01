@@ -29,8 +29,8 @@ public class LocalizedContent {
                 final String childLanguage = child.getAttribute("xml:lang");
                 final String lang = childLanguage == null ? parentLanguage : childLanguage;
                 final String content = child.getContent();
-                if (content != null && (namespace == null || "jabber:client".equals(namespace))) {
-                    if (contents.put(lang, content) != null) {
+                if (namespace == null || "jabber:client".equals(namespace)) {
+                    if (contents.put(lang, content == null ? "" : content) != null) {
                         //anything that has multiple contents for the same language is invalid
                         return null;
                     }
